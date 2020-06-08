@@ -2,3 +2,6 @@
 /build/
 /resources/ch/randelshofer/quaqua/laf.txt
 /dist/
+/DerivedData/
+/quaqua64.xcodeproj/xcuserdata/
+/out/production/Quaqua/

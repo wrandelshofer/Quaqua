@@ -8,21 +8,45 @@
 package ch.randelshofer.quaqua;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.EventListenerList;
-import javax.swing.plaf.OptionPaneUI;
-
 import ch.randelshofer.quaqua.osx.OSXApplication;
 import ch.randelshofer.quaqua.osx.OSXSheetSupport;
 import ch.randelshofer.quaqua.util.Methods;
 
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.EventListenerList;
+import javax.swing.plaf.OptionPaneUI;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 //import com.apple.cocoa.application.*;
+
 /**
  * JSheet is a document modal dialog which is displayed below the title bar
  * of a JFrame.
@@ -42,7 +66,7 @@ import ch.randelshofer.quaqua.util.Methods;
  * As of Quaqua 5.5, JSheets under Java 5 and lower are natively shown by {@link
  * OSXSheetSupport}. To activate that behavior, set the UIManager property
  * {@code "Sheet.experimentalSheet"} to {@code Boolean.TRUE}.
- * 
+ *
  * @author  Werner Randelshofer
  * @version $Id$
  */

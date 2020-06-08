@@ -15,9 +15,8 @@
  *
  * @version $Id$
  */
-
-#include <stdio.h>
 #include <jni.h>
+#include <stdio.h>
 #include "ch_randelshofer_quaqua_osx_OSXImageIO.h"
 #import <Cocoa/Cocoa.h>
 #import <CoreServices/CoreServices.h>
@@ -48,7 +47,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
         [imageNS autorelease];
         NSData* dataNS = [imageNS TIFFRepresentation];
         if (dataNS != NULL) {
-            unsigned len = [dataNS length];
+            unsigned int len = (unsigned int) [dataNS length];
             void* bytes = malloc(len);
             [dataNS getBytes:bytes length:len];
 
@@ -116,7 +115,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
         // Convert image to TIFF
         NSData* dataNS = [scaledImage TIFFRepresentation];
         if (dataNS != NULL) {
-            unsigned len = [dataNS length];
+            unsigned len = (unsigned) [dataNS length];
             void* bytes = malloc(len);
             [dataNS getBytes:bytes length:len];
 
@@ -168,7 +167,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
 
         NSData* tiffNS = [imageNS TIFFRepresentation];
         if (tiffNS != NULL) {
-            unsigned len = [tiffNS length];
+            unsigned len = (unsigned) [tiffNS length];
             void* tiffC = malloc(len);
             [tiffNS getBytes: tiffC length:len];
 
@@ -205,7 +204,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
         [imageNS autorelease];
         NSData* data = [imageNS TIFFRepresentation];
         if (data != NULL) {
-            unsigned len = [data length];
+            unsigned len = (unsigned) [data length];
             void* bytes = malloc(len);
             [data getBytes:bytes length:len];
 

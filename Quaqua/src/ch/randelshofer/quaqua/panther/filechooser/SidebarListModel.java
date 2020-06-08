@@ -7,17 +7,33 @@
  */
 package ch.randelshofer.quaqua.panther.filechooser;
 
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.ext.base64.Base64;
+import ch.randelshofer.quaqua.ext.nanoxml.XMLElement;
+import ch.randelshofer.quaqua.ext.nanoxml.XMLParseException;
+import ch.randelshofer.quaqua.filechooser.FileInfo;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
 import ch.randelshofer.quaqua.osx.OSXFile;
-import ch.randelshofer.quaqua.filechooser.*;
-import ch.randelshofer.quaqua.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import java.io.*;
-import java.util.*;
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.ext.nanoxml.*;
+import ch.randelshofer.quaqua.util.BinaryPListParser;
+import ch.randelshofer.quaqua.util.SequentialDispatcher;
+import ch.randelshofer.quaqua.util.Worker;
+
+import javax.swing.AbstractListModel;
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.UIManager;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * This is the list model used to display a sidebar in the PantherFileChooserUI.
@@ -237,7 +253,7 @@ public class SidebarListModel
         }
     }
 
-    private class FileItem implements FileInfo {
+    private class FileItem implements FileInfo, SidebarTreeFileNode {
 
         private final File file;
         private Icon icon;
@@ -351,7 +367,7 @@ public class SidebarListModel
     /**
      * An AliasItem is resolved as late as possible.
      */
-    private class AliasItem implements FileInfo {
+    private class AliasItem implements FileInfo, SidebarTreeFileNode {
 
         private byte[] serializedAlias;
         private File file;

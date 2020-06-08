@@ -7,17 +7,28 @@
  */
 package ch.randelshofer.quaqua.osx;
 
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFDecodeParam;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFImageDecoder;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.MemoryCacheSeekableStream;
 import ch.randelshofer.quaqua.util.Images;
-import java.awt.*;
-import java.awt.image.*;
-import java.io.*;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.AccessControlException;
 import java.util.Date;
-import javax.swing.*;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.*;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
 
 /**
  * {@code OSXFile} provides access to Mac OS X file meta data and can resolve
@@ -432,14 +443,14 @@ public class OSXFile {
 
         return (label == -1) ? null : labelColors[label][type];
     }
-    
+
     /**
      * Returns the color of the specified tag name. Returns null, if the tag
      * does not have a color.
      *
      * @param tagName a tag name
-     * @param type 0=dark enabled,1=bright enabled,2=dark disabled,3=bright enabled
-     * @return 
+     * @param type    0=dark enabled,1=bright enabled,2=dark disabled,3=bright enabled
+     * @return
      */
     public static Color getTagColor(String tagName, int type) {
         int label = 0;
@@ -460,7 +471,7 @@ public class OSXFile {
         }
         return getLabelColor(label, type);
     }
-    
+
 
     /**
      * Returns the icon image for the specified file.
@@ -921,12 +932,8 @@ public class OSXFile {
     public static String getDisplayName(File f) {
         if (isNativeCodeAvailable()) {
             return nativeGetDisplayName(f.getAbsolutePath());
-
-
         } else {
             return f.getName();
-
-
         }
     }
 
@@ -934,8 +941,12 @@ public class OSXFile {
      * Return the time of last use of a file, as recorded by Launch Services. Called the "Date Last Opened" by Finder.
      */
     public static Date getLastUsedDate(File f) {
-        long t = nativeGetLastUsedDate(f.getAbsolutePath());
-        return t > 0 ? new Date(t) : null;
+        if (isNativeCodeAvailable()) {
+            long t = nativeGetLastUsedDate(f.getAbsolutePath());
+            return t > 0 ? new Date(t) : null;
+        } else {
+            return null;
+        }
     }
 
     /**

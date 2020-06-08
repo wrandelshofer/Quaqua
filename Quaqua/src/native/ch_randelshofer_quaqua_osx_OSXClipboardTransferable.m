@@ -16,8 +16,8 @@
  * @version $Id$
  */
 
-#include <stdio.h>
 #include <jni.h>
+#include <stdio.h>
 #include "ch_randelshofer_quaqua_osx_OSXClipboardTransferable.h"
 #import <Cocoa/Cocoa.h>
 #import <CoreServices/CoreServices.h>
@@ -51,12 +51,12 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTrans
         if (types != nil) {
             typesJ = (*env)->NewObjectArray(
                         env,
-                        [types count],
+                       (jsize) [types count],
                         (*env)->FindClass(env, "java/lang/String"),
                         NULL
                     );
 
-            int len = [types count];
+            int len = (int) [types count];
             int i;
             for (i=0; i < len; i++) {
                 NSString *typeNameNS = [types objectAtIndex: i];
@@ -104,7 +104,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTransfe
         if (dataNS != nil) {
 
             // Copy data into Java byte array
-            int len = [dataNS length];
+            int len = (int) [dataNS length];
             void* dataC = malloc(len);
             [dataNS getBytes:dataC length:len];
             dataJ = (*env)->NewByteArray(env, len);

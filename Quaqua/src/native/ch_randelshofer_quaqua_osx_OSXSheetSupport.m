@@ -87,11 +87,17 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
 
 - (void)showSheet
 {
+    
+    [parentWindow
+        beginSheet:sheetWindow
+        completionHandler:nil];
+    /*
     [NSApp beginSheet:sheetWindow
        modalForWindow:parentWindow
         modalDelegate:nil // self
        didEndSelector:nil // @selector(sheetDidEnd:returnCode:contextInfo:)
           contextInfo:NULL];
+     */
     // release in diese Methode verschieben, da Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowSheet vielleicht schon beendet ist
     [self release];
 }

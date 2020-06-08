@@ -7,25 +7,39 @@
  */
 package ch.randelshofer.quaqua.osx;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.ext.nanoxml.*;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.ext.nanoxml.XMLElement;
+import ch.randelshofer.quaqua.ext.nanoxml.XMLParseException;
 import ch.randelshofer.quaqua.util.BinaryPListParser;
-import java.io.*;
-import java.util.*;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * Utility class for accessing Mac OS X Preferences.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class OSXPreferences {
 
-    /** Path to global preferences. */
+    /**
+     * Path to global preferences.
+     */
     public final static File GLOBAL_PREFERENCES = new File(QuaquaManager.getProperty("user.home"), "Library/Preferences/.GlobalPreferences.plist");
-    /** Path to finder preferences. */
+    /**
+     * Path to finder preferences.
+     */
     public final static File FINDER_PREFERENCES = new File(QuaquaManager.getProperty("user.home"), "Library/Preferences/com.apple.finder.plist");
-    /** Each entry in this hash map represents a cached preferences file. */
+    /**
+     * Each entry in this hash map represents a cached preferences file.
+     */
     private static HashMap<File, HashMap<String, Object>> cachedFiles;
 
     /**
@@ -45,34 +59,44 @@ public class OSXPreferences {
     public static boolean isStringEqualTo(File file, String key, String defaultValue, String compareWithThisValue) {
         return ((String) get(file, key, defaultValue)).equals(compareWithThisValue);
     }
-    
+
     public static Object get(File file, String key) {
         ensureCached(file);
         return cachedFiles.get(file).get(key);
     }
 
-    /** Returns all known keys for the specified preferences file. */
+    /**
+     * Returns all known keys for the specified preferences file.
+     */
     public static Set<String> getKeySet(File file) {
         ensureCached(file);
         return cachedFiles.get(file).keySet();
     }
 
-    /** Clears all caches. */
+    /**
+     * Clears all caches.
+     */
     public static void clearAllCaches() {
-        cachedFiles.clear();
+        if (cachedFiles != null) {
+            cachedFiles.clear();
+        }
 
     }
 
-    /** Clears the cache for the specified preference file. */
+    /**
+     * Clears the cache for the specified preference file.
+     */
     public static void clearCache(File f) {
-        cachedFiles.remove(f);
+        if (cachedFiles != null) {
+            cachedFiles.remove(f);
+        }
     }
 
     /**
      * Get a value from a Mac OS X preferences file.
-     * 
-     * @param file The preferences file.
-     * @param key Hierarchical keys are separated by \t characters.
+     *
+     * @param file         The preferences file.
+     * @param key          Hierarchical keys are separated by \t characters.
      * @param defaultValue This value is returned when the key does not exist.
      * @return Returns the preferences value.
      */
@@ -152,7 +176,7 @@ public class OSXPreferences {
 
     private static void readValue(XMLElement value, Stack<String> keyPath, HashMap<String, Object> cache) throws IOException {
         StringBuffer key = new StringBuffer();
-        for (Iterator<String> i = keyPath.iterator(); i.hasNext();) {
+        for (Iterator<String> i = keyPath.iterator(); i.hasNext(); ) {
             key.append(i.next());
             if (i.hasNext()) {
                 key.append('\t');

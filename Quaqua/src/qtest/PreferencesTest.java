@@ -12,10 +12,14 @@
 package qtest;
 
 import ch.randelshofer.quaqua.osx.OSXPreferences;
+
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * PreferencesTest.
@@ -25,7 +29,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PreferencesTest extends javax.swing.JPanel {
 
-    /** Creates new form PreferencesTest */
+    private FileDialog fileDialog;
+
+    /**
+     * Creates new form PreferencesTest
+     */
     public PreferencesTest() {
         initComponents();
     }
@@ -44,6 +52,7 @@ public class PreferencesTest extends javax.swing.JPanel {
         controlPanel = new javax.swing.JPanel();
         readGlobalButton = new javax.swing.JButton();
         readFinderButton = new javax.swing.JButton();
+        readPListButton = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
@@ -65,6 +74,10 @@ public class PreferencesTest extends javax.swing.JPanel {
         readFinderButton.addActionListener(formListener);
         controlPanel.add(readFinderButton);
 
+        readPListButton.setText("Read PList...");
+        readPListButton.addActionListener(formListener);
+        controlPanel.add(readPListButton);
+
         add(controlPanel, java.awt.BorderLayout.SOUTH);
         add(titleLabel, java.awt.BorderLayout.PAGE_START);
     }
@@ -76,21 +89,35 @@ public class PreferencesTest extends javax.swing.JPanel {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == readGlobalButton) {
                 PreferencesTest.this.readGlobalPerformed(evt);
-            }
-            else if (evt.getSource() == readFinderButton) {
+            } else if (evt.getSource() == readFinderButton) {
                 PreferencesTest.this.readFinderPerformed(evt);
+            } else if (evt.getSource() == readPListButton) {
+                PreferencesTest.this.readPListPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
 
     private void readGlobalPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readGlobalPerformed
-        read(OSXPreferences.GLOBAL_PREFERENCES,"Global Preferences");
+        read(OSXPreferences.GLOBAL_PREFERENCES, "Global Preferences");
     }//GEN-LAST:event_readGlobalPerformed
 
     private void readFinderPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readFinderPerformed
-         read(OSXPreferences.FINDER_PREFERENCES,"Finder Preferences");
+        read(OSXPreferences.FINDER_PREFERENCES, "Finder Preferences");
 
-    }//GEN-LAST:event_readFinderPerformed
+    }
+
+    private void readPListPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readFinderPerformed
+        if (fileDialog == null) {
+            fileDialog = new FileDialog((Frame) SwingUtilities.getWindowAncestor(this));
+            fileDialog.setMode(FileDialog.LOAD);
+        }
+        fileDialog.setVisible(true);
+        String dir = fileDialog.getDirectory();
+        String file = fileDialog.getFile();
+        if (dir != null && file != null) {
+            read(new File(dir, file), file);
+        }
+    }    //GEN-LAST:event_readFinderPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -98,6 +125,7 @@ public class PreferencesTest extends javax.swing.JPanel {
     private javax.swing.JScrollPane preferencesScrollPane;
     private javax.swing.JTable preferencesTable;
     private javax.swing.JButton readFinderButton;
+    private javax.swing.JButton readPListButton;
     private javax.swing.JButton readGlobalButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables

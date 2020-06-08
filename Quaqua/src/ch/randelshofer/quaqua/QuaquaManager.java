@@ -7,6 +7,14 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,15 +25,6 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-
-import ch.randelshofer.quaqua.osx.OSXFile;
 
 /**
  * The QuaquaManager provides bug fixes and enhancements for the Mac Look and
@@ -43,14 +42,14 @@ import ch.randelshofer.quaqua.osx.OSXFile;
  * <li>{@code Quaqua.design=panther} Enforces Panther design.</li>
  * <li>{@code Quaqua.design=tiger} Enforces Tiger design.</li>
  * <li><code><b>Quaqua.design=auto</b></code> Chooses design automatically. This
- * is the default value.</li> 
+ * is the default value.</li>
  * </ul>
  * <ul>
  * <li>{@code Quaqua.TabbedPane.design=jaguar} Enforces Jaguar design for
  * tabbed panes.</li> <li>{@code Quaqua.TabbedPane.design=panther} Enforces
  * Panther design for tabbed panes.</li>
  * <li><code><b>Quaqua.TabbedPane.design=auto</b></code> Chooses design
- * automatically. This is the default value.</li> 
+ * automatically. This is the default value.</li>
  * </ul>
  * <ul>
  * <li>{@code Quaqua.FileChooser.autovalidate=false} FileChoosers do not
@@ -175,6 +174,18 @@ public class QuaquaManager {
      */
     public final static int SIERRA = 12;
     /**
+     * Mac OS X 10.13 High Sierra.
+     */
+    public final static int HIGH_SIERRA = 13;
+    /**
+     * Mac OS X 10.14 Mojave.
+     */
+    public final static int MOJAVE = 12;
+    /**
+     * Mac OS X 10.15 Catalina.
+     */
+    public final static int CATALINA = 15;
+    /**
      * Mac OS X 10.x Always points to next OSX X release.
      */
     public final static int X = 100;
@@ -250,6 +261,12 @@ public class QuaquaManager {
             	OS = EL_CAPITAN;
             } else if (osVersion.equals("10.12")) {
                 OS = SIERRA;
+            } else if (osVersion.equals("10.13")) {
+                OS = HIGH_SIERRA;
+            } else if (osVersion.equals("10.14")) {
+                OS = MOJAVE;
+            } else if (osVersion.equals("10.15")) {
+                OS = CATALINA;
             } else if (osVersion.startsWith("10.")) {
                 OS = X;
             } else {
@@ -328,22 +345,26 @@ public class QuaquaManager {
                 case MAVERICKS:
                 	design = MAVERICKS;
                 	break;
-                case YOSEMITE:
-                	design = YOSEMITE;
-                	break;
-                case EL_CAPITAN:
-                	design = EL_CAPITAN;
-                	break;
-                case SIERRA:
-                    design = SIERRA;
-                    break;
-                default:
+            case YOSEMITE:
+                design = YOSEMITE;
+                break;
+            case EL_CAPITAN:
+                design = EL_CAPITAN;
+                break;
+            case SIERRA:
+            case CATALINA:
+                design = SIERRA;
+                break;
+            case X:
+                design = X;
+                break;
+            default:
                 // Note: We must fall back to Snow Leopard here, because this
                 //       is the last OS X version for which we provide our own artwork.
                 //       For later OS X versions, we retrieve the artwork from
                 //       the system using native API's.
-                    design = SNOW_LEOPARD;
-                    break;
+                design = SNOW_LEOPARD;
+                break;
             }
         }
     }
@@ -427,6 +448,7 @@ public class QuaquaManager {
             lafs.put("Yosemite.16", "ch.randelshofer.quaqua.yosemite.Quaqua16YosemiteLookAndFeel");
             lafs.put("ElCapitan.16", "ch.randelshofer.quaqua.elcapitan.Quaqua16ElCapitanLookAndFeel");
             lafs.put("Sierra.16", "ch.randelshofer.quaqua.sierra.Quaqua16SierraLookAndFeel");
+            lafs.put("MavericksFileChooserOnly.16", "ch.randelshofer.quaqua.subset.QuaquaMavericksFileChooserLAF");
         }
     }
 
@@ -553,22 +575,24 @@ public class QuaquaManager {
                     case MOUNTAIN_LION:
                     	lafKey = "MountainLion.16";
                     	break;
-                    case MAVERICKS:
-                    	lafKey = "Mavericks.16";
-                    	break;
-                    case YOSEMITE:
-                    	lafKey = "Yosemite.16";
-                    	break;
-                    case EL_CAPITAN:
-                        lafKey = "ElCapitan.16";
-                        break;
-                    case SIERRA:
-                    case X:
-                    	lafKey = "Sierra.16";
-                    	break;
-                    default:
-                        lafKey = "SnowLeopard.16";
-                        break;
+                case MAVERICKS:
+                    lafKey = "Mavericks.16";
+                    break;
+                case YOSEMITE:
+                    lafKey = "Yosemite.16";
+                    break;
+                case EL_CAPITAN:
+                    lafKey = "ElCapitan.16";
+                    break;
+                case SIERRA:
+                    lafKey = "Sierra.16";
+                    break;
+                case X:
+                    lafKey = "MavericksFileChooserOnly.16";
+                    break;
+                default:
+                    lafKey = "SnowLeopard.16";
+                    break;
                 }
             }
         } else {

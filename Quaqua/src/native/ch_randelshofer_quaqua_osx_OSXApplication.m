@@ -4,10 +4,10 @@
  * Copyright (c) 2007 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * Werner Randelshofer. For details see accompanying license terms.
  */
 
 /**
@@ -26,7 +26,7 @@
  * Signature: (Z)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nativeRequestUserAttention
-  (JNIEnv * env, jclass javaClass, jboolean isCritical) 
+  (JNIEnv * env, jclass javaClass, jboolean isCritical)
 {
     if (isCritical) {
         [NSApp requestUserAttention: NSCriticalRequest];
@@ -50,7 +50,6 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nati
 
     // Get the icon image
     NSApplication* application = [NSApplication sharedApplication];
-    NSSize iconSize = { size, size };
     NSImage* image = [application applicationIconImage];
 
     //NSLog (@"%@", image);
@@ -79,11 +78,11 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nati
             scaledImage = image;
             [scaledImage setSize: desiredSize];
         }
-    
+
         // Convert image to TIFF
         NSData* dataNS = [scaledImage TIFFRepresentation];
         if (dataNS != NULL) {
-            unsigned len = [dataNS length];
+            unsigned len = (unsigned) [dataNS length];
             void* bytes = malloc(len);
             [dataNS getBytes: bytes length:len];
             result = (*env)->NewByteArray(env, len);

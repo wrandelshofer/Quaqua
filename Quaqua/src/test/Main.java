@@ -10,6 +10,23 @@
  */
 package test;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Window;
@@ -20,12 +37,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
-import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.border.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.*;
 
 /**
  * Main.
@@ -160,7 +171,6 @@ public class Main extends javax.swing.JPanel {
                         System.out.println("   SETTING LAF  ");
                         UIManager.setLookAndFeel(laf);
                         System.out.println("   LAF SET   ");
-                    } catch (ClassNotFoundException ex) {
                     } catch (Exception e) {
                         System.err.println("Error setting " + lafName + " in UIManager.");
                         e.printStackTrace();

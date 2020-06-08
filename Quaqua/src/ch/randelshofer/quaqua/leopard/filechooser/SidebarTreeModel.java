@@ -11,17 +11,33 @@
  */
 package ch.randelshofer.quaqua.leopard.filechooser;
 
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.ext.base64.Base64;
+import ch.randelshofer.quaqua.ext.nanoxml.XMLElement;
+import ch.randelshofer.quaqua.ext.nanoxml.XMLParseException;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
 import ch.randelshofer.quaqua.osx.OSXFile;
-import ch.randelshofer.quaqua.filechooser.*;
-import ch.randelshofer.quaqua.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import java.io.*;
-import java.util.*;
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.ext.nanoxml.*;
+import ch.randelshofer.quaqua.util.BinaryPListParser;
+import ch.randelshofer.quaqua.util.SequentialDispatcher;
+import ch.randelshofer.quaqua.util.Worker;
+
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.UIManager;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * SidebarTreeModel.
@@ -84,33 +100,35 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         if (QuaquaManager.isOSX()
                 || QuaquaManager.getOS() == QuaquaManager.DARWIN) {
             defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        new File(QuaquaManager.getProperty("user.home"), "Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    new File(QuaquaManager.getProperty("user.home"), "Desktop"),
+                    new File(QuaquaManager.getProperty("user.home"), "Documents"),
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         } else if (QuaquaManager.getOS() == QuaquaManager.WINDOWS) {
             defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        // Japanese ideographs for Desktop:
-                        new File(QuaquaManager.getProperty("user.home"), "\u684c\u9762"),
-                        new File(QuaquaManager.getProperty("user.home"), "My Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    new File(QuaquaManager.getProperty("user.home"), "Desktop"),
+                    // Japanese ideographs for Desktop:
+                    new File(QuaquaManager.getProperty("user.home"), "\u684c\u9762"),
+                    new File(QuaquaManager.getProperty("user.home"), "My Documents"),
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         } else if (QuaquaManager.getOS() == QuaquaManager.LINUX) {
             defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        new File("/media"),
-                        new File(QuaquaManager.getProperty("user.home"), "Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    new File(QuaquaManager.getProperty("user.home"), "Desktop"),
+                    new File("/media"),
+                    new File(QuaquaManager.getProperty("user.home"), "Documents"),
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         } else {
             defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         }
     }
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public SidebarTreeModel(JFileChooser fileChooser, TreePath path, TreeModel model) {
         super(new DefaultMutableTreeNode(), true);
 
@@ -243,9 +261,9 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                 if (!isInView) {
                     SidebarViewToModelNode newNode = new SidebarViewToModelNode(modelNode);
                     int insertionIndex = 0;
-                   SideBarViewToModelNodeComparator comparator=new SideBarViewToModelNodeComparator();
+                    SideBarViewToModelNodeComparator comparator = new SideBarViewToModelNodeComparator();
                     while (insertionIndex < devicesNode.getChildCount()
-                            && comparator.compare((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex),newNode) < 0) {
+                            && comparator.compare((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex), newNode) < 0) {
                         insertionIndex++;
                     }
                     insertNodeInto(newNode, devicesNode, insertionIndex);
@@ -286,10 +304,10 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                 xml = new BinaryPListParser().parse(sidebarFile);
             }
             String key2 = "", key3 = "", key5 = "";
-            for (Iterator i0 = xml.iterateChildren(); i0.hasNext();) {
+            for (Iterator i0 = xml.iterateChildren(); i0.hasNext(); ) {
                 XMLElement xml1 = (XMLElement) i0.next();
 
-                for (Iterator i1 = xml1.iterateChildren(); i1.hasNext();) {
+                for (Iterator i1 = xml1.iterateChildren(); i1.hasNext(); ) {
                     XMLElement xml2 = (XMLElement) i1.next();
 
                     if (xml2.getName().equals("key")) {
@@ -297,18 +315,18 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                     }
 
                     if (xml2.getName().equals("dict") && key2.equals("systemitems")) {
-                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext();) {
+                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext(); ) {
                             XMLElement xml3 = (XMLElement) i2.next();
                             if (xml3.getName().equals("key")) {
                                 key3 = xml3.getContent();
                             }
                             if (xml3.getName().equals("array") && key3.equals("VolumesList")) {
-                                for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
+                                for (Iterator i3 = xml3.iterateChildren(); i3.hasNext(); ) {
                                     XMLElement xml4 = (XMLElement) i3.next();
 
                                     if (xml4.getName().equals("dict")) {
                                         SystemItemInfo info = new SystemItemInfo();
-                                        for (Iterator i4 = xml4.iterateChildren(); i4.hasNext();) {
+                                        for (Iterator i4 = xml4.iterateChildren(); i4.hasNext(); ) {
                                             XMLElement xml5 = (XMLElement) i4.next();
 
                                             if (xml5.getName().equals("key")) {
@@ -332,13 +350,13 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                         }
                     }
                     if (xml2.getName().equals("dict") && key2.equals("useritems")) {
-                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext();) {
+                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext(); ) {
                             XMLElement xml3 = (XMLElement) i2.next();
-                            for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
+                            for (Iterator i3 = xml3.iterateChildren(); i3.hasNext(); ) {
                                 XMLElement xml4 = (XMLElement) i3.next();
                                 String aliasName = null;
                                 byte[] serializedAlias = null;
-                                for (Iterator i4 = xml4.iterateChildren(); i4.hasNext();) {
+                                for (Iterator i4 = xml4.iterateChildren(); i4.hasNext(); ) {
                                     XMLElement xml5 = (XMLElement) i4.next();
 
                                     if (xml5.getName().equals("key")) {
@@ -561,7 +579,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         boolean isVisible = true;
     }
 
-    /** Note: SidebaViewToModelNode must not implement Comparable and must
+    /**
+     * Note: SidebaViewToModelNode must not implement Comparable and must
      * not override equals()/hashCode(), because this confuses the layout algorithm
      * in JTree.
      */
@@ -638,7 +657,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             return getTarget() == null ? 0 : getTarget().getUserName().hashCode();
         }*/
     }
-     private class SideBarViewToModelNodeComparator implements Comparator<SidebarViewToModelNode> {
+
+    private class SideBarViewToModelNodeComparator implements Comparator<SidebarViewToModelNode> {
 
         public int compare(SidebarViewToModelNode n1, SidebarViewToModelNode n2) {
             FileSystemTreeModel.Node o1 = n1.getTarget();

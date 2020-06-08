@@ -11,8 +11,26 @@
  */
 package ch.randelshofer.quaqua.lion;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.filechooser.*;
+import ch.randelshofer.quaqua.JSheet;
+import ch.randelshofer.quaqua.QuaquaLabelUI;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.QuaquaPanelUI;
+import ch.randelshofer.quaqua.QuaquaScrollPaneUI;
+import ch.randelshofer.quaqua.QuaquaTreeUI;
+import ch.randelshofer.quaqua.filechooser.CellRenderer;
+import ch.randelshofer.quaqua.filechooser.ColumnView;
+import ch.randelshofer.quaqua.filechooser.FileChooserView;
+import ch.randelshofer.quaqua.filechooser.FileInfo;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.FileTransferHandler;
+import ch.randelshofer.quaqua.filechooser.FilenameDocument;
+import ch.randelshofer.quaqua.filechooser.ListView;
+import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
+import ch.randelshofer.quaqua.filechooser.QuaquaFileView;
+import ch.randelshofer.quaqua.filechooser.SavedSearchFileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
+import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
+import ch.randelshofer.quaqua.filechooser.ViewModeControl;
 import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
 import ch.randelshofer.quaqua.lion.filechooser.LionColumnView;
 import ch.randelshofer.quaqua.lion.filechooser.SidebarTreeModel;
@@ -20,21 +38,83 @@ import ch.randelshofer.quaqua.osx.OSXConfiguration;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.util.GroupBox;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.filechooser.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.tree.*;
-import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.beans.*;
+import javax.swing.AbstractAction;
+import javax.swing.AbstractListModel;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileView;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.LabelUI;
+import javax.swing.plaf.basic.BasicFileChooserUI;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.IllegalComponentStateException;
+import java.awt.Insets;
+import java.awt.Window;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * A replacement for the AquaFileChooserUI. Provides a list view and a column view similar to the one provided with the
@@ -137,10 +217,6 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
      */
     private static String goToFolderText = "";
 
-
-    private static Border textFieldBorder = new QuaquaNativeTextFieldBorder(
-            new Insets(0,0,0,0), new Insets(6,8,6,8), true);
-    private static Border buttonBorder = new QuaquaNativeButtonBorder();
 
     /** XXX - These keystrokes should go into an InputMap created by the
      * BasicQuaquaLookAndFeel class.
@@ -968,8 +1044,6 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
                 return theName;
             }
         };
-        t.setUI(new QuaquaTextFieldUI());
-        t.setBorder(textFieldBorder);
         t.setOpaque(false);
         return t;
     }
@@ -988,15 +1062,12 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
      */
     protected JButton createButton(String text) {
         JButton b = new JButton(text);
-        b.setUI(new QuaquaButtonUI());
-        b.setBorder(buttonBorder);
         b.setFocusable(OSXConfiguration.isFullKeyboardAccess());
         return b;
     }
 
     protected JComboBox createComboBox() {
         JComboBox b = new JComboBox();
-        b.setUI(new QuaquaComboBoxUI());
         b.setFocusable(OSXConfiguration.isFullKeyboardAccess());
         return b;
     }

@@ -16,11 +16,11 @@
  *
  * @version $Id$
  */
-
 #include <stdio.h>
 #include <jni.h>
 #include "ch_randelshofer_quaqua_osx_OSXFile.h"
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 #import <CoreServices/CoreServices.h>
 
 /*
@@ -211,26 +211,24 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGet
     // Prepare result
     jobjectArray result = NULL;
 
-    if (&NSURLTagNamesKey != NULL) {
-        // Convert Java String to NS String
-        const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
-        NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC length:(*env)->GetStringLength(env, pathJ)];
-        (*env)->ReleaseStringChars(env, pathJ, pathC);
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
 
-        // Do the API calls
-        NSURL *u = [NSURL fileURLWithPath:pathNS];
-        if (u != nil) {
-            NSError *error;
-            NSArray *tagNames;
-            Boolean success = [u getResourceValue: &tagNames forKey:NSURLTagNamesKey error:&error];
-            if (success && tagNames != NULL) {
-                int count = [tagNames count];
-                jclass stringClass = (*env)->FindClass(env, "java/lang/String");
-                result = (*env)->NewObjectArray(env, count, stringClass, NULL);
-                for (int i=0; i< count; i++) {
-                    jstring tagNameJ = (*env)->NewStringUTF(env, [tagNames[i] UTF8String]);
-                    (*env)->SetObjectArrayElement(env, result, i, tagNameJ);
-                }
+    // Do the API calls
+    NSURL *u = [NSURL fileURLWithPath:pathNS];
+    if (u != nil) {
+        NSError *error;
+        NSArray *tagNames;
+        Boolean success = [u getResourceValue: &tagNames forKey:NSURLTagNamesKey error:&error];
+        if (success && tagNames != NULL) {
+            int count = (int) [tagNames count];
+            jclass stringClass = (*env)->FindClass(env, "java/lang/String");
+            result = (*env)->NewObjectArray(env, count, stringClass, NULL);
+            for (int i=0; i< count; i++) {
+                jstring tagNameJ = (*env)->NewStringUTF(env, [tagNames[i] UTF8String]);
+                (*env)->SetObjectArrayElement(env, result, i, tagNameJ);
             }
         }
     }
@@ -344,7 +342,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
         // Convert image to TIFF
         NSData* dataNS = [scaledImage TIFFRepresentation];
         if (dataNS != NULL) {
-            unsigned len = [dataNS length];
+            unsigned len = (unsigned) [dataNS length];
             void* bytes = malloc(len);
             if (bytes != NULL) {
                 [dataNS getBytes: bytes length:len];
@@ -420,13 +418,14 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetQu
             // Convert image to TIFF
             NSData* dataNS = [image TIFFRepresentation];
             if (dataNS != NULL) {
-                unsigned len = [dataNS length];
+                unsigned len = (unsigned) [dataNS length];
                 void* bytes = malloc(len);
                 [dataNS getBytes: bytes length:len];
                 result = (*env)->NewByteArray(env, len);
                 (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
                 free(bytes);
             }
+            CFRelease(image);
         }
     }
 
@@ -537,8 +536,11 @@ JNIEXPORT jlong JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLastUse
                 jtime += (60 * 60 * 24) * (31 * 365 + 8);
                 jtime *= 1000;
                 result = (jlong) jtime;
+                CFRelease(date);
             }
+            CFRelease(item);
         }
+        CFBridgingRelease(u);
     }
 
     // Release memory pool
@@ -583,23 +585,27 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeExe
                 NSArray *scopeDirectories = (NSArray *) [searchCriteria objectForKey:@"FXScopeArrayOfPaths"];
                 if (scopeDirectories != nil) {
                     MDQueryRef query = MDQueryCreate(NULL, CFBridgingRetain(queryString), NULL, NULL);
+                    CFBridgingRelease(queryString);
                     if (query != NULL) {
                         OptionBits scopeOptions = 0;
                         MDQuerySetSearchScope(query, CFBridgingRetain(scopeDirectories), scopeOptions);
+                        CFBridgingRelease(scopeDirectories);
                         CFOptionFlags optionFlags = kMDQuerySynchronous;
                         Boolean b = MDQueryExecute(query, optionFlags);
                         if (b) {
                             CFIndex count = MDQueryGetResultCount(query);
                             jclass stringClass = (*env)->FindClass(env, "java/lang/String");
-                            result = (*env)->NewObjectArray(env, count, stringClass, NULL);
+                            result = (*env)->NewObjectArray(env, (unsigned) count, stringClass, NULL);
                             for (CFIndex i = 0; i < count; i++) {
                                 MDItemRef item = (MDItemRef) MDQueryGetResultAtIndex(query, i);
                                 CFStringRef path = (CFStringRef) MDItemCopyAttribute(item, kMDItemPath);
                                 NSString *pathNS = (NSString *) path;
                                 jstring pathJ = (*env)->NewStringUTF(env, [pathNS UTF8String]);
-                                (*env)->SetObjectArrayElement(env, result, i, pathJ);
+                                (*env)->SetObjectArrayElement(env, result, (jsize) i, pathJ);
+                                CFRelease(path);
                             }
                         }
+                        CFRelease(query);
                     }
                 }
             }

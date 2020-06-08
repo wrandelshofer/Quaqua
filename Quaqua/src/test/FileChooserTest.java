@@ -7,17 +7,40 @@
  */
 package test;
 
-import java.awt.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileSystemView;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FileDialog;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.*;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileSystemView;
+import java.util.StringTokenizer;
 
 /**
  * FileChooser.
@@ -116,21 +139,6 @@ public class FileChooserTest extends javax.swing.JPanel {
             System.out.println("FileChooserTest newFileChooser elapsed=" + (end - start));
 
             fileChooser.setPreferredSize(new Dimension(800, 600));
-
-            fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
-                public void propertyChange(PropertyChangeEvent evt) {
-                    String prop = evt.getPropertyName();
-                    if (prop != null) {
-                        if (prop.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
-                            System.out.println("Selected file changed: " + display(evt.getNewValue()));
-                        } else if (prop.equals(JFileChooser.SELECTED_FILES_CHANGED_PROPERTY)) {
-                            System.out.println("Selected files changed: " + display(evt.getNewValue()));
-                        } else if (prop.equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
-                            System.out.println("Current directory changed: " + display(evt.getNewValue()));
-                        }
-                    }
-                }
-            });
         } else {
             fileChooser.setPreferredSize(fileChooser.getSize());
         }

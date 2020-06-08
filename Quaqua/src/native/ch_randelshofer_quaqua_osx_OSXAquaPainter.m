@@ -15,7 +15,6 @@
  *
  * @version $Id$
  */
-#include <jni.h>
 #include "ch_randelshofer_quaqua_osx_OSXAquaPainter.h"
 
 #ifndef __ppc__
@@ -82,7 +81,10 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativePain
 
     if (gRenderer == NULL) {
         gRenderer = JRSUIRendererCreate();
-        if (gRenderer == NULL) return;
+        if (gRenderer == NULL) {
+            CGContextRelease(cgRef);
+            return;
+        }
     }
 
     JRSUIControlDraw(gRenderer, control, cgRef, bounds);

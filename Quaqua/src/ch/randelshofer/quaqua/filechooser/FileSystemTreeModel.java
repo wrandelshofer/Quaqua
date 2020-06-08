@@ -11,17 +11,39 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.osx.OSXFile;
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
-import java.util.*;
-import java.awt.*;
-import java.io.*;
-import java.text.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.filechooser.*;
+import ch.randelshofer.quaqua.util.ArrayUtil;
+import ch.randelshofer.quaqua.util.ConcurrentDispatcher;
+import ch.randelshofer.quaqua.util.IteratorEnumeration;
+import ch.randelshofer.quaqua.util.SequentialDispatcher;
+import ch.randelshofer.quaqua.util.Worker;
+
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import java.awt.IllegalComponentStateException;
+import java.io.File;
+import java.io.Serializable;
+import java.text.CollationKey;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Locale;
 
 /**
  * The FileSystemTreeModel provides the data model for the file system in a
@@ -807,7 +829,7 @@ public class FileSystemTreeModel implements TreeModel {
     /**
      * This is the implementation for a file node (a leaf node).
      */
-    public class Node implements MutableTreeNode, FileInfo {
+    public class Node implements MutableTreeNode, FileInfo, SidebarTreeFileNode {
 
         protected TreeNode parent;
         protected File file;
@@ -840,11 +862,12 @@ public class FileSystemTreeModel implements TreeModel {
          * Contains the hidden state of the file
          */
         protected boolean isHidden;
-        
-        /** Holds the tag names for the file represented by this node. 
+
+        /**
+         * Holds the tag names for the file represented by this node.
          * The value null is used, if the tag names have not (yet) been retrieved, or
          * if it couldn't be determined due to the lack of native support.
-        */
+         */
         protected String[] tagNames;
 
         public Node(File f, boolean isHidden) {
