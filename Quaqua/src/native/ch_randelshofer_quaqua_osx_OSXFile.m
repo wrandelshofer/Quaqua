@@ -16,13 +16,13 @@
  *
  * @version $Id$
  */
-#include <stdio.h>
-#include <jni.h>
-#include "ch_randelshofer_quaqua_osx_OSXFile.h"
+#import "ch_randelshofer_quaqua_osx_OSXFile.h"
+#import <stdio.h>
+#import <jni.h>
+#import <Foundation/NSExtensionContext.h>
 #import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
 #import <CoreServices/CoreServices.h>
-
+#import <AppKit/AppKit.h>
 /*
  * Related documentation:
  * ----------------------

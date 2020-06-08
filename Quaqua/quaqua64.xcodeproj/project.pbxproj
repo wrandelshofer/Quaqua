@@ -371,7 +371,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SHARED_PRECOMPS_DIR = "";
 				SKIP_INSTALL = YES;
-				_JAVASOFT_JNI_MD_H_ = "";
 			};
 			name = Debug;
 		};
@@ -405,7 +404,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SHARED_PRECOMPS_DIR = "";
 				SKIP_INSTALL = YES;
-				_JAVASOFT_JNI_MD_H_ = "";
 			};
 			name = Release;
 		};
