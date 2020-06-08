@@ -1,13 +1,6 @@
 /*
  * @(#)TransferHandlerTest.java
- *
- * Copyright (c) 2007-2010 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * The copyright of this software is owned by Werner Randelshofer.
- * You may not use, copy or modify this software, except in
- * accordance with the license agreement you entered into with
- * Werner Randelshofer. For details see accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package test;
 

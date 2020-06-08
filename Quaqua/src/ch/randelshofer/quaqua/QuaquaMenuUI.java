@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaMenuUI.java 
- *
- * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaMenuUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -42,7 +39,7 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
     protected MenuDragMouseListener createMenuDragMouseListener(JComponent c) {
 	return getHandler();
     }
-    
+
     protected MouseInputListener createMouseInputListener(JComponent c) {
 	return getHandler();
     }
@@ -57,7 +54,7 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
         selectionForeground, defaultTextIconGap,
         acceleratorFont);
     }
-    
+
     @Override
     protected Dimension getPreferredMenuItemSize(JComponent c,
     Icon checkIcon,
@@ -67,11 +64,11 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
         .getPreferredMenuItemSize(c, checkIcon, arrowIcon, defaultTextIconGap, acceleratorFont);
         return d;
     }
-    
-    
+
+
     public void paintBackground(Graphics gr, JComponent component, int menuWidth, int menuHeight) {
         AbstractButton menuItem = (AbstractButton) component;
-        
+
         if(menuItem.isOpaque()) {
             Graphics2D g = (Graphics2D) gr;
             Color oldColor = g.getColor();
@@ -88,14 +85,14 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
                 }
             }
             g.fillRect(0,0, menuWidth, menuHeight);
-            
+
             if (isTopLevel) {
                 String bbName = (isSelected) ? "MenuBar.selectedBorder" : "MenuBar.border";
                 if (UIManager.getBorder(bbName) instanceof BackgroundBorder) {
                     Border bb = ((BackgroundBorder) UIManager.getBorder(bbName)).getBackgroundBorder();
                     bb.paintBorder(component, gr, 0, 0, menuWidth, menuHeight);
                 }
-                
+
                 Color shadow = UIManager.getColor("MenuBar.shadow");
                 if (shadow != null) {
                     g.setColor(shadow);
@@ -104,7 +101,7 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
             }
             g.setColor(oldColor);
         }
-        
+
         if (component.getBorder() instanceof BackgroundBorder) {
             Border b = ((BackgroundBorder) component.getBorder()).getBackgroundBorder();
             b.paintBorder(component, gr, 0, 0, component.getWidth(), component.getHeight());

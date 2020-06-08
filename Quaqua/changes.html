@@ -1,20 +1,10 @@
+<!--
+  ~ @(#)changes.html
+  ~ Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+  -->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<!--
- * @(#)changes.html
- *
- * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * The copyright of this software is owned by Werner Randelshofer.
- * You may not use, copy or modify this software, except in
- * accordance with the license agreement you entered into with
- * Werner Randelshofer. For details see accompanying license terms.
- *
- * @author  Werner Randelshofer
- * @version $Id$
- *-->
-
 <head>
 <title>Quaqua Look and Feel &middot; Changes</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -174,7 +164,7 @@ li li {
       </ul>
     </li>
   </ul>
-  
+
   <p>JButton</p>
   <ul>
     <li>Adds support for the JButton.segmentPosition property for the following button types: &quot;segmented&quot;, &quot;segmentedRoundRect&quot;, &quot;segmentedGradient&quot;, &quot;square&quot;, &quot;gradient&quot;.</li>
@@ -614,7 +604,7 @@ li li {
     <font size="-1">2010-03-20</font></h3>
   <p>Fixes</p>
   <ul>
-    <li>JFileChooser: 
+    <li>JFileChooser:
       <ul>
         <li>The &quot;quick look&quot; preview caused crashes on Mac OS X 10.5. It is now only available on systems running 10.6 and higher.</li>
       </ul>
@@ -638,7 +628,7 @@ li li {
         <li>Issue 25: Ability to set minimum button width.</li>
       </ul>
     </li>
-    <li>JRadioButtonMenuItem, JCheckBoxMenuItem: 
+    <li>JRadioButtonMenuItem, JCheckBoxMenuItem:
       <ul>
         <li>Issue 97: JRadioButtonMenuItem renders icon in text.</li>
       </ul>
@@ -988,11 +978,11 @@ li li {
   </ul>
   <p>Fixes</p>
   <ul>
-    <li>PantherLookAndFeel: The proper pinstripes were only drawn, when the 
+    <li>PantherLookAndFeel: The proper pinstripes were only drawn, when the
     current OS was Panther.</li>
     <li>ButtonUI, ComboBoxUI: Only draw focus border for enabled components.</li>
     <li>FileChooserUI: Current directory did not always change when setDirectory
-    was invoked on a JFileChooser. Native code crashed when a volume was removed. 
+    was invoked on a JFileChooser. Native code crashed when a volume was removed.
     Sidebar did not update when a volume was inserted or removed.</li>
     <li>TabbedPaneUI: Reduced top insets of tabs.</li>
     <li>TableUI: Set 'showHorizontalLines' and 'showVerticalLines' to
@@ -1052,7 +1042,7 @@ li li {
   <p><font size="-1">&nbsp;</font></p>
   <p>Fixes</p>
   <ul>
-    <li>QuaquaFileChooserUI: Fixed NullPointerExceptions when attempting to 
+    <li>QuaquaFileChooserUI: Fixed NullPointerExceptions when attempting to
     immediately resolve aliases.</li>
     <li>quaqua-filechooser-only.jar: Included missing resource files.</li>
   </ul>
@@ -1130,7 +1120,7 @@ the JFileChooser was constructed with a different directory than the users
 home directory.</li>
     <li>MenuUI: Listeners were not properly installed, due to this, accelerators did
     not work always.</li>
-    <li>OptionPaneUI: The application icon was not scaled properly, when 
+    <li>OptionPaneUI: The application icon was not scaled properly, when
     Quaqua ran without native code.</li>
     <li>RootPaneUI: Resize icon wasn't drawn for look and feel decorated
 JDialog windows; Look and feel decorated windows couldn't always be dragged from
@@ -1138,7 +1128,7 @@ JDialog windows; Look and feel decorated windows couldn't always be dragged from
     <li>TextFieldUI, FormattedTextFieldUI, PasswordFieldUI: Added two pixels to
     preferred width.</li>
     <li>All text component UI's:Fixed input map for backspace key (replaced &quot;typed \010&quot; by &quot;BACK_SPACE&quot;).</li>
-    <li>quaqua-filechooser-only.jar, quaqua-menu-only.jar, 
+    <li>quaqua-filechooser-only.jar, quaqua-menu-only.jar,
     quaqua-colorchooser-only.jar: Added missing QuaquaLookAndFeel class.</li>
   </ul>
   <h3>Version 3.8.1<br />
@@ -1146,7 +1136,7 @@ JDialog windows; Look and feel decorated windows couldn't always be dragged from
   <p><font size="-1">&nbsp;</font></p>
   <p>Fixes</p>
   <ul>
-    <li>QuaquaFileChooserUI: Aliases in the sidebar were resolved with user interaction before the user 
+    <li>QuaquaFileChooserUI: Aliases in the sidebar were resolved with user interaction before the user
       clicked on them, causing remote volumes to be mounted too early.</li>
     <li>QuaquaColorChooserUI: The color picker threw an exception when it was moved to a secondary screen. The color picker now degrades its functionality when it is moved on a secondary screen.</li>
     <li>QuaquaOptionPaneUI: The OK button sometimes had no text.</li>
@@ -1164,14 +1154,14 @@ JDialog windows; Look and feel decorated windows couldn't always be dragged from
   </ul>
   <p>Fixes</p>
   <ul>
-    <li>QuaquaFileChooserUI: Aliases were resolved with user interaction before the user 
+    <li>QuaquaFileChooserUI: Aliases were resolved with user interaction before the user
     clicked on them, causing remote volumes to be mounted too early. Aliases
        to folders didn't behave like regular folders.</li>
      <li>QuaquaFileChooserUI PreviewPane: File icons render now properly, when
     Quartz is turned off. The file kind is now retrieved from the Finder.</li>
      <li>QuaquaIconFactory: The application icon is now rendered properly, when
     Quartz is turned off.</li>
-    <li>Quaqua14RootPaneUI: Repaints 200 milliseconds after a resize to 
+    <li>Quaqua14RootPaneUI: Repaints 200 milliseconds after a resize to
     workaround 'double striking' of components. If someone nows how to actually
     fix this problem - let me know!</li>
  </ul>
@@ -1227,7 +1217,7 @@ JDialog windows; Look and feel decorated windows couldn't always be dragged from
             values.</li>
           <li>OptionPaneUI: Sometimes, when creating the icons for a JOptionPane
             the following was output on the console, and the application froze:
-            &quot;Please Attach Debugger: No Autorelease pool exists. 
+            &quot;Please Attach Debugger: No Autorelease pool exists.
             Press any key to continue&#8230;&quot;.</li>
         </ul>
         <h3>Version 3.7.3<br />
@@ -1405,7 +1395,7 @@ JDialog windows; Look and feel decorated windows couldn't always be dragged from
         <ul>
           <li>TabbedPaneUI: Fixed NullPointerException when using scroll tab
             layout with Panther design.</li>
-          <li>AliasFileSystemTreeModel: Changed  thread sceduling and 
+          <li>AliasFileSystemTreeModel: Changed  thread sceduling and
             sequence of directory and file info validation.</li>
           <li>TableHeaderUI: Takes now border size into account when deciding
             whether table headers are empty or not. </li>

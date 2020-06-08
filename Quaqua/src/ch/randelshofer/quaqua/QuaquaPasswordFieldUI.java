@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaPasswordFieldUI.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaPasswordFieldUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -30,7 +27,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
     private FocusListener focusListener;
     //private HierarchyListener hierarchyListener;
     private MouseListener popupListener;
-    
+
     /**
      * Creates a UI for a JPasswordField.
      *
@@ -40,13 +37,13 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
     public static ComponentUI createUI(JComponent c) {
         return new QuaquaPasswordFieldUI();
     }
-    
+
     @Override
     public void installUI(JComponent c) {
         super.installUI(c);
 	QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix()+".opaque"));
     }
-    
+
     @Override
     protected void installDefaults() {
         super.installDefaults();
@@ -55,12 +52,12 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         t.setEchoChar('\u2022');
          */
     }
-    
+
     @Override
     protected void uninstallDefaults() {
         super.uninstallDefaults();
     }
-    
+
     @Override
     protected void installListeners() {
         focusListener = createFocusListener();
@@ -74,7 +71,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         QuaquaTextCursorHandler.getInstance().installListeners(getComponent());
         super.installListeners();
     }
-    
+
     @Override
     protected void uninstallListeners() {
         if (focusListener != null) {
@@ -88,7 +85,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         QuaquaTextCursorHandler.getInstance().uninstallListeners(getComponent());
         super.uninstallListeners();
     }
-    
+
     protected FocusListener createFocusListener() {
         return (FocusListener) UIManager.get(getPropertyPrefix() + ".focusHandler");
     }
@@ -106,7 +103,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
     public EditorKit getEditorKit(JTextComponent tc) {
         return QuaquaTextFieldUI.defaultKit;
     }
-    
+
     public Insets getVisualMargin(JTextComponent tc) {
         Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
         if (margin == null) {
@@ -114,12 +111,12 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         }
         return (margin == null) ? new Insets(0, 0, 0 ,0) : (Insets) margin.clone();
     }
-    
+
     @Override
     protected void paintSafely(Graphics g) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         JTextComponent editor = getComponent();
-        
+
         // Paint the background with the background border or the background color
         Border border = editor.getBorder();
         if (border != null && border instanceof BackgroundBorder) {
@@ -148,7 +145,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         // This method is overriden here, to make it do nothing.
         // We already paint the background in method paintSafely();
     }
-    
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         String name = event.getPropertyName();
@@ -160,14 +157,14 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
             super.propertyChange(event);
             }
     }
-    
+
     @Override
     protected Caret createCaret() {
         Window window = SwingUtilities.getWindowAncestor(getComponent());
         QuaquaCaret caret = new QuaquaCaret(window, getComponent());
         return caret;
     }
-    
+
     @Override
     protected Highlighter createHighlighter() {
         return new QuaquaHighlighter();
@@ -241,7 +238,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
-        
+
         JTextComponent b = (JTextComponent) c;
         if (type == VisuallyLayoutable.COMPONENT_BOUNDS
         && b.getBorder() != null) {
@@ -255,7 +252,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
             }
         } else {
             bounds = getVisibleEditorRect();
-            
+
             int baseline = getBaseline(b, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);
             if (bounds == null) {
@@ -299,11 +296,11 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
 		((AbstractDocument)doc).readUnlock();
 	    }
 	}
-        
+
         // Fix: The preferred width is always two pixels too small
-        // on a Mac. 
+        // on a Mac.
         d.width += 2;
-        
+
 	return d;
     }
 }

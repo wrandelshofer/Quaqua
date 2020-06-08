@@ -1,9 +1,6 @@
 /*
- * @(#)SizeConstrainedPanel.java  1.0  02 January 2005
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)SizeConstrainedPanel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.util;
@@ -18,13 +15,13 @@ import java.awt.*;
 public class SizeConstrainedPanel extends javax.swing.JPanel {
     private int preferredWidth = -1;
     private int preferredHeight = -1;
-    
+
     /** Creates new form. */
     public SizeConstrainedPanel() {
         initComponents();
     }
-    
-    
+
+
     /**
      * Sets the preferred width of the panel, without affecting its preferred
      * height.
@@ -41,14 +38,14 @@ public class SizeConstrainedPanel extends javax.swing.JPanel {
     public void setPreferredHeight(int h) {
         this.preferredHeight = h;
     }
-    
+
     public Dimension getPreferredSize() {
         Dimension dim = super.getPreferredSize();
         if (preferredWidth != -1) dim.width = preferredWidth;
         if (preferredHeight != -1) dim.height = preferredHeight;
         return dim;
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -59,9 +56,9 @@ public class SizeConstrainedPanel extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
     }//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
+
 }

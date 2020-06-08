@@ -1,9 +1,6 @@
 /*
- * @(#)ListTest.java  1.0  13 February 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ListTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;

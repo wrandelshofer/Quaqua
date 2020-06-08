@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaTextComponentPopupHandler.java  
- *
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaTextComponentPopupHandler.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -26,36 +23,36 @@ public class QuaquaTextComponentPopupHandler extends MouseAdapter {
     private AbstractAction cutAction;
     private AbstractAction copyAction;
     private AbstractAction pasteAction;
-    
+
     /** Creates a new instance. */
     public QuaquaTextComponentPopupHandler() {
         popupMenu = new JPopupMenu();
         popupMenu.add(cutAction = new DefaultEditorKit.CutAction());
         popupMenu.add(copyAction = new DefaultEditorKit.CopyAction());
         popupMenu.add(pasteAction = new DefaultEditorKit.PasteAction());
-        
+
         cutAction.putValue(Action.NAME, UIManager.getString("TextComponent.cut"));
         copyAction.putValue(Action.NAME, UIManager.getString("TextComponent.copy"));
         pasteAction.putValue(Action.NAME, UIManager.getString("TextComponent.paste"));
     }
-    
+
     public void mouseReleased(MouseEvent e) {
         if (e.isPopupTrigger()) {
             showPopup(e);
         }
     }
-    
+
     public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
             showPopup(e);
         }
     }
-    
+
     protected void showPopup(MouseEvent e) {
         JTextComponent src = (JTextComponent) e.getSource();
-        
+
         boolean isFocusable = Methods.invokeGetter(src, "isFocusable", true);
-        
+
         if (src.getClientProperty("Quaqua.TextComponent.showPopup") != Boolean.FALSE &&
                 src.isEnabled() &&
                 isFocusable &&

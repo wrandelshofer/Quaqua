@@ -1,9 +1,6 @@
 /*
- * @(#)CachedPainter.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)CachedPainter.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.util;
 
@@ -24,8 +21,8 @@ import java.util.*;
  *     lives here is equivalent to what previously would go in
  *     <code>paintIcon</code>, for an <code>Icon</code>.
  * </ol>
- * This class has been derived from javax.swing.plaf.metal.CachedPainter 1.2 04/02/15 
- * 
+ * This class has been derived from javax.swing.plaf.metal.CachedPainter 1.2 04/02/15
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -49,7 +46,7 @@ public abstract class CachedPainter {
     /**
      * Creates an instance of <code>CachedPainter</code> that will cache up
      * to <code>cacheCount</code> images of this class.
-     * 
+     *
      * @param cacheCount Max number of images to cache
      */
     public CachedPainter(int cacheCount) {
@@ -68,10 +65,10 @@ public abstract class CachedPainter {
         }
 
         Object key = getClass();
-        
-        // If the area is larger than 20'000 pixels, render to the passed 
-        // in Graphics. 20'000 pixels is a bit larger than a rectangle of 
-        // 160*120 points. 
+
+        // If the area is larger than 20'000 pixels, render to the passed
+        // in Graphics. 20'000 pixels is a bit larger than a rectangle of
+        // 160*120 points.
         if (getCache(key).getMaxCount()==0||w * h > maxCachedImageSize) {
             g.translate(x, y);
             paintToImage(c, g, w, h, args);
@@ -79,7 +76,7 @@ public abstract class CachedPainter {
             return;
         }
 
-        
+
         GraphicsConfiguration config = c.getGraphicsConfiguration();
         Cache cache = getCache(key);
         Image image = cache.getImage(key, config, w, h, args);
@@ -201,10 +198,10 @@ public abstract class CachedPainter {
 
         synchronized void setMaxCount(int maxCount) {
             this.maxCount = maxCount;
-        }        
-        
+        }
+
         public int getMaxCount() {
-            return maxCount; 
+            return maxCount;
         }
 
 
@@ -320,6 +317,6 @@ public abstract class CachedPainter {
     public void setMaxCachedImageSize(int maxCachedImageSize) {
         this.maxCachedImageSize = maxCachedImageSize;
     }
-    
-    
+
+
 }

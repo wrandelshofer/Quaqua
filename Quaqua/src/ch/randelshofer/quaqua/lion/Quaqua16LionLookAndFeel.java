@@ -1,12 +1,6 @@
 /*
  * @(#)Quaqua16LionLookAndFeel.java
- *
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.lion;
 
@@ -243,7 +237,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
     @Override
     protected void initDesignDefaults(UIDefaults table) {
         final String baseSystemFontName = getBaseSystemFont().getName();
-        
+
         ColorUIResource disabledForeground = new ColorUIResource(128, 128, 128);
         Object menuBackground = new ColorUIResource(0xffffff);
         ColorUIResource menuSelectionForeground = new ColorUIResource(0xffffff);

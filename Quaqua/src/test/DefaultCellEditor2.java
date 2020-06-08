@@ -1,9 +1,6 @@
 /*
- * @(#)DefaultCellEditor2.java  1.0  20 March 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)DefaultCellEditor2.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -24,7 +21,7 @@ import javax.swing.border.*;
  * @version 1.0  20 March 2005  Created.
  */
 public class DefaultCellEditor2 extends DefaultCellEditor {
-    
+
     /**
      * Constructs a <code>DefaultCellEditor</code> that uses a text field.
      *
@@ -34,7 +31,7 @@ public class DefaultCellEditor2 extends DefaultCellEditor {
         super(textField);
         textField.setBorder(new LineBorder(Color.black));
     }
-    
+
     /**
      * Constructs a <code>DefaultCellEditor</code> object that uses a check box.
      *
@@ -44,7 +41,7 @@ public class DefaultCellEditor2 extends DefaultCellEditor {
         super(checkBox);
         checkBox.setBorder(new LineBorder(Color.black));
     }
-    
+
     /**
      * Constructs a <code>DefaultCellEditor</code> object that uses a
      * combo box.

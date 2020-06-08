@@ -1,12 +1,6 @@
 /*
- * @(#)FocusedBorder.java  1.0  2011-07-26
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)AbstractFocusedPainter.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.border;
 
@@ -67,7 +61,7 @@ public abstract class AbstractFocusedPainter {
 
             Graphics2D cg = (Graphics2D) cgx;
             int slack = 2;
-            
+
             // FIXME - Can the garbage collector cope with these two images?
             BufferedImage borderImg = new BufferedImage(width + 2 * slack, height + 2 * slack, BufferedImage.TYPE_INT_ARGB_PRE);
             BufferedImage focusImg = new BufferedImage(width + 2 * slack, height + 2 * slack, BufferedImage.TYPE_INT_ARGB_PRE);
@@ -78,16 +72,16 @@ public abstract class AbstractFocusedPainter {
             cg.drawImage(borderImg, x - slack, y - slack, c);
 
             paintFocusRing(borderImg, focusImg, cgx, x-slack,y-slack);
-            
+
 
             bg.dispose();
         } else {
             doPaint(c, cgx, x, y, width, height);
         }
     }
-    
+
     /** Paints an focus ring on cgx.
-     * 
+     *
      * @param borderImg The input image which is used to compute the border.
      * @param focusImg  A temporary image. Must have the same size as borderImg.
      * @param cgx       The output object.
@@ -100,7 +94,7 @@ public abstract class AbstractFocusedPainter {
             /* Must clear the focusImg as we reuse the focusImg for performance */
             fg.setBackground(new Color(0, 0, 0, 0));
             fg.clearRect(0, 0, borderImg.getWidth(), borderImg.getHeight());
-            
+
             // generate the focusImg from the borderImg
             fg.setComposite(AlphaComposite.SrcOver);
             fg.drawImage(borderImg, edgeLeftOp, 0, 0);
@@ -126,8 +120,8 @@ public abstract class AbstractFocusedPainter {
         float[] gaussian = new float[r * 2 + 1];
 
         // compute the gaussian
-        float h = 1f; // height of the peak 
-        float c = r; // position of the centre of the peak 
+        float h = 1f; // height of the peak
+        float c = r; // position of the centre of the peak
         float invs2sq = 1f / (2f * sigma * sigma);
         for (int i = 0; i < gaussian.length; i++) {
             float x = i;
@@ -144,7 +138,7 @@ public abstract class AbstractFocusedPainter {
         float[] pyramid = new float[r * 2 + 1];
 
         // compute the pyramid
-        float c = r; // position of the centre of the peak 
+        float c = r; // position of the centre of the peak
 
         for (int i = 0; i < pyramid.length; i++) {
             float x = i;
@@ -156,10 +150,10 @@ public abstract class AbstractFocusedPainter {
     }
 
     /** Normalizes the kernel so that all its elements add up to the given
-     * sum. 
-     * 
+     * sum.
+     *
      * @param kernel
-     * @param sum 
+     * @param sum
      */
     private static void normalizeKernel(float[] kernel, float sum) {
         float total = 0;

@@ -1,26 +1,23 @@
 /*
- * @(#)SpinnerTest.java  
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)SpinnerTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
 
 /**
  * Spinner test.
- * 
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
 public class SpinnerTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public SpinnerTest() {
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -83,8 +80,8 @@ public class SpinnerTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel2, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -94,5 +91,5 @@ public class SpinnerTest extends javax.swing.JPanel {
     private javax.swing.JSpinner jSpinner3;
     private javax.swing.JSpinner jSpinner4;
     // End of variables declaration//GEN-END:variables
-    
+
 }

@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaTextPaneUI.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaTextPaneUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -28,11 +25,11 @@ import javax.swing.border.*;
 public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayoutable {
     boolean oldDragState = false;
     private MouseListener popupListener;
-    
+
     public static ComponentUI createUI(JComponent jcomponent) {
         return new QuaquaTextPaneUI();
     }
-    
+
     @Override
     protected void installListeners() {
         popupListener = createPopupListener();
@@ -41,7 +38,7 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
         }
         QuaquaTextCursorHandler.getInstance().installListeners(getComponent());
     }
-    
+
     @Override
     protected void uninstallListeners() {
         if (popupListener != null) {
@@ -53,7 +50,7 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
     protected MouseListener createPopupListener() {
         return (MouseListener) UIManager.get(getPropertyPrefix()+".popupHandler");
     }
-    
+
     @Override
     protected void installDefaults() {
         if (!QuaquaUtilities.isHeadless()) {
@@ -62,7 +59,7 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
         }
         super.installDefaults();
     }
-    
+
     @Override
     protected void uninstallDefaults() {
         if (!QuaquaUtilities.isHeadless()) {
@@ -70,7 +67,7 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
             }
         super.uninstallDefaults();
     }
-    
+
     @Override
     protected void paintSafely(Graphics g) {
         Object object = QuaquaUtilities.beginGraphics((Graphics2D) g);
@@ -78,19 +75,19 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
         QuaquaUtilities.endGraphics((Graphics2D) g, object);
         Debug.paint(g, getComponent(), this);
     }
-    
+
     @Override
     protected Caret createCaret() {
         Window window = SwingUtilities.getWindowAncestor(getComponent());
         QuaquaCaret caret = new QuaquaCaret(window, getComponent());
         return caret;
     }
-    
+
     @Override
     protected Highlighter createHighlighter() {
         return new QuaquaHighlighter();
     }
-    
+
     @Override
     public int getBaseline(JComponent c, int width, int height) {
         JTextComponent tc = (JTextComponent) c;
@@ -98,13 +95,13 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
         FontMetrics fm = tc.getFontMetrics(tc.getFont());
         return insets.top + fm.getAscent();
     }
-    
+
     public Rectangle getVisualBounds(JComponent c, int type, int width, int height) {
         Rectangle bounds = new Rectangle(0,0,width,height);
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
-        
+
         JTextComponent b = (JTextComponent) c;
         if (type == VisuallyLayoutable.COMPONENT_BOUNDS
         && b.getBorder() != null) {
@@ -118,7 +115,7 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
             }
         } else {
             bounds = getVisibleEditorRect();
-            
+
             int baseline = getBaseline(c, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);
             if (bounds == null) {

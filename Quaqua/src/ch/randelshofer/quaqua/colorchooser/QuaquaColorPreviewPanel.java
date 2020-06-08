@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaColorPreviewPanel.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaColorPreviewPanel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -27,7 +24,7 @@ public class QuaquaColorPreviewPanel extends JPanel implements UIResource {
         //setBorder(new VisualMargin(3,0,3,0));
         setToolTipText("on"); // set dummy text, to switch tooltip on
     }
-    
+
     @Override
     public void paintComponent(Graphics g) {
         Insets insets = getInsets();
@@ -42,13 +39,13 @@ public class QuaquaColorPreviewPanel extends JPanel implements UIResource {
         g.setColor(getForeground());
         g.fillRect(x+2,y+2,w-4,h-4);
     }
-    
+
     @Override
     public String getToolTipText(MouseEvent evt) {
         Color color = getForeground();
         return (color == null) ? null : color.getRed()+", "+ color.getGreen() + ", " + color.getBlue();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -60,9 +57,9 @@ public class QuaquaColorPreviewPanel extends JPanel implements UIResource {
 
         setPreferredSize(new java.awt.Dimension(26, 26));
     }//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
+
 }

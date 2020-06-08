@@ -1,14 +1,6 @@
 /*
  * @(#)ch_randelshofer_quaqua_osx_OSXFile.m
- *
- * Copyright (c) 2004-2007 Werner Randelshofer, Switzerland.
- * Copyright (c) 2014 Alan Snyder.
- * All rights reserved.
- *
- * The copyright of this software is owned by Werner Randelshofer.
- * You may not use, copy or modify this software, except in
- * accordance with the license agreement you entered into with
- * Werner Randelshofer. For details see accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 (c) Werner Randelshofer, Switzerland. MIT License.
  */
 
 /**

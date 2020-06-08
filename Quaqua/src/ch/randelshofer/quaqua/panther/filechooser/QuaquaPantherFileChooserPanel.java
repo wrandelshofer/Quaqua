@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaPantherFileChooserPanel.java  1.0  June 26, 2004
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaPantherFileChooserPanel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.panther.filechooser;
@@ -55,10 +52,10 @@ public class QuaquaPantherFileChooserPanel extends javax.swing.JPanel {
     new Insets(1, 1, 1, 1),
     true
     );
-    
+
     /** Creates new form. */
     public QuaquaPantherFileChooserPanel() {
-        
+
         initComponents();
         int h;
         h = fileNameLabel.getPreferredSize().height;
@@ -90,7 +87,7 @@ public class QuaquaPantherFileChooserPanel extends javax.swing.JPanel {
         nextButton.setBorder(buttonBorder);
         tableToggleButton.setBorder(cellBorder);
         browserToggleButton.setBorder(buttonBorder);
-        
+
         previousButton.setVisible(false);
         nextButton.setVisible(false);
         tableToggleButton.setVisible(false);
@@ -112,7 +109,7 @@ public class QuaquaPantherFileChooserPanel extends javax.swing.JPanel {
         filterComboBox.setMaximumSize(new Dimension(32767,h));
 
     }
-    
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
@@ -126,8 +123,8 @@ public class QuaquaPantherFileChooserPanel extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -350,8 +347,8 @@ public class QuaquaPantherFileChooserPanel extends javax.swing.JPanel {
         add(fc, java.awt.BorderLayout.CENTER);
 
     }//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel accessoryPanel;
     private javax.swing.JButton approveButton;
@@ -389,5 +386,5 @@ public class QuaquaPantherFileChooserPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup viewGroup;
     private javax.swing.JPanel viewsPanel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

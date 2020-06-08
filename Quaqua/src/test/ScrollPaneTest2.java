@@ -1,4 +1,9 @@
 /*
+ * @(#)ScrollPaneTest2.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+ */
+
+/*
  * ScrollPaneTest2.java
  *
  * Created on August 28, 2005, 2:36 PM
@@ -12,13 +17,13 @@ import javax.swing.*;
  * @author  werni
  */
 public class ScrollPaneTest2 extends javax.swing.JFrame {
-    
+
     /** Creates new form ScrollPaneTest2 */
     public ScrollPaneTest2() {
         initComponents();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -39,8 +44,8 @@ public class ScrollPaneTest2 extends javax.swing.JFrame {
 
         pack();
     }//GEN-END:initComponents
-    
-    /** Exit the Application */    
+
+    /** Exit the Application */
     /**
      * @param args the command line arguments
      */
@@ -52,11 +57,11 @@ public class ScrollPaneTest2 extends javax.swing.JFrame {
         }
         new ScrollPaneTest2().setVisible(true);
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
-    
+
 }

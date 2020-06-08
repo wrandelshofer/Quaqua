@@ -1,9 +1,6 @@
 /*
- * @(#)LeopardFileRenderer.java
- *
- * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)MavericksFileRenderer.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.mavericks.filechooser;
 
@@ -245,8 +242,8 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
                 g.fill(s);
                 g.setPaint(isSelected && isActive ? Color.WHITE : Color.LIGHT_GRAY);
                 g.draw(s);
-            
-            
+
+
         }
 
         if (icon != null) {
@@ -399,5 +396,5 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
         return text;
     }
 
-    
+
 }

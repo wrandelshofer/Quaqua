@@ -1,9 +1,6 @@
 /*
  * @(#)QuaquaButtonUI.java
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -192,7 +189,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
         ButtonModel model = b.getModel();
         FontMetrics fm = g.getFontMetrics();
-        
+
         // Suppress mnemonic
         //int mnemonicIndex = Methods.invokeGetter(b, "getDisplayedMnemonicIndex", -1);
         int mnemonicIndex = -1;

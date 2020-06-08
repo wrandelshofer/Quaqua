@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaFormattedTextFieldUI.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaFormattedTextFieldUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -22,7 +19,7 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 /**
  * QuaquaFormattedTextFieldUI.
- * 
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -31,7 +28,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     private FocusListener focusListener;
     private MouseListener popupListener;
     // private HierarchyListener hierarchyListener;
-    
+
     /**
      * Creates a UI for a JFormattedTextField.
      *
@@ -41,13 +38,13 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     public static ComponentUI createUI(JComponent c) {
         return new QuaquaFormattedTextFieldUI();
     }
-    
+
     @Override
     public void installUI(JComponent c) {
         super.installUI(c);
 	QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix()+".opaque"));
     }
-    
+
     @Override
     protected void installDefaults() {
         if (! QuaquaUtilities.isHeadless()) {
@@ -56,7 +53,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         }
         super.installDefaults();
     }
-    
+
     @Override
     protected void uninstallDefaults() {
         if (QuaquaUtilities.isHeadless()) {
@@ -64,7 +61,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         }
         super.uninstallDefaults();
     }
-    
+
     @Override
     protected void installListeners() {
         focusListener = createFocusListener();
@@ -78,7 +75,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         QuaquaTextCursorHandler.getInstance().installListeners(getComponent());
         super.installListeners();
     }
-    
+
     @Override
     protected void uninstallListeners() {
         if (focusListener != null) {
@@ -92,7 +89,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         QuaquaTextCursorHandler.getInstance().uninstallListeners(getComponent());
         super.uninstallListeners();
     }
-    
+
     protected FocusListener createFocusListener() {
         return (FocusListener) UIManager.get(getPropertyPrefix() + ".focusHandler");
     }
@@ -103,7 +100,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     protected HierarchyListener createHierarchyListener() {
         return new ComponentActivationHandler(getComponent());
     }*/
-    
+
     /**
      * Fetches the EditorKit for the UI.
      *
@@ -115,7 +112,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     public EditorKit getEditorKit(JTextComponent tc) {
         return QuaquaTextFieldUI.defaultKit;
     }
-    
+
     public Insets getVisualMargin(JTextComponent tc) {
         Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
         if (margin == null) {
@@ -123,13 +120,13 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         }
         return (margin == null) ? new Insets(0, 0, 0 ,0) : (Insets) margin.clone();
     }
-    
-    
+
+
     @Override
     protected void paintSafely(Graphics g) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         JTextComponent editor = getComponent();
-        
+
         // Paint the background with the background border or the background color
         Border border = editor.getBorder();
         if (border != null && border instanceof BackgroundBorder) {
@@ -159,7 +156,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         // We already paint the background in method paintSafely();
     }
 
-    
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         String name = event.getPropertyName();
@@ -171,14 +168,14 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
             super.propertyChange(event);
             }
     }
-    
+
     @Override
     protected Caret createCaret() {
         Window window = SwingUtilities.getWindowAncestor(getComponent());
         QuaquaCaret caret = new QuaquaCaret(window, getComponent());
         return caret;
     }
-    
+
     @Override
     protected Highlighter createHighlighter() {
         return new QuaquaHighlighter();
@@ -242,7 +239,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
-        
+
         JTextComponent b = (JTextComponent) c;
         if (type == VisuallyLayoutable.COMPONENT_BOUNDS
         && b.getBorder() != null) {
@@ -256,7 +253,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
             }
         } else {
             bounds = getVisibleEditorRect();
-            
+
             int baseline = getBaseline(b, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);
             if (bounds == null) {
@@ -298,11 +295,11 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
 		((AbstractDocument)doc).readUnlock();
 	    }
 	}
-        
+
         // Fix: The preferred width is always two pixels too small
-        // on a Mac. 
+        // on a Mac.
         d.width += 2;
-        
+
 	return d;
     }
 }

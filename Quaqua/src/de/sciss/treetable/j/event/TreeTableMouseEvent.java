@@ -29,27 +29,27 @@ public class TreeTableMouseEvent extends MouseEvent {
 				e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
 				e.getClickCount(), e.isPopupTrigger(), e.getButton());
 	}
-	
+
 	private TreePath path = null;
-	
+
 	private int row = Integer.MIN_VALUE;
-	
+
 	private int column = Integer.MIN_VALUE;
-	
+
 	private int treePosition = Integer.MIN_VALUE;
-	
+
 	@Override
 	public Point getPoint() {
 		return new Point(getX(), getY());
 	}
-	
+
 	/**
 	 * @return the TreeTable source
 	 */
 	public TreeTable getTreeTable() {
 		return (TreeTable)getSource();
 	}
-	
+
 	/**
 	 * @return the row for the location of this event
 	 */
@@ -59,7 +59,7 @@ public class TreeTableMouseEvent extends MouseEvent {
 		}
 		return row;
 	}
-	
+
 	/**
 	 * @return the column for the location of this event
 	 */
@@ -69,7 +69,7 @@ public class TreeTableMouseEvent extends MouseEvent {
 		}
 		return column;
 	}
-	
+
 	/**
 	 * @return the path for the location of this event
 	 */
@@ -79,9 +79,9 @@ public class TreeTableMouseEvent extends MouseEvent {
 		}
 		return path;
 	}
-	
+
 	/**
-	 * Calculates the x distance from the tree handle. If the tree 
+	 * Calculates the x distance from the tree handle. If the tree
 	 * handle isn't present, it is the distance from the start of the
 	 * path bounds.
 	 * <p>
@@ -90,7 +90,7 @@ public class TreeTableMouseEvent extends MouseEvent {
 	 * The return value will be negative for x locations that
 	 * fall in the leading region and positive for x locations
 	 * that fall in the trailing region.
-	 * 
+	 *
 	 * @return distance from the tree handle
 	 */
 	public int getDistanceToTreeHandle() {
@@ -99,8 +99,8 @@ public class TreeTableMouseEvent extends MouseEvent {
 		}
 		return treePosition;
 	}
-	
-	
+
+
 	/**
 	 * @return true if the location if over the leading margin
 	 * 		of the node bounds and not over the tree handle
@@ -109,14 +109,14 @@ public class TreeTableMouseEvent extends MouseEvent {
 		return getColumn() == getTreeTable().getHierarchicalColumn()
 			&& getDistanceToTreeHandle() < 0;
 	}
-	
+
 	/**
 	 * @return true if the location is over the tree handle
 	 */
 	public boolean isOverTreeHandle() {
 		return getDistanceToTreeHandle() == 0;
 	}
-	
+
 	/**
 	 * @return true if the location is over the path's bounds
 	 */

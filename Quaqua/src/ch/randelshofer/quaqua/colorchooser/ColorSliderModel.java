@@ -1,9 +1,6 @@
 /*
- * @(#)ColorSliderModel.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ColorSliderModel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -33,19 +30,19 @@ public abstract class ColorSliderModel implements Serializable {
      * ChangeListener's listening to changes in this ColorSliderModel.
      */
     private LinkedList listeners = new LinkedList();
-    
+
     /**
      * Components of the color model.
      */
     protected DefaultBoundedRangeModel[] components;
-    
+
     /**
      * Speed optimization. This way, we do not need to create a new array
      * for each invocation of method getInterpolatedRGB().
      * Note: This variable must not use in reentrant methods.
      */
     protected int[] values;
-    
+
     /**
      * Creates a new ColorSliderModel with an array of BoundedRangeModel's
      * for the color components.
@@ -53,7 +50,7 @@ public abstract class ColorSliderModel implements Serializable {
     protected ColorSliderModel(DefaultBoundedRangeModel[] components) {
         this.components = components;
         values = new int[components.length];
-        
+
         for (int i=0; i < components.length; i++) {
             final int componentIndex = i;
             components[i].addChangeListener(
@@ -65,7 +62,7 @@ public abstract class ColorSliderModel implements Serializable {
             });
         }
     }
-    
+
     /**
      * Configures a JSlider for this ColorSliderModel.
      * If the JSlider is already configured for another ColorSliderModel,
@@ -84,7 +81,7 @@ public abstract class ColorSliderModel implements Serializable {
         slider.putClientProperty("ColorComponentIndex", component);
         addColorSlider(slider);
     }
-    
+
     /**
      * Unconfigures a JSlider from this ColorSliderModel.
      */
@@ -98,7 +95,7 @@ public abstract class ColorSliderModel implements Serializable {
             removeColorSlider(slider);
         }
     }
-    
+
     /**
      * Returns the number of components of this color component model.
      */
@@ -123,7 +120,7 @@ public abstract class ColorSliderModel implements Serializable {
     public void setValue(int component, int value) {
         components[component].setValue(value);
     }
-    
+
     /**
      * Returns an interpolated RGB value by using the values of the color
      * components of this ColorSliderModel except for the component specified
@@ -137,7 +134,7 @@ public abstract class ColorSliderModel implements Serializable {
         values[component] = (int) (ratio * components[component].getMaximum());
         return toRGB(values);
     }
-    
+
     protected void addColorSlider(JSlider slider) {
         sliders.add(slider);
     }
@@ -150,8 +147,8 @@ public abstract class ColorSliderModel implements Serializable {
     public void removeChangeListener(ChangeListener l) {
         listeners.remove(l);
     }
-    
-    
+
+
     protected void fireColorChanged(int componentIndex) {
         Integer index = componentIndex;
         Color value = getColor();
@@ -168,18 +165,18 @@ public abstract class ColorSliderModel implements Serializable {
             l.stateChanged(event);
         }
     }
-    
+
     public Color getColor() {
         return new Color(getRGB());
     }
-    
+
     public void setColor(Color color) {
         int rgb = color.getRGB();
         if (rgb != getRGB()) {
             setRGB(rgb);
         }
     }
-    
+
     public abstract void setRGB(int rgb);
     public abstract int getRGB();
     public abstract int toRGB(int[] values);

@@ -37,15 +37,15 @@ import de.sciss.treetable.j.event.TreeTableSorterListener;
 
 public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnModel, I>
 		implements TreeTableSorter<T,C>, TreeTableSorter.SortCycle {
-	
+
 	public static final List<SortOrder> ASCENDING_DESCENDING =
 		Collections.unmodifiableList(Arrays.asList(
 				SortOrder.ASCENDING, SortOrder.DESCENDING));
-	
+
 	public static final List<SortOrder> ASCENDING_DESCENDING_UNSORTED =
 		Collections.unmodifiableList(Arrays.asList(
 				SortOrder.ASCENDING, SortOrder.DESCENDING, SortOrder.UNSORTED));
-	
+
 	public static final Comparator<Object> COMPARABLE_COMPARATOR =
 		new Comparator<Object>() {
 			@SuppressWarnings("unchecked")
@@ -53,42 +53,42 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 				return ((Comparable)a).compareTo((Comparable)b);
 			}
 		};
-	
+
 	public DefaultTreeTableSorter(T tm, C cm) {
 		treeModel = tm;
 		columnModel = cm;
 		sorters = new IdentityHashMap<Object,NodeSorter>();
 		sorters.put(tm.getRoot(), new NodeSorter(tm.getRoot()));
 	}
-	
+
 	protected EventListenerList listenerList = new EventListenerList();
-	
+
 	private T treeModel;
-	
+
 	private C columnModel;
-	
+
 	private IdentityHashMap<Object,NodeSorter> sorters;
-	
+
 	private List<? extends SortKey> sortKeys = Collections.emptyList();
-	
+
 	private boolean[] isSortable;
-	
+
 	@SuppressWarnings("unchecked")
 	private Comparator[] comparators;
-	
+
 	private RowFilter<? super T, ? super I> rowFilter;
-	
+
 	private List<SortOrder> sortCycle = ASCENDING_DESCENDING;
-	
+
 	private int maxSortKeys = 3;
-	
+
 	private boolean sortsOnUpdates;
-	
+
 	@Override
 	public NodeSorter getRowSorter(Object node) {
 		return sorters.get(node);
 	}
-	
+
 	@Override
 	public NodeSorter getRowSorter(TreePath path) {
 		Map<Object,NodeSorter> sorterMap = sorters;
@@ -99,34 +99,34 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 		}
 		return sorter;
 	}
-	
-	
+
+
 	public T getTreeModel() {
 		return treeModel;
 	}
-	
+
 	public C getTreeColumnModel() {
 		return columnModel;
 	}
-	
+
 	public boolean getSortsOnUpdates() {
 		return sortsOnUpdates;
 	}
-	
+
 	public void setSortsOnUpdates(boolean sorts) {
 		sortsOnUpdates = sorts;
 	}
-	
+
 	public int getMaxSortKeys() {
 		return maxSortKeys;
 	}
-	
+
     public void setMaxSortKeys(int max) {
         if (max < 1)
             throw new IllegalArgumentException("Invalid max");
         maxSortKeys = max;
     }
-    
+
     public void setSortable(int column, boolean sortable) {
     	checkColumn(column);
     	if (isSortable == null) {
@@ -137,11 +137,11 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
     	}
     	isSortable[column] = sortable;
     }
-    
+
     public boolean isSortable(int column) {
     	return isSortable == null || isSortable[column];
     }
-    
+
     public void setComparator(int column, Comparator<?> comparator) {
     	checkColumn(column);
     	if (comparators == null) {
@@ -151,11 +151,11 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
     	}
     	comparators[column] = comparator;
     }
-    
+
     boolean isComparatorSet(int column) {
     	return comparators != null && comparators[column] != null;
     }
-    
+
     public Comparator<?> getComparator(int column) {
     	if (isComparatorSet(column))
     		return comparators[column];
@@ -173,7 +173,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
     	rowFilter = filter;
     	sort();
     }
-    
+
     public RowFilter<? super T, ? super I> getRowFilter() {
     	return rowFilter;
     }
@@ -207,7 +207,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			setSortKeys(keys);
 		}
 	}
-	
+
 	// adapted from DefaultRowSorter.toggleSortOrder
 	static List<SortKey> toggleSortOrder(List<? extends SortKey> sortKeys,
 			List<SortOrder> sortCycle, int column, int maxSortKeys) {
@@ -245,7 +245,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 	public List<SortOrder> getSortCycle() {
 		return sortCycle;
 	}
-	
+
 	public void setSortCycle(List<SortOrder> sortCycle) {
 		if (sortCycle.isEmpty())
 			throw new IllegalArgumentException();
@@ -257,18 +257,18 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 		if (column < 0 || column >= columnModel.getColumnCount())
 			throw new IndexOutOfBoundsException();
 	}
-	
-	
+
+
 	public void sort() {
 		getRowSorter(treeModel.getRoot()).sort(true);
 		fireSorterChanged();
 	}
-	
-	
+
+
 	public void addTreeTableSorterListener(TreeTableSorterListener l) {
 		listenerList.add(TreeTableSorterListener.class, l);
 	}
-	
+
 	public void removeTreeTableSorterListener(TreeTableSorterListener l) {
 		listenerList.remove(TreeTableSorterListener.class, l);
 	}
@@ -280,11 +280,11 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 	protected void fireSorterChanged() {
 		fire(new TreeTableSorterEvent(this, null));
 	}
-	
+
 	protected void fireRowSorterChanged(TreePath path) {
 		fire(new TreeTableSorterEvent(this, path));
 	}
-	
+
 	private void fire(TreeTableSorterEvent e) {
 		Object[] listeners = listenerList.getListenerList();
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -293,7 +293,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			}
 		}
 	}
-	
+
 	@Override
 	public void structureChanged(TreePath path, boolean newRoot) {
 		if (newRoot) {
@@ -305,14 +305,14 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			// TODO: rebuild here?
 		}
 	}
-	
+
 	@Override
 	public void nodesRemoved(TreePath path, Object[] childNodes) {
 		NodeSorter sorter = getRowSorter(path.getLastPathComponent());
 		if (sorter != null)
 			sorter.remove(childNodes, sorters);
 	}
-	
+
 	@Override
 	public void setVisible(TreePath path, List<TreePath> subPaths, boolean visible) {
 		NodeSorter sorter = getRowSorter(path);
@@ -329,8 +329,8 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			sorter.sort(true);
 		}
 	}
-	
-	
+
+
 	public class NodeSorter extends DefaultRowSorter<T,I> implements SortCycle {
 
 		public NodeSorter(Object root) {
@@ -349,7 +349,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 		private NodeSorter parent;
 
 		private Map<Object,NodeSorter> children;
-		
+
 		private List<SortOrder> sortCycle = ASCENDING_DESCENDING_UNSORTED;
 
 		private boolean visible;
@@ -394,7 +394,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			Comparator<?> c = super.getComparator(column);
 			return c != null ? c : getMaster().getComparator(column);
 		}
-		
+
 		@Override
 		protected boolean useToString(int column) {
 			if (super.getComparator(column) != null
@@ -417,7 +417,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			int m = super.getMaxSortKeys();
 			return m < Integer.MAX_VALUE ? m : getMaster().getMaxSortKeys();
 		}
-		
+
 		@Override
 		public RowFilter<? super T, ? super I> getRowFilter() {
 			RowFilter<? super T, ? super I> f = super.getRowFilter();
@@ -430,22 +430,22 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 		public boolean getSortsOnUpdates() {
 			return getMaster().getSortsOnUpdates();
 		}
-		
+
 		@Override
 		public boolean isSortable(int column) {
 			return getMaster().isSortable(column);
 		}
-		
+
 		public void setSortCycle(List<SortOrder> sortCycle) {
 			if (sortCycle.isEmpty())
 				throw new IllegalArgumentException();
 			this.sortCycle = sortCycle;
 		}
-		
+
 		public List<SortOrder> getSortCycle() {
 			return sortCycle;
 		}
-		
+
 		@Override
 		public void toggleSortOrder(int column) {
 			checkColumn(column);
@@ -456,12 +456,12 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			}
 		}
 
-		
+
 		@Override
 		public void setSortsOnUpdates(boolean sortsOnUpdates) {
 			throw new UnsupportedOperationException();
 		}
-		
+
 		@Override
 		public void setSortable(int column, boolean sortable) {
 			throw new UnsupportedOperationException();
@@ -527,7 +527,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			return visible;
 		}
 
-		
+
 		void removeAllChildren(Map<Object,NodeSorter> map) {
 			for (Map.Entry<Object,NodeSorter> entry : children.entrySet()) {
 				map.remove(entry.getKey());
@@ -535,7 +535,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 			}
 			children.clear();
 		}
-		
+
 		void remove(Object[] childNodes, Map<Object,NodeSorter> map) {
 			for (Object node : childNodes) {
 				NodeSorter s = children.remove(node);
@@ -543,8 +543,8 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 					s.removeAllChildren(map);
 			}
 		}
-		
-		
+
+
 
 		protected class TreeTableWrapper extends ModelWrapper<T,I> {
 
@@ -601,7 +601,7 @@ public class DefaultTreeTableSorter<T extends TreeModel, C extends TreeColumnMod
 		}
 
 	}
-	
+
 
 }
 

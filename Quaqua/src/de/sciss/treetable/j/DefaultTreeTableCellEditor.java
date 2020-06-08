@@ -26,7 +26,7 @@ import javax.swing.JTree;
 
 public class DefaultTreeTableCellEditor extends DefaultCellEditor
 		implements TreeTableCellEditor {
-	
+
 	public DefaultTreeTableCellEditor(JCheckBox checkBox) {
 		super(checkBox);
 		// TODO Auto-generated constructor stub
@@ -58,14 +58,14 @@ public class DefaultTreeTableCellEditor extends DefaultCellEditor
 				treeTable, value, selected, row, column, expanded, leaf);
 		return getComponent();
 	}
-	
+
 	@Override
 	public /* final */ Component getTableCellEditorComponent(JTable table,
 			Object value, boolean selected, int row, int column) {
 		return super.getTableCellEditorComponent(
 				table, value, selected, row, column);
 	}
-	
+
 	@Override
 	public /* final */ Component getTreeCellEditorComponent(JTree tree,
 			Object value, boolean selected, boolean expanded, boolean leaf, int row) {

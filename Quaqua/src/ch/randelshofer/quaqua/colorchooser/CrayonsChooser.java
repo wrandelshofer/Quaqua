@@ -1,9 +1,6 @@
 /*
- * @(#)CrayonsChooser.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)CrayonsChooser.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -23,13 +20,13 @@ import javax.swing.plaf.*;
  */
 public class CrayonsChooser extends AbstractColorChooserPanel implements UIResource {
     private Crayons crayons;
-    
+
     /**
      * Creates a new instance.
      */
     public CrayonsChooser() {
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -38,7 +35,7 @@ public class CrayonsChooser extends AbstractColorChooserPanel implements UIResou
     private void initComponents() {//GEN-BEGIN:initComponents
 
     }//GEN-END:initComponents
-    
+
     protected void buildChooser() {
         initComponents();
 
@@ -52,27 +49,27 @@ public class CrayonsChooser extends AbstractColorChooserPanel implements UIResou
             }
         });
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.crayons");
-    }    
-    
+    }
+
     public javax.swing.Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.crayonsIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void updateChooser() {
         crayons.setColor(getColorFromModel());
     }
     public void setColorToModel(Color color) {
         getColorSelectionModel().setSelectedColor(color);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
+
 }

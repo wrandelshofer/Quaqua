@@ -1,9 +1,6 @@
-/**
- * @(#)QuaquaUIAction.java  1.0  Jan 25, 2008
- *
- * Copyright (c) 2008-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+/*
+ * @(#)QuaquaUIAction.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;

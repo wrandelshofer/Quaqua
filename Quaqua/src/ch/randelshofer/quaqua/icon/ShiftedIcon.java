@@ -1,9 +1,6 @@
 /*
- * @(#)ShiftedIcon.java  1.0  May 12, 2006
- *
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ShiftedIcon.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.icon;
@@ -20,13 +17,13 @@ import javax.swing.*;
 public class ShiftedIcon implements Icon {
     private Icon target;
     private Rectangle shift;
-    
+
     /** Creates a new instance. */
     public ShiftedIcon(Icon target, Point shift) {
         this.target = target;
         this.shift = new Rectangle(
-                shift.x, shift.y, 
-                target.getIconWidth(), 
+                shift.x, shift.y,
+                target.getIconWidth(),
                 target.getIconHeight()
                 );
     }
@@ -46,5 +43,5 @@ public class ShiftedIcon implements Icon {
     public int getIconHeight() {
         return shift.height;
     }
-    
+
 }

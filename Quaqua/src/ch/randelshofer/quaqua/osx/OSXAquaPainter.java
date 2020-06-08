@@ -1,12 +1,6 @@
 /*
- * @(#)OSXAquaPainter.java  
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)OSXAquaPainter.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.osx;
 
@@ -22,18 +16,18 @@ import java.security.AccessControlException;
  * API which is present in OS X 10.6 and 10.7.
  * <p>
  * References:<br>
- * <a 
+ * <a
  * href="http://hg.openjdk.java.net/macosx-port/macosx-port/jdk/file/tip/src/macosx/classes/com/apple/laf/"
  * >OpenJDK LaF classes</a><br>
  *
  * <a href="http://hg.openjdk.java.net/macosx-port/macosx-port/jdk/file/tip/src/macosx/classes/apple/laf/"
  * >OpenJDK JRSUIControl classes</a><br>
- * 
+ *
  * <a href="http://hg.openjdk.java.net/macosx-port/macosx-port/jdk/file/tip/src/macosx/native/com/apple/laf/"
  * >
  * OpenJDK native code.
  * </a>
- *</p> 
+ *</p>
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -563,7 +557,7 @@ public class OSXAquaPainter {
         }
     }
 
-    /** Paints the widget on the specified image. 
+    /** Paints the widget on the specified image.
      * The image data must be of type {@code BufferedImage.TYPE_INT_ARGB_PRE}.
      */
     public void paint(int[] imageData, int imgWidth, int imgHeight,//
@@ -573,10 +567,10 @@ public class OSXAquaPainter {
         }
     }
 
-    /** Paints the widget on the specified image. 
+    /** Paints the widget on the specified image.
      * The image data must be of type {@code BufferedImage.TYPE_INT_ARGB_PRE}.
-     * 
-     * @throws IllegalArgumentException if the image type is not {@code BufferedImage.TYPE_INT_ARGB_PRE}. 
+     *
+     * @throws IllegalArgumentException if the image type is not {@code BufferedImage.TYPE_INT_ARGB_PRE}.
      */
     public void paint(BufferedImage image,//
             double x, double y, double width, double height) {
@@ -655,7 +649,7 @@ public class OSXAquaPainter {
     /** Specifies whether to animate a JRSUIControl. */
     private static native void nativeSetAnimating(long ctrlHandle, boolean b);
 
-    /** Paints the widget on the specified image. 
+    /** Paints the widget on the specified image.
      * Note: The coordinate system of the native paint method has its origin
      * at the lower left corner. (Java has the origin at the top left corner.
      */

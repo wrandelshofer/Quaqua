@@ -1,12 +1,6 @@
 /*
- * @(#)QuaquaNativeImageBevelBorder.java  
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)QuaquaNativeImageBevelBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.border;
 
@@ -102,12 +96,12 @@ public class QuaquaNativeImageBevelBorder extends VisualMarginBorder implements 
     public boolean isBorderOpaque() {
         return false;
     }
-    
+
     public static class UIResource extends QuaquaNativeImageBevelBorder implements javax.swing.plaf.UIResource {
 
         public UIResource(Widget widget, Insets painterInsets, Insets imageBevelInsets, Insets borderInsets, boolean fill) {
             super(widget, painterInsets, imageBevelInsets, borderInsets, fill);
         }
-        
+
     }
 }

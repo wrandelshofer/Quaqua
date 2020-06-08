@@ -1,9 +1,6 @@
 /*
- * @(#)MimeTypeParseException.java 
- *
- * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)MimeTypeParseException.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.datatransfer;
@@ -18,17 +15,17 @@ package ch.randelshofer.quaqua.datatransfer;
  * @version $Id$
  */
 public class MimeTypeParseException extends Exception {
-    
+
     // use serialVersionUID from JDK 1.2.2 for interoperability
     private static final long serialVersionUID = -5604407764691570741L;
-    
+
     /**
      * Constructs a MimeTypeParseException with no specified detail message.
      */
     public MimeTypeParseException() {
         super();
     }
-    
+
     /**
      * Constructs a MimeTypeParseException with the specified detail message.
      *

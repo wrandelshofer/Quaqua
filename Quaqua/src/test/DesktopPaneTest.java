@@ -1,9 +1,6 @@
 /*
- * @(#)DesktopPaneTest.java  1.0  13 February 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)DesktopPaneTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -18,13 +15,13 @@ import javax.swing.*;
  * @version 1.0  13 February 2005  Created.
  */
 public class DesktopPaneTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public DesktopPaneTest() {
         initComponents();
         toolFrame.putClientProperty("JInternalFrame.isPalette", true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -416,8 +413,8 @@ System.out.println("Menu Performed "+evt);
     private void windowModifiedChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_windowModifiedChanged
         smallInternalFrame.putClientProperty("windowModified", evt.getStateChange() == ItemEvent.SELECTED);
     }//GEN-LAST:event_windowModifiedChanged
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem copyMenuItem15;
     private javax.swing.JMenuItem copyMenuItem16;
@@ -483,5 +480,5 @@ System.out.println("Menu Performed "+evt);
     private javax.swing.JMenuItem zoomOutMenuItem3;
     private javax.swing.JMenuItem zoomOutMenuItem4;
     // End of variables declaration//GEN-END:variables
-    
+
 }

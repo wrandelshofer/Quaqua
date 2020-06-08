@@ -1,15 +1,6 @@
-/**
- * @(#)ResolutionIndependenceTest.java  1.0  December 21, 2007
- *
- * Copyright (c) 1996-2007 by the original authors of JHotDraw
- * and all its contributors ("JHotDraw.org")
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of
- * JHotDraw.org ("Confidential Information"). You shall not disclose
- * such Confidential Information and shall use it only in accordance
- * with the terms of the license agreement you entered into with
- * JHotDraw.org.
+/*
+ * @(#)ResolutionIndependenceTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -26,7 +17,7 @@ import javax.swing.*;
  */
 public class ResolutionIndependenceTest extends javax.swing.JPanel {
     private Point mouseLocation;
-    
+
     /** Creates new form. */
     public ResolutionIndependenceTest() {
         initComponents();
@@ -42,36 +33,36 @@ public class ResolutionIndependenceTest extends javax.swing.JPanel {
                 System.out.println(e);
                 repaint();
             }
-            
+
         });
-        
-        
+
+
        setPreferredSize(new Dimension(240,240));
        setOpaque(true);
     }
-    
+
     public void paintComponent(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
-        
+
         g.clearRect(0, 0, getWidth(), getHeight());
-        
+
         g.setFont(new Font("Dialog",Font.PLAIN,12));
         g.drawString("This square is 200 pixels long",20,15);
-        
+
         Rectangle r = new Rectangle(20,20,200,200);
-        
+
         g.draw(r);
-        
+
         if (mouseLocation != null && r.contains(mouseLocation)) {
             g.drawLine(mouseLocation.x - 5, mouseLocation.y, mouseLocation.x + 5, mouseLocation.y);
             g.drawLine(mouseLocation.x, mouseLocation.y - 5, mouseLocation.x, mouseLocation.y + 5);
             g.drawOval(mouseLocation.x - 7, mouseLocation.y - 7, 14, 14);
         }
-        
+
         g.drawString(g.getDeviceConfiguration().getDefaultTransform().toString(),20,235);
         System.out.println(g.getDeviceConfiguration().getNormalizingTransform());
     }
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -83,7 +74,7 @@ public class ResolutionIndependenceTest extends javax.swing.JPanel {
             }
         });
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -94,9 +85,9 @@ public class ResolutionIndependenceTest extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
+
 }

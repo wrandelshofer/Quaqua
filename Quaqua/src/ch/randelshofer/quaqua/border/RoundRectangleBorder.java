@@ -1,9 +1,6 @@
 /*
  * @(#)RoundRectangleBorder.java
- *
- * Copyright (c) 2015 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.border;
 
@@ -32,10 +29,10 @@ private Color fillColor;
         this.fillColor=fillColor;
         this.strokeColor=strokeColor;
         this.borderInsets = borderInsets;
-        
+
     }
-   
-    
+
+
 
     @Override
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {

@@ -1,9 +1,6 @@
 /*
- * @(#)EditorPane.java  1.0  13 February 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)EditorPaneTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -15,12 +12,12 @@ package test;
  * @version 1.0  13 February 2005  Created.
  */
 public class EditorPaneTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public EditorPaneTest() {
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -99,8 +96,8 @@ public class EditorPaneTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         add(jLabel3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane editorPane1;
     private javax.swing.JEditorPane editorPane2;
@@ -112,5 +109,5 @@ public class EditorPaneTest extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrollPane2;
     private javax.swing.JScrollPane scrollPane3;
     // End of variables declaration//GEN-END:variables
-    
+
 }

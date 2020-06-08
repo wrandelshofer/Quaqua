@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaSquareButtonBorder.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaSquareButtonBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -73,20 +70,20 @@ public class QuaquaSquareButtonBorder extends CachedPainter implements Border {
         new Color(0,0,0,15), // outer alpha at right and left
         new Color(0,0,0,7)   // inner alpha at right and left
     };
-    
+
     /** Creates a new instance of QuaquaSquareButtonBorder */
     public QuaquaSquareButtonBorder() {
         super(8);
     }
-    
+
     public Insets getBorderInsets(Component c) {
         return new Insets(1, 1, 1, 1);
     }
-    
+
     public boolean isBorderOpaque() {
         return false;
     }
-    
+
     /**
      * Creates the image to cache.  This returns a translucent image.
      *
@@ -104,7 +101,7 @@ public class QuaquaSquareButtonBorder extends CachedPainter implements Border {
         }
         return config.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
     }
-    
+
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
         if ( height <= 0 || width <= 0 ) {
             return;
@@ -112,45 +109,45 @@ public class QuaquaSquareButtonBorder extends CachedPainter implements Border {
 
         AbstractButton button = (AbstractButton) c;
         ButtonModel model = button.getModel();
-        
+
         Color[] colors;
         if (button.isEnabled()) {
             colors = (model.isSelected() || model.isArmed() && model.isPressed()) ? selectedColors : defaultColors;
         } else {
             colors = (model.isSelected()) ? disabledSelectedColors : disabledColors;
         }
-        
+
         paint(c, gr, x, y, width, height, colors);
-    }    
-    
+    }
+
     protected void paintToImage(Component c, Graphics gr, int width, int height, Object args) {
         // Cast Graphics to Graphics2D
         // Workaround for Java 1.4 and 1.4 on Mac OS X 10.4. We create a new
         // Graphics object instead of just casting the provided one. This is
         // because drawing texture paints appears to confuse the Graphics object.
         Graphics2D g = (Graphics2D) gr.create();
-        
+
         Color[] colors = (Color[]) args;
-        
+
         g.setColor(colors[0]);
         g.drawRect(0, 0, width - 1, height - 1);
-        
+
         g.setColor(colors[1]);
-        g.drawLine(1, 1, width - 2, 1); 
+        g.drawLine(1, 1, width - 2, 1);
 
         g.setColor(colors[2]);
-        g.drawLine(1, 2, width - 2, 2); 
+        g.drawLine(1, 2, width - 2, 2);
 
         g.setColor(colors[3]);
-        g.drawLine(1, 3, width - 2, 3); 
+        g.drawLine(1, 3, width - 2, 3);
 
         g.setColor(colors[4]);
-        g.drawLine(1, height - 2, width - 2, height - 2); 
-        
+        g.drawLine(1, height - 2, width - 2, height - 2);
+
         Paint oldPaint = g.getPaint();
         g.setPaint(new LinearGradientPaint(0, 4, colors[5], 0, height - 6, colors[6]));
         g.fillRect(1, 4, width - 2, height - 6);
-        
+
         g.setColor(colors[7]);
         g.setPaint(oldPaint);
         g.drawLine(1, 1, 1, height - 2);
@@ -159,7 +156,7 @@ public class QuaquaSquareButtonBorder extends CachedPainter implements Border {
         g.setColor(colors[8]);
         g.drawLine(2, 2, 2, height - 3);
         g.drawLine(width - 3, 3, width - 3, height - 3);
-        
+
         g.dispose();
-    }    
+    }
 }

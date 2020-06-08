@@ -1,4 +1,9 @@
 /*
+ * @(#)AWTTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+ */
+
+/*
  * AWTTest.java
  *
  * Created on February 21, 2006, 7:49 PM
@@ -11,12 +16,12 @@ package test;
  * @author  werni
  */
 public class AWTTest extends java.awt.Frame {
-    
+
     /** Creates new form AWTTest */
     public AWTTest() {
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -87,20 +92,20 @@ public class AWTTest extends java.awt.Frame {
         public void windowOpened(java.awt.event.WindowEvent evt) {
         }
     }//GEN-END:initComponents
-    
+
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         System.exit(0);
     }//GEN-LAST:event_exitForm
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         new AWTTest().setVisible(true);
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
     private java.awt.Button button2;
@@ -111,5 +116,5 @@ public class AWTTest extends java.awt.Frame {
     private java.awt.ScrollPane scrollPane1;
     private java.awt.TextField textField1;
     // End of variables declaration//GEN-END:variables
-    
+
 }

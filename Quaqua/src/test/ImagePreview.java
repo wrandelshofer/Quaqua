@@ -1,9 +1,6 @@
 /*
- * @(#)TestFileChooserAccessory.java  1.0  December 10, 2005
- *
- * This code is copyright by Sun Microsystems.
- * It has been copied from
- * http://java.sun.com/docs/books/tutorial/uiswing/components/example-1dot4/ImagePreview.java
+ * @(#)ImagePreview.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -22,21 +19,21 @@ import java.io.File;
 public class ImagePreview extends JComponent implements PropertyChangeListener {
     ImageIcon thumbnail = null;
     File file = null;
-    
-    
+
+
     public ImagePreview(JFileChooser fc) {
         setPreferredSize(new Dimension(100, 50));
         fc.addPropertyChangeListener(this);
     }
-    
-    
-    
+
+
+
     public void loadImage() {
         if (file == null) {
             thumbnail = null;
             return;
         }
-        
+
         //Don't use createImageIcon (which is a wrapper for getResource)
         //because the image we're trying to load is probably not one
         //of this program's own resources.
@@ -51,22 +48,22 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
             }
         }
     }
-    
+
     public void propertyChange(PropertyChangeEvent e) {
         boolean update = false;
         String prop = e.getPropertyName();
-        
+
         //If the directory changed, don't show an image.
         if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
             file = null;
             update = true;
-            
+
             //If a file became selected, find out which one.
         } else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
             file = (File) e.getNewValue();
             update = true;
         }
-        
+
         //Update the preview accordingly.
         if (update) {
             thumbnail = null;
@@ -76,7 +73,7 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
             }
         }
     }
-    
+
     protected void paintComponent(Graphics g) {
         if (thumbnail == null) {
             loadImage();
@@ -84,11 +81,11 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
         if (thumbnail != null) {
             int x = getWidth()/2 - thumbnail.getIconWidth()/2;
             int y = getHeight()/2 - thumbnail.getIconHeight()/2;
-            
+
             if (y < 0) {
                 y = 0;
             }
-            
+
             if (x < 5) {
                 x = 5;
             }
@@ -106,11 +103,11 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
         setLayout(new java.awt.BorderLayout());
 
     }//GEN-END:initComponents
-    
-    
-    
-    
+
+
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
+
 }

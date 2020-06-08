@@ -1,14 +1,6 @@
 /*
- * @(#)GrayChooser.java  1.5  2007-02-24
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of
- * Werner Randelshofer. ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entehue into
- * with Werner Randelshofer.
+ * @(#)GrayChooser.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -28,7 +20,7 @@ import javax.swing.plaf.*;
  * @author  Werner Randelshofer
  * @version 1.5 2007-02-24 Select text in text field when it gains focus.
  * The field was too short for J2SE 1.3.
- * <br>1.4 2006-04-23 Retrieve labels from UIManager. 
+ * <br>1.4 2006-04-23 Retrieve labels from UIManager.
  * <br>1.3 2005-11-22 Moved handler for text fields into separate class.
  * <br>1.2.1 2005-11-07 Get "Labels" ResourceBundle from UIManager.
  * <br>1.2 2005-09-05 Get font, spacing and icon from UIManager.
@@ -38,11 +30,11 @@ import javax.swing.plaf.*;
  */
 public class GrayChooser extends AbstractColorChooserPanel implements UIResource {
     private GrayColorSliderModel ccModel = new GrayColorSliderModel();
-    
+
     /** Creates new form. */
     public GrayChooser() {
     }
-    
+
     protected void buildChooser() {
         initComponents();
 
@@ -112,25 +104,25 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         seventyFivePercentButton.setBackground(new Color(cs, new float[]{0.75f}, 1f));
         hundredPercentButton.setBackground(new Color(cs, new float[]{1f}, 1f));
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.grayScaleSlider");
     }
-    
+
     public Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorSlidersIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     /**
      * We have to prevent us from constantly updating the color model, because
      * the gray chooser is not able to preserve all color components.
      */
     private int updateRecursion;
-    
+
     public void updateChooser() {
         updateRecursion++;
         Color cfm = getColorFromModel();
@@ -139,9 +131,9 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
     }
     public void setColorToModel(Color color) {
         getColorSelectionModel().setSelectedColor(color);
-        
+
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -296,16 +288,16 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
     private void fieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldFocusGained
 ((JTextField) evt.getSource()).selectAll();
     }//GEN-LAST:event_fieldFocusGained
-    
+
     private void percentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_percentActionPerformed
         setColorToModel(((JButton) evt.getSource()).getBackground());
     }//GEN-LAST:event_percentActionPerformed
-    
+
     private void brightnessFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_brightnessFieldFocusLost
         brightnessField.setText(Integer.toString(ccModel.getBoundedRangeModel(0).getValue()));
     }//GEN-LAST:event_brightnessFieldFocusLost
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField brightnessField;
     private javax.swing.JLabel brightnessFieldLabel;
@@ -320,5 +312,5 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
     private javax.swing.JButton twentyFivePercentButton;
     private javax.swing.JButton zeroPercentButton;
     // End of variables declaration//GEN-END:variables
-    
+
 }

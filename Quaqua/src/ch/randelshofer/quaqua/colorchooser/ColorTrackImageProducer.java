@@ -1,16 +1,13 @@
 /*
- * @(#)ColorTrackImageProducer.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ColorTrackImageProducer.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.image.*;
 /**
- * ColorTrackImageProducer creates the image for the track of a 
+ * ColorTrackImageProducer creates the image for the track of a
  * color slider.
  *
  * @see ColorSliderUI
@@ -26,7 +23,7 @@ public class ColorTrackImageProducer extends MemoryImageSource {
     private boolean isDirty = true;
     private int componentIndex = 0;
     private boolean isHorizontal;
-    
+
     /** Creates a new instance. */
     public ColorTrackImageProducer(int w, int h, int trackBuffer, boolean isHorizontal) {
         super(w, h, null, 0, w);
@@ -39,28 +36,28 @@ public class ColorTrackImageProducer extends MemoryImageSource {
         newPixels(pixels, ColorModel.getRGBdefault(), 0, w);
         setAnimated(true);
     }
-    
+
     public int getWidth() {
         return w;
     }
     public int getHeight() {
         return h;
     }
-    
+
     public void markAsDirty() {
         isDirty = true;
     }
-    
+
     public boolean needsGeneration() {
         return isDirty;
     }
-    
+
     public void regenerateColorTrack() {
         if (isDirty) {
             generateColorTrack();
         }
     }
-    
+
     public void generateColorTrack() {
         if (isHorizontal) {
             generateHorizontalColorTrack();
@@ -70,7 +67,7 @@ public class ColorTrackImageProducer extends MemoryImageSource {
         newPixels();
         isDirty = false;
     }
-    
+
     private void generateHorizontalColorTrack() {
         int offset = trackBuffer / 2;
         for (int x = 0, n = w - trackBuffer - 1; x <= n; x++) {

@@ -1,9 +1,6 @@
 /*
- * @(#)TextPaneTest.java  1.0  13 February 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)TextPaneTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -15,12 +12,12 @@ package test;
  * @version 1.0  13 February 2005  Created.
  */
 public class TextPaneTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public TextPaneTest() {
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -99,8 +96,8 @@ public class TextPaneTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         add(label3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel label1;
     private javax.swing.JLabel label2;
@@ -112,5 +109,5 @@ public class TextPaneTest extends javax.swing.JPanel {
     private javax.swing.JTextPane textPane2;
     private javax.swing.JTextPane textPane3;
     // End of variables declaration//GEN-END:variables
-    
+
 }

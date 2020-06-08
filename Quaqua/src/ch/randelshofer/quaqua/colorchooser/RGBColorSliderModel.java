@@ -1,9 +1,6 @@
 /*
- * @(#)RGBColorSliderModel.java  1.0  May 22, 2005
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)RGBColorSliderModel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -26,23 +23,23 @@ public class RGBColorSliderModel extends ColorSliderModel {
             new DefaultBoundedRangeModel(255, 0, 0, 255)
         });
     }
-    
+
     public int getRGB() {
         return getRGB(components[0].getValue(), components[1].getValue(), components[2].getValue());
     }
-    
+
     protected int getRGB(int r, int g, int b) {
         return 0xff000000 | r << 16 | g << 8 | b;
     }
-    
+
     public void setRGB(int rgb) {
         components[0].setValue((rgb & 0xff0000) >> 16);
         components[1].setValue((rgb & 0x00ff00) >> 8);
         components[2].setValue( rgb & 0x0000ff);
     }
-    
+
     public int toRGB(int[] values) {
         return 0xff000000 | values[0] << 16 | values[1] << 8 | values[2];
     }
-    
+
 }

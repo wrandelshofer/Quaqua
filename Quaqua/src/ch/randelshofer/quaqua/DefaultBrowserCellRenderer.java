@@ -1,8 +1,6 @@
-/**
- * @(#)DefaultBrowserCellRenderer.java 
- * Copyright (c) 2008-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+/*
+ * @(#)DefaultBrowserCellRenderer.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -253,7 +251,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
     }
 
     /**
-     * Subclassed to map <code>ColorUIResource</code>s to null. If 
+     * Subclassed to map <code>ColorUIResource</code>s to null. If
      * <code>color</code> is null, or a <code>ColorUIResource</code>, this
      * has the effect of letting the background color of the JBrowser show
      * through. On the other hand, if <code>color</code> is non-null, and not

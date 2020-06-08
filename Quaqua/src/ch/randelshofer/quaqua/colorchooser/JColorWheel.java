@@ -1,9 +1,6 @@
 /*
  * @(#)JColorWheel.java
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.colorchooser;
 
@@ -128,7 +125,7 @@ public class JColorWheel extends JPanel {
     protected ColorWheelImageProducer createWheelProducer(int w, int h) {
         return new ColorWheelImageProducer(w, h);
     }
-    
+
     protected void paintWheel(Graphics2D g) {
         int w = getWidth() - wheelInsets.left - wheelInsets.right;
         int h = getHeight() - wheelInsets.top - wheelInsets.bottom;
@@ -172,7 +169,7 @@ public class JColorWheel extends JPanel {
     }
 
     protected Point getColorLocation(Color c) {
-        Point p = colorWheelProducer.getColorLocation(c, 
+        Point p = colorWheelProducer.getColorLocation(c,
                 getWidth() - wheelInsets.left - wheelInsets.right,
                 getHeight() - wheelInsets.top - wheelInsets.bottom);
         p.x += wheelInsets.left;
@@ -181,7 +178,7 @@ public class JColorWheel extends JPanel {
     }
 
     protected Point getColorLocation(float hue, float saturation, float brightness) {
-        Point p = colorWheelProducer.getColorLocation(hue, saturation, brightness, 
+        Point p = colorWheelProducer.getColorLocation(hue, saturation, brightness,
                 getWidth() - wheelInsets.left - wheelInsets.right,
                 getHeight() - wheelInsets.top - wheelInsets.bottom);
         p.x += wheelInsets.left;

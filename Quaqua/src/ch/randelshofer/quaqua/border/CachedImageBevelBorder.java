@@ -1,9 +1,6 @@
 /*
- * @(#)CachedImageBevelBorder.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)CachedImageBevelBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.border;
@@ -38,7 +35,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
      * The image to be used for drawing.
      */
     private Image image;
-    
+
     /**
      * The border insets
      */
@@ -47,18 +44,18 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
      * The insets of the image.
      */
     private Insets imageInsets;
-    
+
     /**
      * This attribute is set to true, when the image
      * is used to fill the content area too.
      */
     private boolean fillContentArea;
-    
+
     /**
      * We don't need arguments. We use this instance.
      */
     private Object args = this;
-    
+
     /**
      * Creates a new instance with the given image and insets.
      * The image has the same insets as the border.
@@ -66,7 +63,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
     public CachedImageBevelBorder(Image img, Insets borderInsets) {
         this(img, borderInsets, borderInsets, true);
     }
-    
+
     /**
      * Creates a new instance with the given image and insets.
      * The image has different insets than the border.
@@ -85,7 +82,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
         this.borderInsets = borderInsets;
         this.fillContentArea = fillContentArea;
     }
-    
+
     /**
      * Returns true if the border is opaque.
      * This implementation always returns false.
@@ -93,7 +90,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
     public boolean isBorderOpaque() {
         return false;
     }
-    
+
     /**
      * Returns the insets of the border.
      * @param c the component for which this border insets value applies
@@ -101,8 +98,8 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
     public Insets getBorderInsets(Component c) {
         return (Insets) borderInsets.clone();
     }
-    
-    
+
+
     /**
      * Paints the bevel image for the specified component with the
      * specified position and size.
@@ -118,9 +115,9 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
         if (gr.getClipBounds()!=null&&! gr.getClipBounds().intersects(x, y, width, height)) {
             return;
         }
-        paint(c, gr, x, y, width, height, args); 
+        paint(c, gr, x, y, width, height, args);
     }
-    
+
     /**
      * Creates the image to cache.  This returns a translucent image.
      *
@@ -145,11 +142,11 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
         // Graphics object instead of just casting the provided one. This is
         // because drawing texture paints appears to confuse the Graphics object.
         Graphics2D g = (Graphics2D) gr.create();
-        
+
         // Convert image to buffered image (and keep the buffered image).
         image = Images.toBufferedImage(image);
         BufferedImage img = (BufferedImage) image;
-        
+
         // Set some variables for easy access of insets and image size
         int top = imageInsets.top;
         int left = imageInsets.left;
@@ -157,8 +154,8 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
         int right = imageInsets.right;
         int imgWidth = img.getWidth();
         int imgHeight = img.getHeight();
-        
-        
+
+
         // Optimisation: Draw image directly if it fits into the component
         if (fillContentArea) {
             if (width == imgWidth && height == imgHeight) {
@@ -167,7 +164,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
                 return;
             }
         }
-        
+
         // Optimisation: Remove insets, if image width or image height fits
         if (width == imgWidth) {
             left = imgWidth;
@@ -177,7 +174,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
             top = imgHeight;
             bottom = 0;
         }
-        
+
         // Adjust insets if component is too small
         if (width < left + right) {
             left = Math.min(left, width / 2); //Math.max(0, left + (width - left - right) / 2);
@@ -187,7 +184,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
             top = Math.min(top, height / 2); //Math.max(0, top + (height - top - bottom) / 2);
             bottom = height - top;
         }
-        
+
         // Draw the Corners
         if (top > 0 && left > 0) {
             g.drawImage(
@@ -222,7 +219,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
             c
             );
         }
-        
+
         // Draw the edges
         BufferedImage subImg = null;
         TexturePaint paint;
@@ -263,7 +260,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
             g.fillRect(width - right, top, right, height - top - bottom);
             }
         }
-        
+
         // Fill the center
         if (fillContentArea) {
             if (left + right < imgWidth && top + bottom < imgHeight) {
@@ -275,12 +272,12 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
         }
         g.dispose();
     }
-    
+
     public static class UIResource extends CachedImageBevelBorder implements javax.swing.plaf.UIResource {
     public UIResource(Image img, Insets borderInsets) {
         super(img, borderInsets);
     }
-    
+
     /**
      * Creates a new instance with the given image and insets.
      * The image has different insets than the border.

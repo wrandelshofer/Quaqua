@@ -1,9 +1,6 @@
 /*
- * @(#)ColorWheelTest.java  1.0  August 27, 2005
- *
- * Copyright (c) 2005 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ColorWheelTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package qtest;

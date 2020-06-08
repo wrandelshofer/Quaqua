@@ -1,9 +1,6 @@
 /*
- * @(#)SheetEvent.java  1.0  26. September 2005
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)SheetEvent.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -21,7 +18,7 @@ public class SheetEvent extends EventObject {
     private int option;
     private Object value;
     private Object inputValue;
-    
+
     /**
      * Creates a new instance.
      */
@@ -47,7 +44,7 @@ public class SheetEvent extends EventObject {
         this.value = value;
         this.inputValue = inputValue;
     }
-    
+
     /**
      * Returns the pane on the sheet. This is either a JFileChooser or a
      * JOptionPane.
@@ -78,11 +75,11 @@ public class SheetEvent extends EventObject {
      */
     public Object getValue() {
         return value;
-    }    
+    }
     /**
      * Returns the input value that the JOptionPane returned, if it wants input.
      */
     public Object getInputValue() {
         return inputValue;
-    }    
+    }
 }

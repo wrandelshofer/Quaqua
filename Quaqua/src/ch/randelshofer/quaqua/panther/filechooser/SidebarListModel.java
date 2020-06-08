@@ -1,9 +1,6 @@
 /*
- * @(#)SidebarListModel.java  3.0.3  2008-04-17
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)SidebarListModel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.panther.filechooser;
 

@@ -1,4 +1,9 @@
 /*
+ * @(#)CustomClassLoaderTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+ */
+
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -31,15 +36,15 @@ public class CustomClassLoaderTest {
                     new URL("file:./quaqua-test.jar"),
                     new URL("file:./quaqua.jar"),
                 });
-                
+
                 Class c = l.loadClass("test.QuaquaTest");
                 Method m = c.getMethod("main", new Class[] {String[].class});
                 m.invoke(null, new Object[] {args});
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
         }
     }
 

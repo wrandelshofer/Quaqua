@@ -1,9 +1,6 @@
 /*
- * @(#)ColorChooserMainPanel.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ColorChooserMainPanel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -28,7 +25,7 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
      * before.
      */
     private static String lastSelectedChooserName = null;
-    
+
     /** Creates new form. */
     public ColorChooserMainPanel() {
         initComponents();
@@ -36,21 +33,21 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
         toolBar.putClientProperty(QuaquaToolBarUI.TOOLBAR_STYLE_PROPERTY,"title");
         setOpaque(false);
     }
-    
+
     public void setPreviewPanel(JComponent c) {
         previewPanelHolder.removeAll();
         if (c != null) {
             previewPanelHolder.add(c);
         }
     }
-    
+
     public void addColorChooserPanel(final AbstractColorChooserPanel ccp) {
         final String displayName = ccp.getDisplayName();
         if (displayName == null) {
             // Return if we haven't initialized yet
             return;
         }
-        
+
         if (ccp.getClass().getName().equals("ch.randelshofer.quaqua.colorchooser.QuaquaColorPicker")) {
             northPanel.add(ccp, BorderLayout.WEST);
         } else {
@@ -67,14 +64,14 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
             chooserPanelHolder.add(centerView, displayName);
             toolBarButtonGroup.add(tb);
             toolBar.add(tb);
-            
+
             if (toolBar.getComponentCount() == 1
             || lastSelectedChooserName != null && lastSelectedChooserName.equals(displayName)) {
                 tb.setSelected(true);
                 CardLayout cl = (CardLayout) chooserPanelHolder.getLayout();
                 cl.show(chooserPanelHolder, displayName);
             }
-            
+
             tb.addItemListener(new ItemListener() {
                 public void itemStateChanged(ItemEvent evt) {
                     if (evt.getStateChange() == ItemEvent.SELECTED) {
@@ -95,11 +92,11 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
         }
         toolBar.removeAll();
         chooserPanelHolder.removeAll();
-        
+
         northPanel.removeAll();
         northPanel.add(previewPanelHolder);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -137,8 +134,8 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
         add(mainPanel, java.awt.BorderLayout.CENTER);
 
     }//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel chooserPanelHolder;
     private javax.swing.JPanel mainPanel;
@@ -147,5 +144,5 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
     private javax.swing.JToolBar toolBar;
     private javax.swing.ButtonGroup toolBarButtonGroup;
     // End of variables declaration//GEN-END:variables
-    
+
 }

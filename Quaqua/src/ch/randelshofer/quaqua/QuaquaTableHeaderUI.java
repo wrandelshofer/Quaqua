@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaTableHeaderUI.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaTableHeaderUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -77,7 +74,7 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
         TableColumnModel cm = header.getColumnModel();
         int cMin = header.columnAtPoint(ltr ? left : right);
         int cMax = header.columnAtPoint(ltr ? right : left);
-        // This should never happen. 
+        // This should never happen.
         if (cMin == -1) {
             cMin = 0;
         }
@@ -130,12 +127,12 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
             }
         }
 
-        // Paint the dragged column if we are dragging. 
+        // Paint the dragged column if we are dragging.
         if (draggedColumn != null) {
             int draggedColumnIndex = viewIndexForColumn(draggedColumn);
             Rectangle draggedCellRect = header.getHeaderRect(draggedColumnIndex);
 
-            // Draw a gray well in place of the moving column. 
+            // Draw a gray well in place of the moving column.
             g.setColor(header.getParent().getBackground());
             g.fillRect(draggedCellRect.x, draggedCellRect.y,
                     draggedCellRect.width, draggedCellRect.height);
@@ -253,9 +250,9 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
     }
 
     /**
-     * Return the preferred size of the header. The preferred height is the 
-     * maximum of the preferred heights of all of the components provided 
-     * by the header renderers. The preferred width is the sum of the 
+     * Return the preferred size of the header. The preferred height is the
+     * maximum of the preferred heights of all of the components provided
+     * by the header renderers. The preferred width is the sum of the
      * preferred widths of each column (plus inter-cell spacing).
      */
     @Override

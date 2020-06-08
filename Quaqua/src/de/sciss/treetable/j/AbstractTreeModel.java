@@ -22,7 +22,7 @@ import javax.swing.tree.TreePath;
 
 
 public abstract class AbstractTreeModel implements TreeModel {
-	
+
 	protected EventListenerList listenerList = new EventListenerList();
 
 	@Override
@@ -40,38 +40,38 @@ public abstract class AbstractTreeModel implements TreeModel {
 		fireNodesChanged(listenerList, this, parentPath,
 				new int[]{childIndex}, new Object[]{childNode});
 	}
-	
+
 	public void fireNodesChanged(TreePath parentPath, int[] childIndices, Object[] childNodes) {
 		fireNodesChanged(listenerList, this, parentPath,
 				childIndices, childNodes);
 	}
-	
+
 	public void fireNodeInserted(TreePath parentPath, int childIndex, Object childNode) {
 		fireNodesInserted(listenerList, this, parentPath,
 				new int[]{childIndex}, new Object[]{childNode});
 	}
-	
+
 	public void fireNodesInserted(TreePath parentPath, int[] childIndices, Object[] childNodes) {
 		fireNodesInserted(listenerList, this, parentPath,
 				childIndices, childNodes);
 	}
-	
+
 	public void fireNodeRemoved(TreePath parentPath, int childIndex, Object childNode) {
 		fireNodesRemoved(listenerList, this, parentPath,
 				new int[]{childIndex}, new Object[]{childNode});
 	}
-	
+
 	public void fireNodesRemoved(TreePath parentPath, int[] childIndices, Object[] childNodes) {
 		fireNodesRemoved(listenerList, this, parentPath,
 				childIndices, childNodes);
 	}
-	
+
 	public void fireTreeStructureChanged(TreePath parentPath) {
 		fireTreeStructureChanged(listenerList, this, parentPath);
 	}
-	
-	
-	
+
+
+
 	public static void fireNodesChanged(EventListenerList listenerList,
 			TreeModel source, TreePath path, int[] childIndices, Object[] childNodes) {
 		Object[] listeners = listenerList.getListenerList();
@@ -84,7 +84,7 @@ public abstract class AbstractTreeModel implements TreeModel {
 			}
 		}
 	}
-	
+
 	public static void fireNodesInserted(EventListenerList listenerList,
 			TreeModel source, TreePath path, int[] childIndices, Object[] childNodes) {
 		if (childIndices == null || childNodes == null)
@@ -99,7 +99,7 @@ public abstract class AbstractTreeModel implements TreeModel {
 			}
 		}
 	}
-	
+
 	public static void fireNodesRemoved(EventListenerList listenerList,
 			TreeModel source, TreePath path, int[] childIndices, Object[] childNodes) {
 		if (childIndices == null || childNodes == null)
@@ -114,7 +114,7 @@ public abstract class AbstractTreeModel implements TreeModel {
 			}
 		}
 	}
-	
+
 	public static void fireTreeStructureChanged(EventListenerList listenerList,
 			TreeModel source, TreePath path) {
 		Object[] listeners = listenerList.getListenerList();

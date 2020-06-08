@@ -1,9 +1,6 @@
 /*
- * @(#)InputVerifierTest.java  1.0  August 1, 2007
- *
- * Copyright (c) 2007 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)InputVerifierTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -18,20 +15,20 @@ import javax.swing.*;
  * @version 1.0 August 1, 2007 Created.
  */
 public class InputVerifierTest extends javax.swing.JPanel {
-    
+
     /** Creates new instance. */
     public InputVerifierTest() {
         initComponents();
-        
+
         passField.setMinimumSize(passField.getPreferredSize());
         passField.setInputVerifier(new TextFieldVerifier("pass"));
-        
+
         emptyField.setMinimumSize(emptyField.getPreferredSize());
         emptyField.setInputVerifier(new TextFieldVerifier(""));
 
         checkedBox.setInputVerifier(new CheckBoxVerifier(true));
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -103,8 +100,8 @@ public class InputVerifierTest extends javax.swing.JPanel {
         add(checkedBox, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox checkedBox;
     private javax.swing.JTextField emptyField;
@@ -114,10 +111,10 @@ public class InputVerifierTest extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField passField;
     // End of variables declaration//GEN-END:variables
-    
+
     private static class TextFieldVerifier extends InputVerifier {
         private String validText;
-        
+
         public TextFieldVerifier(String validText) {
             this.validText = validText;
         }
@@ -128,7 +125,7 @@ public class InputVerifierTest extends javax.swing.JPanel {
     }
     private static class CheckBoxVerifier extends InputVerifier {
         private boolean validSelection;
-        
+
         public CheckBoxVerifier(boolean validSelection) {
             this.validSelection = validSelection;
         }

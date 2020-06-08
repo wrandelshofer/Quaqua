@@ -1,9 +1,6 @@
 /*
- * @(#)VisualMarginTest.java  1.0  07 April 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)VisualMarginTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package test;
 
@@ -36,7 +33,7 @@ public class VisualMarginTest extends javax.swing.JPanel {
         jLabel2.putClientProperty("Quaqua.Component.visualMargin", new Insets(2, 2, 2, 2));
         jLabel3.putClientProperty("Quaqua.Component.visualMargin", new Insets(1, 1, 1, 1));
         jLabel4.putClientProperty("Quaqua.Component.visualMargin", new Insets(0, 0, 0, 0));
-        
+
         classItemChanged(null);
     }
 

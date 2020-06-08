@@ -1,9 +1,6 @@
 /*
  * @(#)FileSystemViewFilter.java
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.filechooser;
@@ -20,21 +17,21 @@ import java.io.*;
  */
 public abstract class FileSystemViewFilter extends FileSystemView {
     protected FileSystemView target;
-    
+
     /**
      * Creates a new instance.
      */
     public FileSystemViewFilter() {
         target = FileSystemView.getFileSystemView();
     }
-    
+
     /**
      * Creates a new folder with a default folder name.
      */
     public File createNewFolder(File containingDir) throws IOException {
         return target.createNewFolder(containingDir);
     }
-    
+
     /**
      * Determines if the given file is a root in the navigatable tree(s).
      * Examples: Windows 98 has one root, the Desktop folder. DOS has one root
@@ -168,7 +165,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
     /**
      * Is dir the root of a tree in the file system, such as a drive
      * or partition. Example: Returns true for "C:\" on Windows 98.
-     * 
+     *
      * @param dir a <code>File</code> object representing a directory
      * @return <code>true</code> if <code>f</code> is a root of a filesystem
      * @see #isRoot

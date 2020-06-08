@@ -312,7 +312,7 @@ public class LocalizableSupport implements Localizable {
     public int getInteger(String key)
         throws MissingResourceException {
         String i = getString(key);
-        
+
         try {
             return Integer.parseInt(i);
         } catch (NumberFormatException e) {
@@ -324,7 +324,7 @@ public class LocalizableSupport implements Localizable {
     public int getCharacter(String key)
         throws MissingResourceException {
         String s = getString(key);
-        
+
         if(s == null || s.length() == 0){
             throw new MissingResourceException
                 ("Malformed character", bundleName, key);

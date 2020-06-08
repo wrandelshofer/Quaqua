@@ -1,9 +1,6 @@
 /*
- * @(#)ScriptSystem.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ScriptSystem.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.util;
@@ -36,7 +33,7 @@ public class ScriptSystem {
         char measurementChar;
         int baseline;
     }
-    
+
     /**
      * Script systems. The ID of the script system is the lowest
      * Unicode character code of the script system.
@@ -119,7 +116,7 @@ public class ScriptSystem {
     //OGHAM =
     RUNIC = 0x16a0;
     //PHOENICIAN = 0;
-    
+
     /**
      * Lookup table for determining the script system of a
      * given character.
@@ -215,13 +212,13 @@ public class ScriptSystem {
         //Phoenician = { 0x, 0x, 0x , Font.ROMAN_BASELINE), //
     }
     ;
-    
+
     /**
      * Prevent instance creation
      */
     private ScriptSystem() {
     }
-    
+
     /**
      * Returns the script system of the specified char.
      * If the script system can not be determined, LATIN is

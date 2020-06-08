@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaMenuBarUI.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaMenuBarUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -22,11 +19,11 @@ import javax.swing.plaf.basic.*;
  * @version $Id$
  */
 public class QuaquaMenuBarUI extends BasicMenuBarUI {
-    
+
     /** Creates a new instance. */
     public QuaquaMenuBarUI() {
     }
-    
+
     public static ComponentUI createUI(JComponent x) {
         return new QuaquaMenuBarUI();
     }
@@ -35,15 +32,15 @@ public class QuaquaMenuBarUI extends BasicMenuBarUI {
         Graphics2D g = (Graphics2D) gr;
         int w = c.getWidth();
         int h = c.getHeight();
-        
+
         g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
         g.fillRect(0, 0, w, h);
-        
+
         if (c.getBorder() instanceof BackgroundBorder) {
             Border bb = ((BackgroundBorder) c.getBorder()).getBackgroundBorder();
             bb.paintBorder(c, gr, 0, 0, w, h);
         }
-        
+
         Color shadow = UIManager.getColor("MenuBar.shadow");
         if (shadow != null) {
             g.setColor(shadow);

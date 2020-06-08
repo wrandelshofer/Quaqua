@@ -1,12 +1,6 @@
 /*
- * @(#)TexturedFrameTest.java  1.0  2009-09-29
- * 
- * Copyright (c) 2009 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)TexturedFrameTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;

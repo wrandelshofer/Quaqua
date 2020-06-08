@@ -1,12 +1,6 @@
 /*
- * @(#)QuaquaButtonLogo.java  1.0  2013-05-15
- * 
- * Copyright (c) 2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the 
- * license agreement you entered into with Werner Randelshofer. 
- * For details see accompanying license terms.
+ * @(#)QuaquaButtonLogo.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -33,7 +27,7 @@ public class QuaquaButtonLogo extends javax.swing.JFrame {
     /** Creates new form QuaquaButtonLogo */
     public QuaquaButtonLogo() {
         initComponents();
-        
+
         getRootPane().setDefaultButton(jButton1);
     }
 
@@ -96,10 +90,10 @@ public class QuaquaButtonLogo extends javax.swing.JFrame {
         } catch (AccessControlException e) {
             // can't do anything about this
         }
-        
+
         // Configure Quaqua system properties
         System.setProperty("Quaqua.design", "jaguar");
-        
+
 
         // Add Quaqua to the lafs
         ArrayList<UIManager.LookAndFeelInfo> infos = new ArrayList<UIManager.LookAndFeelInfo>(Arrays.asList(UIManager.getInstalledLookAndFeels()));
@@ -123,7 +117,7 @@ public class QuaquaButtonLogo extends javax.swing.JFrame {
         }
 
         // Launch the test program
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 long edtEnd = System.currentTimeMillis();
@@ -175,7 +169,7 @@ public class QuaquaButtonLogo extends javax.swing.JFrame {
                     }
                 }
                 long lafEnd = System.currentTimeMillis();
-                
+
                 new QuaquaButtonLogo().setVisible(true);
             }
         });

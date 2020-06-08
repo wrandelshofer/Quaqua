@@ -1,11 +1,6 @@
 /*
- * Copyright (c) 2004-2010 Werner Randelshofer, Switzerland.
- * Copyright (c) 2014 Alan Snyder.
- * All rights reserved.
- *
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)QuaquaGenericListMouseBehavior.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 

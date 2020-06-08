@@ -26,7 +26,7 @@ public class DefaultTreeTableCellRenderer extends JLabel
 
 	public DefaultTreeTableCellRenderer() {
 	}
-	
+
 	@Override
 	public Component getTreeTableCellRendererComponent(TreeTable treeTable,
 			Object value, boolean selected, boolean hasFocus, int row, int column) {
@@ -45,18 +45,18 @@ public class DefaultTreeTableCellRenderer extends JLabel
 		setValue(value);
 		return this;
 	}
-	
+
 	protected void setValue(Object value) {
 		setText(value == null ? "" : value.toString());
 	}
-	
+
 
 	/**
 	 * This class implements the TableCellRenderer interface as a convenience
 	 * so that it can be stored as a renderer in a TableColumn.
 	 * <p>
 	 * This method is not actually implemented.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException
 	 */
 	@Override
@@ -64,16 +64,16 @@ public class DefaultTreeTableCellRenderer extends JLabel
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	// Performance Overrides
-	
+
 	@Override
     public void invalidate() {}
 	@Override
     public void validate() {}
 	@Override
     public void revalidate() {}
-	
+
 	@Override
 	public void repaint() {}
 	@Override

@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaComboBoxVisualMargin.java  
- *
- * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaComboBoxVisualMargin.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -18,12 +15,12 @@ import javax.swing.*;
  * @version $Id$
  */
 public class QuaquaComboBoxVisualMargin extends VisualMarginBorder {
-    
+
     /** Creates a new instance. */
     public QuaquaComboBoxVisualMargin() {
         super();
     }
-    
+
     /**
      * Creates a new VisualMarginBorder.
      *
@@ -54,7 +51,7 @@ public class QuaquaComboBoxVisualMargin extends VisualMarginBorder {
     public QuaquaComboBoxVisualMargin(Insets layoutMargin) {
         super(layoutMargin);
     }
-    
+
     /**
      * Reinitializes the insets parameter with this Border's current Insets.
      * @param c the component for which this border insets value applies

@@ -1,4 +1,9 @@
 /*
+ * @(#)UnifiedTitleBarTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+ */
+
+/*
  * UnifiedTitleBarTest.java
  *
  * Created on August 10, 2008, 6:18 PM

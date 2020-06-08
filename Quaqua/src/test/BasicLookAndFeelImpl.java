@@ -1,13 +1,6 @@
 /*
- * @(#)BasicLookAndFeelImpl.java  1.0  2008-11-17
- *
- * Copyright (c) 2008 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * The copyright of this software is owned by Werner Randelshofer.
- * You may not use, copy or modify this software, except in
- * accordance with the license agreement you entered into with
- * Werner Randelshofer. For details see accompanying license terms.
+ * @(#)BasicLookAndFeelImpl.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;

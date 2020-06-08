@@ -1,12 +1,6 @@
 /*
- * @(#)QuaquaLionScrollBarThumbBorder.java  1.0  2011-08-05
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)QuaquaLionScrollBarTrackBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.lion;
 
@@ -57,7 +51,7 @@ public class QuaquaLionScrollBarTrackBorder implements Border, UIResource {
         Dimension ps = sb.getUI().getPreferredSize(sb);
         Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
-        
+
         // Draw filled gradient track if not in scroll pane
          if (sb.getOrientation() == SwingConstants.HORIZONTAL) {
             height = Math.min(ps.height, height);
@@ -115,7 +109,7 @@ if (false && sp != null && sp.getViewport().getView()!=null) {
             Color bg= sp.getViewport().getView().getBackground();
             g.setPaint(PaintableColor.getPaint(bg,sp.getViewport().getView()));
             g.fillRect(x,y,width,height);
-        } 
+        }
         QuaquaUtilities.endGraphics(g, oldHints);
     }
 

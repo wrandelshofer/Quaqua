@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaTextFieldBorder.java  4.2  2008-10-02
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaTextFieldBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -23,7 +20,7 @@ import javax.swing.border.*;
  * @author  Werner Randelshofer
  * @version 4.2 2008-10-02 Made imageInsets a parameter, instead of using
  * hardcoded values.
- * <br>4.1 2008-01-04 Don't draw focus border when component is disabled. 
+ * <br>4.1 2008-01-04 Don't draw focus border when component is disabled.
  * <br>4.0 2007-07-26 Add support for client property "Quaqua.TextField.style"
  * "search", "plain".
  * <br>3.1 2007-04-12 Honour margin of JTextComponent.

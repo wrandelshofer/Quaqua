@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaComboBoxEditor.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaComboBoxEditor.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -32,10 +29,10 @@ public class QuaquaComboBoxEditor extends BasicComboBoxEditor {
                 super.setText(s);
             }
         };
-        
+
        installKeyboardActions();
     }
-    
+
     protected void installKeyboardActions() {
         InputMap km = getInputMap();
 	if (km != null) {
@@ -44,7 +41,7 @@ public class QuaquaComboBoxEditor extends BasicComboBoxEditor {
     }
 
     /**
-     * Get the InputMap to use for the UI.  
+     * Get the InputMap to use for the UI.
      */
     InputMap getInputMap() {
 	InputMap map = new InputMapUIResource();

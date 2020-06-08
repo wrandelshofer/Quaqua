@@ -1,12 +1,6 @@
 /*
- * @(#)QuaquaLionButtonStateBorder.java 
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)QuaquaNativeButtonStateIcon.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.icon;
 
@@ -53,7 +47,7 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
 
     public QuaquaNativeButtonStateIcon(Widget widget, int width, int height) {
         this(widget,0,0,width,height);
-        
+
     }
     public QuaquaNativeButtonStateIcon(Widget widget, int xoffset, int yoffset, int width, int height) {
         super(12);
@@ -97,7 +91,7 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
             }
         }
         painter.setState(state);
-        
+
         int value = b == null ? 1 : (b.isSelected() ? 1 : 0);
         painter.setValueByKey(Key.value, value);
         args |= value << ARG_SELECTED;
@@ -120,9 +114,9 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
         }
         painter.setSize(size);
         args |= size.getId() << ARG_SIZE_VARIANT;
-        
+
         args |= painter.getWidget().getId()<<ARG_WIDGET;
-        
+
         paint(c, g, x, y, width, height, args);
     }
 
@@ -179,7 +173,7 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
             super(widget, width, height);
         }
 
-       
-        
+
+
     }
 }

@@ -1,9 +1,6 @@
 /*
- * @(#)ScrollPaneTest.java  1.0  August 25, 2005
- *
- * Copyright (c) 2005 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ScrollPaneTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -18,25 +15,25 @@ import java.security.*;
  * @version 1.0 August 25, 2005 Created.
  */
 public class ScrollPaneTest extends javax.swing.JPanel {
-    
+
     /**
      * Creates a new instance.
      */
     public ScrollPaneTest() {
         initComponents();
-        
+
         DefaultListModel lm = new DefaultListModel();
         for (int i=1; i <= 100; i++) {
         lm.addElement(i);
         }
         jList1.setModel(lm);
-        
+
         jScrollPane2.getViewport().setOpaque(false);
         /*
         jScrollPane2.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
          */
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -49,7 +46,7 @@ public class ScrollPaneTest extends javax.swing.JPanel {
         } catch (AccessControlException e) {
             // can't do anything about this
         }
-        
+
         // Launch the test program
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -67,7 +64,7 @@ public class ScrollPaneTest extends javax.swing.JPanel {
                         // can't do anything about this
                     }
                 }
-                
+
                 JComponent c = new ScrollPaneTest();
                 JFrame f = new JFrame("ScrollPaneTest");
                 f.getContentPane().add(c);
@@ -207,8 +204,8 @@ public class ScrollPaneTest extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
@@ -226,5 +223,5 @@ public class ScrollPaneTest extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
-    
+
 }

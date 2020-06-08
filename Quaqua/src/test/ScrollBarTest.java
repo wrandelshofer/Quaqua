@@ -1,9 +1,6 @@
 /*
- * @(#)ScrollBarTest.java  1.0  18 settembre 2005
- *
- * Copyright (c) 2005 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ScrollBarTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -18,13 +15,13 @@ import javax.swing.*;
  * @version 1.0 18 settembre 2005 Created.
  */
 public class ScrollBarTest extends javax.swing.JPanel {
-    
+
     /**
      * Creates a new instance.
      */
     public ScrollBarTest() {
         initComponents();
-        
+
         JScrollBar[] regularBars = {
             scrollBar1, scrollBar2, scrollBar3, scrollBar4,
             scrollBar5, scrollBar6, scrollBar7, scrollBar8,
@@ -37,14 +34,14 @@ public class ScrollBarTest extends javax.swing.JPanel {
             miniScrollBar1, miniScrollBar2, miniScrollBar3, miniScrollBar4,
             miniScrollBar5, miniScrollBar6, miniScrollBar7, miniScrollBar8,
         };
-        
+
         for (JScrollBar sb:smallBars) {
             sb.putClientProperty("JComponent.sizeVariant", "small");
         }
         for (JScrollBar sb:miniBars) {
             sb.putClientProperty("JComponent.sizeVariant", "mini");
         }
-        
+
         ArrayList< JScrollBar> tmp=new ArrayList<JScrollBar>();
         tmp.addAll(Arrays.asList(regularBars));
         tmp.addAll(Arrays.asList(smallBars));
@@ -62,7 +59,7 @@ public class ScrollBarTest extends javax.swing.JPanel {
             }
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -71,7 +68,7 @@ public class ScrollBarTest extends javax.swing.JPanel {
         final java.util.List argList = Arrays.asList(args);
         // Explicitly turn on font antialiasing.
         System.setProperty("swing.aatext", "true");
-        
+
         // Launch the test program
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -89,7 +86,7 @@ public class ScrollBarTest extends javax.swing.JPanel {
                         // can't do anything about this
                     }
                 }
-                
+
                 JComponent c = new ScrollBarTest();
                 JFrame f = new JFrame("ScrollBarTest");
                 f.getContentPane().add(c);
@@ -404,8 +401,8 @@ public class ScrollBarTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         add(scrollBar5, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollBar miniScrollBar1;
     private javax.swing.JScrollBar miniScrollBar2;
@@ -432,5 +429,5 @@ public class ScrollBarTest extends javax.swing.JPanel {
     private javax.swing.JScrollBar smallScrollBar7;
     private javax.swing.JScrollBar smallScrollBar8;
     // End of variables declaration//GEN-END:variables
-    
+
 }

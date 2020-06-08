@@ -1,14 +1,6 @@
 /*
  * @(#)CMYKChooser.java
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of
- * Werner Randelshofer. ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entecyan into
- * with Werner Randelshofer.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.colorchooser;
 

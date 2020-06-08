@@ -1,9 +1,6 @@
 /*
- * @(#)ICC_CMYKColorSliderModel.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ICC_CMYKColorSliderModel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.colorchooser;
 
@@ -16,11 +13,11 @@ import javax.swing.*;
  * A ColorSliderModel for CMYK color models (cyan, magenta, yellow, black) in
  * a color space defined by a ICC color profile (International Color Consortium).
  * <p>
- * XXX - This does not work. I think this is because of 
+ * XXX - This does not work. I think this is because of
  * Java bug #4760025 at
  * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4760025
  * but maybe I am doing something in the wrong way.
- * 
+ *
  *
  * @author  Werner Randelshofer
  * @version $Id$

@@ -1,13 +1,6 @@
 /*
- * @(#)TestBox.java  1.0  19 March 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * The copyright of this software is owned by Werner Randelshofer.
- * You may not use, copy or modify this software, except in
- * accordance with the license agreement you entered into with
- * Werner Randelshofer. For details see accompanying license terms.
+ * @(#)TestBox.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */package test;
 
 import java.awt.Toolkit;
@@ -43,9 +36,9 @@ public class TestBox {
 
 		JFrame frame = new JFrame();
 		JMenuBar bar = new JMenuBar();
-		
+
 		JMenu menu = new JMenu("Menu");
-		
+
 		JMenuItem menuItem = new JMenuItem("Menu Item");
 		menuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -54,12 +47,12 @@ public class TestBox {
 		});
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		
+
 		menu.add(menuItem);
 		bar.add(menu);
-		
+
 		frame.setJMenuBar(bar);
-		
+
 		frame.pack();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);

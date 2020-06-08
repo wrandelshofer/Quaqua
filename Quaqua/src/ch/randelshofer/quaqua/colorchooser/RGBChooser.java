@@ -1,9 +1,6 @@
 /*
- * @(#)RGBChooser.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)RGBChooser.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -24,7 +21,7 @@ import javax.swing.plaf.*;
 public class RGBChooser extends AbstractColorChooserPanel implements UIResource {
     private ColorSliderModel ccModel = new RGBColorSliderModel();
     private int updateRecursion;
-    
+
     /** Creates new form. */
     public RGBChooser() {
     }
@@ -93,19 +90,19 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         greenLabel.setBorder(bm);
         blueLabel.setBorder(bm);
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.rgbSliders");
     }
-    
+
     public Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorSlidersIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void updateChooser() {
         updateRecursion++;
         ccModel.setColor(getColorFromModel());
@@ -114,8 +111,8 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
     public void setColorToModel(Color color) {
         getColorSelectionModel().setSelectedColor(color);
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -257,7 +254,7 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldFocusGained
-        ((JTextField) evt.getSource()).selectAll();        
+        ((JTextField) evt.getSource()).selectAll();
     }//GEN-LAST:event_fieldFocusGained
 
     private void blueFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_blueFieldFocusLost
@@ -271,8 +268,8 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
     private void redFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_redFieldFocusLost
        redField.setText(Integer.toString(ccModel.getValue(0)));
     }//GEN-LAST:event_redFieldFocusLost
-                
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField blueField;
     private javax.swing.JLabel blueLabel;
@@ -285,5 +282,5 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
     private javax.swing.JSlider redSlider;
     private javax.swing.JPanel springPanel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

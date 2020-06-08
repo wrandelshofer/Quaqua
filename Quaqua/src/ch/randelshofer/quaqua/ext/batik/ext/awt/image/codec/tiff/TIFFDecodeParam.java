@@ -38,7 +38,7 @@ import  ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.ImageDecodePar
  * The dithering is done by calling the {@code decode16BitsTo8Bits}
  * method for each short value that needs to be dithered. The method has
  * the following implementation:
- * <pre> 
+ * <pre>
  *       byte b;
  *       short s;
  *       s = s &amp; 0xffff;
@@ -52,7 +52,7 @@ import  ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.ImageDecodePar
  * by the SampleFormat tag, the dithering is done by calling
  * {@code decodeSigned16BitsTo8Bits} instead. The method has the
  * following implementation:
- * <pre> 
+ * <pre>
  *       byte b;
  *       short s;
  *       b = (byte)((s + Short.MIN_VALUE) &gt;&gt; 8);

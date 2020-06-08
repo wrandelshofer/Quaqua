@@ -1,12 +1,6 @@
 /*
- * @(#)ListStateIcon.java  
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)ListStateIcon.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.icon;
 
@@ -19,7 +13,7 @@ import javax.swing.plaf.UIResource;
 /**
  * {@code ListStateIcon} draws two different icons depending on the
  * selection state of a list item.
- * The component must set the client property "Quaqua.selected" to true. 
+ * The component must set the client property "Quaqua.selected" to true.
  *
  * @author Werner Randelshofer
  * @version 1.0 2011-08-04 Created.
@@ -39,7 +33,7 @@ public class ListStateIcon implements Icon, UIResource {
             isSelected=(Boolean)((JComponent)c).getClientProperty("Quaqua.selected");
         }
         if (isSelected) {
-         selectedIcon.paintIcon(c,g,x,y);   
+         selectedIcon.paintIcon(c,g,x,y);
         } else {
         icon.paintIcon(c,g,x,y);
         }
@@ -52,5 +46,5 @@ public class ListStateIcon implements Icon, UIResource {
     public int getIconHeight() {
         return icon.getIconHeight();
     }
-    
+
 }

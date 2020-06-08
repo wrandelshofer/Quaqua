@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaScrollPaneLayout.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaScrollPaneLayout.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -28,10 +25,10 @@ public class QuaquaScrollPaneLayout extends ScrollPaneLayout {
      */
     public QuaquaScrollPaneLayout() {
     }
-    
+
     public void layoutContainer(Container parent) {
         super.layoutContainer(parent);
-        
+
         // In case of a regular sized scroll pane, check if only one of the
         // scroll bars is visible
         // In case of a small or mini sized scroll pane, check if at least
@@ -43,7 +40,7 @@ public class QuaquaScrollPaneLayout extends ScrollPaneLayout {
         ;
         if (fontSize >= 13 && vsbVisible != hsbVisible
         || fontSize < 13 && (vsbVisible || hsbVisible)) {
-            
+
             // Check if the parent is on a frame or a dialog with an intruding grow-box
             JRootPane rootPane = SwingUtilities.getRootPane(parent);
             if (rootPane != null
@@ -63,17 +60,17 @@ public class QuaquaScrollPaneLayout extends ScrollPaneLayout {
                     x += c.getX();
                     y += c.getY();
                 }
-                
+
                 Dimension growBox=UIManager.getDimension("ScrollPane.growBoxSize");
                 if (growBox==null)growBox=new Dimension(0,0);
-                
+
                 if (x + parent.getWidth() > rootPane.getWidth() - growBox.width
                 && y + parent.getHeight() > rootPane.getHeight() - growBox.height) {
                     Insets insets = parent.getInsets();
-               
+
                     if (vsbVisible) {
                         vsb.setSize(
-                        vsb.getWidth(), 
+                        vsb.getWidth(),
                         parent.getHeight() - insets.top - Math.max(insets.bottom, growBox.height)
                         );
                     }
@@ -87,9 +84,9 @@ public class QuaquaScrollPaneLayout extends ScrollPaneLayout {
             }
         }
     }
-    
-    
-    
+
+
+
     /**
      * The UI resource version of <code>ScrollPaneLayout</code>.
      */

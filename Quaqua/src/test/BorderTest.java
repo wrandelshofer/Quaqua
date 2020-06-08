@@ -1,9 +1,6 @@
 /*
- * @(#)BorderTest.java  1.0  September 25, 2005
- *
- * Copyright (c) 2005 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)BorderTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;

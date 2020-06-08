@@ -1,12 +1,6 @@
 /*
- * @(#)FocusedBorder.java  1.0  2011-07-26
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)FocusedBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.border;
 
@@ -62,13 +56,13 @@ public class FocusedBorder extends AbstractFocusedPainter implements PressedCueB
         }
         return true;
     }
-    
+
     public static class UIResource extends FocusedBorder implements javax.swing.plaf.UIResource {
 
         public UIResource(Border actualBorder) {
             super(actualBorder);
         }
 
-               
+
     }
 }

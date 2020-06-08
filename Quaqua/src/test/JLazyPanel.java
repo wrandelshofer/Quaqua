@@ -1,9 +1,6 @@
 /*
  * @(#)JLazyPanel.java
- *
- * Copyright (c) 2005-2009 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -21,8 +18,8 @@ import java.awt.event.*;
  */
 public class JLazyPanel extends javax.swing.JPanel {
     private String childClassName;
-    
-    
+
+
     /**
      * Creates a new instance.
      */
@@ -39,11 +36,11 @@ public class JLazyPanel extends javax.swing.JPanel {
         this();
         setChildClassName(childClassName);
     }
-    
+
     public void setChildClassName(String childClassName) {
         this.childClassName = childClassName;
     }
-    
+
     private void instantiateChild() {
         if (childClassName != null) {
 
@@ -66,7 +63,7 @@ public class JLazyPanel extends javax.swing.JPanel {
             System.out.println("validate "+(end-start));
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -77,7 +74,7 @@ public class JLazyPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-    
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -89,5 +86,5 @@ public class JLazyPanel extends javax.swing.JPanel {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
+
 }

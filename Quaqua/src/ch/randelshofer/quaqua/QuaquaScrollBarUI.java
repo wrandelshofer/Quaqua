@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaScrollBarUI.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaScrollBarUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -1091,7 +1088,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
         @Override
         public void stateChanged(ChangeEvent e) {
             super.stateChanged(e);
-            
+
             boolean newValue=scrollbar.getValueIsAdjusting();
             if (newValue!=isValueAdjusting) {
                 isValueAdjusting=newValue;

@@ -1,9 +1,6 @@
 /*
- * @(#)TextIcon.java  1.0  June 6, 2005
- *
- * Copyright (c) 2005 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)TextIcon.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -25,15 +22,15 @@ public class TextIcon implements Icon {
         this.label = new JLabel(text);
         label.setSize(label.getPreferredSize());
     }
-    
+
     public int getIconHeight() {
         return label.getHeight();
     }
-    
+
     public int getIconWidth() {
         return label.getWidth();
     }
-    
+
     public void paintIcon(Component c, Graphics g, int x, int y) {
         g.translate(x, y);
         label.paint(g);

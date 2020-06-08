@@ -66,7 +66,7 @@ public final class ColorSpaceHintKey extends RenderingHints.Key {
     public static final String PROPERTY_COLORSPACE =
         "ch.randelshofer.quaqua.ext.batik.gvt.filter.Colorspace";
 
-    /** 
+    /**
      * Note that this is package private.
      */
     ColorSpaceHintKey(int number) { super(number); }

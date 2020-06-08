@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaEditorPaneUI.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaEditorPaneUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -29,11 +26,11 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
 {
     boolean oldDragState = false;
      private MouseListener popupListener;
-   
+
     public static ComponentUI createUI(JComponent jcomponent) {
 	return new QuaquaEditorPaneUI();
     }
-    
+
     @Override
     protected void installListeners() {
         popupListener = createPopupListener();
@@ -42,7 +39,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
         }
         QuaquaTextCursorHandler.getInstance().installListeners(getComponent());
     }
-    
+
     @Override
     protected void uninstallListeners() {
         if (popupListener != null) {
@@ -51,11 +48,11 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
         }
         QuaquaTextCursorHandler.getInstance().uninstallListeners(getComponent());
     }
-    
+
     protected MouseListener createPopupListener() {
         return (MouseListener) UIManager.get(getPropertyPrefix()+".popupHandler");
     }
-    
+
     @Override
     protected void installDefaults() {
 	if (!QuaquaUtilities.isHeadless()) {
@@ -64,7 +61,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
 	}
 	super.installDefaults();
     }
-    
+
     @Override
     protected void uninstallDefaults() {
 	if (!QuaquaUtilities.isHeadless()) {
@@ -87,12 +84,12 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
 	QuaquaCaret caret = new QuaquaCaret(window, getComponent());
 	return caret;
     }
-    
+
     @Override
     protected Highlighter createHighlighter() {
 	return new QuaquaHighlighter();
     }
-    
+
     public Insets getVisualMargin(JTextComponent tc) {
         return new Insets(0, 0, 0 ,0);
         /*
@@ -101,7 +98,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
         return (margin == null) ? new Insets(0, 0, 0 ,0) : margin;
          */
     }
-    
+
     @Override
     public int getBaseline(JComponent c, int width, int height) {
         JTextComponent tc = (JTextComponent) c;
@@ -114,7 +111,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
-        
+
         JTextComponent b = (JTextComponent) c;
         if (type == VisuallyLayoutable.COMPONENT_BOUNDS
         && b.getBorder() != null) {
@@ -128,7 +125,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
             }
         } else {
             bounds = getVisibleEditorRect();
-            
+
             int baseline = getBaseline(b, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);
             if (bounds == null) {

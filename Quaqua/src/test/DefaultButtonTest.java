@@ -1,15 +1,6 @@
 /*
- * @(#) DefaultButtonTest.java  1.0  2013-06-04
- * 
- * Copyright (c) 2013 Werner Randelshofer, Switzerland.
  * @(#)DefaultButtonTest.java
- *
- * Copyright (c) 2005-2010 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the 
- * license agreement you entered into with Werner Randelshofer. 
- * For details see accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -39,8 +30,8 @@ public class DefaultButtonTest extends javax.swing.JPanel {
             }
         });
     }
-    
-    
+
+
 
     /** This method is called from within the constructor to
      * initialize the form.

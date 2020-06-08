@@ -1,9 +1,6 @@
 /*
- * @(#)Quaqua16LeopardLookAndFeel.java  1.0  2008-09-01
- *
- * Copyright (c) 2008-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)Quaqua16LeopardLookAndFeel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.leopard;
 
@@ -31,9 +28,9 @@ import javax.swing.plaf.InsetsUIResource;
  * are designed to autodetect the appropriate Quaqua Look and Feel
  * implementation.
  * <p>
- * 
+ *
  * @author Werner Randelshofer
- * @version 1.0 2008-09-01 Created. 
+ * @version 1.0 2008-09-01 Created.
  */
 public class Quaqua16LeopardLookAndFeel extends Quaqua15LeopardLookAndFeel {
 

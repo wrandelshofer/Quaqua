@@ -28,7 +28,7 @@ import java.awt.Graphics2D;
  * @version $Id: PaintRable.java 478363 2006-11-22 23:01:13Z dvholten $
  */
 public interface PaintRable {
-    
+
     /**
      * Should perform the equivilent action as
      * createRendering followed by drawing the RenderedImage.

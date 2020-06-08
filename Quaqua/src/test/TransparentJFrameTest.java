@@ -1,13 +1,6 @@
 /*
  * @(#)TransparentJFrameTest.java
- *
- * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * The copyright of this software is owned by Werner Randelshofer.
- * You may not use, copy or modify this software, except in
- * accordance with the license agreement you entered into with
- * Werner Randelshofer. For details see accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package test;
 
@@ -21,7 +14,7 @@ import javax.swing.*;
  * @version $Id$
  */
 public class TransparentJFrameTest extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form TransparentJFrameTest
      */
@@ -31,11 +24,11 @@ public class TransparentJFrameTest extends javax.swing.JFrame {
                 "apple.awt.draggableWindowBackground", Boolean.FALSE
                 );
         setLayout(new FlowLayout());
-        
+
         setBackground(new Color(0x80000000,true));
         //((JComponent) getContentPane()).setOpaque(true);
         //((JComponent) getContentPane()).setBackground(Color.LIGHT_GRAY);
-        
+
         JPanel p = new JPanel() {
             public void paintComponent(Graphics gr) {
                 super.paintComponents(gr);
@@ -49,7 +42,7 @@ public class TransparentJFrameTest extends javax.swing.JFrame {
         getContentPane().add(p);
         setSize(300,300);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -63,7 +56,7 @@ public class TransparentJFrameTest extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     /**
      * @param args the command line arguments
      */
@@ -74,8 +67,8 @@ public class TransparentJFrameTest extends javax.swing.JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
+
 }

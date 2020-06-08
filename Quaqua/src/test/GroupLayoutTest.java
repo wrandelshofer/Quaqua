@@ -1,38 +1,34 @@
-package test;
 /*
- * @(#)MatisseTest16.java  1.0  June 5, 2006
- *
- * Copyright (c) 2006 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)GroupLayoutTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
+
+package test;
 
 import javax.swing.*;
 /**
- * MatisseTest16.
- * 
- * 
- * 
+ * GroupLayoutTest.
+ *
  * @author Werner Randelshofer
  * @version 1.0  June 5, 2006  Created.
  */
 public class GroupLayoutTest extends javax.swing.JPanel {
-    
+
     /** Creates a new instance. */
     public GroupLayoutTest() {
         initComponents();
     }
-    
-    
+
+
     public static void main(String[] args) {
         try {
          //   UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
             UIManager.put("Component.enforceVisualMargin",Boolean.TRUE);
         } catch (Exception e) {
-            
+
         }
-        
-        
+
+
         JFrame f = new JFrame("Matisse Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GroupLayoutTest nt = new GroupLayoutTest();
@@ -41,8 +37,8 @@ public class GroupLayoutTest extends javax.swing.JPanel {
         f.setVisible(true);
         //nt.test();
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -146,8 +142,8 @@ public class GroupLayoutTest extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
@@ -163,5 +159,5 @@ public class GroupLayoutTest extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField3;
     private javax.swing.ButtonGroup radioButtonGroup;
     // End of variables declaration//GEN-END:variables
-    
+
 }

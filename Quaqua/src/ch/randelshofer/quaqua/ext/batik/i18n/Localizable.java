@@ -23,7 +23,7 @@ import java.util.MissingResourceException;
 
 /**
  * This interface must be implemented by the classes which must provide a
- * way to override the default locale. 
+ * way to override the default locale.
  *
  * @author <a href="mailto:stephane@hillion.org">Stephane Hillion</a>
  * @version $Id: Localizable.java 475477 2006-11-15 22:44:28Z cam $
@@ -32,14 +32,14 @@ public interface Localizable {
     /**
      * Provides a way to the user to specify a locale which override the
      * default one. If null is passed to this method, the used locale
-     * becomes the global one. 
+     * becomes the global one.
      * @param l The locale to set.
      */
     void setLocale(Locale l);
 
     /**
      * Returns the current locale or null if the locale currently used is
-     * the default one.     
+     * the default one.
      */
     Locale getLocale();
 

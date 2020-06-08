@@ -1,9 +1,6 @@
 /*
- * @(#)ButtonStateIcon.java  1.0  2006-02-13
- *
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)FrameButtonStateIcon.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.icon;

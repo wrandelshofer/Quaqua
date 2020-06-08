@@ -1,9 +1,6 @@
 /*
- * @(#)VisualMarginBorder.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)VisualMarginBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.border;
@@ -34,7 +31,7 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
      * component to its visually perceived borderline.
      */
     private Insets layoutMargin;
-    
+
     /**
      * The UIManager Property to be used for the default margin.
      */
@@ -43,16 +40,16 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
      * The Client Property to be used for the default margin.
      */
     private String propertyName = "Quaqua.Component.visualMargin";
-    
+
     private boolean isTopFixed, isLeftFixed, isBottomFixed, isRightFixed;
-    
+
     /**
      * Creates a new VisualMarginBorder.
      */
     public VisualMarginBorder() {
         layoutMargin = new Insets(0, 0, 0, 0);
     }
-    
+
     /**
      * Creates a new VisualMarginBorder.
      *
@@ -97,7 +94,7 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
     public void setPropertyName(String propertyName) {
         //  this.propertyName = propertyName;
     }
-    
+
     /*
      * Specifies SwingConstants.TOP, LEFT, BOTTOM, RIGHT to be fixed.
      * Set to false to unfix.
@@ -108,16 +105,16 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
         isBottomFixed = bottom;
         isRightFixed = right;
     }
-    
+
     public final Insets getVisualMargin(Component c) {
         return getVisualMargin(c, new Insets(0, 0, 0, 0));
     }
-    
+
     @Override
     public final Insets getBorderInsets(Component c) {
         return getBorderInsets(c, new Insets(0, 0, 0, 0));
     }
-    
+
     /**
      * Reinitializes the insets parameter with this Border's current Insets.
      * @param c the component for which this border insets value applies
@@ -139,9 +136,9 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
         insets.left = -layoutMargin.left;
         insets.bottom = -layoutMargin.bottom;
         insets.right = -layoutMargin.right;
-        
+
         boolean isUIResource=false;
-        
+
         if (c instanceof JComponent) {
             Insets componentMargin = (Insets) ((JComponent) c).getClientProperty(propertyName);
             if (componentMargin == null && propertyName != null) {
@@ -160,7 +157,7 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
         if (isUIResource) {
             return new InsetsUIResource(insets.top, insets.left, insets.bottom, insets.right);
         }
-        
+
         return insets;
     }
 

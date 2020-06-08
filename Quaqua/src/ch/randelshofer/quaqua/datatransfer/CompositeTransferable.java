@@ -1,9 +1,6 @@
 /*
- * @(#)CompositeTransferable.java  
- *
- * Copyright (c) 2001-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)CompositeTransferable.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.datatransfer;
@@ -20,20 +17,20 @@ import java.io.*;
 public class CompositeTransferable implements java.awt.datatransfer.Transferable {
     private HashMap transferables = new HashMap();
     private LinkedList flavors = new LinkedList();
-    
+
     /** Creates a new instance of CompositeTransferable */
     public CompositeTransferable() {
     }
-    
+
     public void add(Transferable t) {
         DataFlavor[] f = t.getTransferDataFlavors();
         for (int i=0; i < f.length; i++) {
             if (! transferables.containsKey(f[i])) flavors.add(f[i]);
             transferables.put(f[i], t);
-            
+
         }
     }
-    
+
     /**
      * Returns an object which represents the data to be transferred.  The class
      * of the object returned is defined by the representation class of the flavor.
@@ -50,7 +47,7 @@ public class CompositeTransferable implements java.awt.datatransfer.Transferable
         if (t == null) throw new UnsupportedFlavorException(flavor);
         return t.getTransferData(flavor);
     }
-    
+
     /**
      * Returns an array of DataFlavor objects indicating the flavors the data
      * can be provided in.  The array should be ordered according to preference
@@ -60,7 +57,7 @@ public class CompositeTransferable implements java.awt.datatransfer.Transferable
     public DataFlavor[] getTransferDataFlavors() {
         return (DataFlavor[]) flavors.toArray(new DataFlavor[transferables.size()]);
     }
-    
+
     /**
      * Returns whether or not the specified data flavor is supported for
      * this object.

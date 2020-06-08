@@ -1,9 +1,6 @@
 /*
- * @(#)HalfbrightFilter.java  1.0  28 March 2005
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)HalfbrightFilter.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.util;
@@ -23,7 +20,7 @@ public class HalfbrightFilter extends RGBImageFilter {
     public HalfbrightFilter() {
         canFilterIndexColorModel = true;
     }
-    
+
     /**
      * Creates a halfbright image
      */
@@ -33,10 +30,10 @@ public class HalfbrightFilter extends RGBImageFilter {
 	Image filteredImage = Toolkit.getDefaultToolkit().createImage(prod);
 	return filteredImage;
     }
-    
+
     public int filterRGB(int x, int y, int rgb) {
         return rgb & 0xff000000 // preserve alpha channel
-        | (rgb & 0xfefefe) >>> 1; 
+        | (rgb & 0xfefefe) >>> 1;
     }
-    
+
 }

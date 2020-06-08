@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaLionSideBarSelectionBorder.java 
- *
- * Copyright (c) 2011 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaLionSideBarSelectionBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.lion;
 
@@ -32,7 +29,7 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
         Graphics2D g = (Graphics2D) gr;
         if (QuaquaUtilities.isFocused(c)) {
-            // first top line: 
+            // first top line:
             g.setColor(new Color(0x60a5dd));
             g.fillRect(x, y, width, 1);
             // second top line
@@ -50,7 +47,7 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
             g.fillRect(x, y + height - 1, width, 1);
         } else {
             if (QuaquaUtilities.isOnActiveWindow(c, true)) {
-                // first top line: 
+                // first top line:
                 g.setColor(new Color(0xbbc5d6));
                 g.fillRect(x, y, width, 1);
                 // second top line
@@ -68,7 +65,7 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
                 g.fillRect(x, y + height - 1, width, 1);
 
             } else {
-                // first top line: 
+                // first top line:
                 g.setColor(new Color(0xbbc5d6));
                 g.fillRect(x, y, width, 1);
                 // second top line

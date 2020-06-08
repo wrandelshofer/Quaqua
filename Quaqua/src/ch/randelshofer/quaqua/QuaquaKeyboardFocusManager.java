@@ -1,9 +1,6 @@
 /*
  * @(#)QuaquaKeyboardFocusManager.java
- *
- * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -22,13 +19,13 @@ public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
      * or focusNextComponent was invoked.
      */
     private Component lastTraversingComponent;
-    
-    
+
+
     /** Creates a new instance. */
     public QuaquaKeyboardFocusManager() {
         initDefaults();
     }
-    
+
     /**
      * Initializes the keyboard focus manager with default values.
      */
@@ -37,7 +34,7 @@ public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
                 new DefaultFocusTraversalPolicy());
 
     }
-    
+
     /**
      * Focuses the Component before aComponent, typically based on a
      * FocusTraversalPolicy.
@@ -52,7 +49,7 @@ public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
         lastTraversingComponent = aComponent;
         super.focusPreviousComponent(aComponent);
     }
-    
+
     /**
      * Focuses the Component after aComponent, typically based on a
      * FocusTraversalPolicy.
@@ -67,7 +64,7 @@ public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
         lastTraversingComponent = aComponent;
         super.focusNextComponent(aComponent);
     }
-    
+
     /**
      * Returns the most recent component, for which focusPreviousComponent
      * or focusNextComponent was invoked.

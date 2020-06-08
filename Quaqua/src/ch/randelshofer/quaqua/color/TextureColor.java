@@ -1,9 +1,6 @@
 /*
- * @(#)TextureColor.java 
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)TextureColor.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.color;
@@ -23,7 +20,7 @@ import java.awt.image.*;
  */
 public class TextureColor extends PaintableColor {
     protected Image texture;
-    
+
     /** Creates a new instance. */
     public TextureColor(int rgb) {
         super(rgb);
@@ -51,7 +48,7 @@ public class TextureColor extends PaintableColor {
         texture = Images.toBufferedImage(texture);
         return (BufferedImage) texture;
     }
-    
+
     public Paint getPaint(Component c, int x, int y, int width, int height) {
         BufferedImage txtr = getTexture();
         if (txtr != null) {
@@ -63,7 +60,7 @@ public class TextureColor extends PaintableColor {
             return this;
         }
     }
-    
+
     public static class UIResource extends TextureColor implements javax.swing.plaf.UIResource {
         public UIResource(int rgb) {
             super(rgb);

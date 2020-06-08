@@ -1,4 +1,4 @@
-/* Werner Randelshofer 2006-01-08 
+/* Werner Randelshofer 2006-01-08
  * Replaced Java 1.1 collections by Java 1.2 collections.
  */
 /* XMLElement.java
@@ -125,7 +125,7 @@ public class XMLElement
      * @see XMLElement#NANOXML_MINOR_VERSION
      */
     public static final int NANOXML_MAJOR_VERSION = 2;
-    
+
 
     /**
      * Minor version of NanoXML. Classes with the same major and minor
@@ -286,7 +286,7 @@ public class XMLElement
     {
         this(new HashMap(), false, true, true);
     }
-    
+
 
     /**
      * Creates and initializes a new XML element.
@@ -2878,5 +2878,5 @@ public class XMLElement
         String msg = "Unknown or invalid entity: &" + name + ";";
         return new XMLParseException(this.getName(), this.parserLineNr, msg);
     }
-    
+
 }

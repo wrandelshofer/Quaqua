@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaColorWellBorder.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaColorWellBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -18,7 +15,7 @@ import javax.swing.border.*;
  */
 public class QuaquaColorWellBorder implements Border {
     private Border squareButtonBorder;
-    
+
     /** Creates a new instance. */
     public QuaquaColorWellBorder() {
         this(QuaquaBorderFactory.createSquareButtonBorder());
@@ -26,11 +23,11 @@ public class QuaquaColorWellBorder implements Border {
     public QuaquaColorWellBorder(Border squareButtonBorder) {
         this.squareButtonBorder = squareButtonBorder;
     }
-    
+
     public Insets getBorderInsets(Component c) {
         return new Insets(5, 5, 5, 5);
     }
-    
+
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         squareButtonBorder.paintBorder(c, g, x, y, width, height);
         g.setColor(c.getBackground());
@@ -38,8 +35,8 @@ public class QuaquaColorWellBorder implements Border {
         g.setColor(c.getBackground().darker());
         g.drawRect(x+5,y+5,width-11,height-11);
     }
-    
+
     public boolean isBorderOpaque() {
         return squareButtonBorder.isBorderOpaque();
-    }    
+    }
 }

@@ -1,9 +1,6 @@
 /*
- * @(#)RootPaneTest.java  1.0  June 6, 2005
- *
- * Copyright (c) 2005 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)RootPaneTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -17,14 +14,14 @@ import javax.swing.*;
  * @version 1.0 June 6, 2005 Created.
  */
 public class RootPaneTest extends javax.swing.JPanel {
-    
+
     /**
      * Creates a new instance.
      */
     public RootPaneTest() {
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -50,12 +47,12 @@ public class RootPaneTest extends javax.swing.JPanel {
        JRootPane rootPane = SwingUtilities.getRootPane(this);
        if (rootPane != null) {
            rootPane.putClientProperty("windowModified", evt.getStateChange() == ItemEvent.SELECTED);
-       }        
+       }
     }//GEN-LAST:event_windowModifiedChanged
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox windowModifiedCheckBox;
     // End of variables declaration//GEN-END:variables
-    
+
 }

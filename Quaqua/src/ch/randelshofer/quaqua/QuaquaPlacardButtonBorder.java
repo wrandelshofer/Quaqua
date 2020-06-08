@@ -1,9 +1,6 @@
 /*
  * @(#)QuaquaPlacardButtonBorder.java
- *
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -93,20 +90,20 @@ public class QuaquaPlacardButtonBorder extends CachedPainter implements Border {
         new Color(0x9e9e9e), // shine box bottom
         new Color(0x969696), // shadow box
     };
-    
+
     /** Creates a new instance of QuaquaSquareButtonBorder */
     public QuaquaPlacardButtonBorder() {
         super(8);
     }
-    
+
     public Insets getBorderInsets(Component c) {
         return new Insets(2, 1, 2, 1);
     }
-    
+
     public boolean isBorderOpaque() {
         return false;
     }
-    
+
     /**
      * Creates the image to cache.  This returns a translucent image.
      *
@@ -124,17 +121,17 @@ public class QuaquaPlacardButtonBorder extends CachedPainter implements Border {
         }
         return config.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
     }
-    
+
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
         if ( height <= 0 || width <= 0 ) {
             return;
         }
-        
+
         Color[] colors;
         if (c instanceof AbstractButton) {
             AbstractButton button = (AbstractButton) c;
             ButtonModel model = button.getModel();
-            
+
             if (button.isEnabled()) {
                 colors = (model.isSelected() || model.isArmed() && model.isPressed()) ? selectedColors : defaultColors;
             } else {
@@ -145,30 +142,30 @@ public class QuaquaPlacardButtonBorder extends CachedPainter implements Border {
         }
         paint(c, gr, x, y, width, height, colors);
     }
-    
+
     protected void paintToImage(Component c, Graphics gr, int width, int height, Object args) {
         // Cast Graphics to Graphics2D
         // Workaround for Java 1.4 and 1.4 on Mac OS X 10.4. We create a new
         // Graphics object instead of just casting the provided one. This is
         // because drawing texture paints appears to confuse the Graphics object.
         Graphics2D g = (Graphics2D) gr.create();
-        
+
         Color[] colors = (Color[]) args;
-        
+
         Paint oldPaint = g.getPaint();
-        
-        // Note: We draw the gradient paints first, because Apple's Java 
+
+        // Note: We draw the gradient paints first, because Apple's Java
         // 1.4.2_05 draws them 1 Pixel too wide on the left
         // draw inner border lines
         g.setPaint(new LinearGradientPaint(0, 2, colors[5], 0, height - 3, colors[6]));
         g.drawLine(1, 2, 1, height - 3);
         g.drawLine(width - 2, 2, width - 2, height - 3);
-        
+
         // draw shine box
         int sheight = (int) (height * 0.45);
         g.setPaint(new LinearGradientPaint(0, 2, colors[7], 0, sheight, colors[8]));
         g.fillRect(2, 2, width - 4, sheight - 1);
-        
+
         // draw border
         g.setColor(colors[0]);
         g.drawLine(0, 0, width - 1, 0);
@@ -181,11 +178,11 @@ public class QuaquaPlacardButtonBorder extends CachedPainter implements Border {
         g.drawLine(0, height - 2, width - 1, height - 2);
         g.setColor(colors[4]);
         g.drawLine(0, height - 1, width - 1, height - 1);
-        
+
         // draw shadow box
         g.setColor(colors[9]);
         g.fillRect(2, sheight + 1, width - 4, height - sheight - 3);
-        
+
         g.setPaint(oldPaint);
         g.dispose();
     }

@@ -1,12 +1,6 @@
 /*
- * @(#)EmptyIcon.java  
- * 
- * Copyright 2010 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)EmptyIcon.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.icon;
@@ -25,7 +19,7 @@ import javax.swing.Icon;
 public class EmptyIcon implements Icon, Serializable {
     private int width;
     private int height;
-    
+
     public EmptyIcon(int width, int height) {
         this.width=width;
         this.height=height;

@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaLeopardFileChooserPanel.java  1.0  June 26, 2004
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaLeopardFileChooserPanel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.leopard.filechooser;
@@ -14,7 +11,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 /**
  * QuaquaLeopardFileChooserPanel.
- * 
+ *
  * @author Werner Randelshofer
  * @version 1.0  June 26, 2004  Created.
  */
@@ -55,10 +52,10 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
     new Insets(1, 1, 1, 1),
     true
     );
-    
+
     /** Creates new form. */
     public QuaquaLeopardFileChooserPanel() {
-        
+
         initComponents();
         int h;
         h = fileNameLabel.getPreferredSize().height;
@@ -90,7 +87,7 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
         nextButton.setBorder(buttonBorder);
         tableToggleButton.setBorder(cellBorder);
         browserToggleButton.setBorder(buttonBorder);
-        
+
         previousButton.setVisible(false);
         nextButton.setVisible(false);
         tableToggleButton.setVisible(false);
@@ -110,12 +107,12 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
         filterComboBox.setPreferredSize(new Dimension(0,h));
         filterComboBox.setMinimumSize(new Dimension(0,h));
         filterComboBox.setMaximumSize(new Dimension(32767,h));
-        
+
         splitPane.putClientProperty("Quaqua.SplitPane.style","bar");
         separator.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, 0, 3, 0));
 
     }
-    
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
@@ -129,8 +126,8 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -358,8 +355,8 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
         add(fc, java.awt.BorderLayout.CENTER);
 
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel accessoryPanel;
     private javax.swing.JButton approveButton;
@@ -397,5 +394,5 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup viewGroup;
     private javax.swing.JPanel viewsPanel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

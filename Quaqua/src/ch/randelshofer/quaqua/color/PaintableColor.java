@@ -1,9 +1,6 @@
 /*
- * @(#)PaintableColor.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)PaintableColor.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.color;
@@ -37,12 +34,12 @@ public abstract class PaintableColor extends Color {
     public PaintableColor(int r, int g, int b, int a) {
         super(r, g, b, a);
     }
-    
+
     public final Paint getPaint(Component c, int xOffset, int yOffset) {
         return getPaint(c, xOffset, yOffset, c.getWidth(), c.getHeight());
     }
     public abstract Paint getPaint(Component c, int x, int y, int width, int height);
-    
+
     /**
      * If the Color is an instance of PaintableColor, returns a Paint
      * object which is properly configured for drawing on the component.
@@ -59,8 +56,8 @@ public abstract class PaintableColor extends Color {
      * @param yOffset shifts the paint on the y-axis.
      */
     public static Paint getPaint(Color color, Component c, int xOffset, int yOffset) {
-        return (color instanceof PaintableColor) 
-        ? ((PaintableColor) color).getPaint(c, xOffset, yOffset) 
+        return (color instanceof PaintableColor)
+        ? ((PaintableColor) color).getPaint(c, xOffset, yOffset)
         : color;
     }
     public static Paint getPaint(Color color, Component c, int x, int y, int width, int height) {
@@ -68,14 +65,14 @@ public abstract class PaintableColor extends Color {
         ? ((PaintableColor) color).getPaint(c, x, y, width, height)
         : color;
     }
-    
+
     /**
-     * Returns the relative position (offset) of the component towards its 
+     * Returns the relative position (offset) of the component towards its
      * root pane.
      */
     protected static Point getRootPaneOffset(Component c) {
         int x = 0, y = 0;
-        
+
         if (! (c instanceof Window)) {
         while (c != null && ! (c instanceof JRootPane)) {
             x -= c.getX();
@@ -84,5 +81,5 @@ public abstract class PaintableColor extends Color {
         }
         }
         return new Point(x, y);
-    }    
+    }
 }

@@ -468,5 +468,5 @@ public class TIFFField implements Comparable, Serializable {
     @Override
     public int hashCode() {
         return this.tag;
-    }    
+    }
 }

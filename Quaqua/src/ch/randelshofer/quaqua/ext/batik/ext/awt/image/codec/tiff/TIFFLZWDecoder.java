@@ -15,7 +15,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/
+ */
 
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff;
 

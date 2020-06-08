@@ -1,9 +1,6 @@
 /*
- * @(#)OSXCollator.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)OSXCollator.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.filechooser;
@@ -30,27 +27,27 @@ import java.text.*;
  * If java.text.Collator.getInstance() does not return an instance of
  * java.text.RuleBasedCollator, then the returned collator is used, and only
  * sequences of digits are changed to match the collation rules of Mac OS X.
- * 
+ *
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
 public class OSXCollator extends Collator {
     private Collator collator;
-    
+
     /** Creates a new instance. */
     public OSXCollator() {
         this(Locale.getDefault());
     }
-    
+
     public OSXCollator(Locale locale) {
             collator = Collator.getInstance(locale);
-            
+
             if (collator instanceof RuleBasedCollator) {
                 String rules = ((RuleBasedCollator) collator).getRules();
-                
+
                 // If hyphen is ignored except for tertiary difference, make it
-                // a primary difference, and move in front of the first primary 
+                // a primary difference, and move in front of the first primary
                 // difference found in the rules
                 int pos = rules.indexOf(",'-'");
                 int primaryRelationPos = rules.indexOf('<');
@@ -63,9 +60,9 @@ public class OSXCollator extends Collator {
                     + "<'-'"
                     + rules.substring(primaryRelationPos);
                 }
-                
-                // If space is ignored except for secondary and tertiary 
-                // difference, make it a primary difference, and move in front 
+
+                // If space is ignored except for secondary and tertiary
+                // difference, make it a primary difference, and move in front
                 // of the first primary difference found in the rules
                 pos = rules.indexOf(";' '");
                 primaryRelationPos = rules.indexOf('<');
@@ -86,15 +83,15 @@ public class OSXCollator extends Collator {
                     }
             }
     }
-    
+
     public int compare(String source, String target) {
         return collator.compare(expandNumbers(source), expandNumbers(target));
     }
-    
+
     public CollationKey getCollationKey(String source) {
         return collator.getCollationKey(expandNumbers(source));
     }
-    
+
     public boolean equals(Object o) {
         if (o instanceof OSXCollator) {
             OSXCollator that = (OSXCollator) o;
@@ -106,14 +103,14 @@ public class OSXCollator extends Collator {
     public int hashCode() {
         return collator.hashCode();
     }
-    
+
     private String expandNumbers(String s) {
         if (s == null) return null;
 
         // FIXME - Use StringBuilder here when we abandon support for J2SE 1.4.
         StringBuffer out = new StringBuffer();
         StringBuffer digits = new StringBuffer();
-        
+
         for (int i=0, n = s.length(); i < n; i++) {
             char ch = s.charAt(i);
             //if (Character.isDigit(ch)) {
@@ -152,7 +149,7 @@ public class OSXCollator extends Collator {
             }
             out.append(digits);
         }
-        
+
         return out.toString();
     }
 }

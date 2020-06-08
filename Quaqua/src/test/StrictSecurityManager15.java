@@ -1,9 +1,6 @@
 /*
- * @(#)StrictSecurityManager15.java  1.0  February 10, 2007
- *
- * Copyright (c) 2006 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)StrictSecurityManager15.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -19,7 +16,7 @@ import java.util.logging.LoggingPermission;
 /**
  * StrictSecurityManager15 that disallows almost everything.
  * This is used to test Quaqua in security restricted environments.
- * 
+ *
  * @author Werner Randelshofer
  * @version 1.0 February 10, 2007 Created.
  */
@@ -53,15 +50,15 @@ public class StrictSecurityManager15 extends SecurityManager {
         new RuntimePermission("setFactory"),
         new SecurityPermission("getProperty.networkaddress.cache.*"),
     });
-    
+
     /** Creates a new instance. */
     public StrictSecurityManager15() {
     }
-    
+
     public void checkConnect(String host, int port, Object context) {
         checkConnect(host, port);
     }
-    
+
     public void checkConnect(String host, int port) {
         if (host == null) {
             throw new NullPointerException("host can't be null");
@@ -81,7 +78,7 @@ public class StrictSecurityManager15 extends SecurityManager {
         String message = "Opening a socket connection to " + hostPort + " is restricted.";
         throw new AccessControlException(message, new SocketPermission(hostPort, "connect"));
     }
-    
+
     private boolean isImplied(Permission perm) {
         for (Permission p : ALLOWED_PERMISSIONS) {
             if (p.implies(perm)) {
@@ -90,7 +87,7 @@ public class StrictSecurityManager15 extends SecurityManager {
         }
         return false;
     }
-    
+
     public void checkPermission(Permission perm) {
            StackTraceElement[] stack = Thread.currentThread().getStackTrace();
            boolean needsRestriction = false;
@@ -106,7 +103,7 @@ public class StrictSecurityManager15 extends SecurityManager {
                        clazz.startsWith("apple.") ||
                        clazz.startsWith("javax.") ||
                        clazz.startsWith("sun.")) {
-                   
+
                } else {
                    needsRestriction = true;
                    restrictor = stack[i].toString();
@@ -125,7 +122,7 @@ public class StrictSecurityManager15 extends SecurityManager {
             throw new AccessControlException("Not allowed "+perm, perm);
         }
     }
-    
+
     public void checkPermission(Permission perm, Object context) {
         // Allow all other actions
         throw new AccessControlException("Not allowed context ", perm);

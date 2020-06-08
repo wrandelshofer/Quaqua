@@ -1,9 +1,6 @@
 /*
- * @(#)SwatchesChooser.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)SwatchesChooser.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -23,16 +20,16 @@ public class SwatchesChooser
 extends AbstractColorChooserPanel
 implements UIResource {
     private SwatchPanel swatchPanel;
-    
-    
+
+
     /** Creates new form. */
     public SwatchesChooser() {
     }
-    
+
     protected void initColors() {
         int[] rawValues = initRawValues();
         int numColors = rawValues.length / 3;
-        
+
         Color[] colors = new Color[numColors];
         for (int i = 0; i < numColors ; i++) {
             int x = i % 31;
@@ -51,7 +48,7 @@ implements UIResource {
             }
         });
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -65,37 +62,37 @@ implements UIResource {
         add(scrollPane, java.awt.BorderLayout.CENTER);
 
     }//GEN-END:initComponents
-    
+
     protected void buildChooser() {
         initComponents();
         swatchPanel = new SwatchPanel();
         initColors();
         scrollPane.setViewportView(swatchPanel);
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.colorSwatches");
     }
-    
+
     public Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorSwatchesIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void setColorToModel(Color color) {
         getColorSelectionModel().setSelectedColor(color);
     }
-    
+
     public void updateChooser() {
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
-    
+
     private int[] initRawValues() {
         int[] rawValues = {
             255, 255, 255, // first row.

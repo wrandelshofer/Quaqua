@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaPantherScrollTabbedPaneUI.java  
- *
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaPantherScrollTabbedPaneUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.panther;
 
@@ -107,7 +104,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      */
     private int tabCount;
     private Hashtable mnemonicToIndexMap;
-    
+
     public Integer getIndexForMnemonic(int mnemonic) {
         return (Integer) mnemonicToIndexMap.get(mnemonic);
     }
@@ -333,7 +330,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     @Override
     protected Insets getTabInsets(int tabPlacement, int tabIndex) {
         boolean isSmall=QuaquaUtilities.getSizeVariant(tabPane)==QuaquaUtilities.SizeVariant.SMALL;
-        
+
 
         int tCount = tabPane.getTabCount();
         Insets insets;
@@ -628,17 +625,17 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             int tabIndex,
             int x, int y, int w, int h,
             boolean isSelected) {
-        
+
         String prefix = getPropertyPrefix();
 
         // Native tab pane border
         Border tb=UIManager.getBorder(prefix+"tabBorder");
         if (tb!=null) {
-            
-            
+
+
             return;
         }
-        
+
         // Non-native tab pane border
         Border[] b;
         if (tabPane.getTabCount() == 1) {
@@ -679,7 +676,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             b[i].paintBorder(tabPane, g, x, y, w, h);
         }
     }
-    
+
     /**
      * this function draws the border around each tab
      * note that this function does now draw the background of the tab.

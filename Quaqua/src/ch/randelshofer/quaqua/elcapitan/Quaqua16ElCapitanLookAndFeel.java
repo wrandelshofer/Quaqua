@@ -1,3 +1,8 @@
+/*
+ * @(#)Quaqua16ElCapitanLookAndFeel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+ */
+
 package ch.randelshofer.quaqua.elcapitan;
 
 import static ch.randelshofer.quaqua.BasicQuaquaNativeLookAndFeel.makeNativeIcon;
@@ -62,7 +67,7 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
     protected void initDesignDefaults(UIDefaults table) {
         final String baseSystemFontName = getBaseSystemFont().getName();
         final String sidebarFontName = "San Francisco";
-        
+
         ColorUIResource disabledForeground = new ColorUIResource(128, 128, 128);
         Object menuBackground = new ColorUIResource(0xffffff);
         ColorUIResource menuSelectionForeground = new ColorUIResource(0xffffff);

@@ -1,9 +1,6 @@
 /*
- * @(#)ColorPalettesChooser.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ColorPalettesChooser.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -24,7 +21,7 @@ import java.util.*;
  * @version $Id$
  */
 public class ColorPalettesChooser extends AbstractColorChooserPanel implements UIResource {
-    
+
     /**
      * We store here the name of the last selected color sliders panel.
      * When the ColorSlidersChooser is recreated multiple times in the same
@@ -32,22 +29,22 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
      * before.
      */
     private static int lastSelectedPalette = 0;
-    
+
     /**
      * Creates a new instance.
      */
     public ColorPalettesChooser() {
     }
-    
+
     /**
      * @return Vector&lt;PaletteListModel&gt;.
      */
     protected Vector loadPalettes() {
         Vector palettes = new Vector();
-        
+
         Color[] colors;
         PaletteEntry[] entries;
-        
+
         colors = DefaultPalettes.APPLE_COLORS;
         entries = new PaletteEntry[colors.length];
         for (int i=0; i < colors.length; i++) {
@@ -61,7 +58,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[] {UIManager.getString("ColorChooser.appleColors"), entries.length}),
         entries)
         );
-        
+
         colors = DefaultPalettes.CRAYONS;
         entries = new PaletteEntry[colors.length];
         for (int i=0; i < colors.length; i++) {
@@ -75,7 +72,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[] {UIManager.getString("ColorChooser.crayons"), entries.length}),
         entries)
         );
-        
+
         colors = DefaultPalettes.WEB_SAFE_COLORS;
         entries = new PaletteEntry[colors.length];
         for (int i=0; i < colors.length; i++) {
@@ -90,17 +87,17 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
                 new Object[] {UIManager.getString("ColorChooser.webSafeColors"), entries.length}),
         entries)
         );
-        
+
         return palettes;
     }
-    
+
     private void updatePaletteList() {
         PaletteListModel palette = (PaletteListModel) paletteCombo.getSelectedItem();
         paletteList.setModel(palette);
         paletteCombo.setToolTipText(palette.getInfo());
         updateChooser();
     }
-    
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
@@ -113,7 +110,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         f.pack();
         f.setVisible(true);
     }
-    
+
     protected void buildChooser() {
         initComponents();
         //
@@ -149,19 +146,19 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         loadPalettes();
         updatePaletteList();
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.colorPalettes");
     }
-    
+
     public javax.swing.Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorPalettesIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void updateChooser() {
         Color color;
         try {
@@ -169,15 +166,15 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         } catch (NullPointerException e) {
             return;
         }
-        
+
         int rgb = color.getRGB() & 0xffffff;
-        
+
         // Return quickly if color is the same as selected entry
         PaletteEntry entry = (PaletteEntry) paletteList.getSelectedValue();
         if (entry != null && (entry.getColor().getRGB() & 0xffffff) == rgb) {
             return;
         }
-        
+
         // Search for entry and select it
         PaletteListModel lm = (PaletteListModel) paletteList.getModel();
         int i, n;
@@ -202,12 +199,12 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
             }
         }
     }
-    
+
     public void setColorToModel(Color color) {
         getColorSelectionModel().setSelectedColor(color);
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -257,19 +254,19 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         add(paletteScrollPane, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void paletteChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_paletteChanged
         updatePaletteList();
         lastSelectedPalette = paletteCombo.getSelectedIndex();
     }//GEN-LAST:event_paletteChanged
-    
-    
-    
+
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox paletteCombo;
     private javax.swing.JLabel paletteLabel;
     private javax.swing.JList paletteList;
     private javax.swing.JScrollPane paletteScrollPane;
     // End of variables declaration//GEN-END:variables
-    
+
 }

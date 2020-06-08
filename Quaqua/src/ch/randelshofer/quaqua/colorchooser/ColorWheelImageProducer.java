@@ -1,9 +1,6 @@
 /*
- * @(#)ColorWheelImageProducer.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ColorWheelImageProducer.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -22,17 +19,17 @@ public class ColorWheelImageProducer extends MemoryImageSource {
     protected int w, h;
     protected float brightness = 1f;
     protected boolean isDirty = true;
-    
+
     /** Lookup table for hues. */
     protected float[] hues;
     /** Lookup table for saturations. */
     protected float[] saturations;
-    /** Lookup table for alphas. 
+    /** Lookup table for alphas.
      * The alpha value is used for antialiasing the
      * color wheel.
      */
     protected int[] alphas;
-    
+
     /** Creates a new instance. */
     public ColorWheelImageProducer(int w, int h) {
         super(w, h, null, 0, w);
@@ -44,31 +41,31 @@ public class ColorWheelImageProducer extends MemoryImageSource {
         setAnimated(true);
         generateColorWheel();
     }
-    
+
     public int getRadius() {
         return Math.min(w, h) / 2 - 2;
     }
-    
+
     protected void generateLookupTables() {
         saturations = new float[w*h];
         hues = new float[w*h];
         alphas = new int[w*h];
         float radius = getRadius();
-        
+
         // blend is used to create a linear alpha gradient of two extra pixels
         float blend = (radius + 2f) / radius - 1f;
 
         // Center of the color wheel circle
         int cx = w / 2;
         int cy = h / 2;
-        
+
         for (int x=0; x < w; x++) {
             int kx = x - cx; // Kartesian coordinates of x
             int squarekx = kx * kx; // Square of kartesian x
-            
+
             for (int y=0; y < h; y++) {
                 int ky = cy - y; // Kartesian coordinates of y
-                
+
                 int index = x + y * w;
                 saturations[index] = (float) Math.sqrt(squarekx + ky*ky) / radius;
                 if (saturations[index] <= 1f) {
@@ -83,22 +80,22 @@ public class ColorWheelImageProducer extends MemoryImageSource {
             }
         }
     }
-    
+
     public void setBrightness(float newValue) {
         isDirty = isDirty || brightness != newValue;
         brightness = newValue;
     }
-    
+
     public boolean needsGeneration() {
         return isDirty;
     }
-    
+
     public void regenerateColorWheel() {
         if (isDirty) {
             generateColorWheel();
         }
     }
-    
+
     public void generateColorWheel() {
         for (int index=0; index < pixels.length; index++) {
             if (alphas[index] != 0) {

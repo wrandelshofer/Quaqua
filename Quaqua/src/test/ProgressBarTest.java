@@ -1,21 +1,18 @@
 /*
- * @(#)ProgressBarTest.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ProgressBarTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
 
 /**
  * ProgressBarTest.
- * 
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
 public class ProgressBarTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public ProgressBarTest() {
         initComponents();
@@ -30,7 +27,7 @@ public class ProgressBarTest extends javax.swing.JPanel {
             remove(indeterminateLabel);
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -177,8 +174,8 @@ public class ProgressBarTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel7, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar indeterminateBar1;
     private javax.swing.JProgressBar indeterminateBar2;
@@ -200,5 +197,5 @@ public class ProgressBarTest extends javax.swing.JPanel {
     private javax.swing.JProgressBar jProgressBar3;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
-    
+
 }

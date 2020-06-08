@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaButtonMarginBorder.java  
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaButtonMarginBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -12,18 +9,18 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 /**
- * QuaquaButtonMarginBorder is used to honour the margins between button text 
+ * QuaquaButtonMarginBorder is used to honour the margins between button text
  * and button border.
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaButtonMarginBorder extends AbstractBorder {
-    
+
     public Insets getBorderInsets(Component c) {
         return getBorderInsets(c, new Insets(0, 0, 0, 0));
     }
-    
+
     /**
      * Reinitializes the insets parameter with this Border's current Insets.
      * @param c the component for which this border insets value applies

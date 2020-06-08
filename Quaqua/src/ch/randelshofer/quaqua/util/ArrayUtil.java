@@ -1,12 +1,6 @@
 /*
- * @(#)ArrayUtil.java  
- *
- * Copyright (c) 2003-2010 Werner Randelshofer, Switzerland
- * All rights reserved.
- *
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)ArrayUtil.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 //package ch.randelshofer.util;
@@ -19,11 +13,11 @@ import java.util.*;
  * @version $Id$
  */
 public class ArrayUtil {
-    
+
     /** Prevent instance creation. */
     private ArrayUtil() {
     }
-    
+
     /*
     public static Vector asVector(int[] a) {
         Vector list = new Vector(a.length);
@@ -54,7 +48,7 @@ public class ArrayUtil {
     private final static char[] hexChars = {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
     };
-    
+
     public static String toHexString(byte[] b, int off, int len) {
         StringBuffer buf = new StringBuffer();
         int end = off + len;
@@ -64,7 +58,7 @@ public class ArrayUtil {
         }
         return buf.toString();
     }
-    
+
     public static String toHexString(byte[] b) {
         return toHexString(b, 0, b.length);
     }

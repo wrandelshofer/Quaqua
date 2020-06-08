@@ -1,9 +1,6 @@
 /*
  * @(#)QuaquaUtilities.java
- *
- * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -1090,7 +1087,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
    			setContents(s);
    		}
    	}
-        
+
         public static Color darker(Color c, double factor) {
         return new Color(Math.max((int)(c.getRed()  *factor), 0),
                          Math.max((int)(c.getGreen()*factor), 0),

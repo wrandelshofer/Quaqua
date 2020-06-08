@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaResourceBundleUtil.java  1.3.3  2005-11-07
- *
- * Copyright (c) 2000-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaResourceBundleUtil.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.util;
 
@@ -31,7 +28,7 @@ import java.net.URL;
 public class QuaquaResourceBundleUtil {
     /** The wrapped resource bundle. */
     private ResourceBundle resource;
-    
+
     /**
      * Creates a new ResouceBundleUtil which wraps
      * the provided resource bundle.
@@ -39,8 +36,8 @@ public class QuaquaResourceBundleUtil {
     public QuaquaResourceBundleUtil(ResourceBundle r) {
         resource = r;
     }
-    
-    
+
+
     /**
      * Get a String from the ResourceBundle.
      * <br>Convenience method to save casting.
@@ -76,7 +73,7 @@ public class QuaquaResourceBundleUtil {
             return null;
         }
     }
-    
+
     /**
      * Get a Mnemonic from the ResourceBundle.
      * <br>Convenience method.
@@ -101,7 +98,7 @@ public class QuaquaResourceBundleUtil {
         String s = resource.getString(key+"Mnem");
         return (s == null || s.length() == 0) ? '\0' : s.charAt(0);
     }
-    
+
     /**
      * Get a KeyStroke from the ResourceBundle.
      * <BR>Convenience method.
@@ -136,7 +133,7 @@ public class QuaquaResourceBundleUtil {
         }
         return ks;
     }
-    
+
     public String getFormatted(String key, Object argument) {
         return MessageFormat.format(resource.getString(key), new Object[] {argument});
     }
@@ -147,7 +144,7 @@ public class QuaquaResourceBundleUtil {
     public Locale getLocale() {
         return resource.getLocale();
     }
-    
+
     /**
      * Get the appropriate ResourceBundle subclass.
      *

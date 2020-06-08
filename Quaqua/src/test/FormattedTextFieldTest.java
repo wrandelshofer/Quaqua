@@ -1,9 +1,6 @@
 /*
- * @(#)FormattedTextFieldTest.java 
- *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)FormattedTextFieldTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -21,13 +18,13 @@ import javax.swing.text.JTextComponent;
  * @version $Id$
  */
 public class FormattedTextFieldTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public FormattedTextFieldTest() {
         initComponents();
-        
+
         remove(doubleField);
-      
+
         doubleField = new JFormattedTextField() {
             public void processFocusEvent(FocusEvent e) {
                 if (e.getID() == FocusEvent.FOCUS_GAINED) {
@@ -56,7 +53,7 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(doubleField, gridBagConstraints);
-        
+
        // Prevent text components from becoming too small in GridBagLayout
         for (Component c : getComponents()) {
             if (c instanceof JTextComponent) {
@@ -78,7 +75,7 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
             // bail
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -261,8 +258,8 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(separator1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField dateField;
     private javax.swing.JLabel dateLabel;
@@ -285,5 +282,5 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
     private javax.swing.JLabel smallLabel;
     private javax.swing.JFormattedTextField smallNonEditableField;
     // End of variables declaration//GEN-END:variables
-    
+
 }

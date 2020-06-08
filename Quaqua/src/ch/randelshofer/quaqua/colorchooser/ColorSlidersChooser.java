@@ -1,9 +1,6 @@
 /*
- * @(#)ColorSlidersChooser.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ColorSlidersChooser.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -22,7 +19,7 @@ import javax.swing.plaf.*;
  */
 public class ColorSlidersChooser extends AbstractColorChooserPanel
 implements UIResource {
-    
+
     /**
      * We store here the name of the last selected color sliders panel.
      * When the ColorSlidersChooser is recreated multiple times in the same
@@ -30,12 +27,12 @@ implements UIResource {
      * before.
      */
     private static int lastSelectedPanelIndex = 1;
-    
-    
+
+
     /** Creates new form. */
     public ColorSlidersChooser() {
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -54,11 +51,11 @@ implements UIResource {
         add(slidersHolder, java.awt.BorderLayout.CENTER);
 
     }//GEN-END:initComponents
-    
+
     protected void buildChooser() {
         initComponents();
         slidersComboBox.setFont(UIManager.getFont("ColorChooser.font"));
-        
+
         slidersHolder.add(new GrayChooser(),UIManager.getString("ColorChooser.grayScaleSlider"));
         slidersHolder.add(new RGBChooser(),UIManager.getString("ColorChooser.rgbSliders"));
         slidersHolder.add(new CMYKChooser(),UIManager.getString("ColorChooser.cmykSliders"));
@@ -75,13 +72,13 @@ implements UIResource {
             public void itemStateChanged(ItemEvent evt) {
                 if (evt.getStateChange() == ItemEvent.SELECTED) {
                     ((CardLayout) slidersHolder.getLayout()).show(slidersHolder, (String) evt.getItem());
-                    lastSelectedPanelIndex = slidersComboBox.getSelectedIndex(); 
+                    lastSelectedPanelIndex = slidersComboBox.getSelectedIndex();
                 }
             }
         });
         slidersComboBox.setSelectedIndex(lastSelectedPanelIndex);
     }
-    
+
     public void installChooserPanel(JColorChooser enclosingChooser) {
         super.installChooserPanel(enclosingChooser);
         Component[] components = slidersHolder.getComponents();
@@ -90,7 +87,7 @@ implements UIResource {
             ccp.installChooserPanel(enclosingChooser);
         }
     }
-    
+
     /**
      * Invoked when the panel is removed from the chooser.
      * If override this, be sure to call <code>super</code>.
@@ -103,25 +100,25 @@ implements UIResource {
         }
         super.uninstallChooserPanel(enclosingChooser);
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.colorSliders");
     }
-    
+
     public Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorSlidersIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void updateChooser() {
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox slidersComboBox;
     private javax.swing.JPanel slidersHolder;
     // End of variables declaration//GEN-END:variables
-    
+
 }

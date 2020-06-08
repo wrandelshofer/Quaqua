@@ -1,9 +1,6 @@
 /*
- * @(#)Debug.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)Debug.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.util;
@@ -32,15 +29,15 @@ public class Debug {
     public static void paint(Graphics gr, JComponent c, ComponentUI ui) {
         Graphics2D g = (Graphics2D) gr;
         g.setStroke(defaultStroke);
-        
+
         if (UIManager.getBoolean("Quaqua.Debug.showVisualBounds")
         && ui instanceof VisuallyLayoutable) {
-            
+
             VisuallyLayoutable layoutable = (VisuallyLayoutable) ui;
             g.setColor(UIManager.getColor("Quaqua.Debug.componentBoundsForeground"));
             Rectangle rect = layoutable.getVisualBounds(c,VisuallyLayoutable.COMPONENT_BOUNDS,c.getWidth(),c.getHeight());
             g.drawRect(rect.x,rect.y,rect.width - 1,rect.height - 1);
-            
+
             g.setColor(UIManager.getColor("Quaqua.Debug.textBoundsForeground"));
             rect = layoutable.getVisualBounds(c,VisuallyLayoutable.TEXT_BOUNDS,c.getWidth(),c.getHeight());
             g.drawRect(rect.x,rect.y,rect.width - 1,rect.height - 1);
@@ -60,6 +57,6 @@ public class Debug {
                     );
             g.fillRect(0,0,c.getWidth(),c.getHeight());
         }*/
-        
+
     }
 }

@@ -62,7 +62,7 @@ public class RenderedImageCachableRed implements CachableRed {
         return srcs; // should always be empty...
     }
 
-    public Rectangle getBounds() { 
+    public Rectangle getBounds() {
         return new Rectangle(getMinX(),    // could we cache the rectangle??
                              getMinY(),
                              getWidth(),

@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaMenuPainter.java  
- *
- * Copyright (c) 2009-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaMenuPainter.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -352,7 +349,7 @@ public class QuaquaMenuPainter {
         }
     }
 
-    
+
     public void drawString(QuaquaMenuPainterClient client,
             Graphics g, String text, int mnemonicChar, int x,
             int y, boolean isEnabled, boolean isSelected) {

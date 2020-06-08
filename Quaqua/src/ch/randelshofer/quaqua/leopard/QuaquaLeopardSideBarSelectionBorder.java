@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaLeopardSideBarSelectionBorder.java 
- *
- * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaLeopardSideBarSelectionBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.leopard;
@@ -25,11 +22,11 @@ import javax.swing.plaf.UIResource;
  * @version $Id$
  */
 public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
-    
+
     /** Creates a new instance. */
     public QuaquaLeopardSideBarSelectionBorder() {
     }
-    
+
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
         Graphics2D g = (Graphics2D) gr;
         if (QuaquaUtilities.isFocused(c)) {
@@ -39,7 +36,7 @@ public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
             g.setPaint(new LinearGradientPaint(
                     x, y + 1, new Color(0x5c93d5),
                     x, y + height - 1, new Color(0x1a58ad)
-                    
+
                     ));
         } else {
             if (QuaquaUtilities.isOnActiveWindow(c, true)) {
@@ -49,9 +46,9 @@ public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
                 g.setPaint(new LinearGradientPaint(
                         x, y + 1,new Color(0xa9b1d0),
                         x, y + height - 1,new Color(0x6e81a9)
-                        
+
                         ));
-                
+
             } else {
                 // top line: 0x979797
             g.setColor(new Color(0x979797));
@@ -67,9 +64,9 @@ public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
     public Insets getBorderInsets(Component c) {
         return new Insets(0, 0, 0, 0);
     }
-    
+
     public boolean isBorderOpaque() {
         return true;
     }
-    
+
 }

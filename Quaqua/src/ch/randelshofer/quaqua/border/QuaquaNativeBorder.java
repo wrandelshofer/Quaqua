@@ -1,12 +1,6 @@
 /*
- * @(#)QuaquaNativeButtonStateBorder.java 
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)QuaquaNativeBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.border;
 
@@ -73,7 +67,7 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
         painter.setWidget(widget);
         this.imageInsets = imageInsets;
         this.borderInsets = borderInsets;
-        
+
     }
 
     @Override
@@ -83,7 +77,7 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
                 y += vm.top;
                 width -= vm.left + vm.right;
                 height -= vm.top + vm.bottom;
-                
+
         int args = 0;
         State state;
         if (QuaquaUtilities.isOnActiveWindow(c)) {
@@ -122,7 +116,7 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
 
         paint(c, g, x, y, width, height, args);
     }
-    
+
     @Override
     protected Image createImage(Component c, int w, int h,
             GraphicsConfiguration config) {

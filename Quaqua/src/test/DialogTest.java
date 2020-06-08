@@ -1,9 +1,6 @@
 /*
- * @(#)DialogTest.java  1.0  August 1, 2007
- *
- * Copyright (c) 2007 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)DialogTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -22,8 +19,8 @@ public class DialogTest extends javax.swing.JPanel {
     private JDialog modalDialog;
     private JDialog modelessDialog;
     private JFrame frame;
-    
-    
+
+
     /** Creates new instance. */
     public DialogTest() {
         initComponents();
@@ -45,7 +42,7 @@ public class DialogTest extends javax.swing.JPanel {
                     }
                 });
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -109,7 +106,7 @@ public class DialogTest extends javax.swing.JPanel {
             closeButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent evt) {
                    frame.setVisible(false);
-               } 
+               }
             });
             frame.getContentPane().add(closeButton);
             frame.getRootPane().setDefaultButton(closeButton);
@@ -118,29 +115,29 @@ public class DialogTest extends javax.swing.JPanel {
         }
         frame.setVisible(true);
     }//GEN-LAST:event_openFrame
-    
+
     private void openModelessDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openModelessDialog
         if (modelessDialog == null) {
             modelessDialog = new JDialog();
             modelessDialog.setTitle("Modeless Dialog");
             modelessDialog.getContentPane().setLayout(new GridBagLayout());
-            
+
             modelessDialog.getContentPane().add(new JTextField(9));
             modelessDialog.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
             JButton closeButton = new JButton("Close");
             closeButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent evt) {
                    modelessDialog.setVisible(false);
-               } 
+               }
             });
             modelessDialog.getContentPane().add(closeButton);
             modelessDialog.getRootPane().setDefaultButton(closeButton);
             modelessDialog.pack();
             modelessDialog.setModal(false);
         }
-        modelessDialog.setVisible(true);        
+        modelessDialog.setVisible(true);
     }//GEN-LAST:event_openModelessDialog
-    
+
     private void openModalDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openModalDialog
         if (modalDialog == null) {
             modalDialog = new JDialog();
@@ -152,7 +149,7 @@ public class DialogTest extends javax.swing.JPanel {
             closeButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent evt) {
                    modalDialog.setVisible(false);
-               } 
+               }
             });
             modalDialog.getContentPane().add(closeButton);
             modalDialog.getRootPane().setDefaultButton(closeButton);
@@ -161,12 +158,12 @@ public class DialogTest extends javax.swing.JPanel {
         }
         modalDialog.setVisible(true);
     }//GEN-LAST:event_openModalDialog
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton modalDialogButton;
     private javax.swing.JButton openFrameButton;
     private javax.swing.JButton openModelessDialogButton;
     // End of variables declaration//GEN-END:variables
-    
+
 }

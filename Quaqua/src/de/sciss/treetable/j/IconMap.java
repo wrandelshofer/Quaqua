@@ -21,5 +21,5 @@ import de.sciss.treetable.j.TreeTable;
 public interface IconMap {
 
 	Icon getIcon(TreeTable treeTable, Object node, boolean expanded, boolean leaf);
-	
+
 }

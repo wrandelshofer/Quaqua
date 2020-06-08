@@ -1,9 +1,6 @@
 /*
- * @(#)VisuallyLayoutable.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)VisuallyLayoutable.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -17,7 +14,7 @@ import javax.swing.*;
  * <p>
  * <b>Warning:</b> This is an experimental API. Expect substantial changes on
  * each release.
- * 
+ *
  * @author  Werner Randelshofer
  * @version $Id$
  */
@@ -27,12 +24,12 @@ public interface VisuallyLayoutable {
      */
     public final static int CLIP_BOUNDS = 0;
     /**
-     * The visually perceived bounds of a component, 
-     * e.g. on a JButton with isBorderDrawn = true: the borderline except 
-     * cast shadows. 
+     * The visually perceived bounds of a component,
+     * e.g. on a JButton with isBorderDrawn = true: the borderline except
+     * cast shadows.
      * e.g. on a JLabel with an icon: the borderline of the icon plus the
      * TEXT_BOUNDS of the text on the JLabel
-     * e.g. on a JLabel without an icon: the TEXT_BOUNDS of the text on 
+     * e.g. on a JLabel without an icon: the TEXT_BOUNDS of the text on
      * the JLabel
      *
      * If COMPONENT_BOUNDS is not applicable, CLIP_BOUNDS are used instead.
@@ -43,7 +40,7 @@ public interface VisuallyLayoutable {
      * If TEXT_BOUNDS is not applicable, COMPONENT_BOUNDS are used instead.
      */
     public final static int TEXT_BOUNDS = 2;
-    
+
     /**
      * Returns the baseline for the specified component, or -1 if the
      * baseline can not be determined.  The baseline is measured from
@@ -67,5 +64,5 @@ public interface VisuallyLayoutable {
      * @return The visual bounds in component coordinates.
      */
     public Rectangle getVisualBounds(JComponent c, int type, int width, int height);
-    
+
 }

@@ -1,9 +1,6 @@
 /*
- * @(#)InactivatableColorUIResource.java  
- *
- * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)InactivatableColorUIResource.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.color;
@@ -25,7 +22,7 @@ public class InactivatableColorUIResource extends PaintableColor implements UIRe
     private Color active;
     private Color inactive;
     private boolean isTransparent;
-    
+
     /** Creates a new instance. */
     public InactivatableColorUIResource(int activeRGB, int inactiveRGB) {
         super(activeRGB);
@@ -42,30 +39,30 @@ public class InactivatableColorUIResource extends PaintableColor implements UIRe
         this.active = active;
         this.inactive = inactive;
     }
-    
+
     public void setActive(boolean newValue) {
         isActive = newValue;
     }
     public void setTransparent(boolean newValue) {
         isTransparent = newValue;
     }
-    
+
     @Override
     public int getTransparency() {
         return (isTransparent) ? Paint.TRANSLUCENT : super.getTransparency();
     }
-    
+
     @Override
     public int getAlpha() {
         return (isTransparent) ? 0x0 : super.getAlpha();
     }
-    
+
     @Override
     public int getRGB() {
         return (isTransparent) ? 0x0 : ((isActive) ? active.getRGB() : inactive.getRGB());
-        
+
     }
-    
+
     @Override
     public PaintContext createContext(ColorModel cm, Rectangle r, Rectangle2D r2d, AffineTransform xform, RenderingHints hints) {
         return (isActive) ? active.createContext(cm, r, r2d, xform, hints)
@@ -83,5 +80,5 @@ public class InactivatableColorUIResource extends PaintableColor implements UIRe
            return clr;
        }
     }
-    
+
 }

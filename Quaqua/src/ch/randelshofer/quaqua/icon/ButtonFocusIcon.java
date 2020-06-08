@@ -1,9 +1,6 @@
 /*
- * @(#)ButtonFocusIcon.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ButtonFocusIcon.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.icon;
@@ -23,7 +20,7 @@ import javax.swing.*;
 public class ButtonFocusIcon extends MultiIcon {
     private final static int E = 0;
     private final static int S = 1;
-    
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -32,7 +29,7 @@ public class ButtonFocusIcon extends MultiIcon {
     public ButtonFocusIcon(Icon e, Icon s) {
         super (new Icon[] {e, s});
     }
-    
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -49,7 +46,7 @@ public class ButtonFocusIcon extends MultiIcon {
     public ButtonFocusIcon(Icon[] icons) {
         super(icons);
     }
-    
+
     /**
      * Creates a new instance.
      * The icon representations are created lazily from the image.
@@ -71,14 +68,14 @@ public class ButtonFocusIcon extends MultiIcon {
         }
         return icon;
     }
-    
+
     protected void generateMissingIcons() {
         if (icons.length != 2) {
        Icon[] newIcons = new Icon[2];
             System.arraycopy(icons, 0, newIcons, 0, Math.min(icons.length, 2));
             icons = newIcons;
         }
-        
+
         if (icons[S] == null) {
             icons[S] = icons[E];
         }

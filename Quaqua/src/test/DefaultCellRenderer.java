@@ -1,9 +1,6 @@
 /*
- * @(#)DefaultCellRenderer.java  1.0  April 11, 2004
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)DefaultCellRenderer.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 //package ch.randelshofer.gui;
@@ -23,14 +20,14 @@ import javax.swing.border.*;
 public class DefaultCellRenderer implements TableCellRenderer, ListCellRenderer {
     /** The Swing component being rendered. */
     protected JComponent renderComponent;
-    
+
     /**
      * The delegate class which handles all methods sent from the
      * <code>CellEditor</code>.
      */
     protected RenderDelegate delegate;
     protected static final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
-    
+
     /**
      * Constructs a <code>DefaultCellRenderer</code> that uses a text field.
      *
@@ -53,8 +50,8 @@ public class DefaultCellRenderer implements TableCellRenderer, ListCellRenderer 
     public DefaultCellRenderer(final JCheckBox checkBox) {
         renderComponent = checkBox;
         delegate = new RenderDelegate() {
-            public void setValue(Object value) { 
-            	boolean selected = false; 
+            public void setValue(Object value) {
+            	boolean selected = false;
 		if (value instanceof Boolean) {
 		    selected = ((Boolean)value).booleanValue();
 		}
@@ -81,7 +78,7 @@ public class DefaultCellRenderer implements TableCellRenderer, ListCellRenderer 
             }
         };
     }
-    
+
     public Component getTableCellRendererComponent(JTable parent, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         delegate.setValue(value);
         if (hasFocus) {
@@ -98,10 +95,10 @@ public class DefaultCellRenderer implements TableCellRenderer, ListCellRenderer 
 	    renderComponent.setBorder(noFocusBorder);
         }
         renderComponent.setFont(parent.getFont());
-        
+
         return renderComponent;
     }
-    
+
     public Component getListCellRendererComponent(JList parent, Object value, int index, boolean isSelected, boolean hasFocus) {
         delegate.setValue(value);
 
@@ -116,14 +113,14 @@ public class DefaultCellRenderer implements TableCellRenderer, ListCellRenderer 
 
         return renderComponent;
     }
-    
-    
+
+
     /**
      * The protected <code>RenderDelegate</code> class.
      */
     protected interface RenderDelegate {
        /**
-        * Sets the value of this cell. 
+        * Sets the value of this cell.
         * @param value the new value of this cell
         */
     	public void setValue(Object value);

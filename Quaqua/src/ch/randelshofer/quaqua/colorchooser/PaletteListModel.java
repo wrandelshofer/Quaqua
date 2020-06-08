@@ -1,9 +1,6 @@
 /*
- * @(#)PaletteListModel.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)PaletteListModel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -21,20 +18,20 @@ public class PaletteListModel extends AbstractListModel {
      * Name of the palette.
      */
     private String name;
-    
+
     /**
      * Informatation about the palette, such as the copyright.
      */
     private String info;
-    
+
     private PaletteEntry[] entries;
-    
+
     /**
      * Index of the color which is closest to the current color in
      * the color chooser.
      */
     private int closestIndex;
-    
+
     /**
      * Creates a new instance.
      * <p>
@@ -47,29 +44,29 @@ public class PaletteListModel extends AbstractListModel {
         this.info = info;
         this.entries = entries;
     }
-    
+
     public void setName(String newValue) {
         name = newValue;
     }
     public String getName() {
         return name;
     }
-    
+
     public void setInfo(String newValue) {
         info = newValue;
     }
     public String getInfo() {
         return info;
     }
-    
+
     public Object getElementAt(int index) {
         return entries[index];
     }
-    
+
     public int getSize() {
         return entries.length;
     }
-    
+
     /**
      * Used for displaying the name of the palette in the combo box
      * of the ColorPalettesChooser.
@@ -78,23 +75,23 @@ public class PaletteListModel extends AbstractListModel {
     public String toString() {
         return getName();
     }
-    
+
     /**
      * Computes the index of the color which comes closest to the specified
      * color.
-     * This may return -1, if there is no sufficiently close color in the 
+     * This may return -1, if there is no sufficiently close color in the
      * color list.
      */
     public int computeClosestIndex(Color referenceColor) {
         int refRGB = referenceColor.getRGB();
-        
+
         int closest = -1;
-        
+
         // Setting this to a lower value than Integer.MAX_VALUE makes this
         // method search for closer matches.
         //int closestDistance = Integer.MAX_VALUE;
         int closestDistance = 1024*3;
-        
+
         for (int i=0, n = getSize(); i < n; i++) {
             PaletteEntry entry = (PaletteEntry) getElementAt(i);
             int entryRGB = entry.getColor().getRGB();
@@ -109,7 +106,7 @@ public class PaletteListModel extends AbstractListModel {
         }
         return closest;
     }
-    
+
     /**
      * Sets the index of the color which is closest to the current color in
      * the color chooser.

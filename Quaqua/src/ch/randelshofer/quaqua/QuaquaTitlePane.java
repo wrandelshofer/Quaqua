@@ -1,8 +1,6 @@
 /*
- * @(#)QuaquaTitlePane.java  
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaTitlePane.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -592,7 +590,7 @@ public class QuaquaTitlePane extends JComponent {
         Object oldHints = QuaquaUtilities.beginGraphics(g);
 
         // As state isn't bound, we need a convenience place to check
-        // if it has changed. 
+        // if it has changed.
         if (getFrame() != null) {
             setState(getFrame().getExtendedState());
         }

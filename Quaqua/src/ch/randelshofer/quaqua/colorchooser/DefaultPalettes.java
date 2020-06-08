@@ -1,9 +1,6 @@
 /*
- * @(#)ColorPalettes.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)DefaultPalettes.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -32,7 +29,7 @@ public class DefaultPalettes {
         new Color(0x800080), //Plum
         new Color(0x7f7f7f), //Tin
         new Color(0x808080), //Nickel
-        
+
         new Color(0x804000), //Mocha
         new Color(0x408000), //Fern
         new Color(0x008040), //Moss
@@ -41,7 +38,7 @@ public class DefaultPalettes {
         new Color(0x800040), //Maroon
         new Color(0x666666), //Steel
         new Color(0x999999), //Aluminium
-        
+
         new Color(0xff0000), //Maraschino
         new Color(0xffff00), //Lemon
         new Color(0x00ff00), //Spring
@@ -50,7 +47,7 @@ public class DefaultPalettes {
         new Color(0xff00ff), //Magenta
         new Color(0x4c4c4c), //Iron
         new Color(0xb3b3b3), //Magnesium
-        
+
         new Color(0xff8000), //Tangerine
         new Color(0x80ff00), //Lime
         new Color(0x00ff80), //Sea Foam
@@ -59,7 +56,7 @@ public class DefaultPalettes {
         new Color(0xff0080), //Strawberry
         new Color(0x333333), //Tungsten
         new Color(0xcccccc), //Silver
-        
+
         new Color(0xff6666), //Salmon
         new Color(0xffff66), //Banana
         new Color(0x66ff66), //Flora
@@ -68,7 +65,7 @@ public class DefaultPalettes {
         new Color(0xff66ff), //Bubblegum
         new Color(0x191919), //Lead
         new Color(0xe6e6e6), //Mercury
-        
+
         new Color(0xffcc66), //Cantaloupe
         new Color(0xccff66), //Honeydew
         new Color(0x66ffcc), //Spindrift
@@ -78,7 +75,7 @@ public class DefaultPalettes {
         new Color(0x000000), //Licorice
         new Color(0xffffff), //Snow
     };
-    
+
     /**
      * Apple Colors.
      * Copyright Apple Computer Inc., All rights reserved.
@@ -99,7 +96,7 @@ public class DefaultPalettes {
         new Color(0xffff00), //Yellow
         new Color(0xffffff), //White
 };
-        
+
     /**
      * Windows Basic Colors.
      * Copyright Microsoft Inc., All rights reserved.
@@ -163,7 +160,7 @@ public class DefaultPalettes {
         new Color(0x400040), //dark purple
         new Color(0xffffff), //white
     };
-    
+
     /**
      * Web safe colors.
      * Copyright Apple Computer Inc., All rights reserved.
@@ -432,8 +429,8 @@ public class DefaultPalettes {
         new Color(0xcc0033),
         new Color(0x990033),
     };
-    
-    
+
+
     /**
      * Microsoft Office Colors.
      * Copyright Microsoft Inc., All rights reserved.

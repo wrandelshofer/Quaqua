@@ -1,9 +1,6 @@
 /*
- * @(#)Quaqua15PantherLookAndFeel.java 
- *
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)Quaqua15PantherLookAndFeel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.panther;
 
@@ -36,7 +33,7 @@ import java.security.*;
  * @version $Id$
  */
 public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
-    
+
     /**
      * Creates a new instance.
      */
@@ -44,7 +41,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
         // Our target look and feel is Apple's AquaLookAndFeel.
         super("apple.laf.AquaLookAndFeel");
     }
-    
+
     /**
      * Return a one line description of this look and feel implementation,
      * e.g. "The CDE/Motif Look and Feel".   This string is intended for
@@ -56,7 +53,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
                 QuaquaManager.getVersion()+
                 " for J2SE 5";
     }
-    
+
     /**
      * Return a short string that identifies this look and feel, e.g.
      * "CDE/Motif".  This string should be appropriate for a menu item.
@@ -74,7 +71,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
     public boolean getSupportsWindowDecorations() {
         return true;
     }
-    
+
     /**
      * Initialize the uiClassID to BasicComponentUI mapping.
      * The JComponent classes define their own uiClassID constants
@@ -90,7 +87,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
         String quaquaPrefix = "ch.randelshofer.quaqua.Quaqua";
         String quaquaJaguarPrefix = "ch.randelshofer.quaqua.jaguar.QuaquaJaguar";
         String quaquaPantherPrefix = "ch.randelshofer.quaqua.panther.QuaquaPanther";
-        
+
         // NOTE: Change code below, to override different
         // UI classes of the target look and feel.
         Object[] uiDefaults = {
@@ -113,7 +110,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             "ToolBarSeparatorUI", quaquaPrefix + "ToolBarSeparatorUI",
             "PopupMenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
             "TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
-            
+
             "TextAreaUI", quaquaPrefix + "TextAreaUI",
             "TextFieldUI", quaquaPrefix + "TextFieldUI",
             "PasswordFieldUI", quaquaPrefix + "PasswordFieldUI",
@@ -133,7 +130,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             "OptionPaneUI", quaquaPrefix + "OptionPaneUI",
             "PanelUI", quaquaPrefix + "PanelUI",
             "ViewportUI", quaquaPrefix + "ViewportUI",
-            
+
             // Do not create a RootPaneUI on our own, until we also
             // create our own ButtonUI. Aqua's RootPaneUI is responsible
             // for updating the border of the ButtonUI, when it is the default,
@@ -142,7 +139,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             "RootPaneUI", quaquaPrefix + "RootPaneUI",
         };
         putDefaults(table, uiDefaults);
-        
+
         // Popup menu fix only works fully when we have all AWT event permission
         SecurityManager security = System.getSecurityManager();
         try {
@@ -156,8 +153,8 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             // Silently do nothing
         }
         putDefaults(table, uiDefaults);
-        
-        
+
+
         // FIXME Menu related workarounds work only if useScreenMenuBar is off.
         String property;
         if (! isUseScreenMenuBar()) {
@@ -171,7 +168,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             putDefaults(table, uiDefaults);
         }
     }
-    
+
     private boolean isBrushedMetal() {
         String property;
         try {
@@ -190,7 +187,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
         }
         return property.equals("true");
     }
-    
+
     @Override
     protected void initSystemColorDefaults(UIDefaults table) {
         super.initSystemColorDefaults(table);
@@ -205,13 +202,13 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             ? table.get("menu")
             : makeTextureColor(0xf4f4f4, pantherDir+"MenuBar.texture.png");
             Object menuHighlight = makeTextureColor(0x3471cf, pantherDir+"MenuBar.texture.S.png");
-            
+
             Object[] uiDefaults = {
                 "window", controlBackground, /* Default color for the interior of windows */
                 "control", controlBackground, /* Default color for controls (buttons, sliders, etc) */
                 "menu", menuBackground, /* Default color for the interior of menus */
                 "menuHighlight", menuHighlight, /* Default color for the interior of menus */
-                
+
                 // Quaqua specific 'system' colors
                 "listHighlight", table.get("textHighlight"), /* List background color when selected */
                 "listHighlightText", table.get("textHighlightText"), /* List color when selected */
@@ -219,9 +216,9 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             };
             putDefaults(table, uiDefaults);
         }
-        
+
     }
-    
+
     @Override
     protected void initDesignDefaults(UIDefaults table) {
         boolean isBrushedMetal = isBrushedMetal();
@@ -260,14 +257,14 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             //
             "RadioButtonMenuItem.checkIcon", makeButtonStateIcon(commonDir+"RadioButtonMenuItem.icons.png", 6),
             "RadioButtonMenuItem.border", new BorderUIResource.EmptyBorderUIResource(1,1,1,1),
-            
+
             "RootPane.background", panelBackground,
-            
+
             "Separator.foreground", new ColorUIResource(139,139,139),
             "Separator.highlight", new ColorUIResource(243,243,243),
             "Separator.shadow", new ColorUIResource(213,213,213),
             "Separator.border", new VisualMarginBorder(),
-            
+
             "TabbedPane.disabledForeground", disabledForeground,
             "TabbedPane.tabInsets", new InsetsUIResource(1, 10, 4, 9),
             "TabbedPane.selectedTabPadInsets", new InsetsUIResource(2, 2, 2, 1),
@@ -322,12 +319,12 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
 
             "TitledBorder.border", new GroupBox(),
             "TitledBorder.titleColor", new ColorUIResource(0x303030),
-            
+
             "ToolBar.background", (isBrushedMetal) ? table.get("ToolBar.background") : makeTextureColor(0xf4f4f4, pantherDir+"ToolBar.texture.png"),
             "ToolBar.bottom.gradient", null,
             "ToolBar.bottom.inactiveGradient", null,
             "ToolBar.title.background", (isBrushedMetal) ? table.get("ToolBar.background") : makeTextureColor(0xf4f4f4, pantherDir+"ToolBar.texture.png"),
-            
+
             "ToolBarSeparator.foreground", new ColorUIResource(0x808080),
             //
             "Tree.leftChildIndent", 8, // 7
@@ -349,13 +346,13 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             "Tree.sideBar.selectionStyle",  "shadow",
         };
         putDefaults(table, uiDefaults);
-        
+
         // FIXME Implement a screen menu bar by myself. We lose too many features here.
         if (isUseScreenMenuBar()) {
             uiDefaults = new Object[] {
                 "CheckBoxMenuItem.checkIcon", makeButtonStateIcon(commonDir+"CheckBoxMenuItem.icons.png", 6, new Rectangle(5,1,17,12)),
                 "CheckBoxMenuItem.border", new BorderUIResource.EmptyBorderUIResource(0,0,2,0),
-                
+
                 "Menu.checkIcon", makeIcon(getClass(), commonDir+"MenuItem.checkIcon.png", new Point(1,0)),
                 "Menu.arrowIcon", makeButtonStateIcon(commonDir+"MenuItem.arrowIcons.png", 2, new Rectangle(-12,1,0,12)),
                 "Menu.border", new BorderUIResource.EmptyBorderUIResource(0,5,2,4),
@@ -364,13 +361,13 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
                 "Menu.menuPopupOffsetY", 1,
                 "Menu.submenuPopupOffsetX", 0,
                 "Menu.submenuPopupOffsetY", -4,
-                
+
                 "MenuItem.checkIcon", makeIcon(getClass(), commonDir+"MenuItem.checkIcon.png", new Point(1,0)),
                 "MenuItem.border", new BorderUIResource.EmptyBorderUIResource(0,5,2,0),
-                
+
                 "RadioButtonMenuItem.checkIcon", makeButtonStateIcon(commonDir+"RadioButtonMenuItem.icons.png", 6, new Rectangle(5,0,17,12)),
                 "RadioButtonMenuItem.border", new BorderUIResource.EmptyBorderUIResource(0,0,2,0),
-                
+
                 "PopupMenu.border", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaMenuBorder"),
                 "PopupMenu.background", makeTextureColor(0xf4f4f4, pantherDir+"MenuBar.texture.png"),
                 "PopupMenu.foreground", new ColorUIResource(Color.black),
@@ -381,7 +378,7 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
                 "CheckBoxMenuItem.border", new BorderUIResource.EmptyBorderUIResource(0,0,2,3),
                 "CheckBoxMenuItem.background", makeTextureColor(0xf4f4f4, pantherDir+"MenuBar.texture.png"),
                 "CheckBoxMenuItem.foreground", new ColorUIResource(0x000000),
-                
+
                 "Menu.checkIcon", makeIcon(getClass(), commonDir+"MenuItem.checkIcon.png"),
                 "Menu.arrowIcon", makeButtonStateIcon(commonDir+"MenuItem.arrowIcons.png", 2, new Point(0,1)),
                 "Menu.margin", new InsetsUIResource(0, 8, 0, 8),
@@ -395,24 +392,24 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
                 "Menu.selectionForeground", table.get("MenuItem.selectionForeground"),
                 "Menu.background", makeTextureColor(0xf4f4f4, pantherDir+"MenuBar.texture.png"),
                 "Menu.foreground", new ColorUIResource(0x000000),
-                
+
                 "MenuBar.border", makeImageBevelBackgroundBorder(tigerDir+"MenuBar.border.png", new Insets(10,0,11,0), new Insets(0,0,0,0), true),
                 "MenuBar.selectedBorder", makeImageBevelBackgroundBorder(tigerDir+"MenuBar.selectedBorder.png", new Insets(1,0,20,0), new Insets(0,0,0,0), true),
                 "MenuBar.margin", new InsetsUIResource(1, 8, 2, 8),
                 "MenuBar.shadow", null,
                 "MenuBar.background", makeTextureColor(0xf4f4f4, pantherDir+"MenuBar.texture.png"),
                 "MenuBar.foreground", new ColorUIResource(0x000000),
-                
+
                 "MenuItem.checkIcon", makeIcon(getClass(), commonDir+"MenuItem.checkIcon.png"),
                 "MenuItem.border", new BorderUIResource.EmptyBorderUIResource(0,0,2,3),
                 "MenuItem.acceleratorSelectionForeground", menuSelectionForeground,
                 "MenuItem.background", makeTextureColor(0xf4f4f4, pantherDir+"MenuBar.texture.png"),
                 "MenuItem.foreground", new ColorUIResource(0x000000),
-                
+
                 "PopupMenu.border", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaMenuBorder"),
                 "PopupMenu.background", makeTextureColor(0xf4f4f4, pantherDir+"MenuBar.texture.png"),
                 "PopupMenu.foreground", new ColorUIResource(Color.black),
-                
+
                 "RadioButtonMenuItem.checkIcon", makeButtonStateIcon(commonDir+"RadioButtonMenuItem.icons.png", 6),
                 "RadioButtonMenuItem.border", new BorderUIResource.EmptyBorderUIResource(0,0,2,3),
                 "RadioButtonMenuItem.background", panelBackground,

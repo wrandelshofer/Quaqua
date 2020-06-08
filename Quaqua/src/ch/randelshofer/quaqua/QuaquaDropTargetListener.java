@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaDropTargetListener.java  
- *
- * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaDropTargetListener.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -14,7 +11,7 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 
 /**
- * QuaquaDropTargetListener is mostly a copy of 
+ * QuaquaDropTargetListener is mostly a copy of
  * javax.swing.basic.BasicDropTargetListener. This probably violates some
  * licenses, but I don't know any other way to override the behavior of BasicTreeUI.
  *
@@ -65,7 +62,7 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
      * timer.  The region that causes the timer countdown is the area
      * between the two rectangles.
      * <p>
-     * This is implemented to use the visible area of the component 
+     * This is implemented to use the visible area of the component
      * as the outer rectangle, and the insets are fixed at 10. Should
      * the component be smaller than a total of 20 in any direction,
      * autoscroll will not occur in that direction.
@@ -98,7 +95,7 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
 
     /**
      * Perform an autoscroll operation.  This is implemented to scroll by the
-     * unit increment of the Scrollable using scrollRectToVisible.  If the 
+     * unit increment of the Scrollable using scrollRectToVisible.  If the
      * cursor is in a corner of the autoscroll region, more than one axis will
      * scroll.
      */
@@ -256,7 +253,7 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
     private Rectangle inner = new Rectangle();
     private int hysteresis = 10;
     private boolean canImport;
-    /** 
+    /**
      * The current component. The value is cached from the drop events and used
      * by the timer. When a drag exits or a drop occurs, this value is cleared.
      */

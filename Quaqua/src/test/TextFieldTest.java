@@ -1,9 +1,6 @@
 /*
- * @(#)TextFieldTest.java  1.0  13 February 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)TextFieldTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -21,12 +18,12 @@ import javax.swing.text.JTextComponent;
  * @version 1.0  13 February 2005  Created.
  */
 public class TextFieldTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public TextFieldTest() {
         initComponents();
-        
-         
+
+
         for (JComponent c:new JComponent[]{smallField1,smallField2,smallField3,smallLabel}) {
             c.putClientProperty("JComponent.sizeVariant","small");
         }
@@ -40,15 +37,15 @@ public class TextFieldTest extends javax.swing.JPanel {
         m.add(new DefaultEditorKit.PasteAction());
         jTextField1.setComponentPopupMenu(m);
          */
-        
+
         // Prevent text components from becoming too small in GridBagLayout
         for (Component c : getComponents()) {
             if (c instanceof JTextComponent) {
                 c.setMinimumSize(c.getPreferredSize());
             }
         }
-        
-        
+
+
         // Try to get a better layout with J2SE6
         try {
             int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
@@ -65,7 +62,7 @@ public class TextFieldTest extends javax.swing.JPanel {
         }
 
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -191,8 +188,8 @@ public class TextFieldTest extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
@@ -210,5 +207,5 @@ public class TextFieldTest extends javax.swing.JPanel {
     private javax.swing.JTextField smallField3;
     private javax.swing.JLabel smallLabel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

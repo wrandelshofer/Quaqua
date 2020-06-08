@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaPasswordView.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaPasswordView.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -19,18 +16,18 @@ import javax.swing.text.*;
  * @version $Id$
  */
 public class QuaquaPasswordView extends FieldView {
-    
+
     /** Creates a new instance. */
     public QuaquaPasswordView(Element element) {
         super(element);
     }
-    
+
     protected char getEchoChar(JPasswordField field) {
         return field.getEchoChar() == '*' ?
             '\u2022': // Unicode BULLET
             field.getEchoChar();
         }
-    
+
    /**
      * Renders the given range in the model as normal unselected
      * text.  This sets the foreground color and echos the characters
@@ -70,11 +67,11 @@ public class QuaquaPasswordView extends FieldView {
     }
     protected Color unselected;
     protected Color selected;
-    
+
     @Override
     public void paint(Graphics g, Shape a) {
 	JTextComponent host = (JTextComponent) getContainer();
-        unselected = (host.isEnabled()) ? 
+        unselected = (host.isEnabled()) ?
             host.getForeground() : host.getDisabledTextColor();
 	Caret c = host.getCaret();
         selected = c.isSelectionVisible() ? host.getSelectedTextColor() : unselected;
@@ -153,7 +150,7 @@ public class QuaquaPasswordView extends FieldView {
 	    }
 	    char echoChar = getEchoChar(f);
 	    FontMetrics m = f.getFontMetrics(f.getFont());
-	    
+
 	    Rectangle alloc = adjustAllocation(a).getBounds();
 	    int dx = (pos - getStartOffset()) * m.charWidth(echoChar);
 	    alloc.x += dx;
@@ -207,7 +204,7 @@ public class QuaquaPasswordView extends FieldView {
      * @param axis may be either View.X_AXIS or View.Y_AXIS
      * @return   the span the view would like to be rendered into &gt;= 0.
      *           Typically the view is told to render into the span
-     *           that is returned, although there is no guarantee.  
+     *           that is returned, although there is no guarantee.
      *           The parent may choose to resize or break the view.
      */
     @Override

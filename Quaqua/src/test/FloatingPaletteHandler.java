@@ -1,9 +1,6 @@
 /*
- * @(#)FloatingPaletteHandler.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)FloatingPaletteHandler.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -17,7 +14,7 @@ import java.util.*;
  * windows has focus anymore.
  * <p>
  * Usage: Register all project windows using method add(Window) with
- * the palette handler, and all palette windows using method addPalette(Dialog).  
+ * the palette handler, and all palette windows using method addPalette(Dialog).
  *
  * <p>FIXME - Remove WindowFocusListener from public API of this class.
  *
@@ -31,7 +28,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
     private static FloatingPaletteHandler instance;
     private javax.swing.Timer timer;
     private Window currentWindow;
-    
+
     /**
      * Returns FloatingPaletteHandler singleton.
      */
@@ -41,8 +38,8 @@ public class FloatingPaletteHandler implements WindowFocusListener {
         }
         return instance;
     }
-    
-    
+
+
     /** Creates a new instance. */
     public FloatingPaletteHandler() {
         timer = new javax.swing.Timer(100, new ActionListener() {
@@ -52,8 +49,8 @@ public class FloatingPaletteHandler implements WindowFocusListener {
         });
         timer.setRepeats(false);
     }
-    
-    
+
+
     /**
      * Registers a project window with the FloatingPaletteHandler.
      * <p>
@@ -66,7 +63,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
         window.addWindowFocusListener(this);
         windows.add(window);
     }
-    
+
     /**
      * Unregisters a project window with the FloatingPaletteHandler.
      */
@@ -74,7 +71,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
         windows.remove(window);
         window.removeWindowFocusListener(this);
     }
-    
+
     /**
      * Registers a palette window with the FloatingPaletteHandler.
      * <p>
@@ -85,7 +82,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
         palette.addWindowFocusListener(this);
         palettes.add(palette);
     }
-    
+
     /**
      * Removes a project window from the FloatingPaletteHandler.
      */
@@ -93,7 +90,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
         palettes.remove(palette);
         palette.removeWindowFocusListener(this);
     }
-    
+
     private void setCurrentWindow(Window newValue) {
         // XXX - firePropertyChangeEvent, so that the floating palettes can
         // register with FloatingPaletteHandler as a PropertyChangeListener
@@ -108,7 +105,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
     public Window getCurrentWindow() {
         return currentWindow;
     }
-    
+
     /**
      * Invoked when the Window is set to be the focused Window, which means
      * that the Window, or one of its subcomponents, will receive keyboard
@@ -121,7 +118,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
             showPalettes();
         }
     }
-    
+
     /**
      * Invoked when the Window is no longer the focused Window, which means
      * that keyboard events will no longer be delivered to the Window or any of
@@ -130,7 +127,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
     public void windowLostFocus(WindowEvent e) {
         timer.restart();
     }
-    
+
     private void showPalettes() {
         for (Iterator i=hiddenPalettes.iterator(); i.hasNext(); ) {
             JDialog palette = (JDialog) i.next();
@@ -138,7 +135,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
         }
         hiddenPalettes.clear();
     }
-    
+
     private boolean isFocused(Window w) {
         if (w.isFocused()) return true;
         Window[] ownedWindows = w.getOwnedWindows();
@@ -177,5 +174,5 @@ public class FloatingPaletteHandler implements WindowFocusListener {
             }
         }
     }
-    
+
 }

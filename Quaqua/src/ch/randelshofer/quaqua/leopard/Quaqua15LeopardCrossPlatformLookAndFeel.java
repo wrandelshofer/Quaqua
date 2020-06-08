@@ -1,9 +1,6 @@
 /*
- * @(#)Quaqua15LeopardCrossPlatformLookAndFeel.java  
- *
- * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)Quaqua15LeopardCrossPlatformLookAndFeel.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.leopard;
 
@@ -55,7 +52,7 @@ public class Quaqua15LeopardCrossPlatformLookAndFeel extends Quaqua15LeopardLook
     /*
     protected void initSystemColorDefaults(UIDefaults table) {
     super.initSystemColorDefaults(table);
-    
+
     if (QuaquaManager.getDesign() != QuaquaManager.LEOPARD ||
     ! QuaquaManager.isOSX()) {
     boolean isBrushedMetal = isBrushedMetal();
@@ -63,7 +60,7 @@ public class Quaqua15LeopardCrossPlatformLookAndFeel extends Quaqua15LeopardLook
     Object toolBarBackground = (isBrushedMetal) ? table.get("ToolBar.background") : new ColorUIResource(0xe8e8e8);
     Object menuBackground = new ColorUIResource(0xffffff);
     Object menuHighlight = makeTextureColor(0x3471cf, pantherDir + "MenuBar.texture.S.png");
-    
+
     Object[] uiDefaults = {
     "window", controlBackground, // Default color for the interior of windows
     "control", controlBackground, // Default color for controls (buttons, sliders, etc)
@@ -73,7 +70,7 @@ public class Quaqua15LeopardCrossPlatformLookAndFeel extends Quaqua15LeopardLook
     "listHighlight", table.get("textHighlight"), // List background color when selected
     "listHighlightText", table.get("textHighlightText"), // List color when selected
     "listHighlightBorder", new ColorUIResource(0x808080), // List color when selected
-    
+
     };
     putDefaults(table, uiDefaults);
     }

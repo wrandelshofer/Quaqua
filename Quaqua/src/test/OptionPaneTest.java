@@ -1,9 +1,6 @@
 /*
  * @(#)OptionPaneTest.java
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -262,7 +259,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
 
     private void reviewChangesAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewChangesAlert
         final String optionPaneFont = UIManager.getLookAndFeel().getDefaults().getFont("OptionPane.font").getName();
-        
+
         // Example taken from
         // http://developer.apple.com/documentation/UserExperience/Conceptual/OSXHIGuidelines/XHIGWindows/chapter_17_section_6.html#//apple_ref/doc/uid/20000961-TPXREF11
         JOptionPane pane = new JOptionPane(
@@ -322,7 +319,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         // http://java.sun.com/products/jlf/ed2/book/HIG.Dialogs5.html#41765
         JOptionPane pane = new JOptionPane(
                 "<html>"+
-       
+
                 "<b>Enter your name.</b>",
                 JOptionPane.QUESTION_MESSAGE
                 );
@@ -342,7 +339,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         // http://java.sun.com/products/jlf/ed2/book/HIG.Dialogs5.html#35722
         JOptionPane pane = new JOptionPane(
                 "<html>"+
-        
+
                 "<b>Out of Paper</b><p>"+
                 "To continue printing, add more paper to the printer "
                 +"and press Continue.",
@@ -363,7 +360,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
 
         JOptionPane pane = new JOptionPane(
                 "<html>"+
-        
+
                 "<b>File Exists</b><p>"+
                 "A file named \"patience.gif\" already exists.<br>"+
                 "Replace existing file?",

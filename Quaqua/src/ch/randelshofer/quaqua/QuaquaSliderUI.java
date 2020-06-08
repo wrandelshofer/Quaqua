@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaSliderUI.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaSliderUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -43,11 +40,11 @@ public class QuaquaSliderUI extends BasicSliderUI
         super.installUI(c);
         QuaquaUtilities.installProperty(c, "opaque", UIManager.get("Slider.opaque"));
     }
-    
+
     @Override
     public void installDefaults(JSlider slider) {
         super.installDefaults(slider);
-                
+
         focusInsets = getVisualMargin(slider);
         slider.setRequestFocusEnabled(UIManager.getBoolean("Slider.requestFocusEnabled"));
         slider.setFocusable(UIManager.getBoolean("CheckBox.focusable"));
@@ -635,8 +632,8 @@ public class QuaquaSliderUI extends BasicSliderUI
 
         /**
          * If the mouse is pressed above the "thumb" component
-         * then reduce the scrollbars value by one page ("page up"), 
-         * otherwise increase it by one page.  If there is no 
+         * then reduce the scrollbars value by one page ("page up"),
+         * otherwise increase it by one page.  If there is no
          * thumb then page up if the mouse is in the upper half
          * of the track.
          */
@@ -648,7 +645,7 @@ public class QuaquaSliderUI extends BasicSliderUI
 
             currentMouseX = e.getX();
             currentMouseY = e.getY();
-            
+
             if (slider.isRequestFocusEnabled()) {
                 slider.requestFocus();
             }
@@ -751,7 +748,7 @@ public class QuaquaSliderUI extends BasicSliderUI
             return true;
         }
 
-        /** 
+        /**
          * Set the models value to the position of the top/left
          * of the thumb relative to the origin of the track.
          */

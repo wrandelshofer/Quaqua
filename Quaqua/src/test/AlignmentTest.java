@@ -1,9 +1,6 @@
 /*
- * @(#)AlignmentTest.java  1.0  May 16, 2005
- *
- * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)AlignmentTest.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package test;
@@ -15,14 +12,14 @@ package test;
  * @version 1.0  2005-05-16  Created.
  */
 public class AlignmentTest extends javax.swing.JPanel {
-    
+
     /** Creates new form AlignmentTest */
     public AlignmentTest() {
         initComponents();
-        
+
         jComboBox1.setSelectedItem(null);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -367,8 +364,8 @@ public class AlignmentTest extends javax.swing.JPanel {
         add(jPanel2);
 
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -415,5 +412,5 @@ public class AlignmentTest extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
-    
+
 }

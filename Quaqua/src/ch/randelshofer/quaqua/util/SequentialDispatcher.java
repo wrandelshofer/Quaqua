@@ -1,21 +1,13 @@
 /*
- * @(#)SequentialDispatcher.java  1.0  2002-05-18
- *
- * Copyright (c) 2001-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of 
- * Werner Randelshofer. ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entered into
- * with Werner Randelshofer.
+ * @(#)SequentialDispatcher.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 //package ch.randelshofer.util;
 package ch.randelshofer.quaqua.util;
 
 /**
  * Processes Runnable objects sequentially on a processor thread.
- * The order in which the runnable objects are processed is 
+ * The order in which the runnable objects are processed is
  * the same in which they were added to the dispatcher.
  * <p>
  * Design pattern used: Acceptor
@@ -50,7 +42,7 @@ public class SequentialDispatcher extends EventLoop {
         Runnable r = (Runnable) event;
         r.run();
     }
-    
+
     /**
      * Queues the Runnable object for later execution on the
      * processor thread.

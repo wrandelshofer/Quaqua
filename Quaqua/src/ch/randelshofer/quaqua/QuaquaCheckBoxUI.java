@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaCheckBoxUI.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaCheckBoxUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -83,7 +80,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
 
     private boolean isSmall(JComponent c) {
         boolean isSmall=QuaquaUtilities.getSizeVariant(c)==QuaquaUtilities.SizeVariant.SMALL;
-        
+
         return isSmall;
     }
 

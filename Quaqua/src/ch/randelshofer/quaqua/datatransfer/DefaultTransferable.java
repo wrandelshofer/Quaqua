@@ -1,9 +1,6 @@
 /*
- * @(#)DefaultTransferable.java  
- *
- * Copyright (c) 2002-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)DefaultTransferable.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.datatransfer;
@@ -19,10 +16,10 @@ import java.awt.datatransfer.*;
 public class DefaultTransferable implements Transferable {
     private byte[] data;
     private DataFlavor flavor;
-    
+
     /**
      * Creates a new instance using a String as the data source.
-     * The charset parameter of the mimetype is used to convert the chars 
+     * The charset parameter of the mimetype is used to convert the chars
      * into bytes.
      * If no charset parameter is specified <code>;charset="UTF-8"</code> is
      * added and the data is encoded using UTF-8.
@@ -32,7 +29,7 @@ public class DefaultTransferable implements Transferable {
     }
     /**
      * Creates a new instance using a char array as the data source.
-     * The charset parameter of the mimetype is used to convert the chars 
+     * The charset parameter of the mimetype is used to convert the chars
      * into bytes.
      * If no charset parameter is specified <code>;charset="UTF-8"</code> is
      * added and the data is encoded using UTF-8.
@@ -65,8 +62,8 @@ public class DefaultTransferable implements Transferable {
             this.data = data;
             this.flavor = new DataFlavor(mimetype, description);
     }
-    
-    
+
+
     /**
      * Returns an object which represents the data to be transferred.  The class
      * of the object returned is defined by the representation class of the flavor.
@@ -86,7 +83,7 @@ public class DefaultTransferable implements Transferable {
             throw new UnsupportedFlavorException(flavor);
         }
     }
-    
+
     /**
      * Returns an array of DataFlavor objects indicating the flavors the data
      * can be provided in.  The array should be ordered according to preference
@@ -96,7 +93,7 @@ public class DefaultTransferable implements Transferable {
     public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {flavor};
     }
-    
+
     /**
      * Returns whether or not the specified data flavor is supported for
      * this object.
@@ -106,5 +103,5 @@ public class DefaultTransferable implements Transferable {
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.equals(this.flavor);
     }
-    
+
 }

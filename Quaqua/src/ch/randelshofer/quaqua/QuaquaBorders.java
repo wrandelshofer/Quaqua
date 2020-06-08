@@ -1,9 +1,6 @@
 /*
- * @(#)QuaquaBorders.java  
- *
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)QuaquaBorders.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua;
@@ -19,13 +16,13 @@ import javax.swing.border.*;
  * @version $Id$
  */
 public class QuaquaBorders {
-    
+
     /**
      * Prevent instance creation.
      */
     private QuaquaBorders() {
     }
-    
+
 
     /**
      * Border for a Frame.
@@ -88,8 +85,8 @@ public class QuaquaBorders {
         public Insets getBorderInsets(Component c)       {
             return insets;
         }
-    	  
-        public Insets getBorderInsets(Component c, Insets newInsets) 
+
+        public Insets getBorderInsets(Component c, Insets newInsets)
         {
             newInsets.top = insets.top;
             newInsets.left = insets.left;
@@ -103,8 +100,8 @@ public class QuaquaBorders {
      * Border for a Frame.
      * @since 1.4
      */
-    static class DialogBorder extends AbstractBorder implements UIResource 
-    {		
+    static class DialogBorder extends AbstractBorder implements UIResource
+    {
         private static final Insets insets = new Insets(5, 5, 5, 5);
         private static final int corner = 14;
 
@@ -138,7 +135,7 @@ public class QuaquaBorders {
             return Color.black;//QuaquaLookAndFeel.getControlInfo();
         }
 
-        public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) 
+        public void paintBorder(Component c, Graphics g, int x, int y, int w, int h)
         {
             Color background;
             Color highlight;
@@ -183,14 +180,14 @@ public class QuaquaBorders {
                 g.drawLine( w-3, corner, w-3, h-corner-1);
                 g.drawLine( corner, h-3, w-corner-1, h-3);
             }
-            
+
         }
 
         public Insets getBorderInsets(Component c)       {
             return insets;
         }
 
-        public Insets getBorderInsets(Component c, Insets newInsets) 
+        public Insets getBorderInsets(Component c, Insets newInsets)
         {
             newInsets.top = insets.top;
             newInsets.left = insets.left;
@@ -210,10 +207,10 @@ public class QuaquaBorders {
             return UIManager.getColor("OptionPane.errorDialog.border.background");
         }
     }
-    
+
 
     /**
-     * Border for a QuestionDialog.  Also used for a JFileChooser and a 
+     * Border for a QuestionDialog.  Also used for a JFileChooser and a
      * JColorChooser..
      * @since 1.4
      */
@@ -223,7 +220,7 @@ public class QuaquaBorders {
             return UIManager.getColor("OptionPane.questionDialog.border.background");
         }
     }
-    
+
 
     /**
      * Border for a Warning Dialog.
@@ -235,7 +232,7 @@ public class QuaquaBorders {
             return UIManager.getColor("OptionPane.warningDialog.border.background");
         }
     }
-    
+
 
     /**
      * Border for a Palette.
@@ -245,9 +242,9 @@ public class QuaquaBorders {
         private static final Insets insets = new Insets(1, 1, 1, 1);
         int titleHeight = 0;
 
-        public void paintBorder( Component c, Graphics g, int x, int y, int w, int h ) {  
+        public void paintBorder( Component c, Graphics g, int x, int y, int w, int h ) {
 
-	    g.translate(x,y);  
+	    g.translate(x,y);
 	    g.setColor(Color.black);//QuaquaLookAndFeel.getPrimaryControlDarkShadow());
 	    g.drawLine(0, 1, 0, h-2);
 	    g.drawLine(1, h-1, w-2, h-1);
@@ -255,7 +252,7 @@ public class QuaquaBorders {
 	    g.drawLine( 1, 0, w-2, 0);
 	    g.drawRect(1,1, w-3, h-3);
 	    g.translate(-x,-y);
-      
+
 	}
 
         public Insets getBorderInsets(Component c)       {
@@ -275,14 +272,14 @@ public class QuaquaBorders {
         private static final Insets insets = new Insets(3, 3, 3, 3);
         int titleHeight = 0;
 
-        public void paintBorder( Component c, Graphics g, int x, int y, int w, int h ) {  
+        public void paintBorder( Component c, Graphics g, int x, int y, int w, int h ) {
 
-	    g.translate(x,y);  
+	    g.translate(x,y);
 
             int messageType = JOptionPane.PLAIN_MESSAGE;
             if (c instanceof JInternalFrame) {
                 Object obj = ((JInternalFrame) c).getClientProperty(
-                              "JInternalFrame.messageType"); 
+                              "JInternalFrame.messageType");
                 if (obj != null && (obj instanceof Integer)) {
                     messageType = ((Integer) obj).intValue();
                 }
@@ -324,7 +321,7 @@ public class QuaquaBorders {
               }
 
 	    g.translate(-x,-y);
-      
+
 	}
 
         public Insets getBorderInsets(Component c)       {

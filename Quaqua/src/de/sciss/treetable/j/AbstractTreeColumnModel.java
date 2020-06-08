@@ -27,7 +27,7 @@ import de.sciss.treetable.j.event.TreeColumnModelListener;
 public abstract class AbstractTreeColumnModel implements TreeColumnModel {
 
 	protected EventListenerList listenerList = new EventListenerList();
-	
+
 	@Override
 	public String getColumnName(int column) {
 		String str = Character.toString((char)('A' + (column % 26)));
@@ -37,15 +37,15 @@ public abstract class AbstractTreeColumnModel implements TreeColumnModel {
 		}
 		return str;
 	}
-	
+
 	@Override
 	public Class<?> getColumnClass(int column) {
 		return Object.class;
 	}
-	
+
 	@Override
 	public void setValueAt(Object value, Object node, int column) {}
-	
+
 	protected Object convertValue(Object value, Object node, int column) {
 		try {
 			return convertValue(value, getColumnClass(column));
@@ -53,22 +53,22 @@ public abstract class AbstractTreeColumnModel implements TreeColumnModel {
 			return convertValue(value, node, column, e);
 		}
 	}
-	
+
 	protected Object convertValue(Object value, Object node, int column,
 			NumberFormatException e) {
 		return value;
 	}
-	
+
 	@Override
 	public boolean isCellEditable(Object node, int column) {
 		return false;
 	}
-	
+
 	@Override
 	public int getHierarchicalColumn() {
 		return 0;
 	}
-	
+
 	@Override
 	public void addTreeColumnModelListener(TreeColumnModelListener l) {
 		listenerList.add(TreeColumnModelListener.class, l);
@@ -78,11 +78,11 @@ public abstract class AbstractTreeColumnModel implements TreeColumnModel {
 	public void removeTreeColumnModelListener(TreeColumnModelListener l) {
 		listenerList.remove(TreeColumnModelListener.class, l);
 	}
-	
+
 	protected void fireTreeColumnChanged(TreePath path, int column) {
 		fireTreeColumnChanged(listenerList, this, path, column);
 	}
-	
+
 	public static void fireTreeColumnChanged(EventListenerList listenerList,
 			TreeColumnModel source, TreePath path, int column) {
 		Object[] listeners = listenerList.getListenerList();
@@ -95,15 +95,15 @@ public abstract class AbstractTreeColumnModel implements TreeColumnModel {
 			}
 		}
 	}
-	
-	
+
+
 	public static TreePath pathToRoot(Object root, TreeNode node) {
 		if (node == root || node.getParent() == null) {
 			return new TreePath(node);
 		}
 		return pathToRoot(root, node.getParent()).pathByAddingChild(node);
 	}
-	
+
 	public static Object convertValue(Object value, Class<?> cls)
 			throws NumberFormatException {
 		// short-circuit String columns
@@ -137,7 +137,7 @@ public abstract class AbstractTreeColumnModel implements TreeColumnModel {
 		}
 		return value;
 	}
-	
+
 
 
 }

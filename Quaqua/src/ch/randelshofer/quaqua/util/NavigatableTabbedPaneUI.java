@@ -1,9 +1,6 @@
 /*
- * @(#)NavigatableTabbedPaneUI.java  1.0  September 4, 2006
- *
- * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)NavigatableTabbedPaneUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.util;

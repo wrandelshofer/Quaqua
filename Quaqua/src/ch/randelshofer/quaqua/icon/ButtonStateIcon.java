@@ -1,9 +1,6 @@
 /*
- * @(#)ButtonStateIcon.java 
- *
- * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ButtonStateIcon.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.icon;
@@ -29,7 +26,7 @@ public class ButtonStateIcon extends MultiIcon {
     private final static int IS = 7;
     private final static int DI = 8;
     private final static int DIS = 9;
-    
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -69,7 +66,7 @@ public class ButtonStateIcon extends MultiIcon {
     public ButtonStateIcon(Icon[] icons) {
         super(icons);
     }
-    
+
     /**
      * Creates a new instance.
      * The icon representations are created lazily from the image.
@@ -77,14 +74,14 @@ public class ButtonStateIcon extends MultiIcon {
     public ButtonStateIcon(Image tiledImage, int tileCount, boolean isTiledHorizontally) {
         super(tiledImage, tileCount, isTiledHorizontally);
     }
-    
-    
+
+
     protected Icon getIcon(Component c) {
         Icon icon;
         boolean isActive = QuaquaUtilities.isOnActiveWindow(c)//
                 ||(c instanceof JCheckBoxMenuItem)//
                 ||(c instanceof JRadioButtonMenuItem);
-       
+
         if (c instanceof AbstractButton) {
             ButtonModel model = ((AbstractButton) c).getModel();
             if (isActive) {
@@ -139,14 +136,14 @@ public class ButtonStateIcon extends MultiIcon {
         }
         return icon;
     }
-    
+
     protected void generateMissingIcons() {
         if (icons.length != 10) {
             Icon[] helper = icons;
             icons = new Icon[10];
             System.arraycopy(helper, 0, icons, 0, Math.min(helper.length, icons.length));
         }
-        
+
         if (icons[EP] == null) {
             icons[EP] = icons[E];
         }

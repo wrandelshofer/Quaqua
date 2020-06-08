@@ -1,9 +1,6 @@
 /*
  * @(#)BasicQuaquaLookAndFeel.java
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -2376,7 +2373,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     /**
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
-     * 
+     *
      * @param table Table to which the defaults are appended.
      * @param keyValueList List with keys and values to be appended.
      */

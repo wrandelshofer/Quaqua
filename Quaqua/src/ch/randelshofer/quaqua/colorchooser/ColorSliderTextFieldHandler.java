@@ -1,9 +1,6 @@
 /*
- * @(#)ColorSliderTextFieldHandler.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)ColorSliderTextFieldHandler.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -21,16 +18,16 @@ public class ColorSliderTextFieldHandler implements DocumentListener, ChangeList
     protected JTextField textField;
     protected ColorSliderModel ccModel;
     protected int component;
-    
+
     public ColorSliderTextFieldHandler(JTextField textField, ColorSliderModel ccModel, int component) {
         this.textField = textField;
         this.ccModel = ccModel;
         this.component = component;
-        
+
         textField.getDocument().addDocumentListener(this);
         ccModel.getBoundedRangeModel(component).addChangeListener(this);
     }
-    
+
     public void changedUpdate(DocumentEvent evt) {
         docChanged();
     }

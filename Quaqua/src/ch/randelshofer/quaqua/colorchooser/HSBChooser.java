@@ -1,14 +1,6 @@
 /*
- * @(#)HSBChooser.java 
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of
- * Werner Randelshofer. ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entehue into
- * with Werner Randelshofer.
+ * @(#)HSBChooser.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 
 package ch.randelshofer.quaqua.colorchooser;
@@ -33,11 +25,11 @@ implements UIResource {
     private ColorSliderModel ccModel = new HSBColorSliderModel();
 
     private int updatingChooser;
-    
+
     /** Creates new form. */
     public HSBChooser() {
     }
-    
+
     protected void buildChooser() {
         initComponents();
 
@@ -98,19 +90,19 @@ implements UIResource {
         saturationLabel.setBorder(bm);
         brightnessLabel.setBorder(bm);
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.hsbSliders");
     }
-    
+
     public Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorSlidersIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void updateChooser() {
         updatingChooser++;
         ccModel.setColor(getColorFromModel());
@@ -121,7 +113,7 @@ implements UIResource {
         getColorSelectionModel().setSelectedColor(color);
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -305,8 +297,8 @@ implements UIResource {
     private void hueFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_hueFieldFocusLost
          hueField.setText(Integer.toString(ccModel.getBoundedRangeModel(0).getValue()));
     }//GEN-LAST:event_hueFieldFocusLost
-                
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField brightnessField;
     private javax.swing.JLabel brightnessFieldLabel;
@@ -325,5 +317,5 @@ implements UIResource {
     private javax.swing.JSlider saturationSlider;
     private javax.swing.JPanel springPanel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

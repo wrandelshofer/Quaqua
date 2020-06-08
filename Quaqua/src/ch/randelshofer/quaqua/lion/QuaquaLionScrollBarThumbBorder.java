@@ -1,12 +1,6 @@
 /*
- * @(#)QuaquaLionScrollBarThumbBorder.java  1.0  2011-08-05
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * @(#)QuaquaLionScrollBarThumbBorder.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.lion;
 
@@ -61,8 +55,8 @@ public class QuaquaLionScrollBarThumbBorder implements Border, UIResource {
             height = Math.min(ps.height, height);
 //            g.fillRoundRect(x + 2, y + 4, width - 4, height - 7, height -7, height - 6);
             g.fillRoundRect(
-                    x + ins.top, y + ins.left, 
-                    width - ins.top - ins.bottom, height - ins.left - ins.right, 
+                    x + ins.top, y + ins.left,
+                    width - ins.top - ins.bottom, height - ins.left - ins.right,
                     height - ins.left - ins.right, height - ins.left - ins.right);
         } else {
             width = Math.min(ps.width, width);

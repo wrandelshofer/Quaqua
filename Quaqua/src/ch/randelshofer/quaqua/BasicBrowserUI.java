@@ -1,9 +1,6 @@
 /*
- * @(#)BasicBrowserUI.java  
- *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
+ * @(#)BasicBrowserUI.java
+ * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua;
 
@@ -70,7 +67,7 @@ public class BasicBrowserUI extends BrowserUI {
 	    browser.setTransferHandler(null);
 	}
     }
-    
+
     @Override
     public Icon getSizeHandleIcon() {
         return sizeHandleIcon;
@@ -91,8 +88,8 @@ public class BasicBrowserUI extends BrowserUI {
          * @param c  The component holding the data to be transfered.  This
          *  argument is provided to enable sharing of TransferHandlers by
          *  multiple components.
-         * @return  The representation of the data to be transfered. 
-         *  
+         * @return  The representation of the data to be transfered.
+         *
          */
         @Override
         protected Transferable createTransferable(JComponent c) {
@@ -142,7 +139,7 @@ public class BasicBrowserUI extends BrowserUI {
 
             return null;
         }
-        /*	
+        /*
         public int compare(Object o1, Object o2) {
         int row1 = browser.getRowForPath((TreePath)o1);
         int row2 = browser.getRowForPath((TreePath)o2);
