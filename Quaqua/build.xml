@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ @(#)build.xml
-  ~ Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+  ~ Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
   -->
 
 <!-- Note: This is just the bloated build file used by NetBeans 5.0.

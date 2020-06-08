@@ -1,6 +1,6 @@
 /*
  * @(#)ToggleButtonTest.java
- * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+ * Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
  */
 package test;
 

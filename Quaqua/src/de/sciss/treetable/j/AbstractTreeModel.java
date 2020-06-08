@@ -1,4 +1,9 @@
 /*
+ * @(#)AbstractTreeModel.java
+ * Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
+ */
+
+/*
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU Lesser General Public License as published
  *    by the Free Software Foundation, either version 3 of the License, or

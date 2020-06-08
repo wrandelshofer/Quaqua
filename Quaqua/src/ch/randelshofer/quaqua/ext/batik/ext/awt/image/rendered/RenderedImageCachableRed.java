@@ -1,4 +1,9 @@
 /*
+ * @(#)RenderedImageCachableRed.java
+ * Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
+ */
+
+/*
 
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with

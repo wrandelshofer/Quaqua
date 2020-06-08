@@ -1,6 +1,6 @@
 /*
  * @(#)EventLoop.java
- * Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+ * Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
  */
 //package ch.randelshofer.util;
 package ch.randelshofer.quaqua.util;

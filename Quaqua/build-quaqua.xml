@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ @(#)build-quaqua.xml
-  ~ Quaqua Look and Feel. Copyright 2020 © Werner Randelshofer, Switzerland. MIT License.
+  ~ Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
   -->
 
 <project basedir="." default="all" name="quaqua">
