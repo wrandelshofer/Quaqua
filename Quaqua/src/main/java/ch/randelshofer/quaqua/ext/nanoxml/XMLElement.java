@@ -107,12 +107,6 @@ import java.util.Iterator;
 public class XMLElement {
 
     /**
-     * Serialization serial version ID.
-     */
-    static final long serialVersionUID = 6685035139346394777L;
-
-
-    /**
      * Major version of NanoXML. Classes with the same major and minor
      * version are binary compatible. Classes with the same major version
      * are source compatible. If the major version is different, you may
@@ -199,7 +193,7 @@ public class XMLElement {
      *     <li>The values are char arrays
      * </ul></dd></dl>
      */
-    private HashMap entities;
+    private final HashMap<String, char[]> entities;
 
 
     /**
@@ -209,21 +203,21 @@ public class XMLElement {
      * <ul><li>{@code lineNr &gt= 0}
      * </ul></dd></dl>
      */
-    private int lineNr;
+    private final int lineNr;
 
 
     /**
      * {@code true} if the case of the element and attribute names
      * are case insensitive.
      */
-    private boolean ignoreCase;
+    private final boolean ignoreCase;
 
 
     /**
      * {@code true} if the leading and trailing whitespace of #PCDATA
      * sections have to be ignored.
      */
-    private boolean ignoreWhitespace;
+    private final boolean ignoreWhitespace;
 
 
     /**
@@ -279,7 +273,7 @@ public class XMLElement {
      * XMLElement(HashMap, boolean)
      */
     public XMLElement() {
-        this(new HashMap(), false, true, true);
+        this(new HashMap<>(), false, true, true);
     }
 
 
@@ -309,7 +303,7 @@ public class XMLElement {
      * @see XMLElement#XMLElement(java.util.HashMap, boolean)
      * XMLElement(HashMap, boolean)
      */
-    public XMLElement(HashMap entities) {
+    public XMLElement(HashMap<String, char[]> entities) {
         this(entities, false, true, true);
     }
 
@@ -339,7 +333,7 @@ public class XMLElement {
      * XMLElement(HashMap, boolean)
      */
     public XMLElement(boolean skipLeadingWhitespace) {
-        this(new HashMap(), skipLeadingWhitespace, true, true);
+        this(new HashMap<>(), skipLeadingWhitespace, true, true);
     }
 
 
@@ -371,7 +365,7 @@ public class XMLElement {
      * @see XMLElement#XMLElement(java.util.HashMap)
      * XMLElement(HashMap)
      */
-    public XMLElement(HashMap entities,
+    public XMLElement(HashMap<String, char[]> entities,
                       boolean skipLeadingWhitespace) {
         this(entities, skipLeadingWhitespace, true, true);
     }
@@ -406,7 +400,7 @@ public class XMLElement {
      * @see XMLElement#XMLElement(java.util.HashMap, boolean)
      * XMLElement(HashMap, boolean)
      */
-    public XMLElement(HashMap entities,
+    public XMLElement(HashMap<String, char[]> entities,
                       boolean skipLeadingWhitespace,
                       boolean ignoreCase) {
         this(entities, skipLeadingWhitespace, true, ignoreCase);
@@ -447,7 +441,7 @@ public class XMLElement {
      *                                 </ul></dd></dl>
      * @see XMLElement#createAnotherElement()
      */
-    protected XMLElement(HashMap entities,
+    protected XMLElement(HashMap<String, char[]> entities,
                          boolean skipLeadingWhitespace,
                          boolean fillBasicConversionTable,
                          boolean ignoreCase) {
@@ -455,19 +449,10 @@ public class XMLElement {
         this.ignoreCase = ignoreCase;
         this.name = null;
         this.contents = "";
-        this.attributes = new HashMap();
-        this.children = new ArrayList();
+        this.attributes = new HashMap<>();
+        this.children = new ArrayList<>();
         this.entities = entities;
         this.lineNr = 0;
-        Iterator iter = this.entities.keySet().iterator();
-        while (iter.hasNext()) {
-            Object key = iter.next();
-            Object value = this.entities.get(key);
-            if (value instanceof String) {
-                value = ((String) value).toCharArray();
-                this.entities.put(key, value);
-            }
-        }
         if (fillBasicConversionTable) {
             this.entities.put("amp", new char[]{'&'});
             this.entities.put("quot", new char[]{'"'});
@@ -559,20 +544,6 @@ public class XMLElement {
      *
      * @param name  The name of the attribute.
      * @param value The value of the attribute.
-     * @deprecated Use {@link #setAttribute(java.lang.String, java.lang.Object)
-     * setAttribute} instead.
-     */
-    public void addProperty(String name,
-                            Object value) {
-        this.setAttribute(name, value);
-    }
-
-
-    /**
-     * Adds or modifies an attribute.
-     *
-     * @param name  The name of the attribute.
-     * @param value The value of the attribute.
      *
      *              <dl><dt><b>Preconditions:</b></dt><dd>
      *              <ul><li>{@code name != null}
@@ -606,20 +577,6 @@ public class XMLElement {
             name = name.toUpperCase();
         }
         this.attributes.put(name, Integer.toString(value));
-    }
-
-
-    /**
-     * Adds or modifies an attribute.
-     *
-     * @param key   The name of the attribute.
-     * @param value The value of the attribute.
-     * @deprecated Use {@link #setIntAttribute(java.lang.String, int)
-     * setIntAttribute} instead.
-     */
-    public void addProperty(String key,
-                            int value) {
-        this.setIntAttribute(key, value);
     }
 
 
@@ -661,20 +618,6 @@ public class XMLElement {
             name = name.toUpperCase();
         }
         this.attributes.put(name, Double.toString(value));
-    }
-
-
-    /**
-     * Adds or modifies an attribute.
-     *
-     * @param name  The name of the attribute.
-     * @param value The value of the attribute.
-     * @deprecated Use {@link #setDoubleAttribute(java.lang.String, double)
-     * setDoubleAttribute} instead.
-     */
-    public void addProperty(String name,
-                            double value) {
-        this.setDoubleAttribute(name, value);
     }
 
 
@@ -750,21 +693,9 @@ public class XMLElement {
      * java.lang.String, boolean)
      * getBooleanAttribute(String, String, String, boolean)
      */
-    public Iterator enumerateAttributeNames() {
+    public Iterator<String> enumerateAttributeNames() {
         return this.attributes.keySet().iterator();
     }
-
-
-    /**
-     * Enumerates the attribute names.
-     *
-     * @deprecated Use {@link #enumerateAttributeNames()
-     * enumerateAttributeNames} instead.
-     */
-    public Iterator enumeratePropertyNames() {
-        return this.enumerateAttributeNames();
-    }
-
 
     /**
      * Enumerates the child iterator.
@@ -780,14 +711,13 @@ public class XMLElement {
      * @see XMLElement#removeChild(XMLElement)
      * removeChild(XMLElement)
      */
-    public Iterator iterateChildren() {
+    public Iterator<XMLElement> iterateChildren() {
         return this.children.iterator();
     }
 
 
     /**
-     * Returns the child iterator as a ArrayList. It is safe to modify this
-     * ArrayList.
+     * Returns the children list.
      *
      * <dl><dt><b>Postconditions:</b></dt><dd>
      * <ul><li>{@code result != null}
@@ -800,27 +730,9 @@ public class XMLElement {
      * @see XMLElement#removeChild(XMLElement)
      * removeChild(XMLElement)
      */
-    public ArrayList getChildren() {
-        try {
-            return (ArrayList) this.children.clone();
-        } catch (Exception e) {
-            // this never happens, however, some Java compilers are so
-            // braindead that they require this exception clause
-            return null;
-        }
+    public ArrayList<XMLElement> getChildren() {
+        return children;
     }
-
-
-    /**
-     * Returns the PCDATA content of the object. If there is no such content,
-     * <CODE>null</CODE> is returned.
-     *
-     * @deprecated Use {@link #getContent() getContent} instead.
-     */
-    public String getContents() {
-        return this.getContent();
-    }
-
 
     /**
      * Returns the PCDATA content of the object. If there is no such content,
@@ -943,13 +855,13 @@ public class XMLElement {
      * getAttribute(String, Object)
      */
     public Object getAttribute(String name,
-                               HashMap valueSet,
+                               HashMap<String,?> valueSet,
                                String defaultKey,
                                boolean allowLiterals) {
         if (this.ignoreCase) {
             name = name.toUpperCase();
         }
-        Object key = this.attributes.get(name);
+        String key = this.attributes.get(name);
         Object result;
         if (key == null) {
             key = defaultKey;
@@ -957,9 +869,9 @@ public class XMLElement {
         result = valueSet.get(key);
         if (result == null) {
             if (allowLiterals) {
-                result = key;
+                result =key;
             } else {
-                throw this.invalidValue(name, (String) key);
+                throw this.invalidValue(name, key);
             }
         }
         return result;
@@ -1058,7 +970,7 @@ public class XMLElement {
      * getStringAttribute(String, String)
      */
     public String getStringAttribute(String name,
-                                     HashMap valueSet,
+                                     HashMap<String,String> valueSet,
                                      String defaultKey,
                                      boolean allowLiterals) {
         return (String) this.getAttribute(name, valueSet, defaultKey,
@@ -1117,7 +1029,7 @@ public class XMLElement {
         if (this.ignoreCase) {
             name = name.toUpperCase();
         }
-        String value = (String) this.attributes.get(name);
+        String value =  this.attributes.get(name);
         if (value == null) {
             return defaultValue;
         } else {
@@ -1163,33 +1075,33 @@ public class XMLElement {
      * getIntAttribute(String, int)
      */
     public int getIntAttribute(String name,
-                               HashMap valueSet,
+                               HashMap<String,Integer> valueSet,
                                String defaultKey,
                                boolean allowLiteralNumbers) {
         if (this.ignoreCase) {
             name = name.toUpperCase();
         }
-        Object key = this.attributes.get(name);
+        String key = this.attributes.get(name);
         Integer result;
         if (key == null) {
             key = defaultKey;
         }
         try {
-            result = (Integer) valueSet.get(key);
+            result = valueSet.get(key);
         } catch (ClassCastException e) {
             throw this.invalidValueSet(name);
         }
         if (result == null) {
             if (!allowLiteralNumbers) {
-                throw this.invalidValue(name, (String) key);
+                throw this.invalidValue(name, key);
             }
             try {
-                result = Integer.valueOf((String) key);
+                result = Integer.valueOf(key);
             } catch (NumberFormatException e) {
-                throw this.invalidValue(name, (String) key);
+                throw this.invalidValue(name, key);
             }
         }
-        return result.intValue();
+        return result;
     }
 
 
@@ -1244,12 +1156,12 @@ public class XMLElement {
         if (this.ignoreCase) {
             name = name.toUpperCase();
         }
-        String value = (String) this.attributes.get(name);
+        String value = this.attributes.get(name);
         if (value == null) {
             return defaultValue;
         } else {
             try {
-                return Double.valueOf(value).doubleValue();
+                return Double.parseDouble(value);
             } catch (NumberFormatException e) {
                 throw this.invalidValue(name, value);
             }
@@ -1291,33 +1203,33 @@ public class XMLElement {
      * getDoubleAttribute(String, double)
      */
     public double getDoubleAttribute(String name,
-                                     HashMap valueSet,
+                                     HashMap<String,Double> valueSet,
                                      String defaultKey,
                                      boolean allowLiteralNumbers) {
         if (this.ignoreCase) {
             name = name.toUpperCase();
         }
-        Object key = this.attributes.get(name);
+        String key = this.attributes.get(name);
         Double result;
         if (key == null) {
             key = defaultKey;
         }
         try {
-            result = (Double) valueSet.get(key);
+            result = valueSet.get(key);
         } catch (ClassCastException e) {
             throw this.invalidValueSet(name);
         }
         if (result == null) {
             if (!allowLiteralNumbers) {
-                throw this.invalidValue(name, (String) key);
+                throw this.invalidValue(name,  key);
             }
             try {
-                result = Double.valueOf((String) key);
+                result = Double.valueOf(key);
             } catch (NumberFormatException e) {
-                throw this.invalidValue(name, (String) key);
+                throw this.invalidValue(name, key);
             }
         }
-        return result.doubleValue();
+        return result;
     }
 
 
@@ -1355,7 +1267,7 @@ public class XMLElement {
         if (this.ignoreCase) {
             name = name.toUpperCase();
         }
-        Object value = this.attributes.get(name);
+        String value = this.attributes.get(name);
         if (value == null) {
             return defaultValue;
         } else if (value.equals(trueValue)) {
@@ -1363,143 +1275,9 @@ public class XMLElement {
         } else if (value.equals(falseValue)) {
             return false;
         } else {
-            throw this.invalidValue(name, (String) value);
+            throw this.invalidValue(name, value);
         }
     }
-
-
-    /**
-     * Returns an attribute by looking up a key in a hashtable.
-     *
-     * @deprecated Use {@link #getIntAttribute(java.lang.String,
-     * java.util.HashMap, java.lang.String, boolean)
-     * getIntAttribute} instead.
-     */
-    public int getIntProperty(String name,
-                              HashMap valueSet,
-                              String defaultKey) {
-        return this.getIntAttribute(name, valueSet, defaultKey, false);
-    }
-
-
-    /**
-     * Returns an attribute.
-     *
-     * @deprecated Use {@link #getStringAttribute(java.lang.String)
-     * getStringAttribute} instead.
-     */
-    public String getProperty(String name) {
-        return this.getStringAttribute(name);
-    }
-
-
-    /**
-     * Returns an attribute.
-     *
-     * @deprecated Use {@link #getStringAttribute(java.lang.String,
-     * java.lang.String) getStringAttribute} instead.
-     */
-    public String getProperty(String name,
-                              String defaultValue) {
-        return this.getStringAttribute(name, defaultValue);
-    }
-
-
-    /**
-     * Returns an attribute.
-     *
-     * @deprecated Use {@link #getIntAttribute(java.lang.String, int)
-     * getIntAttribute} instead.
-     */
-    public int getProperty(String name,
-                           int defaultValue) {
-        return this.getIntAttribute(name, defaultValue);
-    }
-
-
-    /**
-     * Returns an attribute.
-     *
-     * @deprecated Use {@link #getDoubleAttribute(java.lang.String, double)
-     * getDoubleAttribute} instead.
-     */
-    public double getProperty(String name,
-                              double defaultValue) {
-        return this.getDoubleAttribute(name, defaultValue);
-    }
-
-
-    /**
-     * Returns an attribute.
-     *
-     * @deprecated Use {@link #getBooleanAttribute(java.lang.String,
-     * java.lang.String, java.lang.String, boolean)
-     * getBooleanAttribute} instead.
-     */
-    public boolean getProperty(String key,
-                               String trueValue,
-                               String falseValue,
-                               boolean defaultValue) {
-        return this.getBooleanAttribute(key, trueValue, falseValue,
-                defaultValue);
-    }
-
-
-    /**
-     * Returns an attribute by looking up a key in a hashtable.
-     *
-     * @deprecated Use {@link #getAttribute(java.lang.String,
-     * java.util.HashMap, java.lang.String, boolean)
-     * getAttribute} instead.
-     */
-    public Object getProperty(String name,
-                              HashMap valueSet,
-                              String defaultKey) {
-        return this.getAttribute(name, valueSet, defaultKey, false);
-    }
-
-
-    /**
-     * Returns an attribute by looking up a key in a hashtable.
-     *
-     * @deprecated Use {@link #getStringAttribute(java.lang.String,
-     * java.util.HashMap, java.lang.String, boolean)
-     * getStringAttribute} instead.
-     */
-    public String getStringProperty(String name,
-                                    HashMap valueSet,
-                                    String defaultKey) {
-        return this.getStringAttribute(name, valueSet, defaultKey, false);
-    }
-
-
-    /**
-     * Returns an attribute by looking up a key in a hashtable.
-     *
-     * @deprecated Use {@link #getIntAttribute(java.lang.String,
-     * java.util.HashMap, java.lang.String, boolean)
-     * getIntAttribute} instead.
-     */
-    public int getSpecialIntProperty(String name,
-                                     HashMap valueSet,
-                                     String defaultKey) {
-        return this.getIntAttribute(name, valueSet, defaultKey, true);
-    }
-
-
-    /**
-     * Returns an attribute by looking up a key in a hashtable.
-     *
-     * @deprecated Use {@link #getDoubleAttribute(java.lang.String,
-     * java.util.HashMap, java.lang.String, boolean)
-     * getDoubleAttribute} instead.
-     */
-    public double getSpecialDoubleProperty(String name,
-                                           HashMap valueSet,
-                                           String defaultKey) {
-        return this.getDoubleAttribute(name, valueSet, defaultKey, true);
-    }
-
 
     /**
      * Returns the name of the element.
@@ -1509,17 +1287,6 @@ public class XMLElement {
     public String getName() {
         return this.name;
     }
-
-
-    /**
-     * Returns the name of the element.
-     *
-     * @deprecated Use {@link #getName() getName} instead.
-     */
-    public String getTagName() {
-        return this.getName();
-    }
-
 
     /**
      * Reads one XML element from a java.io.Reader and parses it.
@@ -1571,8 +1338,8 @@ public class XMLElement {
             throws IOException, XMLParseException {
         this.name = null;
         this.contents = "";
-        this.attributes = new HashMap();
-        this.children = new ArrayList();
+        this.attributes = new HashMap<>();
+        this.children = new ArrayList<>();
         this.charReadTooMuch = '\0';
         this.reader = reader;
         this.parserLineNr = startingLineNr;
@@ -1872,31 +1639,6 @@ public class XMLElement {
         this.attributes.remove(name);
     }
 
-
-    /**
-     * Removes an attribute.
-     *
-     * @param name The name of the attribute.
-     * @deprecated Use {@link #removeAttribute(java.lang.String)
-     * removeAttribute} instead.
-     */
-    public void removeProperty(String name) {
-        this.removeAttribute(name);
-    }
-
-
-    /**
-     * Removes an attribute.
-     *
-     * @param name The name of the attribute.
-     * @deprecated Use {@link #removeAttribute(java.lang.String)
-     * removeAttribute} instead.
-     */
-    public void removeChild(String name) {
-        this.removeAttribute(name);
-    }
-
-
     /**
      * Creates a new similar XML element.
      * <p>
@@ -1918,18 +1660,6 @@ public class XMLElement {
     public void setContent(String content) {
         this.contents = content;
     }
-
-
-    /**
-     * Changes the name of the element.
-     *
-     * @param name The new name.
-     * @deprecated Use {@link #setName(java.lang.String) setName} instead.
-     */
-    public void setTagName(String name) {
-        this.setName(name);
-    }
-
 
     /**
      * Changes the name of the element.
@@ -1987,11 +1717,9 @@ public class XMLElement {
         writer.write('<');
         writer.write(this.name);
         if (!this.attributes.isEmpty()) {
-            Iterator iter = this.attributes.keySet().iterator();
-            while (iter.hasNext()) {
+            for (String key : this.attributes.keySet()) {
                 writer.write(' ');
-                String key = (String) iter.next();
-                String value = (String) this.attributes.get(key);
+                String value = this.attributes.get(key);
                 writer.write(key);
                 writer.write('=');
                 writer.write('"');
@@ -2011,9 +1739,9 @@ public class XMLElement {
             writer.write('>');
         } else {
             writer.write('>');
-            Iterator iter = this.iterateChildren();
+            Iterator<XMLElement> iter = this.iterateChildren();
             while (iter.hasNext()) {
-                XMLElement child = (XMLElement) iter.next();
+                XMLElement child = iter.next();
                 child.write(writer);
             }
             writer.write('<');
@@ -2078,7 +1806,8 @@ public class XMLElement {
                 writer.write(';');
                 break;
             default:
-                int unicode = (int) ch;
+                @SuppressWarnings("UnnecessaryLocalVariable")
+                int unicode = ch;
                 if ((unicode < 32) || (unicode > 126)) {
                     writer.write('&');
                     writer.write('#');
@@ -2547,8 +2276,8 @@ public class XMLElement {
      */
     protected void resolveEntity(StringBuffer buf)
             throws IOException {
-        char ch = '\0';
-        StringBuffer keyBuf = new StringBuffer();
+        char ch;
+        StringBuilder keyBuf = new StringBuilder();
         for (; ; ) {
             ch = this.readChar();
             if (ch == ';') {
@@ -2569,7 +2298,7 @@ public class XMLElement {
             }
             buf.append(ch);
         } else {
-            char[] value = (char[]) this.entities.get(key);
+            char[] value = this.entities.get(key);
             if (value == null) {
                 throw this.unknownEntity(key);
             }
