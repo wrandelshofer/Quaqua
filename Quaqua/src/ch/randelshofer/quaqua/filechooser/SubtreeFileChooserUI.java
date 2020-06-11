@@ -15,7 +15,9 @@ import java.io.File;
  * @version 1.0 2010-08-20 Created.
  */
 public interface SubtreeFileChooserUI {
-    /** Sets the root directory of the subtree. */
+    /**
+     * Sets the root directory of the subtree.
+     */
     public void setRootDirectory(File file);
 
     /**

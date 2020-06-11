@@ -5,13 +5,13 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 
 /**
  * QuaquaButtonUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0  05 March 2005  Created.
  */
 public class QuaquaToggleButtonUI extends QuaquaButtonUI {

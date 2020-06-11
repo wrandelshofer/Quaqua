@@ -5,14 +5,18 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
-import javax.swing.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+
+import javax.swing.Icon;
+import javax.swing.JSlider;
+import java.awt.Component;
+import java.awt.Image;
+
 /**
  * An Icon with different visuals reflecting the state of the slider
  * on which it draws on.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 4.0 2007-12-02 Added support for focus ring.
  * <br>3.0 2005-10-17 Changed superclass to MultIcon.
  * <br>2.0 2005-03-19 Reworked.
@@ -33,12 +37,13 @@ public class SliderThumbIcon extends MultiIcon {
      * other icons.
      */
     public SliderThumbIcon(Icon e, Icon ep, Icon d, Icon i, Icon di) {
-        super(new Icon[] {e, ep, d, i, di});
+        super(new Icon[]{e, ep, d, i, di});
     }
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
-     *
+     * <p>
      * The array indices are used to represente the following states:
      * [0] Enabled
      * [1] Enabled Pressed
@@ -46,13 +51,14 @@ public class SliderThumbIcon extends MultiIcon {
      * [3] Enabled Inactive
      * [4] Disabled Inactive
      * [5] Focus Ring
-     *
+     * <p>
      * If an array element is null, an icon is derived for the state from the
      * other icons.
      */
     public SliderThumbIcon(Image[] images) {
         super(images);
     }
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -132,6 +138,7 @@ public class SliderThumbIcon extends MultiIcon {
         }
         return icon;
     }
+
     public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
         super.paintIcon(c, g, x, y);
         if (QuaquaUtilities.isFocused(c) &&

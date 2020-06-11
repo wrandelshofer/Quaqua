@@ -4,10 +4,18 @@
  */
 package ch.randelshofer.quaqua.border;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import javax.swing.border.*;
-import java.awt.image.*;
+import ch.randelshofer.quaqua.util.Images;
+
+import javax.swing.border.Border;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
+import java.awt.image.BufferedImage;
 
 /**
  * Draws a filled bevel border using an image and insets.
@@ -24,7 +32,7 @@ import java.awt.image.*;
  * bottom left: 2,4, bottom right: 4,4 rectangle of the image.
  * The inner area of the image is used to fill the inner area.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ImageBevelBorder implements Border {
@@ -47,7 +55,8 @@ public class ImageBevelBorder implements Border {
      * is used to fill the content area too.
      */
     private boolean fillContentArea;
-    /** If this is non-null, and fillContentArea is true, the content area
+    /**
+     * If this is non-null, and fillContentArea is true, the content area
      * is filled with this color instead with the image.
      */
     private Color fillColor;
@@ -98,6 +107,7 @@ public class ImageBevelBorder implements Border {
 
     /**
      * Returns the insets of the border.
+     *
      * @param c the component for which this border insets value applies
      */
     public Insets getBorderInsets(Component c) {
@@ -107,11 +117,12 @@ public class ImageBevelBorder implements Border {
     /**
      * Paints the bevel image for the specified component with the
      * specified position and size.
-     * @param c the component for which this border is being painted
-     * @param gr the paint graphics
-     * @param x the x position of the painted border
-     * @param y the y position of the painted border
-     * @param width the width of the painted border
+     *
+     * @param c      the component for which this border is being painted
+     * @param gr     the paint graphics
+     * @param x      the x position of the painted border
+     * @param y      the y position of the painted border
+     * @param width  the width of the painted border
      * @param height the height of the painted border
      */
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {

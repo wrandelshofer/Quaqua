@@ -5,12 +5,15 @@
 
 package ch.randelshofer.quaqua;
 
-import java.util.*;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import java.util.EventObject;
+
 /**
  * SheetEvent.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 26. September 2005 Created.
  */
 public class SheetEvent extends EventObject {
@@ -25,6 +28,7 @@ public class SheetEvent extends EventObject {
     public SheetEvent(JSheet source) {
         super(source);
     }
+
     /**
      * Creates a new instance.
      */
@@ -34,6 +38,7 @@ public class SheetEvent extends EventObject {
         this.option = option;
         this.value = value;
     }
+
     /**
      * Creates a new instance.
      */
@@ -52,30 +57,35 @@ public class SheetEvent extends EventObject {
     public JComponent getPane() {
         return pane;
     }
+
     /**
      * Returns the JFileChooser pane on the sheet.
      */
     public JFileChooser getFileChooser() {
         return (JFileChooser) pane;
     }
+
     /**
      * Returns the JOptionPane pane on the sheet.
      */
     public JOptionPane getOptionPane() {
         return (JOptionPane) pane;
     }
+
     /**
      * Returns the option that the JFileChooser or JOptionPane returned.
      */
     public int getOption() {
         return option;
     }
+
     /**
      * Returns the value that the JFileChooser or JOptionPane returned.
      */
     public Object getValue() {
         return value;
     }
+
     /**
      * Returns the input value that the JOptionPane returned, if it wants input.
      */

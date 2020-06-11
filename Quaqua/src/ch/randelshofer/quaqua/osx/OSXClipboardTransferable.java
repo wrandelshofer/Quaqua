@@ -5,6 +5,7 @@
 package ch.randelshofer.quaqua.osx;
 
 import ch.randelshofer.quaqua.QuaquaManager;
+
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -71,8 +72,8 @@ public class OSXClipboardTransferable implements Transferable {
                             } else {
                                 libraryNames = new String[]{"quaqua64", "quaqua"};
                             }
-                            for (int i=0;i<libraryNames.length;i++) {
-                                libraryName=libraryNames[i];
+                            for (int i = 0; i < libraryNames.length; i++) {
+                                libraryName = libraryNames[i];
                                 try {
                                     JNILoader.loadLibrary(libraryName);
                                     success = true;
@@ -113,16 +114,18 @@ public class OSXClipboardTransferable implements Transferable {
         return isNativeCodeAvailable == Boolean.TRUE;
     }
 
-    /** An array of String objects containing the types of data declared for the
+    /**
+     * An array of String objects containing the types of data declared for the
      * current contents of the clipboard. The returned types are listed in the
      * order they were declared.
      */
     private native static String[] nativeGetTypes();
 
-    /** Returns the data for the specified type.
+    /**
+     * Returns the data for the specified type.
      *
      * @param dataType The type of data you want to read from the pasteboard.
-     * This value should be one of the types returned by #getTypes.
+     *                 This value should be one of the types returned by #getTypes.
      */
     private native static byte[] nativeGetDataForType(String dataType);
 
@@ -130,11 +133,13 @@ public class OSXClipboardTransferable implements Transferable {
      * Returns the version of the native code library. If the version
      * does not match with the version that we expect, we can not use
      * it.
+     *
      * @return The version number of the native code.
      */
     private static native int nativeGetNativeCodeVersion();
 
-    /** Returns the data flavors which are currently in the NSPasteboard.
+    /**
+     * Returns the data flavors which are currently in the NSPasteboard.
      * The mime type of all flavors is application/octet-stream. The actual
      * type information is in the human presentable name!
      */
@@ -160,7 +165,8 @@ public class OSXClipboardTransferable implements Transferable {
         }
     }
 
-    /** Returns true if the "General Clipboard" Cocoa NSPasteboard currently
+    /**
+     * Returns true if the "General Clipboard" Cocoa NSPasteboard currently
      * supports the specified data flavor.
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
@@ -173,8 +179,10 @@ public class OSXClipboardTransferable implements Transferable {
         return false;
     }
 
-    /** Reads the data from the "General Clipboard" Cocoa NSPasteboard.
-     * If the data flavor is supported, return it as a byte array or as an input stream. */
+    /**
+     * Reads the data from the "General Clipboard" Cocoa NSPasteboard.
+     * If the data flavor is supported, return it as a byte array or as an input stream.
+     */
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         if (flavor == null) {
             throw new NullPointerException("flavor");

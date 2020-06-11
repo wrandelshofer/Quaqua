@@ -30,7 +30,9 @@ import java.awt.Shape;
  */
 final class AreaOfInterestHintKey extends RenderingHints.Key {
 
-    AreaOfInterestHintKey(int number) { super(number); }
+    AreaOfInterestHintKey(int number) {
+        super(number);
+    }
 
     public boolean isCompatibleValue(Object val) {
         boolean isCompatible = true;

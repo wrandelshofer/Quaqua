@@ -6,11 +6,16 @@ package ch.randelshofer.quaqua.mavericks.filechooser;
 
 import ch.randelshofer.quaqua.QuaquaTableHeaderUI;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 
 /**
  * List view for Mavericks.
@@ -25,7 +30,7 @@ public class ListView extends ch.randelshofer.quaqua.lion.filechooser.ListView {
 
         tableHeaderLineColor = UIManager.getColor("FileChooser.listView.headerBorderColor");
         int columnMargin = tableColumnModel.getColumnMargin();
-        tableHeaderBorder = new EmptyBorder(5, columnMargin/2, 7, columnMargin/2);
+        tableHeaderBorder = new EmptyBorder(5, columnMargin / 2, 7, columnMargin / 2);
         tree.getTableHeader().setUI(new MyTableHeaderUI());
     }
 
@@ -58,7 +63,7 @@ public class ListView extends ch.randelshofer.quaqua.lion.filechooser.ListView {
         public void paint(Graphics g, JComponent c) {
             super.paint(g, c);
             g.setColor(tableHeaderLineColor);
-            g.fillRect(0, c.getHeight()-2, c.getWidth(), 1);
+            g.fillRect(0, c.getHeight() - 2, c.getWidth(), 1);
         }
     }
 }

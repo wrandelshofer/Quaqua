@@ -4,12 +4,12 @@
  */
 package ch.randelshofer.quaqua.mountainlion;
 
-import javax.swing.UIDefaults;
-import javax.swing.plaf.ColorUIResource;
-
 import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.color.ActivatableColorUIResource;
 import ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel;
+
+import javax.swing.UIDefaults;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  * {@code Quaqua16MountainLionLookAndFeel}.
@@ -19,13 +19,13 @@ import ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel;
  */
 public class Quaqua16MountainLionLookAndFeel extends Quaqua16LionLookAndFeel {
 
-	public Quaqua16MountainLionLookAndFeel() {
-		super();
-	}
+    public Quaqua16MountainLionLookAndFeel() {
+        super();
+    }
 
-	protected Quaqua16MountainLionLookAndFeel(String className) {
-		super(className);
-	}
+    protected Quaqua16MountainLionLookAndFeel(String className) {
+        super(className);
+    }
 
     @Override
     public String getDescription() {
@@ -39,13 +39,13 @@ public class Quaqua16MountainLionLookAndFeel extends Quaqua16LionLookAndFeel {
         return "Quaqua Mountain Lion";
     }
 
-	@Override
-	protected void initDesignDefaults(UIDefaults table) {
-		super.initDesignDefaults(table);
+    @Override
+    protected void initDesignDefaults(UIDefaults table) {
+        super.initDesignDefaults(table);
 
         Object toolBarTitleBackground = toolBarTitleBackground(table);
 
-        Object[] uiDefaults = new Object[] {
+        Object[] uiDefaults = new Object[]{
                 "control", toolBarTitleBackground,
                 "ToolBar.title.background", toolBarTitleBackground,
         };
@@ -53,12 +53,12 @@ public class Quaqua16MountainLionLookAndFeel extends Quaqua16LionLookAndFeel {
         putDefaults(table, uiDefaults);
     }
 
-	protected Object toolBarTitleBackground(UIDefaults table) {
+    protected Object toolBarTitleBackground(UIDefaults table) {
         final String javaVersion = QuaquaManager.getProperty("java.version", "");
         if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
             return table.get("control");
         } else {
             return new ActivatableColorUIResource(new ColorUIResource(222, 222, 222), new ColorUIResource(246, 246, 246));
         }
-	}
+    }
 }

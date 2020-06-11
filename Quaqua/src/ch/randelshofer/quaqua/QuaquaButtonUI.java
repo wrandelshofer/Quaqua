@@ -4,22 +4,44 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.border.PressedCueBorder;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-
+import ch.randelshofer.quaqua.util.Fonts;
+import ch.randelshofer.quaqua.util.HalfbrightFilter;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+import ch.randelshofer.quaqua.util.Methods;
+import ch.randelshofer.quaqua.util.ShadowFilter;
 import com.xk72.swing.FilterableIcon;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicButtonListener;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 
 /**
  * QuaquaButtonUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable {
@@ -38,7 +60,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     private static Insets viewInsets = new Insets(0, 0, 0, 0);
     // Has the shared instance defaults been initialized?
     private boolean defaults_initialized = false;
-//    private static HashSet<AbstractButton> animatedComponents = new HashSet<AbstractButton>();
+    //    private static HashSet<AbstractButton> animatedComponents = new HashSet<AbstractButton>();
 
     /**
      * Push Button.
@@ -56,7 +78,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
      * /**
      * Bevel Button.
      * Preferred spacing between buttons and other components.
-     *
+     * <p>
      * Large Spacing is used, if the bevel button contains an icon that
      * is 24 x 24 pixels or larger.
      * /
@@ -70,7 +92,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
      * /**
      * Icon Button (buttons without border and an icon, and, optionally, text)
      * Preferred spacing between buttons and other components.
-     *
+     * <p>
      * Large Spacing is used, if the icon button contains an icon that
      * is 24 x 24 pixels or larger.
      * /
@@ -137,15 +159,15 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             }
             QuaquaUtilities.SizeVariant sv = QuaquaUtilities.getSizeVariant(c);
             switch (sv) {
-                default:
-                    UIManager.getIcon("Button.helpIcon").paintIcon(c, g, insets.left, insets.top);
-                    break;
-                case SMALL:
-                    UIManager.getIcon("Button.smallHelpIcon").paintIcon(c, g, insets.left, insets.top);
-                    break;
-                case MINI:
-                    UIManager.getIcon("Button.miniHelpIcon").paintIcon(c, g, insets.left, insets.top);
-                    break;
+            default:
+                UIManager.getIcon("Button.helpIcon").paintIcon(c, g, insets.left, insets.top);
+                break;
+            case SMALL:
+                UIManager.getIcon("Button.smallHelpIcon").paintIcon(c, g, insets.left, insets.top);
+                break;
+            case MINI:
+                UIManager.getIcon("Button.miniHelpIcon").paintIcon(c, g, insets.left, insets.top);
+                break;
             }
             Debug.paint(g, c, this);
             return;
@@ -179,10 +201,11 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     /**
      * Method which renders the text of the current button.
      * <p>
-     * @param g Graphics context
-     * @param b Current button to render
+     *
+     * @param g        Graphics context
+     * @param b        Current button to render
      * @param textRect Bounding rectangle to render the text.
-     * @param text String to render
+     * @param text     String to render
      * @since 1.4
      */
     @Override
@@ -246,17 +269,17 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
                 // Note: This is only needed for borderless buttons, which
                 //       have no other way to provide feedback about the pressed
                 //       state.
-            	if (icon instanceof FilterableIcon) {
-            		tmpIcon = ((FilterableIcon) icon).filter(new HalfbrightFilter());
-            		shadowIcon = ((FilterableIcon) icon).filter(new ShadowFilter());
-            	} else {
-	                tmpIcon = new ImageIcon(
-	                        HalfbrightFilter.createHalfbrightImage(
-	                        ((ImageIcon) icon).getImage()));
-	                shadowIcon = new ImageIcon(
-	                        ShadowFilter.createShadowImage(
-	                        ((ImageIcon) icon).getImage()));
-            	}
+                if (icon instanceof FilterableIcon) {
+                    tmpIcon = ((FilterableIcon) icon).filter(new HalfbrightFilter());
+                    shadowIcon = ((FilterableIcon) icon).filter(new ShadowFilter());
+                } else {
+                    tmpIcon = new ImageIcon(
+                            HalfbrightFilter.createHalfbrightImage(
+                                    ((ImageIcon) icon).getImage()));
+                    shadowIcon = new ImageIcon(
+                            ShadowFilter.createShadowImage(
+                                    ((ImageIcon) icon).getImage()));
+                }
             }
         } else if (b.isRolloverEnabled() && model.isRollover()) {
             if (model.isSelected()) {
@@ -432,15 +455,15 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         if ("help".equals(style)) {
             Icon helpIcon;
             switch (sv) {
-                default:
-                    helpIcon = UIManager.getIcon("Button.helpIcon");
-                    break;
-                case SMALL:
-                    helpIcon = UIManager.getIcon("Button.smallHelpIcon");
-                    break;
-                case MINI:
-                    helpIcon = UIManager.getIcon("Button.miniHelpIcon");
-                    break;
+            default:
+                helpIcon = UIManager.getIcon("Button.helpIcon");
+                break;
+            case SMALL:
+                helpIcon = UIManager.getIcon("Button.smallHelpIcon");
+                break;
+            case MINI:
+                helpIcon = UIManager.getIcon("Button.miniHelpIcon");
+                break;
             }
             Insets insets = b.getInsets();
             if (insets == null) {

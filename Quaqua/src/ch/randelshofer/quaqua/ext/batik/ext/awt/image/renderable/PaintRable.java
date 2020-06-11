@@ -35,8 +35,8 @@ public interface PaintRable {
      *
      * @param g2d The Graphics2D to draw to.
      * @return true if the paint call succeeded, false if
-     *         for some reason the paint failed (in which
-     *         case a createRendering should be used).
+     * for some reason the paint failed (in which
+     * case a createRendering should be used).
      */
     boolean paintRable(Graphics2D g2d);
 }

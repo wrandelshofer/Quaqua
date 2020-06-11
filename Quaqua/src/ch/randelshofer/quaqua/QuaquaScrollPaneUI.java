@@ -4,24 +4,41 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+
+import javax.swing.BoundedRangeModel;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.Scrollable;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicScrollPaneUI;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.border.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * QuaquaScrollPaneUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLayoutable {
@@ -44,7 +61,9 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
     private PropertyChangeListener hsbPropertyChangeListener;
     private MouseWheelListener mouseScrollListener;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaScrollPaneUI() {
     }
 
@@ -159,7 +178,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
      * JScrollPane by installUI().  The returned MouseWheelListener is used
      * to handle mouse wheel-driven scrolling.
      *
-     * @return      MouseWheelListener which implements wheel-driven scrolling
+     * @return MouseWheelListener which implements wheel-driven scrolling
      */
     @Override
     protected MouseWheelListener createMouseWheelListener() {
@@ -345,7 +364,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
     }
 
     private void updateScrollBar(PropertyChangeEvent pce, ChangeListener cl,
-            PropertyChangeListener pcl) {
+                                 PropertyChangeListener pcl) {
         JScrollBar sb = (JScrollBar) pce.getOldValue();
         if (sb != null) {
             if (cl != null) {
@@ -378,8 +397,8 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
                 int direction = e.getWheelRotation() < 0 ? -1 : 1;
                 int orientation =
                         (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0
-                        ? SwingConstants.VERTICAL //
-                        : SwingConstants.HORIZONTAL;
+                                ? SwingConstants.VERTICAL //
+                                : SwingConstants.HORIZONTAL;
                 JScrollBar toScroll = orientation == SwingConstants.VERTICAL
                         ? scrollpane.getVerticalScrollBar()
                         : scrollpane.getHorizontalScrollBar();
@@ -449,8 +468,8 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
                         if (limitScroll) {
                             int blockIncr =
                                     scrollComp.getScrollableBlockIncrement(viewRect,
-                                    orientation,
-                                    direction);
+                                            orientation,
+                                            direction);
                             if (direction < 0) {
                                 scrollMin = Math.max(scrollMin,
                                         toScroll.getValue() - blockIncr);
@@ -463,7 +482,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
                         for (int i = 0; i < units; i++) {
                             int unitIncr =
                                     scrollComp.getScrollableUnitIncrement(viewRect,
-                                    orientation, direction);
+                                            orientation, direction);
                             // Modify the visible rect for the next unit, and
                             // check to see if we're at the end already.
                             if (orientation == SwingConstants.VERTICAL) {

@@ -6,22 +6,28 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.PressedCueBorder;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JComponent;
+import javax.swing.border.Border;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 
 /**
  * ToolBarTabButtonBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0  30 March 2005  Created.
  */
 public class QuaquaToolBarTabButtonBorder implements Border, PressedCueBorder {
-    private final static Color foreground = new Color(185,185,185);
-    private final static Color background = new Color(0x1e000000,true);
+    private final static Color foreground = new Color(185, 185, 185);
+    private final static Color background = new Color(0x1e000000, true);
 
     public Insets getBorderInsets(Component c) {
-        return new Insets(3,5,3,5);
+        return new Insets(3, 5, 3, 5);
     }
 
     public boolean isBorderOpaque() {
@@ -43,7 +49,7 @@ public class QuaquaToolBarTabButtonBorder implements Border, PressedCueBorder {
     }
 
     public boolean hasPressedCue(JComponent c) {
-       return true;
+        return true;
     }
 
 }

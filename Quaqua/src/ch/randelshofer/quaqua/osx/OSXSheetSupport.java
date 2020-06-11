@@ -5,13 +5,12 @@
 package ch.randelshofer.quaqua.osx;
 
 
-import java.awt.Window;
-import java.security.AccessControlException;
-
-import javax.swing.JDialog;
-
 import ch.randelshofer.quaqua.JSheet;
 import ch.randelshofer.quaqua.QuaquaManager;
+
+import javax.swing.JDialog;
+import java.awt.Window;
+import java.security.AccessControlException;
 
 /**
  * {@link OSXSheetSupport} provides support for native {@link JDialog JDialogs} for Java 5 and
@@ -23,8 +22,8 @@ import ch.randelshofer.quaqua.QuaquaManager;
  * Please note: Sheets shown by this classed have no resize indicator and block
  * their owner window from user interaction.
  *
- * @version $Id$
  * @author Felix Draxler
+ * @version $Id$
  */
 public class OSXSheetSupport {
     /**
@@ -43,7 +42,7 @@ public class OSXSheetSupport {
      * Checks if the native code was loaded and loads it if it has not been yet.
      *
      * @return <code>true</code>, if it has been loaded or could be loaded;
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      **/
     private final static boolean isNativeCodeAvailable() {
         if (isNativeCodeAvailable == null) {
@@ -67,7 +66,7 @@ public class OSXSheetSupport {
                             } else {
                                 libraryNames = new String[]{"quaqua64", "quaqua"};
                             }
-                            for (String libraryName:libraryNames) {
+                            for (String libraryName : libraryNames) {
                                 try {
                                     JNILoader.loadLibrary(libraryName);
                                     success = true;
@@ -135,18 +134,19 @@ public class OSXSheetSupport {
      * {@link JSheet} handles all those details, but the method is enabled for
      * any {@link JDialog}.
      *
+     * @param sheet
+     * @return <code>true</code>, if showing the sheet succeeds.
+     * <code>false</code> otherwise.
      * @see JDialog#setVisible(boolean)
      * @see #hideSheet(JDialog)
      * @see JDialog#setUndecorated(boolean)
-     * @param sheet
-     * @return <code>true</code>, if showing the sheet succeeds.
-     *         <code>false</code> otherwise.
      */
     public static boolean showAsSheet(JDialog sheet) {
         Window owner = sheet.getOwner();
         if (isNativeCodeAvailable() && owner != null) {
-            if (!sheet.isDisplayable())
+            if (!sheet.isDisplayable()) {
                 sheet.addNotify();
+            }
             try {
                 // Start showing the sheet
                 nativeShowSheet(sheet, owner);
@@ -164,10 +164,8 @@ public class OSXSheetSupport {
     /**
      * Native method to show a sheet.
      *
-     * @param sheet
-     *            The sheet.
-     * @param owner
-     *            The owner.
+     * @param sheet The sheet.
+     * @param owner The owner.
      */
     private static native void nativeShowSheet(JDialog sheet, Window owner);
 
@@ -176,9 +174,8 @@ public class OSXSheetSupport {
      * <p>
      * See <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/NSApplication/endSheet:">NSApplication reference</a>
      *
+     * @param sheet The sheet to hide.
      * @see #showAsSheet(JDialog)
-     * @param sheet
-     *            The sheet to hide.
      */
     public static void hideSheet(JDialog sheet) {
         if (isNativeCodeAvailable() && sheet.isVisible()) {
@@ -189,8 +186,7 @@ public class OSXSheetSupport {
     /**
      * Native method to hide a sheet.
      *
-     * @param sheet
-     *            The sheet.
+     * @param sheet The sheet.
      */
     private static native void nativeHideSheet(JDialog sheet);
 

@@ -5,14 +5,16 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.AbstractButton;
+import javax.swing.border.AbstractBorder;
+import java.awt.Component;
+import java.awt.Insets;
+
 /**
  * QuaquaButtonMarginBorder is used to honour the margins between button text
  * and button border.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaButtonMarginBorder extends AbstractBorder {
@@ -23,7 +25,8 @@ public class QuaquaButtonMarginBorder extends AbstractBorder {
 
     /**
      * Reinitializes the insets parameter with this Border's current Insets.
-     * @param c the component for which this border insets value applies
+     *
+     * @param c      the component for which this border insets value applies
      * @param insets the object to be reinitialized
      * @return the <code>insets</code> object
      */

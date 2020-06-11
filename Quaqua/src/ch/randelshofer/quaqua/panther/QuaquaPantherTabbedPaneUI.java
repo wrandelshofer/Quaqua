@@ -5,12 +5,19 @@
 
 package ch.randelshofer.quaqua.panther;
 
+import ch.randelshofer.quaqua.jaguar.QuaquaJaguarTabbedPaneUI;
 import ch.randelshofer.quaqua.util.NavigatableTabbedPaneUI;
-import ch.randelshofer.quaqua.jaguar.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
+
+import javax.swing.JComponent;
+import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.TabbedPaneUI;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 /**
  * The QuaquaPantherTabbedPaneUI uses to the QuaquaJaguarTabbedPaneUI for
  * the WRAP_TAB_LAYOUT policy and the QuaquaPantherScrollTabbedPaneUI for
@@ -33,7 +40,7 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
     }
 
     public static ComponentUI createUI(JComponent c) {
-	return new QuaquaPantherTabbedPaneUI();
+        return new QuaquaPantherTabbedPaneUI();
     }
 
     public void installUI(JComponent c) {
@@ -49,20 +56,20 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
 
 
         if (tabPane.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT) {
-           QuaquaJaguarTabbedPaneUI qjtpui = (QuaquaJaguarTabbedPaneUI) QuaquaJaguarTabbedPaneUI.createUI(c);
-           qjtpui.setPropertyPrefix("TabbedPane.wrap.");
-           currentUI = qjtpui;
+            QuaquaJaguarTabbedPaneUI qjtpui = (QuaquaJaguarTabbedPaneUI) QuaquaJaguarTabbedPaneUI.createUI(c);
+            qjtpui.setPropertyPrefix("TabbedPane.wrap.");
+            currentUI = qjtpui;
 
         } else {
-           QuaquaPantherScrollTabbedPaneUI qptpui = (QuaquaPantherScrollTabbedPaneUI) QuaquaPantherScrollTabbedPaneUI.createUI(c);
-           qptpui.setPropertyPrefix("TabbedPane.scroll.");
-           currentUI = qptpui;
+            QuaquaPantherScrollTabbedPaneUI qptpui = (QuaquaPantherScrollTabbedPaneUI) QuaquaPantherScrollTabbedPaneUI.createUI(c);
+            qptpui.setPropertyPrefix("TabbedPane.scroll.");
+            currentUI = qptpui;
         }
         currentUI.installUI(c);
 
         tabPane.setRequestFocusEnabled(UIManager.getBoolean("TabbedPane.requestFocusEnabled"));
 
-	//installComponents();
+        //installComponents();
         //installDefaults();
         installListeners();
         //installKeyboardActions();
@@ -72,7 +79,7 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
         //uninstallKeyboardActions();
         uninstallListeners();
         //uninstallDefaults();
-	//uninstallComponents();
+        //uninstallComponents();
 
         if (currentUI != null) {
             currentUI.uninstallUI(c);
@@ -123,9 +130,11 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
     public int tabForCoordinate(JTabbedPane pane, int x, int y) {
         return currentUI.tabForCoordinate(pane, x, y);
     }
+
     public void paint(Graphics g, JComponent c) {
         currentUI.paint(g, c);
     }
+
     public void navigateSelectedTab(int direction) {
         ((NavigatableTabbedPaneUI) currentUI).navigateSelectedTab(direction);
     }
@@ -135,7 +144,7 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
     }
 
     public boolean requestFocusForVisibleComponent() {
-       return ((NavigatableTabbedPaneUI) currentUI).requestFocusForVisibleComponent();
+        return ((NavigatableTabbedPaneUI) currentUI).requestFocusForVisibleComponent();
     }
 
     /**
@@ -145,12 +154,12 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
      */
     public class PropertyChangeHandler implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent e) {
-	    JTabbedPane pane = (JTabbedPane)e.getSource();
-	    String name = e.getPropertyName();
+            JTabbedPane pane = (JTabbedPane) e.getSource();
+            String name = e.getPropertyName();
             if (name.equals("tabLayoutPolicy")) {
-	        QuaquaPantherTabbedPaneUI.this.uninstallUI(pane);
-		QuaquaPantherTabbedPaneUI.this.installUI(pane);
-	    }
-	}
+                QuaquaPantherTabbedPaneUI.this.uninstallUI(pane);
+                QuaquaPantherTabbedPaneUI.this.installUI(pane);
+            }
+        }
     }
 }

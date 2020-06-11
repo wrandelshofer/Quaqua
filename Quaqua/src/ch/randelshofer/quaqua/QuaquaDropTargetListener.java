@@ -4,11 +4,23 @@
  */
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.JComponent;
+import javax.swing.Scrollable;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.TransferHandler;
+import javax.swing.plaf.UIResource;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.dnd.DropTargetContext;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * QuaquaDropTargetListener is mostly a copy of
@@ -53,6 +65,7 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
      */
     protected void updateInsertionLocation(JComponent c, Point p) {
     }
+
     private static final int AUTOSCROLL_INSET = 10;
 
     /**
@@ -170,10 +183,12 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
     }
 
     // --- ActionListener methods --------------------------------------
+
     /**
      * The timer fired, perform autoscroll if the pointer is within the
      * autoscroll region.
-     * <P>
+     * <p>
+     *
      * @param e the <code>ActionEvent</code>
      */
     public synchronized void actionPerformed(ActionEvent e) {
@@ -246,6 +261,7 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
         component = null;
         lastPosition = null;
     }
+
     // --- fields --------------------------------------------------
     private Timer timer;
     private Point lastPosition;

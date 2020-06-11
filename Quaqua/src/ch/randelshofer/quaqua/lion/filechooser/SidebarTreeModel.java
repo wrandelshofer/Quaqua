@@ -136,27 +136,29 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             }
         } else if (QuaquaManager.getOS() == QuaquaManager.WINDOWS) {
             defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        // Japanese ideographs for Desktop:
-                        new File(QuaquaManager.getProperty("user.home"), "\u684c\u9762"),
-                        new File(QuaquaManager.getProperty("user.home"), "My Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    new File(QuaquaManager.getProperty("user.home"), "Desktop"),
+                    // Japanese ideographs for Desktop:
+                    new File(QuaquaManager.getProperty("user.home"), "\u684c\u9762"),
+                    new File(QuaquaManager.getProperty("user.home"), "My Documents"),
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         } else if (QuaquaManager.getOS() == QuaquaManager.LINUX) {
             defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        new File("/media"),
-                        new File(QuaquaManager.getProperty("user.home"), "Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    new File(QuaquaManager.getProperty("user.home"), "Desktop"),
+                    new File("/media"),
+                    new File(QuaquaManager.getProperty("user.home"), "Documents"),
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         } else {
             defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         }
     }
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public SidebarTreeModel(JFileChooser fileChooser, TreePath path, TreeModel model) {
         super(new DefaultMutableTreeNode(), true);
 
@@ -381,11 +383,11 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
     private void addToDeviceModel(FileSystemTreeModel.Node modelNode) {
         SidebarViewToModelNode newNode = new SidebarViewToModelNode(modelNode);
         int insertionIndex = 0;
-//        SideBarViewToModelNodeComparator comparator = new SideBarViewToModelNodeComparator();
-//        while (insertionIndex < devicesNode.getChildCount()
-//                && comparator.compare((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex),newNode) < 0) {
-//            insertionIndex++;
-//        }
+        //        SideBarViewToModelNodeComparator comparator = new SideBarViewToModelNodeComparator();
+        //        while (insertionIndex < devicesNode.getChildCount()
+        //                && comparator.compare((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex),newNode) < 0) {
+        //            insertionIndex++;
+        //        }
         insertNodeInto(newNode, devicesNode, insertionIndex);
     }
 
@@ -767,7 +769,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         boolean isVisible = true;
     }
 
-    /** Note: SidebaViewToModelNode must not implement Comparable and must
+    /**
+     * Note: SidebaViewToModelNode must not implement Comparable and must
      * not override equals()/hashCode(), because this confuses the layout algorithm
      * in JTree.
      */
@@ -844,7 +847,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             return getTarget() == null ? 0 : getTarget().getUserName().hashCode();
         }*/
     }
-     private class SideBarViewToModelNodeComparator implements Comparator<SidebarViewToModelNode> {
+
+    private class SideBarViewToModelNodeComparator implements Comparator<SidebarViewToModelNode> {
 
         public int compare(SidebarViewToModelNode n1, SidebarViewToModelNode n2) {
             FileSystemTreeModel.Node o1 = n1.getTarget();
@@ -852,12 +856,12 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             return getSequenceNumber(o1) - getSequenceNumber(o2);
         }
 
-         private int getSequenceNumber(FileSystemTreeModel.Node n) {
-             if (n == computerNode) {
-                 return -1;
-             }
-             SystemItemInfo si = (SystemItemInfo) systemItemsMap.get(n.getUserName());
-             return si != null ? si.sequenceNumber : -1;
-         }
+        private int getSequenceNumber(FileSystemTreeModel.Node n) {
+            if (n == computerNode) {
+                return -1;
+            }
+            SystemItemInfo si = (SystemItemInfo) systemItemsMap.get(n.getUserName());
+            return si != null ? si.sequenceNumber : -1;
+        }
     }
 }

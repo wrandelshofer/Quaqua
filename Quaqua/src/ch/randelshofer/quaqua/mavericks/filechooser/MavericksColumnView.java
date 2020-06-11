@@ -5,11 +5,12 @@
 package ch.randelshofer.quaqua.mavericks.filechooser;
 
 import ch.randelshofer.quaqua.lion.filechooser.LionColumnView;
-import javax.swing.*;
+
+import javax.swing.JFileChooser;
 
 /**
-  * The file chooser column view for Mavericks.
-*/
+ * The file chooser column view for Mavericks.
+ */
 
 public class MavericksColumnView extends LionColumnView {
 

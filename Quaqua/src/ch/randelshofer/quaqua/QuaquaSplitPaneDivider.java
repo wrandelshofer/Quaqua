@@ -4,16 +4,26 @@
  */
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JSplitPane;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.event.MouseEvent;
 
 /**
  * QuaquaSplitPaneDivider.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
@@ -28,6 +38,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
     protected static final int ONE_TOUCH_OFFSET_ = 2;
 
     // private ActionListener doubleClickHandler = new DoubleClickActionHandler();
+
     /**
      * Creates a new instance.
      */

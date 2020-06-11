@@ -8,10 +8,9 @@ package qtest;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-
-import java.awt.BorderLayout;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import java.awt.BorderLayout;
 
 
 public class Issue142 {

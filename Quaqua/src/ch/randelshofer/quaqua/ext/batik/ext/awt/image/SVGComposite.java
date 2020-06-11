@@ -65,14 +65,14 @@ public class SVGComposite
         } else if (o instanceof AlphaComposite) {
             AlphaComposite ac = (AlphaComposite) o;
             switch (getRule().getRule()) {
-                case CompositeRule.RULE_OVER:
-                    return (ac == AlphaComposite.SrcOver);
-                case CompositeRule.RULE_IN:
-                    return (ac == AlphaComposite.SrcIn);
-                case CompositeRule.RULE_OUT:
-                    return (ac == AlphaComposite.SrcOut);
-                default:
-                    return false;
+            case CompositeRule.RULE_OVER:
+                return (ac == AlphaComposite.SrcOver);
+            case CompositeRule.RULE_IN:
+                return (ac == AlphaComposite.SrcIn);
+            case CompositeRule.RULE_OUT:
+                return (ac == AlphaComposite.SrcOut);
+            default:
+                return false;
             }
         }
         return false;
@@ -110,8 +110,8 @@ public class SVGComposite
     }
 
     public CompositeContext createContext(ColorModel srcCM,
-            ColorModel dstCM,
-            RenderingHints hints) {
+                                          ColorModel dstCM,
+                                          RenderingHints hints) {
         if (false) {
             ColorSpace srcCS = srcCM.getColorSpace();
             ColorSpace dstCS = dstCM.getColorSpace();
@@ -127,91 +127,91 @@ public class SVGComposite
         // use_int_pack = false;
 
         switch (rule.getRule()) {
-            case CompositeRule.RULE_OVER:
-                if (!dstCM.hasAlpha()) {
-                    if (use_int_pack) {
-                        return new OverCompositeContext_INT_PACK_NA(srcCM, dstCM);
-                    } else {
-                        return new OverCompositeContext_NA(srcCM, dstCM);
-                    }
-                }
-
-                if (!use_int_pack) {
-                    return new OverCompositeContext(srcCM, dstCM);
-                }
-
-                if (srcCM.isAlphaPremultiplied()) {
-                    return new OverCompositeContext_INT_PACK(srcCM, dstCM);
-                } else {
-                    return new OverCompositeContext_INT_PACK_UNPRE(srcCM, dstCM);
-                }
-
-            case CompositeRule.RULE_IN:
+        case CompositeRule.RULE_OVER:
+            if (!dstCM.hasAlpha()) {
                 if (use_int_pack) {
-                    return new InCompositeContext_INT_PACK(srcCM, dstCM);
+                    return new OverCompositeContext_INT_PACK_NA(srcCM, dstCM);
                 } else {
-                    return new InCompositeContext(srcCM, dstCM);
+                    return new OverCompositeContext_NA(srcCM, dstCM);
                 }
+            }
 
-            case CompositeRule.RULE_OUT:
-                if (use_int_pack) {
-                    return new OutCompositeContext_INT_PACK(srcCM, dstCM);
-                } else {
-                    return new OutCompositeContext(srcCM, dstCM);
-                }
+            if (!use_int_pack) {
+                return new OverCompositeContext(srcCM, dstCM);
+            }
 
-            case CompositeRule.RULE_ATOP:
-                if (use_int_pack) {
-                    return new AtopCompositeContext_INT_PACK(srcCM, dstCM);
-                } else {
-                    return new AtopCompositeContext(srcCM, dstCM);
-                }
+            if (srcCM.isAlphaPremultiplied()) {
+                return new OverCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new OverCompositeContext_INT_PACK_UNPRE(srcCM, dstCM);
+            }
 
-            case CompositeRule.RULE_XOR:
-                if (use_int_pack) {
-                    return new XorCompositeContext_INT_PACK(srcCM, dstCM);
-                } else {
-                    return new XorCompositeContext(srcCM, dstCM);
-                }
+        case CompositeRule.RULE_IN:
+            if (use_int_pack) {
+                return new InCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new InCompositeContext(srcCM, dstCM);
+            }
 
-            case CompositeRule.RULE_ARITHMETIC:
-                float[] coeff = rule.getCoefficients();
-                if (use_int_pack) {
-                    return new ArithCompositeContext_INT_PACK_LUT(srcCM, dstCM, coeff[0], coeff[1], coeff[2], coeff[3]);
-                } else {
-                    return new ArithCompositeContext(srcCM, dstCM, coeff[0], coeff[1], coeff[2], coeff[3]);
-                }
+        case CompositeRule.RULE_OUT:
+            if (use_int_pack) {
+                return new OutCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new OutCompositeContext(srcCM, dstCM);
+            }
 
-            case CompositeRule.RULE_MULTIPLY:
-                if (use_int_pack) {
-                    return new MultiplyCompositeContext_INT_PACK(srcCM, dstCM);
-                } else {
-                    return new MultiplyCompositeContext(srcCM, dstCM);
-                }
+        case CompositeRule.RULE_ATOP:
+            if (use_int_pack) {
+                return new AtopCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new AtopCompositeContext(srcCM, dstCM);
+            }
 
-            case CompositeRule.RULE_SCREEN:
-                if (use_int_pack) {
-                    return new ScreenCompositeContext_INT_PACK(srcCM, dstCM);
-                } else {
-                    return new ScreenCompositeContext(srcCM, dstCM);
-                }
+        case CompositeRule.RULE_XOR:
+            if (use_int_pack) {
+                return new XorCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new XorCompositeContext(srcCM, dstCM);
+            }
 
-            case CompositeRule.RULE_DARKEN:
-                if (use_int_pack) {
-                    return new DarkenCompositeContext_INT_PACK(srcCM, dstCM);
-                } else {
-                    return new DarkenCompositeContext(srcCM, dstCM);
-                }
+        case CompositeRule.RULE_ARITHMETIC:
+            float[] coeff = rule.getCoefficients();
+            if (use_int_pack) {
+                return new ArithCompositeContext_INT_PACK_LUT(srcCM, dstCM, coeff[0], coeff[1], coeff[2], coeff[3]);
+            } else {
+                return new ArithCompositeContext(srcCM, dstCM, coeff[0], coeff[1], coeff[2], coeff[3]);
+            }
 
-            case CompositeRule.RULE_LIGHTEN:
-                if (use_int_pack) {
-                    return new LightenCompositeContext_INT_PACK(srcCM, dstCM);
-                } else {
-                    return new LightenCompositeContext(srcCM, dstCM);
-                }
+        case CompositeRule.RULE_MULTIPLY:
+            if (use_int_pack) {
+                return new MultiplyCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new MultiplyCompositeContext(srcCM, dstCM);
+            }
 
-            default:
-                throw new UnsupportedOperationException("Unknown composite rule requested.");
+        case CompositeRule.RULE_SCREEN:
+            if (use_int_pack) {
+                return new ScreenCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new ScreenCompositeContext(srcCM, dstCM);
+            }
+
+        case CompositeRule.RULE_DARKEN:
+            if (use_int_pack) {
+                return new DarkenCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new DarkenCompositeContext(srcCM, dstCM);
+            }
+
+        case CompositeRule.RULE_LIGHTEN:
+            if (use_int_pack) {
+                return new LightenCompositeContext_INT_PACK(srcCM, dstCM);
+            } else {
+                return new LightenCompositeContext(srcCM, dstCM);
+            }
+
+        default:
+            throw new UnsupportedOperationException("Unknown composite rule requested.");
         }
 
     }
@@ -232,7 +232,7 @@ public class SVGComposite
         }
 
         protected abstract void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut);
+                                           WritableRaster dstOut);
 
         public void compose(Raster src, Raster dstIn, WritableRaster dstOut) {
             ColorModel srcPreCM = srcCM;
@@ -273,12 +273,12 @@ public class SVGComposite
         }
 
         protected abstract void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp);
+                                                    final int[] srcPixels, final int srcAdjust, int srcSp,
+                                                    final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                                    final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp);
 
         protected void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                                  WritableRaster dstOut) {
 
             int x0 = dstOut.getMinX();
             int w = dstOut.getWidth();
@@ -294,8 +294,8 @@ public class SVGComposite
             final int[] srcPixels = srcDB.getBankData()[0];
             final int srcBase =
                     (srcDB.getOffset()
-                    + srcSPPSM.getOffset(x0 - src.getSampleModelTranslateX(),
-                    y0 - src.getSampleModelTranslateY()));
+                            + srcSPPSM.getOffset(x0 - src.getSampleModelTranslateX(),
+                            y0 - src.getSampleModelTranslateY()));
 
 
             SinglePixelPackedSampleModel dstInSPPSM;
@@ -306,8 +306,8 @@ public class SVGComposite
             final int[] dstInPixels = dstInDB.getBankData()[0];
             final int dstInBase =
                     (dstInDB.getOffset()
-                    + dstInSPPSM.getOffset(x0 - dstIn.getSampleModelTranslateX(),
-                    y0 - dstIn.getSampleModelTranslateY()));
+                            + dstInSPPSM.getOffset(x0 - dstIn.getSampleModelTranslateX(),
+                            y0 - dstIn.getSampleModelTranslateY()));
 
             SinglePixelPackedSampleModel dstOutSPPSM = (SinglePixelPackedSampleModel) dstOut.getSampleModel();
 
@@ -316,8 +316,8 @@ public class SVGComposite
             final int[] dstOutPixels = dstOutDB.getBankData()[0];
             final int dstOutBase =
                     (dstOutDB.getOffset()
-                    + dstOutSPPSM.getOffset(x0 - dstOut.getSampleModelTranslateX(),
-                    y0 - dstOut.getSampleModelTranslateY()));
+                            + dstOutSPPSM.getOffset(x0 - dstOut.getSampleModelTranslateX(),
+                            y0 - dstOut.getSampleModelTranslateY()));
 
             final int srcAdjust = srcScanStride - w;
             final int dstInAdjust = dstInScanStride - w;
@@ -341,7 +341,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -388,7 +388,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -439,9 +439,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -457,13 +457,13 @@ public class SVGComposite
                     dstM = (255 - (srcP >>> 24)) * norm;
                     dstOutPixels[dstOutSp++] =
                             (((srcP & 0xFF000000)
-                            + (((((dstInP >>> 24)) * dstM + pt5) & 0xFF000000)))
-                            | ((srcP & 0x00FF0000)
-                            + (((((dstInP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8))
-                            | ((srcP & 0x0000FF00)
-                            + (((((dstInP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16))
-                            | ((srcP & 0x000000FF)
-                            + (((((dstInP) & 0xFF) * dstM + pt5)) >>> 24)));
+                                    + (((((dstInP >>> 24)) * dstM + pt5) & 0xFF000000)))
+                                    | ((srcP & 0x00FF0000)
+                                    + (((((dstInP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8))
+                                    | ((srcP & 0x0000FF00)
+                                    + (((((dstInP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16))
+                                    | ((srcP & 0x000000FF)
+                                    + (((((dstInP) & 0xFF) * dstM + pt5)) >>> 24)));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -484,9 +484,9 @@ public class SVGComposite
 
         // When we get here src data has been premultiplied.
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -502,11 +502,11 @@ public class SVGComposite
                     dstM = (255 - (srcP >>> 24)) * norm;
                     dstOutPixels[dstOutSp++] =
                             (((srcP & 0x00FF0000)
-                            + (((((dstInP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8))
-                            | ((srcP & 0x0000FF00)
-                            + (((((dstInP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16))
-                            | ((srcP & 0x000000FF)
-                            + (((((dstInP) & 0xFF) * dstM + pt5)) >>> 24)));
+                                    + (((((dstInP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8))
+                                    | ((srcP & 0x0000FF00)
+                                    + (((((dstInP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16))
+                                    | ((srcP & 0x000000FF)
+                                    + (((((dstInP) & 0xFF) * dstM + pt5)) >>> 24)));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -552,9 +552,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -572,13 +572,13 @@ public class SVGComposite
 
                     dstOutPixels[dstOutSp++] =
                             (((((srcP & 0xFF000000)
-                            + ((dstP >>> 24)) * dstM + pt5) & 0xFF000000))
-                            | (((((srcP >> 16) & 0xFF) * srcM
-                            + ((dstP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8)
-                            | (((((srcP >> 8) & 0xFF) * srcM
-                            + ((dstP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16)
-                            | (((((srcP) & 0xFF) * srcM
-                            + ((dstP) & 0xFF) * dstM + pt5)) >>> 24));
+                                    + ((dstP >>> 24)) * dstM + pt5) & 0xFF000000))
+                                    | (((((srcP >> 16) & 0xFF) * srcM
+                                    + ((dstP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8)
+                                    | (((((srcP >> 8) & 0xFF) * srcM
+                                    + ((dstP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16)
+                                    | (((((srcP) & 0xFF) * srcM
+                                    + ((dstP) & 0xFF) * dstM + pt5)) >>> 24));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -595,7 +595,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -638,9 +638,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -654,9 +654,9 @@ public class SVGComposite
                     srcP = srcPixels[srcSp++];
                     dstOutPixels[dstOutSp++] =
                             ((((((srcP >>> 24)) * srcM + pt5) & 0xFF000000))
-                            | (((((srcP >> 16) & 0xFF) * srcM + pt5) & 0xFF000000) >>> 8)
-                            | (((((srcP >> 8) & 0xFF) * srcM + pt5) & 0xFF000000) >>> 16)
-                            | (((((srcP) & 0xFF) * srcM + pt5)) >>> 24));
+                                    | (((((srcP >> 16) & 0xFF) * srcM + pt5) & 0xFF000000) >>> 8)
+                                    | (((((srcP >> 8) & 0xFF) * srcM + pt5) & 0xFF000000) >>> 16)
+                                    | (((((srcP) & 0xFF) * srcM + pt5)) >>> 24));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -673,7 +673,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -716,9 +716,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -732,9 +732,9 @@ public class SVGComposite
                     srcP = srcPixels[srcSp++];
                     dstOutPixels[dstOutSp++] =
                             ((((((srcP >>> 24)) * srcM + pt5) & 0xFF000000))
-                            | (((((srcP >> 16) & 0xFF) * srcM + pt5) & 0xFF000000) >>> 8)
-                            | (((((srcP >> 8) & 0xFF) * srcM + pt5) & 0xFF000000) >>> 16)
-                            | (((((srcP) & 0xFF) * srcM + pt5)) >>> 24));
+                                    | (((((srcP >> 16) & 0xFF) * srcM + pt5) & 0xFF000000) >>> 8)
+                                    | (((((srcP >> 8) & 0xFF) * srcM + pt5) & 0xFF000000) >>> 16)
+                                    | (((((srcP) & 0xFF) * srcM + pt5)) >>> 24));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -751,7 +751,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -793,9 +793,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -813,12 +813,12 @@ public class SVGComposite
 
                     dstOutPixels[dstOutSp++] =
                             ((dstP & 0xFF000000)
-                            | (((((srcP >> 16) & 0xFF) * srcM
-                            + ((dstP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8)
-                            | (((((srcP >> 8) & 0xFF) * srcM
-                            + ((dstP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16)
-                            | (((((srcP) & 0xFF) * srcM
-                            + ((dstP) & 0xFF) * dstM + pt5)) >>> 24));
+                                    | (((((srcP >> 16) & 0xFF) * srcM
+                                    + ((dstP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8)
+                                    | (((((srcP >> 8) & 0xFF) * srcM
+                                    + ((dstP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16)
+                                    | (((((srcP) & 0xFF) * srcM
+                                    + ((dstP) & 0xFF) * dstM + pt5)) >>> 24));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -835,7 +835,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -884,9 +884,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -904,13 +904,13 @@ public class SVGComposite
 
                     dstOutPixels[dstOutSp++] =
                             ((((((srcP >>> 24)) * srcM
-                            + ((dstP >>> 24)) * dstM + pt5) & 0xFF000000))
-                            | (((((srcP >> 16) & 0xFF) * srcM
-                            + ((dstP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8)
-                            | (((((srcP >> 8) & 0xFF) * srcM
-                            + ((dstP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16)
-                            | (((((srcP) & 0xFF) * srcM
-                            + ((dstP) & 0xFF) * dstM + pt5)) >>> 24));
+                                    + ((dstP >>> 24)) * dstM + pt5) & 0xFF000000))
+                                    | (((((srcP >> 16) & 0xFF) * srcM
+                                    + ((dstP >> 16) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 8)
+                                    | (((((srcP >> 8) & 0xFF) * srcM
+                                    + ((dstP >> 8) & 0xFF) * dstM + pt5) & 0xFF000000) >>> 16)
+                                    | (((((srcP) & 0xFF) * srcM
+                                    + ((dstP) & 0xFF) * dstM + pt5)) >>> 24));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -925,8 +925,8 @@ public class SVGComposite
         float k1, k2, k3, k4;
 
         ArithCompositeContext(ColorModel srcCM,
-                ColorModel dstCM,
-                float k1, float k2, float k3, float k4) {
+                              ColorModel dstCM,
+                              float k1, float k2, float k3, float k4) {
             super(srcCM, dstCM);
             this.k1 = k1;
             this.k2 = k2;
@@ -935,7 +935,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -997,9 +997,9 @@ public class SVGComposite
         float k1, k2, k3, k4;
 
         ArithCompositeContext_INT_PACK(ColorModel srcCM,
-                ColorModel dstCM,
-                float k1, float k2,
-                float k3, float k4) {
+                                       ColorModel dstCM,
+                                       float k1, float k2,
+                                       float k3, float k4) {
             super(srcCM, dstCM);
             this.k1 = k1 / 255.0f;
             this.k2 = k2;
@@ -1008,9 +1008,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             int srcP, dstP, a, r, g, b;
 
@@ -1087,9 +1087,9 @@ public class SVGComposite
         byte[] lut;
 
         ArithCompositeContext_INT_PACK_LUT(ColorModel srcCM,
-                ColorModel dstCM,
-                float k1, float k2,
-                float k3, float k4) {
+                                           ColorModel dstCM,
+                                           float k1, float k2,
+                                           float k3, float k4) {
             super(srcCM, dstCM);
             k1 = k1 / 255.0f;
             k4 = k4 * 255.0f + 0.5f;
@@ -1110,9 +1110,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             byte[] workTbl = lut;   // local is cheaper
             int srcP, dstP;
@@ -1147,7 +1147,8 @@ public class SVGComposite
     }
 
     /**
-     * The following classes implement the various blend modes from SVG.  */
+     * The following classes implement the various blend modes from SVG.
+     */
     public static class MultiplyCompositeContext
             extends AlphaPreCompositeContext {
 
@@ -1156,7 +1157,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -1208,9 +1209,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -1238,12 +1239,12 @@ public class SVGComposite
 
                     dstOutPixels[dstOutSp++] =
                             (((((srcR * srcM + dstR * dstM + srcR * dstR)
-                            * norm + pt5) & 0xFF000000) >>> 8)
-                            | ((((srcG * srcM + dstG * dstM + srcG * dstG)
-                            * norm + pt5) & 0xFF000000) >>> 16)
-                            | ((((srcB * srcM + dstB * dstM + srcB * dstB)
-                            * norm + pt5)) >>> 24)
-                            | ((srcA + dstA - ((srcA * dstA * norm + pt5) >>> 24)) << 24));
+                                    * norm + pt5) & 0xFF000000) >>> 8)
+                                    | ((((srcG * srcM + dstG * dstM + srcG * dstG)
+                                    * norm + pt5) & 0xFF000000) >>> 16)
+                                    | ((((srcB * srcM + dstB * dstM + srcB * dstB)
+                                    * norm + pt5)) >>> 24)
+                                    | ((srcA + dstA - ((srcA * dstA * norm + pt5) >>> 24)) << 24));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -1260,7 +1261,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -1315,9 +1316,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -1342,9 +1343,9 @@ public class SVGComposite
 
                     dstOutPixels[dstOutSp++] =
                             (((srcR + dstR - ((srcR * dstR * norm + pt5) >>> 24)) << 16)
-                            | ((srcG + dstG - ((srcG * dstG * norm + pt5) >>> 24)) << 8)
-                            | ((srcB + dstB - ((srcB * dstB * norm + pt5) >>> 24)))
-                            | ((srcA + dstA - ((srcA * dstA * norm + pt5) >>> 24)) << 24));
+                                    | ((srcG + dstG - ((srcG * dstG * norm + pt5) >>> 24)) << 8)
+                                    | ((srcB + dstB - ((srcB * dstB * norm + pt5) >>> 24)))
+                                    | ((srcA + dstA - ((srcA * dstA * norm + pt5) >>> 24)) << 24));
                 }
                 srcSp += srcAdjust;
                 dstInSp += dstInAdjust;
@@ -1361,7 +1362,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -1429,9 +1430,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -1501,7 +1502,7 @@ public class SVGComposite
         }
 
         public void precompose(Raster src, Raster dstIn,
-                WritableRaster dstOut) {
+                               WritableRaster dstOut) {
             int[] srcPix = null;
             int[] dstPix = null;
 
@@ -1569,9 +1570,9 @@ public class SVGComposite
         }
 
         public void precompose_INT_PACK(final int width, final int height,
-                final int[] srcPixels, final int srcAdjust, int srcSp,
-                final int[] dstInPixels, final int dstInAdjust, int dstInSp,
-                final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
+                                        final int[] srcPixels, final int srcAdjust, int srcSp,
+                                        final int[] dstInPixels, final int dstInAdjust, int dstInSp,
+                                        final int[] dstOutPixels, final int dstOutAdjust, int dstOutSp) {
 
             final int norm = (1 << 24) / 255;
             final int pt5 = (1 << 23);
@@ -1633,7 +1634,9 @@ public class SVGComposite
         }
     }
 
-    /** WARNING: Inefficient implementation of hashCode. */
+    /**
+     * WARNING: Inefficient implementation of hashCode.
+     */
     @Override
     public int hashCode() {
         assert false : "hashCode not designed";

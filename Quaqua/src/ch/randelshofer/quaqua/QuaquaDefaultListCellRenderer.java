@@ -5,7 +5,7 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
+import javax.swing.DefaultListCellRenderer;
 
 /**
  * QuaquaDefaultListCellRenderer.
@@ -15,7 +15,9 @@ import javax.swing.*;
  */
 public class QuaquaDefaultListCellRenderer extends DefaultListCellRenderer.UIResource {
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaDefaultListCellRenderer() {
         setOpaque(false);
     }

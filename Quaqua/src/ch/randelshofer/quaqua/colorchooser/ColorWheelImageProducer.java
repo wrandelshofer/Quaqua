@@ -5,13 +5,15 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
 
 /**
  * Produces the image of a ColorWheel.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ColorWheelImageProducer extends MemoryImageSource {
@@ -20,20 +22,27 @@ public class ColorWheelImageProducer extends MemoryImageSource {
     protected float brightness = 1f;
     protected boolean isDirty = true;
 
-    /** Lookup table for hues. */
+    /**
+     * Lookup table for hues.
+     */
     protected float[] hues;
-    /** Lookup table for saturations. */
+    /**
+     * Lookup table for saturations.
+     */
     protected float[] saturations;
-    /** Lookup table for alphas.
+    /**
+     * Lookup table for alphas.
      * The alpha value is used for antialiasing the
      * color wheel.
      */
     protected int[] alphas;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public ColorWheelImageProducer(int w, int h) {
         super(w, h, null, 0, w);
-        pixels = new int[w*h];
+        pixels = new int[w * h];
         this.w = w;
         this.h = h;
         generateLookupTables();
@@ -47,9 +56,9 @@ public class ColorWheelImageProducer extends MemoryImageSource {
     }
 
     protected void generateLookupTables() {
-        saturations = new float[w*h];
-        hues = new float[w*h];
-        alphas = new int[w*h];
+        saturations = new float[w * h];
+        hues = new float[w * h];
+        alphas = new int[w * h];
         float radius = getRadius();
 
         // blend is used to create a linear alpha gradient of two extra pixels
@@ -59,19 +68,19 @@ public class ColorWheelImageProducer extends MemoryImageSource {
         int cx = w / 2;
         int cy = h / 2;
 
-        for (int x=0; x < w; x++) {
+        for (int x = 0; x < w; x++) {
             int kx = x - cx; // Kartesian coordinates of x
             int squarekx = kx * kx; // Square of kartesian x
 
-            for (int y=0; y < h; y++) {
+            for (int y = 0; y < h; y++) {
                 int ky = cy - y; // Kartesian coordinates of y
 
                 int index = x + y * w;
-                saturations[index] = (float) Math.sqrt(squarekx + ky*ky) / radius;
+                saturations[index] = (float) Math.sqrt(squarekx + ky * ky) / radius;
                 if (saturations[index] <= 1f) {
                     alphas[index] = 0xff000000;
                 } else {
-                    alphas[index] = (int) ((blend - Math.min(blend,saturations[index] - 1f)) * 255 / blend) << 24;
+                    alphas[index] = (int) ((blend - Math.min(blend, saturations[index] - 1f)) * 255 / blend) << 24;
                     saturations[index] = 1f;
                 }
                 if (alphas[index] != 0) {
@@ -97,15 +106,16 @@ public class ColorWheelImageProducer extends MemoryImageSource {
     }
 
     public void generateColorWheel() {
-        for (int index=0; index < pixels.length; index++) {
+        for (int index = 0; index < pixels.length; index++) {
             if (alphas[index] != 0) {
                 pixels[index] = alphas[index]
-                | 0xffffff & Color.HSBtoRGB(hues[index], saturations[index], brightness);
+                        | 0xffffff & Color.HSBtoRGB(hues[index], saturations[index], brightness);
             }
         }
         newPixels();
         isDirty = false;
     }
+
     protected Point getColorLocation(Color c, int width, int height) {
         float[] hsb = new float[3];
         Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), hsb);
@@ -126,9 +136,9 @@ public class ColorWheelImageProducer extends MemoryImageSource {
         float theta = (float) Math.atan2(y, -x);
 
         float[] hsb = {
-            (float) (0.5 + (theta / Math.PI / 2d)),
-            Math.min(1f, (float) r / getRadius()),
-            brightness
+                (float) (0.5 + (theta / Math.PI / 2d)),
+                Math.min(1f, (float) r / getRadius()),
+                brightness
         };
         return hsb;
     }

@@ -5,17 +5,18 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.JComponent;
+import java.awt.Graphics;
+
 /**
  * QuaquaMenuPainterClient.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public interface QuaquaMenuPainterClient {
 
-   public void paintBackground(Graphics g, JComponent c, int i, int j);
+    public void paintBackground(Graphics g, JComponent c, int i, int j);
 
     //public ThemeMenu getTheme();
 }

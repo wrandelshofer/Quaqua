@@ -5,6 +5,11 @@
 package qtest;
 
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,11 +19,10 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.DataBufferInt;
 import java.awt.image.Kernel;
 import java.util.Arrays;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import static java.lang.Math.*;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.exp;
+import static java.lang.Math.pow;
 
 /**
  * OSXPainterTest.
@@ -37,11 +41,11 @@ public class OSXPainterTest extends javax.swing.JPanel {
             System.out.println("OSXPainterTest nativeCodeAvailable=" + OSXAquaPainter.isNativeCodeAvailable());
             painter = new OSXAquaPainter();
             painter.setWidget(OSXAquaPainter.Widget.buttonCheckBox);
-            painter.setValueByKey(OSXAquaPainter.Key.value,1.0);
-            painter.setValueByKey(OSXAquaPainter.Key.focused,1.0);
+            painter.setValueByKey(OSXAquaPainter.Key.value, 1.0);
+            painter.setValueByKey(OSXAquaPainter.Key.focused, 1.0);
         }
 
-        static float[] gaussian(float radius, float s,float sum) {
+        static float[] gaussian(float radius, float s, float sum) {
             int r = (int) Math.ceil(radius);
             float[] gaussian = new float[r * 2 + 1];
 
@@ -49,16 +53,17 @@ public class OSXPainterTest extends javax.swing.JPanel {
             float h = 1f; // height of the peak
             float c = r; // position of the centre of the peak
             //float s = radius/1.5f; // width of the 'bell'
-            float invs2sq = 1f/(2f * s * s);
+            float invs2sq = 1f / (2f * s * s);
             for (int i = 0; i < gaussian.length; i++) {
                 float x = i;
                 gaussian[i] = (float) (h * exp(-pow(x - c, 2) * invs2sq));
             }
 
-            normalizeKernel(gaussian,sum);
-System.out.println("g="+Arrays.toString(gaussian));
+            normalizeKernel(gaussian, sum);
+            System.out.println("g=" + Arrays.toString(gaussian));
             return gaussian;
         }
+
         static float[] pyramid(float radius, float sum) {
             int r = (int) Math.ceil(radius);
             float[] gaussian = new float[r * 2 + 1];
@@ -68,15 +73,16 @@ System.out.println("g="+Arrays.toString(gaussian));
 
             for (int i = 0; i < gaussian.length; i++) {
                 float x = i;
-                gaussian[i] = (float) c-abs(x-c);
+                gaussian[i] = (float) c - abs(x - c);
             }
 
-            normalizeKernel(gaussian,sum);
-System.out.println("p="+Arrays.toString(gaussian));
+            normalizeKernel(gaussian, sum);
+            System.out.println("p=" + Arrays.toString(gaussian));
             return gaussian;
         }
 
-        /** Normalizes the kernel so that all its elements add up to the given
+        /**
+         * Normalizes the kernel so that all its elements add up to the given
          * sum.
          *
          * @param kernel
@@ -131,10 +137,10 @@ System.out.println("p="+Arrays.toString(gaussian));
             ConvolveOp edgeTopOp = new ConvolveOp(new Kernel(1, 2, new float[]{1, -1}));
             ConvolveOp edgeBottomOp = new ConvolveOp(new Kernel(1, 2, new float[]{-1, 1}));
             */
-            ConvolveOp edgeLeftOp = new ConvolveOp(new Kernel(3, 1, new float[]{1, 0,-1}));
-            ConvolveOp edgeRightOp = new ConvolveOp(new Kernel(3, 1, new float[]{-1, 0,1}));
-            ConvolveOp edgeTopOp = new ConvolveOp(new Kernel(1, 3, new float[]{1, 0,-1}));
-            ConvolveOp edgeBottomOp = new ConvolveOp(new Kernel(1, 3, new float[]{-1,0, 1}));
+            ConvolveOp edgeLeftOp = new ConvolveOp(new Kernel(3, 1, new float[]{1, 0, -1}));
+            ConvolveOp edgeRightOp = new ConvolveOp(new Kernel(3, 1, new float[]{-1, 0, 1}));
+            ConvolveOp edgeTopOp = new ConvolveOp(new Kernel(1, 3, new float[]{1, 0, -1}));
+            ConvolveOp edgeBottomOp = new ConvolveOp(new Kernel(1, 3, new float[]{-1, 0, 1}));
             /*
             float[] edgy=new float[]{0.5f,1, 0,-1,-0.5f};
             float[] medgy=new float[edgy.length];
@@ -144,12 +150,12 @@ System.out.println("p="+Arrays.toString(gaussian));
             ConvolveOp edgeTopOp = new ConvolveOp(new Kernel(1, edgy.length, edgy));
             ConvolveOp edgeBottomOp = new ConvolveOp(new Kernel(1, edgy.length, medgy));
 */
-            float[] gaussian=gaussian(2.0f,2.5f/2.25f,0.9f);
-            ConvolveOp gaussianOpV=new ConvolveOp(new Kernel(1,gaussian.length,gaussian));
-            ConvolveOp gaussianOpH=new ConvolveOp(new Kernel(gaussian.length,1,gaussian));
-            float[] pyramid=pyramid(2.5f,0.8f);
-            ConvolveOp pyramidOpV=new ConvolveOp(new Kernel(1,pyramid.length,pyramid));
-            ConvolveOp pyramidOpH=new ConvolveOp(new Kernel(pyramid.length,1,pyramid));
+            float[] gaussian = gaussian(2.0f, 2.5f / 2.25f, 0.9f);
+            ConvolveOp gaussianOpV = new ConvolveOp(new Kernel(1, gaussian.length, gaussian));
+            ConvolveOp gaussianOpH = new ConvolveOp(new Kernel(gaussian.length, 1, gaussian));
+            float[] pyramid = pyramid(2.5f, 0.8f);
+            ConvolveOp pyramidOpV = new ConvolveOp(new Kernel(1, pyramid.length, pyramid));
+            ConvolveOp pyramidOpH = new ConvolveOp(new Kernel(pyramid.length, 1, pyramid));
 
             // blur the prior image back into the same pixels
             Graphics2D g;
@@ -180,16 +186,19 @@ System.out.println("p="+Arrays.toString(gaussian));
             g.fillRect(0, 0, w, h);
             //
             g.dispose();
-            gr.drawImage(focusImg, 40, 0,null);
+            gr.drawImage(focusImg, 40, 0, null);
             gr.drawImage(focusImg, gaussianOpH, 80, 0);
             gr.drawImage(focusImg, gaussianOpV, 80, 0);
             gr.drawImage(focusImg, pyramidOpH, 120, 0);
             gr.drawImage(focusImg, pyramidOpV, 120, 0);
         }
     }
+
     private Canvas canvas;
 
-    /** Creates new form OSXPainterTest */
+    /**
+     * Creates new form OSXPainterTest
+     */
     public OSXPainterTest() {
         initComponents();
         add(canvas = new Canvas());
@@ -208,7 +217,8 @@ System.out.println("p="+Arrays.toString(gaussian));
         });
     }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.

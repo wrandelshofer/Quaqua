@@ -5,10 +5,20 @@
 
 package ch.randelshofer.quaqua.border;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import javax.swing.border.*;
-import java.awt.image.*;
+import ch.randelshofer.quaqua.util.CachedPainter;
+import ch.randelshofer.quaqua.util.Images;
+
+import javax.swing.border.Border;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
 
 /**
  * Draws a filled bevel border using an image and insets.
@@ -26,7 +36,7 @@ import java.awt.image.*;
  * bottom left: 2,4, bottom right: 4,4 rectangle of the image.
  * The inner area of the image is used to fill the inner area.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class CachedImageBevelBorder extends CachedPainter implements Border {
@@ -71,6 +81,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
     public CachedImageBevelBorder(Image img, Insets imageInsets, Insets borderInsets) {
         this(img, imageInsets, borderInsets, true);
     }
+
     /**
      * Creates a new instance with the given image and insets.
      * The image has different insets than the border.
@@ -93,6 +104,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
 
     /**
      * Returns the insets of the border.
+     *
      * @param c the component for which this border insets value applies
      */
     public Insets getBorderInsets(Component c) {
@@ -103,16 +115,19 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
     /**
      * Paints the bevel image for the specified component with the
      * specified position and size.
-     * @param c the component for which this border is being painted
-     * @param gr the paint graphics
-     * @param x the x position of the painted border
-     * @param y the y position of the painted border
-     * @param width the width of the painted border
+     *
+     * @param c      the component for which this border is being painted
+     * @param gr     the paint graphics
+     * @param x      the x position of the painted border
+     * @param y      the y position of the painted border
+     * @param width  the width of the painted border
      * @param height the height of the painted border
      */
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
-        if (image == null) return;
-        if (gr.getClipBounds()!=null&&! gr.getClipBounds().intersects(x, y, width, height)) {
+        if (image == null) {
+            return;
+        }
+        if (gr.getClipBounds() != null && !gr.getClipBounds().intersects(x, y, width, height)) {
             return;
         }
         paint(c, gr, x, y, width, height, args);
@@ -121,11 +136,11 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
     /**
      * Creates the image to cache.  This returns a translucent image.
      *
-     * @param c Component painting to
-     * @param w Width of image to create
-     * @param h Height to image to create
+     * @param c      Component painting to
+     * @param w      Width of image to create
+     * @param h      Height to image to create
      * @param config GraphicsConfiguration that will be
-     *        rendered to, this may be null.
+     *               rendered to, this may be null.
      */
     @Override
     protected Image createImage(Component c, int w, int h,
@@ -188,35 +203,35 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
         // Draw the Corners
         if (top > 0 && left > 0) {
             g.drawImage(
-            img,
-            0, 0, left, top,
-            0, 0, left, top,
-            c
+                    img,
+                    0, 0, left, top,
+                    0, 0, left, top,
+                    c
             );
         }
         if (top > 0 && right > 0) {
             //g.fillRect(x+width-right, y, x+width, y+top);
             g.drawImage(
-            img,
-            width - right, 0, width, top,
-            imgWidth - right, 0, imgWidth, top,
-            c
+                    img,
+                    width - right, 0, width, top,
+                    imgWidth - right, 0, imgWidth, top,
+                    c
             );
         }
         if (bottom > 0 && left > 0) {
             g.drawImage(
-            img,
-            0, height - bottom, left, height,
-            0, imgHeight - bottom, left, imgHeight,
-            c
+                    img,
+                    0, height - bottom, left, height,
+                    0, imgHeight - bottom, left, imgHeight,
+                    c
             );
         }
         if (bottom > 0 && right > 0) {
             g.drawImage(
-            img,
-            width - right, height - bottom, width, height,
-            imgWidth - right, imgHeight - bottom, imgWidth, imgHeight,
-            c
+                    img,
+                    width - right, height - bottom, width, height,
+                    imgWidth - right, imgHeight - bottom, imgWidth, imgHeight,
+                    c
             );
         }
 
@@ -227,37 +242,37 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
         // North
         if (top > 0 && left + right < width) {
             if (imgWidth > right + left) {
-            subImg = img.getSubimage(left, 0, imgWidth - right - left, top);
-            paint = new TexturePaint(subImg, new Rectangle(left, 0, imgWidth - left - right, top));
-            g.setPaint(paint);
-            g.fillRect(left, 0, width - left - right, top);
+                subImg = img.getSubimage(left, 0, imgWidth - right - left, top);
+                paint = new TexturePaint(subImg, new Rectangle(left, 0, imgWidth - left - right, top));
+                g.setPaint(paint);
+                g.fillRect(left, 0, width - left - right, top);
             }
         }
         // South
         if (bottom > 0 && left + right < width) {
             if (imgHeight > bottom && imgWidth > right + left) {
-            subImg = img.getSubimage(left, imgHeight - bottom, imgWidth - right - left, bottom);
-            paint = new TexturePaint(subImg, new Rectangle(left, height - bottom, imgWidth - left - right, bottom));
-            g.setPaint(paint);
-            g.fillRect(left, height - bottom, width - left - right, bottom);
+                subImg = img.getSubimage(left, imgHeight - bottom, imgWidth - right - left, bottom);
+                paint = new TexturePaint(subImg, new Rectangle(left, height - bottom, imgWidth - left - right, bottom));
+                g.setPaint(paint);
+                g.fillRect(left, height - bottom, width - left - right, bottom);
             }
         }
         // West
         if (left > 0 && top + bottom < height) {
             if (imgHeight > top + bottom) {
-            subImg = img.getSubimage(0, top, left, imgHeight - top - bottom);
-            paint = new TexturePaint(subImg, new Rectangle(0, top, left, imgHeight - top - bottom));
-            g.setPaint(paint);
-            g.fillRect(0, top, left, height - top - bottom);
+                subImg = img.getSubimage(0, top, left, imgHeight - top - bottom);
+                paint = new TexturePaint(subImg, new Rectangle(0, top, left, imgHeight - top - bottom));
+                g.setPaint(paint);
+                g.fillRect(0, top, left, height - top - bottom);
             }
         }
         // East
         if (right > 0 && top + bottom < height) {
             if (imgWidth > right && imgHeight > top + bottom) {
-            subImg = img.getSubimage(imgWidth - right, top, right, imgHeight - top - bottom);
-            paint = new TexturePaint(subImg, new Rectangle(width - right, top, right, imgHeight - top - bottom));
-            g.setPaint(paint);
-            g.fillRect(width - right, top, right, height - top - bottom);
+                subImg = img.getSubimage(imgWidth - right, top, right, imgHeight - top - bottom);
+                paint = new TexturePaint(subImg, new Rectangle(width - right, top, right, imgHeight - top - bottom));
+                g.setPaint(paint);
+                g.fillRect(width - right, top, right, height - top - bottom);
             }
         }
 
@@ -274,22 +289,24 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
     }
 
     public static class UIResource extends CachedImageBevelBorder implements javax.swing.plaf.UIResource {
-    public UIResource(Image img, Insets borderInsets) {
-        super(img, borderInsets);
-    }
+        public UIResource(Image img, Insets borderInsets) {
+            super(img, borderInsets);
+        }
 
-    /**
-     * Creates a new instance with the given image and insets.
-     * The image has different insets than the border.
-     */
-    public UIResource(Image img, Insets imageInsets, Insets borderInsets) {
-        super(img, imageInsets, borderInsets);
+        /**
+         * Creates a new instance with the given image and insets.
+         * The image has different insets than the border.
+         */
+        public UIResource(Image img, Insets imageInsets, Insets borderInsets) {
+            super(img, imageInsets, borderInsets);
+        }
+
+        /**
+         * Creates a new instance with the given image and insets.
+         * The image has different insets than the border.
+         */
+        public UIResource(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea) {
+            super(img, imageInsets, borderInsets, fillContentArea);
+        }
     }
-    /**
-     * Creates a new instance with the given image and insets.
-     * The image has different insets than the border.
-     */
-    public UIResource(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea) {
-        super(img, imageInsets, borderInsets, fillContentArea);
-    }
-}}
+}

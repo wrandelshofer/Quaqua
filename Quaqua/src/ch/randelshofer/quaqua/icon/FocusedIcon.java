@@ -5,9 +5,10 @@
 package ch.randelshofer.quaqua.icon;
 
 import ch.randelshofer.quaqua.border.AbstractFocusedPainter;
+
+import javax.swing.Icon;
 import java.awt.Component;
 import java.awt.Graphics;
-import javax.swing.Icon;
 
 /**
  * Draws a focus ring around the opaque pixels of an icon.
@@ -19,7 +20,7 @@ import javax.swing.Icon;
 public class FocusedIcon extends AbstractFocusedPainter implements Icon {
 
     private Icon actualIcon;
-    private final static int slack=3;
+    private final static int slack = 3;
 
     public FocusedIcon(Icon actualIcon) {
         this.actualIcon = actualIcon;
@@ -36,11 +37,12 @@ public class FocusedIcon extends AbstractFocusedPainter implements Icon {
     }
 
     @Override
-    public void paintIcon( Component c,  Graphics g,  int x,  int y) {
-        paint(c, g, x-slack, y-slack, getIconWidth()+slack*2, getIconHeight()+slack*2);
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        paint(c, g, x - slack, y - slack, getIconWidth() + slack * 2, getIconHeight() + slack * 2);
     }
+
     @Override
-    protected void doPaint( Component c,  Graphics g,  int x,  int y, int w, int h) {
-        actualIcon.paintIcon(c, g, x+slack, y+slack);
+    protected void doPaint(Component c, Graphics g, int x, int y, int w, int h) {
+        actualIcon.paintIcon(c, g, x + slack, y + slack);
     }
 }

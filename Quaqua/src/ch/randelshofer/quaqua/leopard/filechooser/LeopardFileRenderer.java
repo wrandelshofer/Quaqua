@@ -4,22 +4,39 @@
  */
 package ch.randelshofer.quaqua.leopard.filechooser;
 
-import ch.randelshofer.quaqua.osx.OSXFile;
-import javax.swing.*;
-
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
-import ch.randelshofer.quaqua.filechooser.*;
+import ch.randelshofer.quaqua.filechooser.CellRenderer;
+import ch.randelshofer.quaqua.filechooser.FileInfo;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
 import ch.randelshofer.quaqua.icon.EmptyIcon;
+import ch.randelshofer.quaqua.osx.OSXFile;
 
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
  * Quaqua FileChooserUI's.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class LeopardFileRenderer extends JLabel implements ListCellRenderer, CellRenderer {
@@ -47,9 +64,9 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
     private boolean isListView;
 
     public LeopardFileRenderer(JFileChooser fileChooser,
-            Icon expandingIcon, Icon expandedIcon,
-            Icon selectedExpandingIcon, Icon selectedExpandedIcon,
-            Icon focusedSelectedExpandingIcon, Icon focusedSelectedExpandedIcon) {
+                               Icon expandingIcon, Icon expandedIcon,
+                               Icon selectedExpandingIcon, Icon selectedExpandedIcon,
+                               Icon focusedSelectedExpandingIcon, Icon focusedSelectedExpandedIcon) {
         this.fileChooser = fileChooser;
         this.expandingIcon = expandingIcon;
         this.expandedIcon = expandedIcon;
@@ -115,8 +132,8 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
-            int index, boolean isSelected,
-            boolean cellHasFocus) {
+                                                  int index, boolean isSelected,
+                                                  boolean cellHasFocus) {
         return getCellRendererComponent(list, value, isSelected, cellHasFocus, false);
     }
 
@@ -126,10 +143,10 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
     }
 
     protected Component getCellRendererComponent(JComponent container,
-        Object value,
-        boolean isSelected,
-        boolean cellHasFocus,
-        boolean isListView) {
+                                                 Object value,
+                                                 boolean isSelected,
+                                                 boolean cellHasFocus,
+                                                 boolean isListView) {
 
         this.isListView = isListView;
 
@@ -277,6 +294,7 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
 
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
     }
+
     /**
      * The following variables are used for laying out the renderer.
      * This variables are static, because FileRenderer is always called
@@ -290,7 +308,8 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
     private static Rectangle arrowIconRect = new Rectangle();
     private static Rectangle viewRect = new Rectangle();
     private static Rectangle labelRect = new Rectangle();
-    /** r is used in getPreferredSize and in paintComponent. It must not be
+    /**
+     * r is used in getPreferredSize and in paintComponent. It must not be
      * used in any method called by one of these.
      */
     private static Rectangle r = new Rectangle();

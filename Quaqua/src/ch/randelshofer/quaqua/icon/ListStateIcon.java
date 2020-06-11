@@ -4,11 +4,11 @@
  */
 package ch.randelshofer.quaqua.icon;
 
-import java.awt.Component;
-import java.awt.Graphics;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.plaf.UIResource;
+import java.awt.Component;
+import java.awt.Graphics;
 
 /**
  * {@code ListStateIcon} draws two different icons depending on the
@@ -28,14 +28,14 @@ public class ListStateIcon implements Icon, UIResource {
     }
 
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        boolean isSelected=false;
+        boolean isSelected = false;
         if (c instanceof JComponent) {
-            isSelected=(Boolean)((JComponent)c).getClientProperty("Quaqua.selected");
+            isSelected = (Boolean) ((JComponent) c).getClientProperty("Quaqua.selected");
         }
         if (isSelected) {
-         selectedIcon.paintIcon(c,g,x,y);
+            selectedIcon.paintIcon(c, g, x, y);
         } else {
-        icon.paintIcon(c,g,x,y);
+            icon.paintIcon(c, g, x, y);
         }
     }
 

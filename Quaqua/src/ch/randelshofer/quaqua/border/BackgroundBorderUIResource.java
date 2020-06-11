@@ -5,10 +5,13 @@
 
 package ch.randelshofer.quaqua.border;
 
-import java.awt.*;
 import javax.swing.JComponent;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.UIResource;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 /**
  * A BackgroundBorderUIResource is used by the Quaqua Look And Feel to tag a
  * BorderUIResource that has to be drawn on to the background of a JComponent.
@@ -18,11 +21,12 @@ import javax.swing.plaf.*;
  * Using the getBackgroundBorder method, one can retrieve the background border
  * used to draw on the background of a JComponent.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
-public class BackgroundBorderUIResource implements Border, BackgroundBorder,PressedCueBorder, UIResource {
+public class BackgroundBorderUIResource implements Border, BackgroundBorder, PressedCueBorder, UIResource {
     private Border backgroundBorder;
+
     /**
      * Creates an EmptyBorder which has the same insets as the specified
      * background border.
@@ -49,7 +53,7 @@ public class BackgroundBorderUIResource implements Border, BackgroundBorder,Pres
 
     public boolean hasPressedCue(JComponent c) {
         if (backgroundBorder instanceof PressedCueBorder) {
-            return ((PressedCueBorder)backgroundBorder). hasPressedCue( c);
+            return ((PressedCueBorder) backgroundBorder).hasPressedCue(c);
         }
         return true;
     }

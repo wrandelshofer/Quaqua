@@ -4,23 +4,64 @@
  */
 package ch.randelshofer.quaqua.jaguar;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.filechooser.*;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.filechooser.FileInfo;
+import ch.randelshofer.quaqua.filechooser.FileRenderer;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.FileTransferHandler;
+import ch.randelshofer.quaqua.filechooser.FilenameDocument;
+import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
 
-//import ch.randelshofer.gui.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.filechooser.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.tree.*;
-import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.beans.*;
+import javax.swing.AbstractAction;
+import javax.swing.AbstractListModel;
+import javax.swing.Action;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.filechooser.FileView;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicFileChooserUI;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.IllegalComponentStateException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Locale;
+
+//import ch.randelshofer.gui.*;
 
 /**
  * A replacement for the AquaFileChooserUI. Provides a column view similar
@@ -61,7 +102,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
     private String newFolderToolTipText = null;
     ///private String newFolderAccessibleName = null;
     protected String chooseButtonText = null;
-    private String newFolderDialogPrompt,  newFolderDefaultName,  newFolderErrorText,  newFolderExistsErrorText;
+    private String newFolderDialogPrompt, newFolderDefaultName, newFolderErrorText, newFolderExistsErrorText;
     ///private String newFolderButtonText;
     private String newFolderTitleText;
 
@@ -342,13 +383,13 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         //Configure JBrowser
         browser.setColumnCellRenderer(
                 new FileRenderer(
-                fc,
-                UIManager.getIcon("Browser.expandingIcon"),
-                UIManager.getIcon("Browser.expandedIcon"),
-                UIManager.getIcon("Browser.selectedExpandingIcon"),
-                UIManager.getIcon("Browser.selectedExpandedIcon"),
-                UIManager.getIcon("Browser.focusedSelectedExpandingIcon"),
-                UIManager.getIcon("Browser.focusedSelectedExpandedIcon")
+                        fc,
+                        UIManager.getIcon("Browser.expandingIcon"),
+                        UIManager.getIcon("Browser.expandedIcon"),
+                        UIManager.getIcon("Browser.selectedExpandingIcon"),
+                        UIManager.getIcon("Browser.selectedExpandedIcon"),
+                        UIManager.getIcon("Browser.focusedSelectedExpandingIcon"),
+                        UIManager.getIcon("Browser.focusedSelectedExpandedIcon")
                 ));
         if (fc.isMultiSelectionEnabled()) {
             browser.setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
@@ -421,28 +462,28 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         // Drag and drop assignment
         fileTransferHandler = new FileTransferHandler(fc);
         Component[] dropComponents = {
-            fc,
-            accessoryPanel,
-            approveButton,
-            browser,
-            browserScrollPane,
-            buttonPanel,
-            cancelButton,
-            directoryComboBox,
-            fileNameLabel,
-            fileNameTextField,
-            filesOfTypeLabel,
-            filterComboBox,
-            formatPanel,
-            formatPanel2,
-            fromPanel,
-            lookInLabel,
-            newFolderButton,
-            separatorPanel,
-            separatorPanel1,
-            separatorPanel2,
-            strutPanel1,
-            strutPanel2
+                fc,
+                accessoryPanel,
+                approveButton,
+                browser,
+                browserScrollPane,
+                buttonPanel,
+                cancelButton,
+                directoryComboBox,
+                fileNameLabel,
+                fileNameTextField,
+                filesOfTypeLabel,
+                filterComboBox,
+                formatPanel,
+                formatPanel2,
+                fromPanel,
+                lookInLabel,
+                newFolderButton,
+                separatorPanel,
+                separatorPanel1,
+                separatorPanel2,
+                strutPanel1,
+                strutPanel2
         };
         for (int i = 0; i < dropComponents.length; i++) {
             new DropTarget(dropComponents[i], DnDConstants.ACTION_COPY, fileTransferHandler);
@@ -480,7 +521,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         super.installDefaults(fc);
 
         Object value = UIManager.get("FileChooser.fileHidingEnabled");
-        boolean booleanValue = (value instanceof Boolean) ? ((Boolean)value).booleanValue() : true;
+        boolean booleanValue = (value instanceof Boolean) ? ((Boolean) value).booleanValue() : true;
         fc.setFileHidingEnabled(booleanValue);
     }
 
@@ -733,8 +774,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         return true;
     }
 
-    private boolean isAcceptable(File f)
-    {
+    private boolean isAcceptable(File f) {
         if (f == null) {
             return false;
         }
@@ -761,13 +801,14 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
             }
         }
     }
+
     private void updateApproveButtonText() {
         JFileChooser fc = getFileChooser();
 
         approveButton.setText(getApproveButtonText(fc));
         approveButton.setToolTipText(getApproveButtonToolTipText(fc));
         approveButton.setMnemonic(getApproveButtonMnemonic(fc));
-    //cancelButton.setToolTipText(getCancelButtonToolTipText(fc));
+        //cancelButton.setToolTipText(getCancelButtonToolTipText(fc));
     }
 
     protected TreeSelectionListener createBrowserSelectionListener(JFileChooser fc) {
@@ -825,9 +866,9 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
      * as the preferred size recommended
      * by the file chooser's layout manager.
      *
-     * @param c  a <code>JFileChooser</code>
-     * @return   a <code>Dimension</code> specifying the preferred
-     *           width and height of the file chooser
+     * @param c a <code>JFileChooser</code>
+     * @return a <code>Dimension</code> specifying the preferred
+     * width and height of the file chooser
      */
     @Override
     public Dimension getPreferredSize(JComponent c) {
@@ -844,9 +885,9 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
     /**
      * Returns the minimum size of the <code>JFileChooser</code>.
      *
-     * @param c  a <code>JFileChooser</code>
-     * @return   a <code>Dimension</code> specifying the minimum
-     *           width and height of the file chooser
+     * @param c a <code>JFileChooser</code>
+     * @return a <code>Dimension</code> specifying the minimum
+     * width and height of the file chooser
      */
     @Override
     public Dimension getMinimumSize(JComponent c) {
@@ -856,9 +897,9 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
     /**
      * Returns the maximum size of the <code>JFileChooser</code>.
      *
-     * @param c  a <code>JFileChooser</code>
-     * @return   a <code>Dimension</code> specifying the maximum
-     *           width and height of the file chooser
+     * @param c a <code>JFileChooser</code>
+     * @return a <code>Dimension</code> specifying the maximum
+     * width and height of the file chooser
      */
     @Override
     public Dimension getMaximumSize(JComponent c) {
@@ -964,7 +1005,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         separatorPanel2.setVisible(isSave);
         separatorPanel1.setVisible(isSave);
         newFolderButton.setVisible(isSave);
-    //model.setResolveAliasesToFiles(! isSave);
+        //model.setResolveAliasesToFiles(! isSave);
     }
 
     private void doApproveButtonMnemonicChanged(PropertyChangeEvent e) {
@@ -1092,8 +1133,8 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value,
-                int index, boolean isSelected,
-                boolean cellHasFocus) {
+                                                      int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
 
 
             // String objects are used to denote delimiters.
@@ -1120,6 +1161,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
             return this;
         }
     }
+
     final static int space = 10;
 
     private static class IndentIcon implements Icon {
@@ -1229,8 +1271,8 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
 
         @Override
         public Component getListCellRendererComponent(JList list,
-                Object value, int index, boolean isSelected,
-                boolean cellHasFocus) {
+                                                      Object value, int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
 
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
@@ -1377,9 +1419,9 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
 
                 // Only react on double click if all selected files are
                 // acceptable
-                for (TreePath tp:browser.getSelectionPaths()) {
-                    FileSystemTreeModel.Node n =(FileSystemTreeModel.Node)tp.getLastPathComponent();
-                    if (! fc.accept(n.getFile())) {
+                for (TreePath tp : browser.getSelectionPaths()) {
+                    FileSystemTreeModel.Node n = (FileSystemTreeModel.Node) tp.getLastPathComponent();
+                    if (!fc.accept(n.getFile())) {
                         return;
                     }
                 }
@@ -1426,12 +1468,12 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
                 File f = new File(
                         ((FileSystemTreeModel.Node) selectedPaths[0].getLastPathComponent()).getResolvedFile().getParent(),
                         filename);
-                    selectedFiles = new File[]{f};
+                selectedFiles = new File[]{f};
             } else {
                 ArrayList<File> a = new ArrayList<File>();
                 for (int i = 0; i < selectedPaths.length; i++) {
                     File f = ((FileSystemTreeModel.Node) selectedPaths[i].getLastPathComponent()).getResolvedFile();
-                        a.add(f);
+                    a.add(f);
                 }
                 if (a.size() > 0) {
                     selectedFiles = a.toArray(new File[a.size()]);
@@ -1499,8 +1541,8 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
 
             // Setup Options
             optionPane.setOptions(new Object[]{
-                UIManager.getString("FileChooser.createFolderButtonText"),
-                UIManager.getString("FileChooser.cancelButtonText")
+                    UIManager.getString("FileChooser.createFolderButtonText"),
+                    UIManager.getString("FileChooser.cancelButtonText")
             });
             optionPane.setInitialValue(UIManager.getString("FileChooser.createFolderButtonText"));
 
@@ -1534,9 +1576,9 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
                 }
 
                 try {
-                    if (! newFolder.mkdir()) {
-                        if (! newFolder.isDirectory()) {
-                            throw new IOException("Couldn't create folder \""+newFolder.getName()+"\".");
+                    if (!newFolder.mkdir()) {
+                        if (!newFolder.isDirectory()) {
+                            throw new IOException("Couldn't create folder \"" + newFolder.getName() + "\".");
                         }
                     }
                     fc.rescanCurrentDirectory();

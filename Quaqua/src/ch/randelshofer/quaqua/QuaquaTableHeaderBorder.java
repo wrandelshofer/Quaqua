@@ -5,22 +5,29 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
-import java.awt.*;
+
+import javax.swing.border.Border;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 //import javax.swing.text.*;
-import javax.swing.border.*;
 
 /**
  * QuaquaTableHeaderBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaTableHeaderBorder implements BackgroundBorder {
 
-    /** Location of the border images. */
+    /**
+     * Location of the border images.
+     */
     private String imagesLocation;
     private Insets imageInsets;
-    /** Array with image bevel borders.
+    /**
+     * Array with image bevel borders.
      * This array is created lazily.
      **/
     private Border[] borders;
@@ -51,7 +58,9 @@ public class QuaquaTableHeaderBorder implements BackgroundBorder {
         }
     };
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaTableHeaderBorder(String imagesLocation, Insets imageInsets) {
         this.imagesLocation = imagesLocation;
         this.imageInsets = imageInsets;

@@ -4,15 +4,16 @@
  */
 package ch.randelshofer.quaqua.snowleopard;
 
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+
+import javax.swing.border.Border;
+import javax.swing.plaf.UIResource;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import javax.swing.border.*;
-import javax.swing.plaf.UIResource;
 
 /**
  * QuaquaSnowLeopardSideBarSelectionBorder.
@@ -22,7 +23,9 @@ import javax.swing.plaf.UIResource;
  */
 public class QuaquaSnowLeopardSideBarSelectionBorder implements Border, UIResource {
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaSnowLeopardSideBarSelectionBorder() {
     }
 
@@ -35,7 +38,7 @@ public class QuaquaSnowLeopardSideBarSelectionBorder implements Border, UIResour
             g.setPaint(new LinearGradientPaint(
                     x, y + 1, new Color(0x6ea6d6),
                     x, y + height - 1, new Color(0x216cb7)
-                    ));
+            ));
         } else {
             if (QuaquaUtilities.isOnActiveWindow(c, true)) {
                 // top line: 0xa2b1cb
@@ -44,7 +47,7 @@ public class QuaquaSnowLeopardSideBarSelectionBorder implements Border, UIResour
                 g.setPaint(new LinearGradientPaint(
                         x, y + 1, new Color(0xb1bfd8),
                         x, y + height - 1, new Color(0x8296b8)
-                        ));
+                ));
 
             } else {
                 // top line: 0xa8a8a8

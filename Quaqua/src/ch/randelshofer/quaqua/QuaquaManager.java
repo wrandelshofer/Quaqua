@@ -86,7 +86,6 @@ import java.util.StringTokenizer;
  * UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
  * </pre>
  *
- *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -118,6 +117,7 @@ public class QuaquaManager {
         }
         version = (v == null) ? "unknown" : v;
     }
+
     /**
      * Mac OS X 10.0 Cheetah.
      */
@@ -233,64 +233,64 @@ public class QuaquaManager {
                 osVersion = osVersion.substring(0, p);
             }
             switch (osVersion) {
-            case"10.0":
+            case "10.0":
                 OS = CHEETAH;
                 break;
-             case "10.1":
+            case "10.1":
                 OS = PUMA;
-                 break;
-             case "10.2":
+                break;
+            case "10.2":
                 OS = JAGUAR;
-                 break;
-             case "10.3":
+                break;
+            case "10.3":
                 OS = PANTHER;
-                 break;
-             case "10.4":
+                break;
+            case "10.4":
                 OS = TIGER;
-                 break;
-             case "10.5":
+                break;
+            case "10.5":
                 OS = LEOPARD;
-                 break;
-             case "10.6":
+                break;
+            case "10.6":
                 OS = SNOW_LEOPARD;
-                 break;
-             case "10.7":
+                break;
+            case "10.7":
                 OS = LION;
-                 break;
-             case "10.8":
-            	OS = MOUNTAIN_LION;
-                 break;
-             case "10.9":
-            	OS = MAVERICKS;
-                 break;
-             case "10.10":
-            	OS = YOSEMITE;
-                 break;
-             case "10.11":
-            	OS = EL_CAPITAN;
-                 break;
-             case "10.12":
+                break;
+            case "10.8":
+                OS = MOUNTAIN_LION;
+                break;
+            case "10.9":
+                OS = MAVERICKS;
+                break;
+            case "10.10":
+                OS = YOSEMITE;
+                break;
+            case "10.11":
+                OS = EL_CAPITAN;
+                break;
+            case "10.12":
                 OS = SIERRA;
-                 break;
-             case "10.13":
+                break;
+            case "10.13":
                 OS = HIGH_SIERRA;
-                 break;
-             case "10.14":
+                break;
+            case "10.14":
                 OS = MOJAVE;
-                 break;
-             case "10.15":
+                break;
+            case "10.15":
                 OS = CATALINA;
                 break;
             default:
                 if (osVersion.startsWith("10.")) {
                     OS = X;
-                }else{
-                        // Note: We must fall back to Snow Leopard here, because this
-                        //       is the last OS X version for which we provide our own artwork.
-                        //       For later OS X versions, we retrieve the artwork from
-                        //       the system using native API's.
-                        OS = SNOW_LEOPARD;
-                    }
+                } else {
+                    // Note: We must fall back to Snow Leopard here, because this
+                    //       is the last OS X version for which we provide our own artwork.
+                    //       For later OS X versions, we retrieve the artwork from
+                    //       the system using native API's.
+                    OS = SNOW_LEOPARD;
+                }
             }
         } else if (osName.startsWith("Darwin")) {
             OS = DARWIN;
@@ -404,9 +404,10 @@ public class QuaquaManager {
             break;
         }
     }
+
     /**
      * Map of Quaqua Look and Feels.
-     *
+     * <p>
      * key<String> lafKey.
      * value<String> Look and Feel class name.
      */
@@ -416,7 +417,7 @@ public class QuaquaManager {
      * Updates the map of available Quaqua Look and Feels.
      * The list may vary depending on the deployment chosen for the Quaqua Look
      * and Feel.
-     *
+     * <p>
      * The list of look and feels is contained in a file named "laf.txt" in the
      * package "ch.randelshofer.quaqua".
      * The file contains a semicolon separated mapping according to the following
@@ -424,7 +425,6 @@ public class QuaquaManager {
      * <pre>
      * mapping ::= {design}"."{version}"="{class}";"
      * </pre>
-     *
      */
     private static void updateAvailableLAFs() {
         lafs = new HashMap();
@@ -551,70 +551,70 @@ public class QuaquaManager {
         if (className.equals("apple.laf.AquaLookAndFeel")) {
             if (javaVersion.startsWith("1.5")) {
                 switch (design) {
-                    case JAGUAR:
-                        lafKey = "Jaguar.15";
-                        break;
-                    case PANTHER:
-                        lafKey = "Panther.15";
-                        break;
-                    case TIGER:
-                        lafKey = "Tiger.15";
-                        break;
-                    case LEOPARD:
-                        lafKey = "Leopard.15";
-                        break;
-                    case SNOW_LEOPARD:
-                        lafKey = "SnowLeopard.16";
-                        break;
-                    case LION:
-                        lafKey = "Lion.16";
-                        break;
-                    case MOUNTAIN_LION:
-                    	lafKey = "MountainLion.16";
-                    	break;
-                    case MAVERICKS:
-                    	lafKey = "Mavericks.16";
-                    	break;
-                    case YOSEMITE:
-                    	lafKey = "Yosemite.16";
-                    	break;
-                    case EL_CAPITAN:
-                        lafKey = "ElCapitan.16";
-                        break;
-                    case SIERRA:
-                        lafKey = "Sierra.16";
-                        break;
-                    case CATALINA:
-                    	lafKey = "Catalina.16";
-                    	break;
-                    case X:
-                    default:
-                        lafKey = "SnowLeopard.16";
-                        break;
+                case JAGUAR:
+                    lafKey = "Jaguar.15";
+                    break;
+                case PANTHER:
+                    lafKey = "Panther.15";
+                    break;
+                case TIGER:
+                    lafKey = "Tiger.15";
+                    break;
+                case LEOPARD:
+                    lafKey = "Leopard.15";
+                    break;
+                case SNOW_LEOPARD:
+                    lafKey = "SnowLeopard.16";
+                    break;
+                case LION:
+                    lafKey = "Lion.16";
+                    break;
+                case MOUNTAIN_LION:
+                    lafKey = "MountainLion.16";
+                    break;
+                case MAVERICKS:
+                    lafKey = "Mavericks.16";
+                    break;
+                case YOSEMITE:
+                    lafKey = "Yosemite.16";
+                    break;
+                case EL_CAPITAN:
+                    lafKey = "ElCapitan.16";
+                    break;
+                case SIERRA:
+                    lafKey = "Sierra.16";
+                    break;
+                case CATALINA:
+                    lafKey = "Catalina.16";
+                    break;
+                case X:
+                default:
+                    lafKey = "SnowLeopard.16";
+                    break;
                 }
             } else {
                 switch (design) {
-                    case JAGUAR:
-                        lafKey = "Jaguar.16";
-                        break;
-                    case PANTHER:
-                        lafKey = "Panther.16";
-                        break;
-                    case TIGER:
-                        lafKey = "Tiger.16";
-                        break;
-                    case LEOPARD:
-                        lafKey = "Leopard.16";
-                        break;
-                    case SNOW_LEOPARD:
-                        lafKey = "SnowLeopard.16";
-                        break;
-                    case LION:
-                        lafKey = "Lion.16";
-                        break;
-                    case MOUNTAIN_LION:
-                    	lafKey = "MountainLion.16";
-                    	break;
+                case JAGUAR:
+                    lafKey = "Jaguar.16";
+                    break;
+                case PANTHER:
+                    lafKey = "Panther.16";
+                    break;
+                case TIGER:
+                    lafKey = "Tiger.16";
+                    break;
+                case LEOPARD:
+                    lafKey = "Leopard.16";
+                    break;
+                case SNOW_LEOPARD:
+                    lafKey = "SnowLeopard.16";
+                    break;
+                case LION:
+                    lafKey = "Lion.16";
+                    break;
+                case MOUNTAIN_LION:
+                    lafKey = "MountainLion.16";
+                    break;
                 case MAVERICKS:
                     lafKey = "Mavericks.16";
                     break;
@@ -641,24 +641,24 @@ public class QuaquaManager {
         } else {
             lafKey = "CrossPlatform.15";
             switch (design) {
-                case JAGUAR:
-                    lafKey = "CrossTiger.15";
-                    break;
-                case PANTHER:
-                    lafKey = "CrossTiger.15";
-                    break;
-                case TIGER:
-                    lafKey = "CrossTiger.15";
-                    break;
-                case LEOPARD:
-                    lafKey = "CrossLeopard.15";
-                    break;
-                case SNOW_LEOPARD:
-                    lafKey = "CrossSnowLeopard.15";
-                    break;
-                default:
-                    lafKey = "CrossSnowLeopard.15";
-                    break;
+            case JAGUAR:
+                lafKey = "CrossTiger.15";
+                break;
+            case PANTHER:
+                lafKey = "CrossTiger.15";
+                break;
+            case TIGER:
+                lafKey = "CrossTiger.15";
+                break;
+            case LEOPARD:
+                lafKey = "CrossLeopard.15";
+                break;
+            case SNOW_LEOPARD:
+                lafKey = "CrossSnowLeopard.15";
+                break;
+            default:
+                lafKey = "CrossSnowLeopard.15";
+                break;
             }
         }
 
@@ -828,12 +828,12 @@ public class QuaquaManager {
                     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     JLabel label = new JLabel(
                             "<html>"
-                            + "<p align=center><b>Quaqua Look and Feel " + version + "</b><br><br>"
-                            + "Copyright 2003-2013 Werner Randelshofer<br>"
-                            + "All Rights Reserved.<br>"
-                            + "<br>"
-                            + "This is a software library.<br>"
-                            + "Please read the accompanying documentation<br>for additional information.");
+                                    + "<p align=center><b>Quaqua Look and Feel " + version + "</b><br><br>"
+                                    + "Copyright 2003-2013 Werner Randelshofer<br>"
+                                    + "All Rights Reserved.<br>"
+                                    + "<br>"
+                                    + "This is a software library.<br>"
+                                    + "Please read the accompanying documentation<br>for additional information.");
                     label.setBorder(new EmptyBorder(12, 20, 20, 20));
                     f.getContentPane().add(label);
                     f.pack();
@@ -865,7 +865,7 @@ public class QuaquaManager {
      * </pre>
      *
      * @param includes Set&lt;String&gt; Only include UI delegates, which are in this
-     * list. Specify null to include all UIs.
+     *                 list. Specify null to include all UIs.
      */
     public static void setIncludedUIs(Set includes) {
         includedUIs = includes;
@@ -884,7 +884,7 @@ public class QuaquaManager {
      * </pre>
      *
      * @param excludes Set&lt;String&gt; Exclude UI delegates, which are in this list.
-     * Specify null to exclude all UIs.
+     *                 Specify null to exclude all UIs.
      */
     public static void setExcludedUIs(Set excludes) {
         excludedUIs = excludes;

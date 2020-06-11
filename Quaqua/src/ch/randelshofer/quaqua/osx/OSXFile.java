@@ -59,20 +59,20 @@ public class OSXFile {
     private static boolean computerModelInitialized;
     private static Icon computerSidebarIcon;
 
-    private static final int kLSItemInfoIsPlainFile        = 0x00000001; /* Not a directory, volume, or symlink*/
-    private static final int kLSItemInfoIsPackage          = 0x00000002; /* Packaged directory*/
-    private static final int kLSItemInfoIsApplication      = 0x00000004; /* Single-file or packaged application*/
-    private static final int kLSItemInfoIsContainer        = 0x00000008; /* Directory (includes packages) or volume*/
-    private static final int kLSItemInfoIsAliasFile        = 0x00000010; /* Alias file (includes sym links)*/
-    private static final int kLSItemInfoIsSymlink          = 0x00000020; /* UNIX sym link*/
-    private static final int kLSItemInfoIsInvisible        = 0x00000040; /* Invisible by any known mechanism*/
-    private static final int kLSItemInfoIsNativeApp        = 0x00000080; /* Carbon or Cocoa native app*/
-    private static final int kLSItemInfoIsClassicApp       = 0x00000100; /* CFM/68K Classic app*/
-    private static final int kLSItemInfoAppPrefersNative   = 0x00000200; /* Carbon app that prefers to be launched natively*/
-    private static final int kLSItemInfoAppPrefersClassic  = 0x00000400; /* Carbon app that prefers to be launched in Classic*/
-    private static final int kLSItemInfoAppIsScriptable    = 0x00000800; /* App can be scripted*/
-    private static final int kLSItemInfoIsVolume           = 0x00001000; /* Item is a volume*/
-    private static final int kLSItemInfoExtensionIsHidden  = 0x00100000; /* Item has a hidden extension*/
+    private static final int kLSItemInfoIsPlainFile = 0x00000001; /* Not a directory, volume, or symlink*/
+    private static final int kLSItemInfoIsPackage = 0x00000002; /* Packaged directory*/
+    private static final int kLSItemInfoIsApplication = 0x00000004; /* Single-file or packaged application*/
+    private static final int kLSItemInfoIsContainer = 0x00000008; /* Directory (includes packages) or volume*/
+    private static final int kLSItemInfoIsAliasFile = 0x00000010; /* Alias file (includes sym links)*/
+    private static final int kLSItemInfoIsSymlink = 0x00000020; /* UNIX sym link*/
+    private static final int kLSItemInfoIsInvisible = 0x00000040; /* Invisible by any known mechanism*/
+    private static final int kLSItemInfoIsNativeApp = 0x00000080; /* Carbon or Cocoa native app*/
+    private static final int kLSItemInfoIsClassicApp = 0x00000100; /* CFM/68K Classic app*/
+    private static final int kLSItemInfoAppPrefersNative = 0x00000200; /* Carbon app that prefers to be launched natively*/
+    private static final int kLSItemInfoAppPrefersClassic = 0x00000400; /* Carbon app that prefers to be launched in Classic*/
+    private static final int kLSItemInfoAppIsScriptable = 0x00000800; /* App can be scripted*/
+    private static final int kLSItemInfoIsVolume = 0x00001000; /* Item is a volume*/
+    private static final int kLSItemInfoExtensionIsHidden = 0x00100000; /* Item has a hidden extension*/
 
     /**
      * Returns true if native code is available.
@@ -147,7 +147,9 @@ public class OSXFile {
 
     }
 
-    /** Prevent instance creation. */
+    /**
+     * Prevent instance creation.
+     */
     private OSXFile() {
     }
 
@@ -298,7 +300,7 @@ public class OSXFile {
     /**
      * Resolve a file by converting all valid aliases in the path.
      *
-     * @param f The file to be resolved.
+     * @param f    The file to be resolved.
      * @param noUI Set this to true, if the alias should be resolved without user interaction.
      * @return Returns the resolved File object.
      */
@@ -332,10 +334,11 @@ public class OSXFile {
 
     /**
      * Resolves a serialized Alias to a File object.
+     *
+     * @param noUI Set this to true, if the alias should
+     *             be resolved without user interaction.
      * @return A File or null, if the serialized Alias could not be
      * resolved.
-     * @param noUI Set this to true, if the alias should
-     * be resolved without user interaction.
      */
     public static File resolveAlias(byte[] serializedAlias, boolean noUI) {
         if (isNativeCodeAvailable()) {
@@ -379,16 +382,17 @@ public class OSXFile {
 
         }
     }
+
     /**
      * Returns the tag names of the specified file.
      * R
      */
     public static String[] getTagNames(File f) {
-        String[] result=null;
+        String[] result = null;
         if (isNativeCodeAvailable() && f != null) {
-            result=nativeGetTagNames(f.getAbsolutePath());
+            result = nativeGetTagNames(f.getAbsolutePath());
         }
-        return result==null?new String[0]:result;
+        return result == null ? new String[0] : result;
     }
 
     /**
@@ -396,7 +400,7 @@ public class OSXFile {
      * does not have a color.
      *
      * @param label value from 0 through 7
-     * @param type 0=dark enabled,1=bright enabled,2=dark disabled,3=bright enabled
+     * @param type  0=dark enabled,1=bright enabled,2=dark disabled,3=bright enabled
      */
     public static Color getLabelColor(int label, int type) {
         if (labelColors == null) {
@@ -409,29 +413,29 @@ public class OSXFile {
                     // Colors for Mac OS X 10.3 Panther, 10.4 Tiger, and 10.5 Leopard.
                     if (QuaquaManager.getDesign() <= QuaquaManager.LEOPARD) {
                         labelColors = new Color[][]{
-                                    // dark, bright, dark disabled, bright disabled
-                                    {null, null, null, null}, // no label
-                                    {new Color(0xb5b5b5), new Color(0xd7d7d7), new Color(0xe9e9e9), new Color(0xf3f3f3)}, // gray
-                                    {new Color(0xbddc5a), new Color(0xdcedaa), new Color(0xecf5ce), new Color(0xf5fae6)}, // green
-                                    {new Color(0xcb9dde), new Color(0xe3cbee), new Color(0xf0e2f6), new Color(0xf7f0fa)}, // purple
-                                    {new Color(0x66b1ff), new Color(0xb6daff), new Color(0xd1e8ff), new Color(0xe9f4ff)}, // blue
-                                    {new Color(0xf2df5a), new Color(0xfbf4aa), new Color(0xfcf6ce), new Color(0xfefce6)}, // yellow
-                                    {new Color(0xff756c), new Color(0xffb2ac), new Color(0xffd6d3), new Color(0xffe8e6)}, // red
-                                    {new Color(0xfab555), new Color(0xfcd6a2), new Color(0xfee9cc), new Color(0xfff3e3)} // orange
-                                };
+                                // dark, bright, dark disabled, bright disabled
+                                {null, null, null, null}, // no label
+                                {new Color(0xb5b5b5), new Color(0xd7d7d7), new Color(0xe9e9e9), new Color(0xf3f3f3)}, // gray
+                                {new Color(0xbddc5a), new Color(0xdcedaa), new Color(0xecf5ce), new Color(0xf5fae6)}, // green
+                                {new Color(0xcb9dde), new Color(0xe3cbee), new Color(0xf0e2f6), new Color(0xf7f0fa)}, // purple
+                                {new Color(0x66b1ff), new Color(0xb6daff), new Color(0xd1e8ff), new Color(0xe9f4ff)}, // blue
+                                {new Color(0xf2df5a), new Color(0xfbf4aa), new Color(0xfcf6ce), new Color(0xfefce6)}, // yellow
+                                {new Color(0xff756c), new Color(0xffb2ac), new Color(0xffd6d3), new Color(0xffe8e6)}, // red
+                                {new Color(0xfab555), new Color(0xfcd6a2), new Color(0xfee9cc), new Color(0xfff3e3)} // orange
+                        };
                     } else {
                         // Colors for Mac OS X 10.6 Snow Leopard.
                         labelColors = new Color[][]{
-                                    // dark, bright, dark disabled, bright disabled
-                                    {null, null, null, null}, // no label
-                                    {new Color(0xb7b7b7), new Color(0xd8d8d8), new Color(0xe9e9e9), new Color(0xf3f3f3)}, // gray
-                                    {new Color(0xc1d95e), new Color(0xdeebac), new Color(0xecf5ce), new Color(0xf5fae6)}, // green
-                                    {new Color(0xcba3df), new Color(0xe7cdee), new Color(0xf0e2f6), new Color(0xf7f0fa)}, // purple
-                                    {new Color(0x6db5fd), new Color(0xb8dbfe), new Color(0xd1e8ff), new Color(0xe9f4ff)}, // blue
-                                    {new Color(0xf2dd60), new Color(0xfbf2ac), new Color(0xfcf6ce), new Color(0xfefce6)}, // yellow
-                                    {new Color(0xfb7a70), new Color(0xfcb4ad), new Color(0xffd6d3), new Color(0xffe8e6)}, // red
-                                    {new Color(0xf7b65b), new Color(0xfbd6a4), new Color(0xfee9cc), new Color(0xfff3e3)} // orange
-                                };
+                                // dark, bright, dark disabled, bright disabled
+                                {null, null, null, null}, // no label
+                                {new Color(0xb7b7b7), new Color(0xd8d8d8), new Color(0xe9e9e9), new Color(0xf3f3f3)}, // gray
+                                {new Color(0xc1d95e), new Color(0xdeebac), new Color(0xecf5ce), new Color(0xf5fae6)}, // green
+                                {new Color(0xcba3df), new Color(0xe7cdee), new Color(0xf0e2f6), new Color(0xf7f0fa)}, // purple
+                                {new Color(0x6db5fd), new Color(0xb8dbfe), new Color(0xd1e8ff), new Color(0xe9f4ff)}, // blue
+                                {new Color(0xf2dd60), new Color(0xfbf2ac), new Color(0xfcf6ce), new Color(0xfefce6)}, // yellow
+                                {new Color(0xfb7a70), new Color(0xfcb4ad), new Color(0xffd6d3), new Color(0xffe8e6)}, // red
+                                {new Color(0xf7b65b), new Color(0xfbd6a4), new Color(0xfee9cc), new Color(0xfff3e3)} // orange
+                        };
                     }
                 }
             }
@@ -482,7 +486,6 @@ public class OSXFile {
                 byte[] tiffData = nativeGetIconImage(file.getAbsolutePath(), size);
 
 
-
                 if (tiffData == null) {
                     return null;
                 }
@@ -517,7 +520,6 @@ public class OSXFile {
                 return image;
 
 
-
             } catch (IOException ex) {
                 System.err.println("Image decoder failed: " + ex.getMessage());
                 return null;
@@ -543,7 +545,6 @@ public class OSXFile {
         if (isNativeCodeAvailable() && file != null) {
             try {
                 byte[] tiffData = nativeGetQuickLookThumbnailImage(file.getAbsolutePath(), size);
-
 
 
                 if (tiffData == null) {
@@ -594,13 +595,13 @@ public class OSXFile {
      * If the file does not exist, a generic icon is returned.
      */
     public static Icon getIcon(File file, int size) {
-        Image img=getIconImage(file, size);
+        Image img = getIconImage(file, size);
 
         if (img == null) {
             System.err.println("Unable to get system icon for " + file);
         }
 
-        return (img==null)?UIManager.getIcon("FileView.fileIcon"):new ImageIcon(img);
+        return (img == null) ? UIManager.getIcon("FileView.fileIcon") : new ImageIcon(img);
     }
 
     /**
@@ -693,7 +694,7 @@ public class OSXFile {
                       Special case: the program wants to see volumes as directories.
                     */
 
-                    return true;
+                return true;
 
             } else {
                 return false;
@@ -707,7 +708,7 @@ public class OSXFile {
         return s != null && s.equals("/Volumes");
     }
 
-    private static String[] nonTraversableDirectories = { ".Spotlight-V100", ".DocumentRevisions", ".Trashes" };
+    private static String[] nonTraversableDirectories = {".Spotlight-V100", ".DocumentRevisions", ".Trashes"};
 
     private static boolean basicIsTraversable(File f) {
         String name = f.getName();
@@ -722,7 +723,7 @@ public class OSXFile {
             return true;
 
         } else if (isSavedSearch(f)) {
-           return true;
+            return true;
         }
 
         return false;
@@ -785,12 +786,12 @@ public class OSXFile {
     private static String getComputerModel() {
         if (!computerModelInitialized) {
             computerModelInitialized = true;
-            String[] cmd = { "/usr/sbin/sysctl", "hw.model" };
+            String[] cmd = {"/usr/sbin/sysctl", "hw.model"};
             Charset cs = Charset.forName("UTF-8");
             String result = QuaquaUtilities.exec(cmd, cs);
             if (result != null) {
                 int pos = result.indexOf(":");
-                computerModel = result.substring(pos+1).trim();
+                computerModel = result.substring(pos + 1).trim();
             }
         }
         return computerModel;
@@ -806,8 +807,8 @@ public class OSXFile {
      * Returns the same path if the provided path is not an alias.
      *
      * @param aliasPath the path to the alias to be resolved.
-     * @param noUI Set this to true, if the alias should
-     * be resolved without user interaction.
+     * @param noUI      Set this to true, if the alias should
+     *                  be resolved without user interaction.
      * @return Returns the resolved path. Returns null, if the resolution failed.
      */
     private static native String nativeResolveAlias(String aliasPath, boolean noUI);
@@ -817,8 +818,8 @@ public class OSXFile {
      * Returns null if the resolution failed.
      *
      * @param serializedAlias the alias to be resolved.
-     * @param noUI Set this to true, if the alias should
-     * be resolved without user interaction.
+     * @param noUI            Set this to true, if the alias should
+     *                        be resolved without user interaction.
      * @return Returns the resolved path.
      */
     private static native String nativeResolveAlias(byte[] serializedAlias, boolean noUI);
@@ -899,7 +900,7 @@ public class OSXFile {
      *  kLSItemInfoExtensionIsHidden = 0x00100000
      *  };
      * </pre>
-     *
+     * <p>
      * For more information see
      * http://developer.apple.com/documentation/Carbon/Reference/LaunchServicesReference/Reference/reference.html#//apple_ref/c/tdef/LSItemInfoFlags
      *
@@ -916,7 +917,7 @@ public class OSXFile {
     public static String getComputerName() {
         if (!haveFetchedComputerName) {
             haveFetchedComputerName = true;
-            String[] cmd = { "/usr/sbin/scutil", "--get", "ComputerName" };
+            String[] cmd = {"/usr/sbin/scutil", "--get", "ComputerName"};
             Charset cs = Charset.forName("UTF-8");
             computerName = QuaquaUtilities.exec(cmd, cs).trim();
         }
@@ -994,6 +995,7 @@ public class OSXFile {
      * Returns the version of the native code library. If the version
      * does not match with the version that we expect, we can not use
      * it.
+     *
      * @return The version number of the native code.
      */
     private static native int nativeGetNativeCodeVersion();

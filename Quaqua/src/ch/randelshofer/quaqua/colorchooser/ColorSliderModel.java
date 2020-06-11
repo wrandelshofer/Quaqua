@@ -5,11 +5,15 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.Color;
 import java.io.Serializable;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 /**
  * Abstract super class for ColorModels which can be used in conjunction with
  * ColorSliderUI user interface delegates.
@@ -18,7 +22,7 @@ import java.util.*;
  * BoundedRangeModel's. Each BoundedRangeModel can be visualized using a JSlider
  * having a ColorSliderUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public abstract class ColorSliderModel implements Serializable {
@@ -51,15 +55,15 @@ public abstract class ColorSliderModel implements Serializable {
         this.components = components;
         values = new int[components.length];
 
-        for (int i=0; i < components.length; i++) {
+        for (int i = 0; i < components.length; i++) {
             final int componentIndex = i;
             components[i].addChangeListener(
-            new ChangeListener() {
-                public void stateChanged(ChangeEvent e) {
-                    fireColorChanged(componentIndex);
-                    fireStateChanged();
-                }
-            });
+                    new ChangeListener() {
+                        public void stateChanged(ChangeEvent e) {
+                            fireColorChanged(componentIndex);
+                            fireStateChanged();
+                        }
+                    });
         }
     }
 
@@ -71,9 +75,9 @@ public abstract class ColorSliderModel implements Serializable {
     public void configureColorSlider(int component, JSlider slider) {
         if (slider.getClientProperty("ColorSliderModel") != null) {
             ((ColorSliderModel) slider.getClientProperty("ColorSliderModel"))
-            .unconfigureColorSlider(slider);
+                    .unconfigureColorSlider(slider);
         }
-        if ( ! (slider.getUI() instanceof ColorSliderUI)) {
+        if (!(slider.getUI() instanceof ColorSliderUI)) {
             slider.setUI(new ColorSliderUI(slider));
         }
         slider.setModel(getBoundedRangeModel(component));
@@ -102,18 +106,21 @@ public abstract class ColorSliderModel implements Serializable {
     public int getComponentCount() {
         return components.length;
     }
+
     /**
      * Returns the bounded range model of the specified color component.
      */
     public DefaultBoundedRangeModel getBoundedRangeModel(int component) {
         return components[component];
     }
+
     /**
      * Returns the value of the specified color component.
      */
     public int getValue(int component) {
         return components[component].getValue();
     }
+
     /**
      * Sets the value of the specified color component.
      */
@@ -128,7 +135,7 @@ public abstract class ColorSliderModel implements Serializable {
      * and the maximum of its BoundedRangeModel is used.
      */
     public int getInterpolatedRGB(int component, float ratio) {
-        for (int i=0, n = getComponentCount(); i < n; i++) {
+        for (int i = 0, n = getComponentCount(); i < n; i++) {
             values[i] = components[i].getValue();
         }
         values[component] = (int) (ratio * components[component].getMaximum());
@@ -138,12 +145,15 @@ public abstract class ColorSliderModel implements Serializable {
     protected void addColorSlider(JSlider slider) {
         sliders.add(slider);
     }
+
     protected void removeColorSlider(JSlider slider) {
         sliders.remove(slider);
     }
+
     public void addChangeListener(ChangeListener l) {
         listeners.add(l);
     }
+
     public void removeChangeListener(ChangeListener l) {
         listeners.remove(l);
     }
@@ -158,9 +168,10 @@ public abstract class ColorSliderModel implements Serializable {
             slider.putClientProperty("ColorComponentValue", value);
         }
     }
+
     public void fireStateChanged() {
         ChangeEvent event = new ChangeEvent(this);
-        for (Iterator i=listeners.iterator(); i.hasNext(); ) {
+        for (Iterator i = listeners.iterator(); i.hasNext(); ) {
             ChangeListener l = (ChangeListener) i.next();
             l.stateChanged(event);
         }
@@ -178,6 +189,8 @@ public abstract class ColorSliderModel implements Serializable {
     }
 
     public abstract void setRGB(int rgb);
+
     public abstract int getRGB();
+
     public abstract int toRGB(int[] values);
 }

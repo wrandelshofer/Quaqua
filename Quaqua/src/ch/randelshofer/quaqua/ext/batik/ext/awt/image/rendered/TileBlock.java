@@ -19,8 +19,8 @@
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered;
 
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is responsible for breaking up a block of tiles into
@@ -34,19 +34,20 @@ public class TileBlock {
 
     int occX, occY, occW, occH;
     int xOff, yOff, w, h, benefit;
-    boolean [] occupied;
+    boolean[] occupied;
 
     /**
      * Construct a tile block this represents a block of contigous
      * tiles.
-     * @param xOff The x index of left edge of the tile block.
-     * @param yOff The y index of top edge of the tile block.
-     * @param w    The number of tiles across in the block
-     * @param h    The number of tiles down  the block
+     *
+     * @param xOff     The x index of left edge of the tile block.
+     * @param yOff     The y index of top edge of the tile block.
+     * @param w        The number of tiles across in the block
+     * @param h        The number of tiles down  the block
      * @param occupied Which entries in the block are already
      *                 computed.
      */
-    TileBlock(int occX, int occY, int occW, int occH, boolean [] occupied,
+    TileBlock(int occX, int occY, int occW, int occH, boolean[] occupied,
               int xOff, int yOff, int w, int h) {
         this.occX = occX;
         this.occY = occY;
@@ -54,17 +55,20 @@ public class TileBlock {
         this.occH = occH;
         this.xOff = xOff;
         this.yOff = yOff;
-        this.w    = w   ;
-        this.h    = h   ;
+        this.w = w;
+        this.h = h;
         this.occupied = occupied;
 
         // System.out.println("Block: [" +
         //                    xloc + "," + yloc + ","  +
         //                    w + "," + h + "]");
-        for (int y=0; y<h; y++)
-            for (int x=0; x<w; x++)
-                if (!occupied[x+xOff+occW*(y+yOff)])
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                if (!occupied[x + xOff + occW * (y + yOff)]) {
                     benefit++;
+                }
+            }
+        }
     }
 
     /**
@@ -74,30 +78,33 @@ public class TileBlock {
      */
     public String toString() {
         String ret = "";
-        for (int y=0; y<occH; y++) {
-            for (int x=0; x<occW+1; x++) {
-                if ((x==xOff) || (x==xOff+w)) {
-                    if ((y==yOff) || (y==yOff+h-1))
+        for (int y = 0; y < occH; y++) {
+            for (int x = 0; x < occW + 1; x++) {
+                if ((x == xOff) || (x == xOff + w)) {
+                    if ((y == yOff) || (y == yOff + h - 1)) {
                         ret += "+";
-                    else  if ((y>yOff) && (y<yOff+h-1))
+                    } else if ((y > yOff) && (y < yOff + h - 1)) {
                         ret += "|";
-                    else
+                    } else {
                         ret += " ";
-                }
-                else if ((y==yOff)     && (x> xOff) && (x < xOff+w))
+                    }
+                } else if ((y == yOff) && (x > xOff) && (x < xOff + w)) {
                     ret += "-";
-                else if ((y==yOff+h-1) && (x> xOff) && (x < xOff+w))
+                } else if ((y == yOff + h - 1) && (x > xOff) && (x < xOff + w)) {
                     ret += "_";
-                else
+                } else {
                     ret += " ";
+                }
 
-                if (x== occW)
+                if (x == occW) {
                     continue;
+                }
 
-                if (occupied[x+y*occW])
+                if (occupied[x + y * occW]) {
                     ret += "*";
-                else
+                } else {
                     ret += ".";
+                }
             }
             ret += "\n";
         }
@@ -107,41 +114,54 @@ public class TileBlock {
     /**
      * Return the x location of this block of tiles
      */
-    int getXLoc()    { return occX+xOff; }
+    int getXLoc() {
+        return occX + xOff;
+    }
 
     /**
      * Return the y location of this block of tiles
      */
-    int getYLoc()    { return occY+yOff; }
+    int getYLoc() {
+        return occY + yOff;
+    }
 
     /**
      * Return the width of this block of tiles
      */
-    int getWidth()   { return w; }
+    int getWidth() {
+        return w;
+    }
 
     /**
      * Return the height of this block of tiles
      */
-    int getHeight()  { return h; }
+    int getHeight() {
+        return h;
+    }
 
     /**
      * Return the number of new tiles computed.
      */
-    int getBenefit() { return benefit; }
+    int getBenefit() {
+        return benefit;
+    }
 
     /**
      * Return the approximate amount of work required to compute
      * those tiles.
      */
-    int getWork()    { return w*h+1; }
+    int getWork() {
+        return w * h + 1;
+    }
 
     /**
      * Returns the total amount of work for the array of tile blocks
      */
-    static int getWork(TileBlock [] blocks) {
-        int ret=0;
-        for (int i=0; i<blocks.length; i++)
+    static int getWork(TileBlock[] blocks) {
+        int ret = 0;
+        for (int i = 0; i < blocks.length; i++) {
             ret += blocks[i].getWork();
+        }
         return ret;
     }
 
@@ -150,59 +170,68 @@ public class TileBlock {
      * tries to minimize the work to benefit ratio, for the set of
      * blocks defined by this block.
      */
-    TileBlock [] getBestSplit() {
-        if (simplify())
+    TileBlock[] getBestSplit() {
+        if (simplify()) {
             return null;
+        }
 
         // Optimal split already...
-        if (benefit == w*h)
-            return new TileBlock [] { this };
+        if (benefit == w * h) {
+            return new TileBlock[]{this};
+        }
 
         return splitOneGo();
     }
 
-    public TileBlock [] splitOneGo() {
-        boolean [] filled = (boolean [])occupied.clone();
+    public TileBlock[] splitOneGo() {
+        boolean[] filled = (boolean[]) occupied.clone();
         List items = new ArrayList();
-        for (int y=yOff; y<yOff+h; y++)
-            for (int x=xOff; x<xOff+w; x++) {
-                if (!filled[x+y*occW]) {
+        for (int y = yOff; y < yOff + h; y++) {
+            for (int x = xOff; x < xOff + w; x++) {
+                if (!filled[x + y * occW]) {
                     // We have an unfilled tile slot, so first we
                     // figure out how long the slot is in this row.
-                    int cw = xOff+w-x;
-                    for (int cx=x; cx<x+cw; cx++)
-                        if (filled[cx+y*occW])
-                            cw = cx-x;
-                        else
-                            filled[cx+y*occW] = true;  // fill as we go..
+                    int cw = xOff + w - x;
+                    for (int cx = x; cx < x + cw; cx++) {
+                        if (filled[cx + y * occW]) {
+                            cw = cx - x;
+                        } else {
+                            filled[cx + y * occW] = true;  // fill as we go..
+                        }
+                    }
 
                     // Then we check the next rows until we hit
                     // a row that doesn't have this slot all free.
                     // at which point we stop...
-                    int ch=1;
-                    for (int cy=y+1; cy<yOff+h; cy++) {
-                        int cx=x;
-                        for (; cx<x+cw; cx++)
-                            if (filled[cx+cy*occW])
+                    int ch = 1;
+                    for (int cy = y + 1; cy < yOff + h; cy++) {
+                        int cx = x;
+                        for (; cx < x + cw; cx++) {
+                            if (filled[cx + cy * occW]) {
                                 break;
+                            }
+                        }
 
                         // Partial row so bail (we'll get it later..)
-                        if (cx != x+cw)
+                        if (cx != x + cw) {
                             break;
+                        }
 
                         // Fill in the slot since we will use it...
-                        for (cx=x; cx<x+cw; cx++)
-                            filled[cx+cy*occW] = true;
+                        for (cx = x; cx < x + cw; cx++) {
+                            filled[cx + cy * occW] = true;
+                        }
                         ch++;
                     }
                     items.add(new TileBlock(occX, occY, occW, occH,
-                                            occupied, x, y, cw, ch));
-                    x+=(cw-1);
+                            occupied, x, y, cw, ch));
+                    x += (cw - 1);
                 }
             }
+        }
 
-        TileBlock [] ret = new TileBlock[items.size()];
-        items.toArray( ret );
+        TileBlock[] ret = new TileBlock[items.size()];
+        items.toArray(ret);
 
         return ret;
     }
@@ -211,12 +240,16 @@ public class TileBlock {
 
         boolean[] workOccupied = occupied;   // local is cheaper
 
-        for (int y=0; y<h; y++) {
+        for (int y = 0; y < h; y++) {
             int x;
-            for (x=0; x<w; x++)
-                if (!workOccupied[x+xOff+occW*(y+yOff)])
+            for (x = 0; x < w; x++) {
+                if (!workOccupied[x + xOff + occW * (y + yOff)]) {
                     break;
-            if (x!=w) break;
+                }
+            }
+            if (x != w) {
+                break;
+            }
 
             // Fully occupied row so remove it.
             yOff++;
@@ -225,27 +258,37 @@ public class TileBlock {
         }
 
         // return true if we were simplified out of existance.
-        if (h==0) return true;
+        if (h == 0) {
+            return true;
+        }
 
         // If we make it past here we must have at least one good block.
 
-        for (int y=h-1; y>=0; y--) {
+        for (int y = h - 1; y >= 0; y--) {
             int x;
-            for (x=0; x<w; x++)
-                if (!workOccupied[x+xOff+occW*(y+yOff)])
+            for (x = 0; x < w; x++) {
+                if (!workOccupied[x + xOff + occW * (y + yOff)]) {
                     break;
-            if (x!=w) break;
+                }
+            }
+            if (x != w) {
+                break;
+            }
 
             // Fully occupied row so remove it.
             h--;
         }
 
-        for (int x=0; x<w; x++) {
+        for (int x = 0; x < w; x++) {
             int y;
-            for (y=0; y<h; y++)
-                if (!workOccupied[x+xOff+occW*(y+yOff)])
+            for (y = 0; y < h; y++) {
+                if (!workOccupied[x + xOff + occW * (y + yOff)]) {
                     break;
-            if (y!=h) break;
+                }
+            }
+            if (y != h) {
+                break;
+            }
 
             // Fully occupied Col so remove it.
             xOff++;
@@ -253,12 +296,16 @@ public class TileBlock {
             w--;
         }
 
-        for (int x=w-1; x>=0; x--) {
+        for (int x = w - 1; x >= 0; x--) {
             int y;
-            for (y=0; y<h; y++)
-                if (!workOccupied[x+xOff+occW*(y+yOff)])
+            for (y = 0; y < h; y++) {
+                if (!workOccupied[x + xOff + occW * (y + yOff)]) {
                     break;
-            if (y!=h) break;
+                }
+            }
+            if (y != h) {
+                break;
+            }
 
             // Fully occupied Col so remove it.
             w--;

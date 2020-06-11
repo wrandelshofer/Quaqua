@@ -26,22 +26,34 @@ package ch.randelshofer.quaqua.ext.batik.ext.awt.image;
  * @version $Id: PadMode.java 475477 2006-11-15 22:44:28Z cam $
  */
 public final class PadMode implements java.io.Serializable {
-      /** Pad edges with zeros */
+    /**
+     * Pad edges with zeros
+     */
     public static final int MODE_ZERO_PAD = 1;
 
-      /** Pad edges by replicating edge pixels */
+    /**
+     * Pad edges by replicating edge pixels
+     */
     public static final int MODE_REPLICATE = 2;
 
-      /** Pad edges by wrapping around edge pixels */
+    /**
+     * Pad edges by wrapping around edge pixels
+     */
     public static final int MODE_WRAP = 3;
 
-      /** Pad edges with zeros */
+    /**
+     * Pad edges with zeros
+     */
     public static final PadMode ZERO_PAD = new PadMode(MODE_ZERO_PAD);
 
-      /** Pad edges by replicating edge pixels */
+    /**
+     * Pad edges by replicating edge pixels
+     */
     public static final PadMode REPLICATE = new PadMode(MODE_REPLICATE);
 
-      /** Pad edges by replicating edge pixels */
+    /**
+     * Pad edges by replicating edge pixels
+     */
     public static final PadMode WRAP = new PadMode(MODE_WRAP);
 
     /**
@@ -51,9 +63,9 @@ public final class PadMode implements java.io.Serializable {
         return mode;
     }
 
-      /**
-       * The pad mode for this object.
-       */
+    /**
+     * The pad mode for this object.
+     */
     private int mode;
 
     private PadMode(int mode) {
@@ -68,7 +80,7 @@ public final class PadMode implements java.io.Serializable {
      * further details on this method's logic.
      */
     private Object readResolve() throws java.io.ObjectStreamException {
-        switch(mode){
+        switch (mode) {
         case MODE_ZERO_PAD:
             return ZERO_PAD;
         case MODE_REPLICATE:

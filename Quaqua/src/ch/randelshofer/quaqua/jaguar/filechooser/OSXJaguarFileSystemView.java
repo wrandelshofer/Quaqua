@@ -5,10 +5,11 @@
 
 package ch.randelshofer.quaqua.jaguar.filechooser;
 
-import ch.randelshofer.quaqua.filechooser.*;
+import ch.randelshofer.quaqua.filechooser.BasicOSXFileSystemView;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A file system view for Mac OS X 10.2 (Jaguar).
@@ -21,35 +22,35 @@ public class OSXJaguarFileSystemView extends BasicOSXFileSystemView {
     public OSXJaguarFileSystemView() {
 
         String[] names = {
-            "automount",
-            "bin",
-            "Cleanup At Startup",
-            "cores",
-            "Desktop DB",
-            "Desktop DF",
-            "Desktop Folder",
-            "dev",
-            "etc",
-            "mach",
-            "mach_kernel",
-            "mach.sym",
-            "private",
-            "sbin",
-            "Temporary Items",
-            "TheVolumeSettingsFolder",
-            "tmp",
-            "Trash",
-            "usr",
-            "var",
-            "Volumes",
+                "automount",
+                "bin",
+                "Cleanup At Startup",
+                "cores",
+                "Desktop DB",
+                "Desktop DF",
+                "Desktop Folder",
+                "dev",
+                "etc",
+                "mach",
+                "mach_kernel",
+                "mach.sym",
+                "private",
+                "sbin",
+                "Temporary Items",
+                "TheVolumeSettingsFolder",
+                "tmp",
+                "Trash",
+                "usr",
+                "var",
+                "Volumes",
         };
 
         hiddenTopLevelNames.addAll(Arrays.asList(names));
 
         names = new String[]{
-                    "$RECYCLE.BIN",
-                    "Thumbs.db",
-                    "desktop.ini",};
+                "$RECYCLE.BIN",
+                "Thumbs.db",
+                "desktop.ini",};
 
         hiddenDirectoryNames.addAll(Arrays.asList(names));
     }

@@ -5,7 +5,8 @@
 //package ch.randelshofer.util;
 package ch.randelshofer.quaqua.util;
 
-import java.util.*;
+import java.util.LinkedList;
+
 /**
  * An EventLoop can process events on a separate worker thread.
  * It consists of two parts: the event collector and the event
@@ -77,13 +78,13 @@ public abstract class EventLoop {
     private volatile boolean isLIFO = false;
 
 
-
     /**
      * Creates a new EventLoop which processes events at Thread.NORM_PRORITY.
      */
     public EventLoop() {
         this(Thread.NORM_PRIORITY);
     }
+
     /**
      * Creates a new EventLoop which processes events at the
      * desired thread priority.
@@ -93,6 +94,7 @@ public abstract class EventLoop {
     public EventLoop(int priority) {
         this.threadPriority = priority;
     }
+
     /**
      * Collects an event and puts it into the event queue
      * for later processing.
@@ -100,14 +102,16 @@ public abstract class EventLoop {
      * @param event The event to be put into the queue.
      */
     protected void collectEvent(Object event) {
-        synchronized(eventQueue) {
-            if (! isCoalesce || ! eventQueue.contains(event)) {
+        synchronized (eventQueue) {
+            if (!isCoalesce || !eventQueue.contains(event)) {
                 if (isLIFO) {
                     eventQueue.addFirst(event);
                 } else {
                     eventQueue.addLast(event);
                 }
-                if (isAlive) startProcessor();
+                if (isAlive) {
+                    startProcessor();
+                }
             }
         }
     }
@@ -128,6 +132,7 @@ public abstract class EventLoop {
     public void setCoalesce(boolean b) {
         isCoalesce = b;
     }
+
     /**
      * Returns true if the EventLoop
      * coalesces multiple pending events.
@@ -137,6 +142,7 @@ public abstract class EventLoop {
     public boolean isCoalesce() {
         return isCoalesce;
     }
+
     /**
      * Sets whether the EventLoop shall enqueue events at the beginning of the
      * queue instead of at the end of the queue.
@@ -146,6 +152,7 @@ public abstract class EventLoop {
     public void setLIFO(boolean b) {
         isLIFO = b;
     }
+
     /**
      * Returns true if the EventLoop
      * coalesces multiple pending events.
@@ -161,7 +168,7 @@ public abstract class EventLoop {
      * <br>The event processor is started by default.
      */
     public void start() {
-        synchronized(eventQueue) {
+        synchronized (eventQueue) {
             isAlive = true;
             startProcessor();
         }
@@ -180,7 +187,7 @@ public abstract class EventLoop {
      * Clears the event queue.
      */
     public void clear() {
-        synchronized(eventQueue) {
+        synchronized (eventQueue) {
             eventQueue.clear();
         }
     }
@@ -194,9 +201,9 @@ public abstract class EventLoop {
      * This is the method which really starts the processor.
      */
     private void startProcessor() {
-        synchronized(eventQueue) {
+        synchronized (eventQueue) {
             if (eventProcessor == null) {
-                eventProcessor = new Thread(this+" Event Processor") {
+                eventProcessor = new Thread(this + " Event Processor") {
                     public void run() {
                         processEvents();
                     }
@@ -206,10 +213,12 @@ public abstract class EventLoop {
                     // If it was a daemon, the virtual machine would
                     // stop before the event had been processed.
                     eventProcessor.setDaemon(false);
-                } catch (SecurityException e) {}
+                } catch (SecurityException e) {
+                }
                 try {
                     eventProcessor.setPriority(threadPriority);
-                } catch (SecurityException e) {}
+                } catch (SecurityException e) {
+                }
                 eventProcessor.start();
             }
         }
@@ -233,8 +242,8 @@ public abstract class EventLoop {
     protected void processEvents() {
         Object event;
         while (true) {
-            synchronized(eventQueue) {
-                if (eventQueue.isEmpty() || ! isAlive) {
+            synchronized (eventQueue) {
+                if (eventQueue.isEmpty() || !isAlive) {
                     eventProcessor = null;
                     return;
                 }

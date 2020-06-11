@@ -5,19 +5,30 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
+
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.UIResource;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.color.ColorSpace;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.*;
-import javax.swing.colorchooser.*;
-import javax.swing.plaf.*;
+
 /**
  * A color chooser with a brightness slider.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.5 2007-02-24 Select text in text field when it gains focus.
  * The field was too short for J2SE 1.3.
  * <br>1.4 2006-04-23 Retrieve labels from UIManager.
@@ -31,7 +42,9 @@ import javax.swing.plaf.*;
 public class GrayChooser extends AbstractColorChooserPanel implements UIResource {
     private GrayColorSliderModel ccModel = new GrayColorSliderModel();
 
-    /** Creates new form. */
+    /**
+     * Creates new form.
+     */
     public GrayChooser() {
     }
 
@@ -54,7 +67,7 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         //
         int textSliderGap = UIManager.getInt("ColorChooser.textSliderGap");
         if (textSliderGap != 0) {
-            Border fieldBorder = new EmptyBorder(0,textSliderGap,0,0);
+            Border fieldBorder = new EmptyBorder(0, textSliderGap, 0, 0);
             brightnessFieldPanel.setBorder(fieldBorder);
         }
 
@@ -63,7 +76,7 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         brightnessField.setText(Integer.toString(brightnessSlider.getValue()));
         Insets borderMargin = (Insets) UIManager.getInsets("Component.visualMargin").clone();
         borderMargin.left = 3 - borderMargin.left;
-        brightnessFieldLabel.putClientProperty("Quaqua.Component.visualMargin",borderMargin);
+        brightnessFieldLabel.putClientProperty("Quaqua.Component.visualMargin", borderMargin);
 
         new ColorSliderTextFieldHandler(brightnessField, ccModel, 0);
 
@@ -76,13 +89,13 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         });
         brightnessField.setMinimumSize(brightnessField.getPreferredSize());
 
-        VisualMarginBorder bm = new VisualMarginBorder(false,false,true,false);
+        VisualMarginBorder bm = new VisualMarginBorder(false, false, true, false);
         brightnessLabel.setBorder(bm);
-        zeroPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        twentyFivePercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        fiftyPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        seventyFivePercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        hundredPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
+        zeroPercentButton.putClientProperty("Quaqua.Button.style", "colorWell");
+        twentyFivePercentButton.putClientProperty("Quaqua.Button.style", "colorWell");
+        fiftyPercentButton.putClientProperty("Quaqua.Button.style", "colorWell");
+        seventyFivePercentButton.putClientProperty("Quaqua.Button.style", "colorWell");
+        hundredPercentButton.putClientProperty("Quaqua.Button.style", "colorWell");
         Border b = new CompoundBorder(new VisualMarginBorder(), new SmallColorWellBorder());
         zeroPercentButton.setBorder(b);
         twentyFivePercentButton.setBorder(b);
@@ -90,7 +103,7 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         seventyFivePercentButton.setBorder(b);
         hundredPercentButton.setBorder(b);
         Insets bmInsets = UIManager.getInsets("Component.visualMargin");
-        Dimension d = new Dimension(12+bmInsets.left+bmInsets.right,12+bmInsets.top+bmInsets.bottom);
+        Dimension d = new Dimension(12 + bmInsets.left + bmInsets.right, 12 + bmInsets.top + bmInsets.bottom);
         zeroPercentButton.setPreferredSize(d);
         twentyFivePercentButton.setPreferredSize(d);
         fiftyPercentButton.setPreferredSize(d);
@@ -126,15 +139,17 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
     public void updateChooser() {
         updateRecursion++;
         Color cfm = getColorFromModel();
-            ccModel.setColor(cfm);
+        ccModel.setColor(cfm);
         updateRecursion--;
     }
+
     public void setColorToModel(Color color) {
         getColorSelectionModel().setSelectedColor(color);
 
     }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -186,6 +201,7 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
             public void focusGained(java.awt.event.FocusEvent evt) {
                 fieldFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 brightnessFieldFocusLost(evt);
             }
@@ -286,7 +302,7 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldFocusGained
-((JTextField) evt.getSource()).selectAll();
+        ((JTextField) evt.getSource()).selectAll();
     }//GEN-LAST:event_fieldFocusGained
 
     private void percentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_percentActionPerformed

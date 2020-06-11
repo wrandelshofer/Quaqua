@@ -5,11 +5,12 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
+import java.awt.Color;
+
 /**
  * PaletteEntry.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 19 septembre 2005 Created.
  */
 public class PaletteEntry {
@@ -23,12 +24,15 @@ public class PaletteEntry {
         this.name = name;
         this.color = color;
     }
+
     public String getName() {
         return name;
     }
+
     public String toString() {
         return name;
     }
+
     public Color getColor() {
         return color;
     }

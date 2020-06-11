@@ -4,13 +4,19 @@
  */
 package ch.randelshofer.quaqua.osx;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
-import java.awt.image.*;
-import java.io.*;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.*;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
+import ch.randelshofer.quaqua.QuaquaIconFactory;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFDecodeParam;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFImageDecoder;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.MemoryCacheSeekableStream;
+import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.Methods;
+
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.security.AccessControlException;
 
 /**
@@ -35,7 +41,9 @@ public class OSXApplication {
      * Version of the native code library.
      */
     private final static int EXPECTED_NATIVE_CODE_VERSION = 7;
-    /** This lock is used for synchronizing calls to nativeGetIconImage. */
+    /**
+     * This lock is used for synchronizing calls to nativeGetIconImage.
+     */
     private final static Object ICON_IMAGE_LOCK = new Object();
 
     /**
@@ -67,7 +75,7 @@ public class OSXApplication {
                             } else {
                                 libraryNames = new String[]{"quaqua64", "quaqua"};
                             }
-                            for (String libraryName:libraryNames) {
+                            for (String libraryName : libraryNames) {
                                 try {
                                     JNILoader.loadLibrary(libraryName);
                                     success = true;
@@ -103,7 +111,9 @@ public class OSXApplication {
         return isNativeCodeAvailable == Boolean.TRUE;
     }
 
-    /** Prevent instance creation. */
+    /**
+     * Prevent instance creation.
+     */
     private OSXApplication() {
     }
 
@@ -112,7 +122,7 @@ public class OSXApplication {
      * This method will fail silently if neither JNI nor Cocoa Java is available.
      *
      * @param requestCritical Set this to true, if your application invokes
-     * a modal dialog. Set this to false, in all other cases.
+     *                        a modal dialog. Set this to false, in all other cases.
      */
     public static void requestUserAttention(boolean requestCritical) {
         if (isNativeCodeAvailable()) {
@@ -141,9 +151,10 @@ public class OSXApplication {
 
     /**
      * Requests user attention through JNI.
+     *
      * @param requestCritical Set this to true, if your application invokes
-     * a modal dialog. Set this to false, in all other cases.
-     * @exception java.lang.UnsatisfiedLinkError if JNI is not available.
+     *                        a modal dialog. Set this to false, in all other cases.
+     * @throws java.lang.UnsatisfiedLinkError if JNI is not available.
      */
     private static native void nativeRequestUserAttention(boolean requestCritical);
 
@@ -195,7 +206,7 @@ public class OSXApplication {
         if (image == null) {
             image = Images.toBufferedImage(
                     Images.createImage(
-                    QuaquaIconFactory.class.getResource("/ch/randelshofer/quaqua/images/ApplicationIcon.png")));
+                            QuaquaIconFactory.class.getResource("/ch/randelshofer/quaqua/images/ApplicationIcon.png")));
         }
 
         if (image.getWidth() != size) {
@@ -217,6 +228,7 @@ public class OSXApplication {
      * Returns the version of the native code library. If the version
      * does not match with the version that we expect, we can not use
      * it.
+     *
      * @return The version number of the native code.
      */
     private static native int nativeGetNativeCodeVersion();

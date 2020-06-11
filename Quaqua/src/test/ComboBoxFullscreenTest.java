@@ -4,10 +4,14 @@
  */
 package test;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.GraphicsDevice;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * ComboBoxFullscreenTest.

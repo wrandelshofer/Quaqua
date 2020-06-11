@@ -6,11 +6,12 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Paint;
 import java.awt.geom.Point2D;
-import javax.swing.UIManager;
 
 /**
  * QuaquaRootPaneBackground.
@@ -24,7 +25,6 @@ public class QuaquaRootPaneBackground extends PaintableColor {
     private Color[] inactiveColors;
 
     /**
-     *
      * Note: For efficiency reasons this method stores the passed in arrays
      * internally without copying them. Do not modify these arrays after
      * invoking this method.
@@ -42,7 +42,6 @@ public class QuaquaRootPaneBackground extends PaintableColor {
     }
 
     /**
-     *
      * Note: For efficiency reasons this method stores the passed in arrays
      * internally without copying them. Do not modify these arrays after
      * invoking this method.
@@ -69,11 +68,11 @@ public class QuaquaRootPaneBackground extends PaintableColor {
 
             return new LinearGradientPaint(new Point2D.Float(x, rootOffset), new Point2D.Float(x, rootOffset + rootHeight),
                     new float[]{
-                        0f,
-                        1f / rootHeight,
-                        81f / rootHeight,
-                        (rootHeight - 41f) / rootHeight,
-                        (rootHeight - 1f) / rootHeight
+                            0f,
+                            1f / rootHeight,
+                            81f / rootHeight,
+                            (rootHeight - 41f) / rootHeight,
+                            (rootHeight - 1f) / rootHeight
                     },
                     QuaquaUtilities.isOnActiveWindow(c) ? activeColors : inactiveColors);
         } else {

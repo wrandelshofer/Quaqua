@@ -4,11 +4,13 @@
  */
 package ch.randelshofer.quaqua.border;
 
-import ch.randelshofer.quaqua.VisualMargin;
-import javax.swing.JComponent;
 import ch.randelshofer.quaqua.QuaquaUtilities;
+import ch.randelshofer.quaqua.VisualMargin;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
+
+import javax.swing.JComponent;
+import javax.swing.border.Border;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -18,8 +20,10 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import javax.swing.border.Border;
-import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
+
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.State;
 
 /**
  * Native Aqua border for an {@code AbstractButton}.
@@ -49,19 +53,21 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
     protected final static int ARG_SEGPOS = 8;
     protected final static int ARG_WIDGET = 11;// 7 bits
     protected final static int ARG_TRAILING_SEPARATOR = 18;
-    protected final static int ARG_ORIENTATION=19;
+    protected final static int ARG_ORIENTATION = 19;
 
     public QuaquaNativeBorder(OSXAquaPainter.Widget widget) {
-        this(12,widget, new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0));
+        this(12, widget, new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0));
     }
-    public QuaquaNativeBorder(int cacheSize,OSXAquaPainter.Widget widget) {
-        this(cacheSize,widget, new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0));
+
+    public QuaquaNativeBorder(int cacheSize, OSXAquaPainter.Widget widget) {
+        this(cacheSize, widget, new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0));
     }
 
     public QuaquaNativeBorder(OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets) {
-        this(12,widget,imageInsets,borderInsets);
+        this(12, widget, imageInsets, borderInsets);
     }
-    public QuaquaNativeBorder(int cacheSize,OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets) {
+
+    public QuaquaNativeBorder(int cacheSize, OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets) {
         super(cacheSize);
         painter = new OSXAquaPainter();
         painter.setWidget(widget);
@@ -72,11 +78,11 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            Insets vm = getVisualMargin(c);
-                x += vm.left;
-                y += vm.top;
-                width -= vm.left + vm.right;
-                height -= vm.top + vm.bottom;
+        Insets vm = getVisualMargin(c);
+        x += vm.left;
+        y += vm.top;
+        width -= vm.left + vm.right;
+        height -= vm.top + vm.bottom;
 
         int args = 0;
         State state;
@@ -86,10 +92,10 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
         } else {
             state = State.inactive;
         }
-            if (!c.isEnabled()) {
-                state = State.disabled;
-                args |= 1 << ARG_DISABLED;
-            }
+        if (!c.isEnabled()) {
+            state = State.disabled;
+            args |= 1 << ARG_DISABLED;
+        }
         painter.setState(state);
 
         boolean isFocused = QuaquaUtilities.isFocused(c);
@@ -99,16 +105,16 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
         Size size;
 
         switch (QuaquaUtilities.getSizeVariant(c)) {
-            case REGULAR:
-            default:
-                size = Size.regular;
-                break;
-            case SMALL:
-                size = Size.small;
-                break;
-            case MINI:
-                size = Size.mini;
-                break;
+        case REGULAR:
+        default:
+            size = Size.regular;
+            break;
+        case SMALL:
+            size = Size.small;
+            break;
+        case MINI:
+            size = Size.mini;
+            break;
 
         }
         painter.setSize(size);
@@ -119,7 +125,7 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
 
     @Override
     protected Image createImage(Component c, int w, int h,
-            GraphicsConfiguration config) {
+                                GraphicsConfiguration config) {
 
         return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
 
@@ -134,17 +140,17 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
         ig.dispose();
         painter.paint((BufferedImage) img,//
                 imageInsets.left, imageInsets.top,//
-               w - imageInsets.left - imageInsets.right, //
+                w - imageInsets.left - imageInsets.right, //
                 h - imageInsets.top - imageInsets.bottom);
     }
 
     @Override
     protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
         // round up image size to reduce memory thrashing
-       BufferedImage img=(BufferedImage)createImage(c,(w/32+1)*32,(h/32+1)*32,null);
-       paintToImage(c,img,w,h,args);
-       g.drawImage(img, 0, 0, null);
-       img.flush();
+        BufferedImage img = (BufferedImage) createImage(c, (w / 32 + 1) * 32, (h / 32 + 1) * 32, null);
+        paintToImage(c, img, w, h, args);
+        g.drawImage(img, 0, 0, null);
+        img.flush();
     }
 
     public Insets getBorderInsets(Component c) {
@@ -154,7 +160,8 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
     public boolean isBorderOpaque() {
         return false;
     }
-public Insets getVisualMargin(Component c) {
+
+    public Insets getVisualMargin(Component c) {
         Insets vm = null;
         if (c instanceof JComponent) {
             vm = (Insets) ((JComponent) c).getClientProperty("Quaqua.Component.visualMargin");

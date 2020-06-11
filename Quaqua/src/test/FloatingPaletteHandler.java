@@ -5,10 +5,16 @@
 
 package test;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
+import javax.swing.JDialog;
+import java.awt.Dialog;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.util.HashSet;
+import java.util.Iterator;
+
 /**
  * Hides all registered floating palettes, if none of the registered project
  * windows has focus anymore.
@@ -40,7 +46,9 @@ public class FloatingPaletteHandler implements WindowFocusListener {
     }
 
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public FloatingPaletteHandler() {
         timer = new javax.swing.Timer(100, new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -97,6 +105,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
         // and update their contents.
         currentWindow = newValue;
     }
+
     /**
      * Returns the current applicatin window (the window which was the last to
      * gain focus). Floating palettes may use this method to determine on which
@@ -129,7 +138,7 @@ public class FloatingPaletteHandler implements WindowFocusListener {
     }
 
     private void showPalettes() {
-        for (Iterator i=hiddenPalettes.iterator(); i.hasNext(); ) {
+        for (Iterator i = hiddenPalettes.iterator(); i.hasNext(); ) {
             JDialog palette = (JDialog) i.next();
             palette.setVisible(true);
         }
@@ -137,26 +146,29 @@ public class FloatingPaletteHandler implements WindowFocusListener {
     }
 
     private boolean isFocused(Window w) {
-        if (w.isFocused()) return true;
+        if (w.isFocused()) {
+            return true;
+        }
         Window[] ownedWindows = w.getOwnedWindows();
-        for (int i=0; i < ownedWindows.length; i++) {
+        for (int i = 0; i < ownedWindows.length; i++) {
             if (isFocused(ownedWindows[i])) {
                 return true;
             }
         }
         return false;
     }
+
     private void hidePalettes() {
         boolean hasFocus = false;
-        for (Iterator i=windows.iterator(); i.hasNext(); ) {
+        for (Iterator i = windows.iterator(); i.hasNext(); ) {
             Window window = (Window) i.next();
             if (isFocused(window)) {
                 hasFocus = true;
                 break;
             }
         }
-        if (! hasFocus) {
-            for (Iterator i=palettes.iterator(); i.hasNext(); ) {
+        if (!hasFocus) {
+            for (Iterator i = palettes.iterator(); i.hasNext(); ) {
                 Dialog palette = (Dialog) i.next();
                 if (isFocused(palette)) {
                     hasFocus = true;
@@ -164,9 +176,9 @@ public class FloatingPaletteHandler implements WindowFocusListener {
                 }
             }
         }
-        if (! hasFocus) {
-            for (Iterator i=palettes.iterator(); i.hasNext(); ) {
-            Dialog palette = (Dialog) i.next();
+        if (!hasFocus) {
+            for (Iterator i = palettes.iterator(); i.hasNext(); ) {
+                Dialog palette = (Dialog) i.next();
                 if (palette.isVisible()) {
                     hiddenPalettes.add(palette);
                     palette.setVisible(false);

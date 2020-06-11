@@ -4,17 +4,29 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import java.beans.*;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.JButton;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicButtonListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.Enumeration;
 
 /**
  * QuaquaButtonListener.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaButtonListener extends BasicButtonListener {
@@ -22,7 +34,9 @@ public class QuaquaButtonListener extends BasicButtonListener {
     transient long lastPressedTimestamp = -1;
     transient boolean shouldDiscardRelease = false;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaButtonListener(AbstractButton button) {
         super(button);
     }
@@ -32,11 +46,11 @@ public class QuaquaButtonListener extends BasicButtonListener {
         String prop = e.getPropertyName();
         if (e.getSource() instanceof AbstractButton) {
             AbstractButton btn = ((AbstractButton) e.getSource());
-            if (prop==null||
-                    prop.equals("Frame.active")||
-                    prop.equals("Quaqua.Button.type")||
-                    prop.equals("JButton.buttonType")||
-                    prop.equals("JButton.segmentPosition")||
+            if (prop == null ||
+                    prop.equals("Frame.active") ||
+                    prop.equals("Quaqua.Button.type") ||
+                    prop.equals("JButton.buttonType") ||
+                    prop.equals("JButton.segmentPosition") ||
                     prop.equals("JComponent.sizeVariant")) {
                 btn.repaint();
             }
@@ -76,7 +90,7 @@ public class QuaquaButtonListener extends BasicButtonListener {
                         if (model instanceof DefaultButtonModel) {
                             ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
                             if (grp != null) {
-                                for (Enumeration i = grp.getElements(); i.hasMoreElements();) {
+                                for (Enumeration i = grp.getElements(); i.hasMoreElements(); ) {
                                     AbstractButton grpButton = (AbstractButton) i.nextElement();
                                     if (grpButton.hasFocus()) {
                                         b.setFocusable(true);
@@ -114,7 +128,7 @@ public class QuaquaButtonListener extends BasicButtonListener {
                     ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
                     if (grp != null) {
                         boolean groupHasFocus = false;
-                        for (Enumeration i = grp.getElements(); i.hasMoreElements();) {
+                        for (Enumeration i = grp.getElements(); i.hasMoreElements(); ) {
                             AbstractButton grpButton = (AbstractButton) i.nextElement();
                             if (grpButton.isSelected()) {
                                 grpButton.requestFocus();
@@ -207,7 +221,8 @@ public class QuaquaButtonListener extends BasicButtonListener {
         map.put(new Actions(Actions.SELECT_PREVIOUS_BUTTON));
     }
 
-    /** Keyboard action for selecting the next/previous button in a radio
+    /**
+     * Keyboard action for selecting the next/previous button in a radio
      * button group.
      */
     private static class Actions extends AbstractAction {
@@ -289,7 +304,7 @@ public class QuaquaButtonListener extends BasicButtonListener {
             if (isSelectNext) {
                 boolean takeNextSelected = false;
                 boolean takeNextFocused = false;
-                for (Enumeration i = group.getElements(); i.hasMoreElements();) {
+                for (Enumeration i = group.getElements(); i.hasMoreElements(); ) {
                     final AbstractButton buttonInGroup = (AbstractButton) i.nextElement();
                     if (takeNextSelected && buttonInGroup.isEnabled()) {
                         adjacentToSelected = buttonInGroup;
@@ -309,7 +324,7 @@ public class QuaquaButtonListener extends BasicButtonListener {
                 }
             } else {
                 AbstractButton previousButton = null;
-                for (Enumeration i = group.getElements(); i.hasMoreElements();) {
+                for (Enumeration i = group.getElements(); i.hasMoreElements(); ) {
                     final AbstractButton buttonInGroup = (AbstractButton) i.nextElement();
                     if (buttonInGroup.isSelected()) {
                         adjacentToSelected = previousButton;

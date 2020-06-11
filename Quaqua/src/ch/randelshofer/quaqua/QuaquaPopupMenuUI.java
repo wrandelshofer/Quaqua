@@ -6,6 +6,38 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.util.Methods;
+import sun.awt.AppContext;
+import sun.swing.UIAction;
+
+import javax.swing.AbstractButton;
+import javax.swing.ActionMap;
+import javax.swing.ButtonModel;
+import javax.swing.InputMap;
+import javax.swing.JApplet;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
+import javax.swing.JWindow;
+import javax.swing.LookAndFeel;
+import javax.swing.MenuElement;
+import javax.swing.MenuSelectionManager;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.event.MenuKeyListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicLookAndFeel;
+import javax.swing.plaf.basic.BasicPopupMenuUI;
 import java.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -32,17 +64,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.MenuKeyEvent;
-import javax.swing.event.MenuKeyListener;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import sun.awt.AppContext;
-import sun.swing.UIAction;
 
 /**
  * QuaquaPopupMenuUI.
@@ -190,7 +211,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
     }
 
     private static MenuElement nextEnabledChild(MenuElement e[],
-            int fromIndex, int toIndex) {
+                                                int fromIndex, int toIndex) {
         for (int i = fromIndex; i <= toIndex; i++) {
             if (e[i] != null) {
                 Component comp = e[i].getComponent();
@@ -205,7 +226,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
     }
 
     private static MenuElement previousEnabledChild(MenuElement e[],
-            int fromIndex, int toIndex) {
+                                                    int fromIndex, int toIndex) {
         for (int i = fromIndex; i >= toIndex; i--) {
             if (e[i] != null) {
                 Component comp = e[i].getComponent();
@@ -220,7 +241,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
     }
 
     static MenuElement findEnabledChild(MenuElement e[], int fromIndex,
-            boolean forward) {
+                                        boolean forward) {
         MenuElement result = null;
         if (forward) {
             result = nextEnabledChild(e, fromIndex + 1, e.length - 1);
@@ -238,7 +259,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
     }
 
     static MenuElement findEnabledChild(MenuElement e[],
-            MenuElement elem, boolean forward) {
+                                        MenuElement elem, boolean forward) {
         for (int i = 0; i < e.length; i++) {
             if (e[i] == elem) {
                 return findEnabledChild(e, i, forward);
@@ -308,9 +329,9 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
                         public Object run() {
                             tk.addAWTEventListener(MouseGrabber.this,
                                     AWTEvent.MOUSE_EVENT_MASK
-                                    | AWTEvent.MOUSE_MOTION_EVENT_MASK
-                                    | AWTEvent.MOUSE_WHEEL_EVENT_MASK
-                                    | AWTEvent.WINDOW_EVENT_MASK | GRAB_EVENT_MASK);
+                                            | AWTEvent.MOUSE_MOTION_EVENT_MASK
+                                            | AWTEvent.MOUSE_WHEEL_EVENT_MASK
+                                            | AWTEvent.WINDOW_EVENT_MASK | GRAB_EVENT_MASK);
                             return null;
                         }
                     });
@@ -394,70 +415,70 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
             MouseEvent me = (MouseEvent) ev;
             Component src = me.getComponent();
             switch (me.getID()) {
-                case MouseEvent.MOUSE_PRESSED:
-                    if (isInPopup(src)
-                            || (src instanceof JMenu && ((JMenu) src).isSelected())) {
-                        return;
+            case MouseEvent.MOUSE_PRESSED:
+                if (isInPopup(src)
+                        || (src instanceof JMenu && ((JMenu) src).isSelected())) {
+                    return;
+                }
+                if (!(src instanceof JComponent)
+                        || !(((JComponent) src).getClientProperty("doNotCancelPopup") != null
+                        && ((JComponent) src).getClientProperty("doNotCancelPopup").toString().equals(QuaquaComboBoxUI.HIDE_POPUP_KEY.toString()))//
+                ) {
+                    // Cancel popup only if this property was not set.
+                    // If this property is set to TRUE component wants
+                    // to deal with this event by himself.
+                    cancelPopupMenu();
+                    // Ask UIManager about should we consume event that closes
+                    // popup. This made to match native apps behaviour.
+                    boolean consumeEvent =
+                            UIManager.getBoolean("PopupMenu.consumeEventOnClose");
+                    // Consume the event so that normal processing stops.
+                    if (consumeEvent && !(src instanceof MenuElement)) {
+                        me.consume();
                     }
-                    if (!(src instanceof JComponent)
-                            || !(((JComponent) src).getClientProperty("doNotCancelPopup") != null
-                            && ((JComponent) src).getClientProperty("doNotCancelPopup").toString().equals(QuaquaComboBoxUI.HIDE_POPUP_KEY.toString()))//
-                            ) {
-                        // Cancel popup only if this property was not set.
-                        // If this property is set to TRUE component wants
-                        // to deal with this event by himself.
-                        cancelPopupMenu();
-                        // Ask UIManager about should we consume event that closes
-                        // popup. This made to match native apps behaviour.
-                        boolean consumeEvent =
-                                UIManager.getBoolean("PopupMenu.consumeEventOnClose");
-                        // Consume the event so that normal processing stops.
-                        if (consumeEvent && !(src instanceof MenuElement)) {
-                            me.consume();
-                        }
-                    }
-                    break;
+                }
+                break;
 
-                case MouseEvent.MOUSE_RELEASED:
-                    if (!(src instanceof MenuElement)) {
-                        // Do not forward event to MSM, let component handle it
-                        if (isInPopup(src)) {
-                            break;
-                        }
+            case MouseEvent.MOUSE_RELEASED:
+                if (!(src instanceof MenuElement)) {
+                    // Do not forward event to MSM, let component handle it
+                    if (isInPopup(src)) {
+                        break;
                     }
-                    if (src instanceof JMenu || !(src instanceof JMenuItem)) {
-                        MenuSelectionManager.defaultManager().
-                                processMouseEvent(me);
-                    }
-                    break;
-                case MouseEvent.MOUSE_DRAGGED:
-                    if (!(src instanceof MenuElement)) {
-                        // For the MOUSE_DRAGGED event the src is
-                        // the Component in which mouse button was pressed.
-                        // If the src is in popupMenu,
-                        // do not forward event to MSM, let component handle it.
-                        if (isInPopup(src)) {
-                            break;
-                        }
-                    }
+                }
+                if (src instanceof JMenu || !(src instanceof JMenuItem)) {
                     MenuSelectionManager.defaultManager().
                             processMouseEvent(me);
-                    break;
-                case MouseEvent.MOUSE_WHEEL:
+                }
+                break;
+            case MouseEvent.MOUSE_DRAGGED:
+                if (!(src instanceof MenuElement)) {
+                    // For the MOUSE_DRAGGED event the src is
+                    // the Component in which mouse button was pressed.
+                    // If the src is in popupMenu,
+                    // do not forward event to MSM, let component handle it.
                     if (isInPopup(src)) {
-                        MouseWheelEvent mwe = (MouseWheelEvent) ev;
-                        if (mwe.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
-                            int totalScrollAmount = mwe.getUnitsToScroll();
-                            if (totalScrollAmount > 0) {
-                                // TODO select next menu item
-                            } else if (totalScrollAmount < 0) {
-                                // TODO select previous menu item
-                            }
-                        }
-                        return;
+                        break;
                     }
-                    //cancelPopupMenu(); don't cancel the popup
-                    break;
+                }
+                MenuSelectionManager.defaultManager().
+                        processMouseEvent(me);
+                break;
+            case MouseEvent.MOUSE_WHEEL:
+                if (isInPopup(src)) {
+                    MouseWheelEvent mwe = (MouseWheelEvent) ev;
+                    if (mwe.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
+                        int totalScrollAmount = mwe.getUnitsToScroll();
+                        if (totalScrollAmount > 0) {
+                            // TODO select next menu item
+                        } else if (totalScrollAmount < 0) {
+                            // TODO select previous menu item
+                        }
+                    }
+                    return;
+                }
+                //cancelPopupMenu(); don't cancel the popup
+                break;
             }
         }
 
@@ -557,6 +578,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
 
     /**
      * Handles mnemonic for children JMenuItems.
+     *
      * @since 1.5
      */
     private class QuaquaMenuKeyListener implements MenuKeyListener {
@@ -725,6 +747,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
             }
             receivedKeyPressed = false;
         }
+
         private FocusListener rootPaneFocusListener = new FocusAdapter() {
 
             @Override
@@ -1015,7 +1038,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
                         // may not be selected, so submenu popup can be either the
                         // last or next to the last item.
                         (path[popupIndex] instanceof JPopupMenu
-                        || path[--popupIndex] instanceof JPopupMenu)
+                                || path[--popupIndex] instanceof JPopupMenu)
                         && !((JMenu) path[popupIndex - 1]).isTopLevelMenu()) {
 
                     // we have a submenu, just close it

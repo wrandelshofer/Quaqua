@@ -5,24 +5,34 @@
 
 package ch.randelshofer.quaqua.util;
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
+import ch.randelshofer.quaqua.VisuallyLayoutable;
+
+import javax.swing.JComponent;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import java.awt.BasicStroke;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Stroke;
+
 /**
  * Debug.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class Debug {
     private final static Stroke defaultStroke = new BasicStroke();
+
     /**
      * Private instance creation.
      */
     private Debug() {
     }
-    static int rainbow=0;
+
+    static int rainbow = 0;
+
     /**
      * This method is called from UI delegates at the end of its paint method.
      */
@@ -31,20 +41,20 @@ public class Debug {
         g.setStroke(defaultStroke);
 
         if (UIManager.getBoolean("Quaqua.Debug.showVisualBounds")
-        && ui instanceof VisuallyLayoutable) {
+                && ui instanceof VisuallyLayoutable) {
 
             VisuallyLayoutable layoutable = (VisuallyLayoutable) ui;
             g.setColor(UIManager.getColor("Quaqua.Debug.componentBoundsForeground"));
-            Rectangle rect = layoutable.getVisualBounds(c,VisuallyLayoutable.COMPONENT_BOUNDS,c.getWidth(),c.getHeight());
-            g.drawRect(rect.x,rect.y,rect.width - 1,rect.height - 1);
+            Rectangle rect = layoutable.getVisualBounds(c, VisuallyLayoutable.COMPONENT_BOUNDS, c.getWidth(), c.getHeight());
+            g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
 
             g.setColor(UIManager.getColor("Quaqua.Debug.textBoundsForeground"));
-            rect = layoutable.getVisualBounds(c,VisuallyLayoutable.TEXT_BOUNDS,c.getWidth(),c.getHeight());
-            g.drawRect(rect.x,rect.y,rect.width - 1,rect.height - 1);
+            rect = layoutable.getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, c.getWidth(), c.getHeight());
+            g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
         }
         if (UIManager.getBoolean("Quaqua.Debug.showClipBounds")) {
             g.setColor(UIManager.getColor("Quaqua.Debug.clipBoundsForeground"));
-            g.drawRect(0,0,c.getWidth() - 1,c.getHeight() - 1);
+            g.drawRect(0, 0, c.getWidth() - 1, c.getHeight() - 1);
         }
         /*
         if (QuaquaManager.getBoolean("Quaqua.Debug.colorizePaintEvents")) {

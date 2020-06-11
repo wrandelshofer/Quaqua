@@ -4,11 +4,14 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
+import javax.swing.TransferHandler;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.event.MouseEvent;
 
-import static java.awt.event.InputEvent.*;
+import static java.awt.event.InputEvent.BUTTON2_DOWN_MASK;
+import static java.awt.event.InputEvent.BUTTON3_DOWN_MASK;
+import static java.awt.event.InputEvent.META_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 
 /**
  * Mouse behavior for list-like components. This class simulates Mavericks NSTableView behavior.
@@ -155,16 +158,16 @@ public class QuaquaGenericListMouseBehavior extends MouseInputAdapter {
                         int anchorIndex = getAnchor();
                         if (targetIndex > anchorIndex && targetIndex > mouseDragOpPreviousIndex) {
                             // moving away from the anchor
-                            performDragSelectionOperation(mouseDragOp, mouseDragOpPreviousIndex+1, targetIndex, true);
+                            performDragSelectionOperation(mouseDragOp, mouseDragOpPreviousIndex + 1, targetIndex, true);
                         } else if (targetIndex < anchorIndex && targetIndex < mouseDragOpPreviousIndex) {
                             // moving away from the anchor
-                            performDragSelectionOperation(mouseDragOp, mouseDragOpPreviousIndex-1, targetIndex, true);
+                            performDragSelectionOperation(mouseDragOp, mouseDragOpPreviousIndex - 1, targetIndex, true);
                         } else if (targetIndex >= anchorIndex && targetIndex < mouseDragOpPreviousIndex) {
                             // moving toward the anchor
-                            performDragSelectionOperation(mouseDragOp, targetIndex +1, mouseDragOpPreviousIndex, false);
+                            performDragSelectionOperation(mouseDragOp, targetIndex + 1, mouseDragOpPreviousIndex, false);
                         } else if (targetIndex <= anchorIndex && targetIndex > mouseDragOpPreviousIndex) {
                             // moving toward the anchor
-                            performDragSelectionOperation(mouseDragOp, targetIndex -1, mouseDragOpPreviousIndex, false);
+                            performDragSelectionOperation(mouseDragOp, targetIndex - 1, mouseDragOpPreviousIndex, false);
                         }
                     }
 
@@ -259,7 +262,7 @@ public class QuaquaGenericListMouseBehavior extends MouseInputAdapter {
             op = OP_SELECT;
         }
         if (op == OP_SELECT) {
-            int lastIndex = list.getRowCount()-1;
+            int lastIndex = list.getRowCount() - 1;
             list.setAnchorSelectionIndex(lastIndex);
         } else {
             list.setAnchorSelectionIndex(0);
@@ -388,17 +391,16 @@ public class QuaquaGenericListMouseBehavior extends MouseInputAdapter {
      * Update the anchor after deselecting the old anchor item.
      */
 
-    protected void updateAnchor(int oldAnchor)
-    {
+    protected void updateAnchor(int oldAnchor) {
         int count = list.getRowCount();
-        for (int i = oldAnchor+1; i < count; i++) {
+        for (int i = oldAnchor + 1; i < count; i++) {
             if (list.isRowSelected(i)) {
                 list.setAnchorSelectionIndex(i);
                 return;
             }
         }
 
-        for (int i = oldAnchor-1; i >= 0; i--) {
+        for (int i = oldAnchor - 1; i >= 0; i--) {
             if (list.isRowSelected(i)) {
                 list.setAnchorSelectionIndex(i);
                 return;
@@ -408,8 +410,7 @@ public class QuaquaGenericListMouseBehavior extends MouseInputAdapter {
         list.setAnchorSelectionIndex(0);
     }
 
-    protected void trimSelectedInterval(int index, int direction)
-    {
+    protected void trimSelectedInterval(int index, int direction) {
         if (direction > 0) {
             int count = list.getRowCount();
             while (++index < count) {
@@ -445,7 +446,7 @@ public class QuaquaGenericListMouseBehavior extends MouseInputAdapter {
     protected void toggleSelectionInterval(int index1, int index2) {
         int delta = index1 > index2 ? -1 : 1;
         int index = index1;
-        for (;;) {
+        for (; ; ) {
             if (!list.isRowSelected(index)) {
                 list.addSelectionInterval(index, index);
             } else {

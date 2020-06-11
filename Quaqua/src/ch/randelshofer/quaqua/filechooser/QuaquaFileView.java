@@ -7,13 +7,14 @@ package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
 
-import java.io.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+import javax.swing.Icon;
+import javax.swing.filechooser.FileView;
+import java.io.File;
+
 /**
  * A FileView for the Quaqua Look and Feel.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaFileView extends FileView {

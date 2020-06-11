@@ -5,27 +5,43 @@
 package ch.randelshofer.quaqua.util;
 
 import ch.randelshofer.quaqua.osx.OSXPreferences;
-import java.awt.*;
-import java.awt.image.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.PixelGrabber;
+import java.awt.image.RGBImageFilter;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
 
 /**
  * Image processing methods.
  *
- * @author  Werner Randelshofer, Karl von Randow
+ * @author Werner Randelshofer, Karl von Randow
  * @version $Id$
  */
 public class Images {
 
-    /** Prevent instance creation. */
+    /**
+     * Prevent instance creation.
+     */
     private Images() {
     }
+
     private static GraphiteFilter graphiteFilter;
 
     private static GraphiteFilter getGraphiteFilter() {
@@ -36,8 +52,10 @@ public class Images {
     }
 
     public static Image createImage(Class baseClass, String location) {
-        URL resource=baseClass.getResource(location);
-        if (resource==null) throw new IllegalArgumentException("no resource found for location:"+location);
+        URL resource = baseClass.getResource(location);
+        if (resource == null) {
+            throw new IllegalArgumentException("no resource found for location:" + location);
+        }
         return createImage(resource);
     }
 
@@ -50,6 +68,7 @@ public class Images {
         }
         return image;
     }
+
     private static volatile Properties canGraphite;
 
     private static boolean canGraphite(URL resource) {
@@ -83,7 +102,7 @@ public class Images {
 
     /**
      * This method returns a buffered image with the contents of an image.
-     *
+     * <p>
      * Code derived from the Java Developers Almanac 1.4
      * http://javaalmanac.com/egs/java.awt.image/Image2Buf.html?l=rel
      */
@@ -236,7 +255,7 @@ public class Images {
 
     /**
      * This method returns true if the specified image has transparent pixels
-     *
+     * <p>
      * Code taken from the Java Developers Almanac 1.4
      * http://javaalmanac.com/egs/java.awt.image/HasAlpha.html
      */

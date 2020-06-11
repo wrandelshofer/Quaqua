@@ -5,8 +5,11 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
-import java.util.*;
-import java.text.*;
+import java.text.CollationKey;
+import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
+import java.util.Locale;
 
 /**
  * The OSXCollator strives to match the collation rules used by the Mac OS X
@@ -28,60 +31,61 @@ import java.text.*;
  * java.text.RuleBasedCollator, then the returned collator is used, and only
  * sequences of digits are changed to match the collation rules of Mac OS X.
  *
- *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class OSXCollator extends Collator {
     private Collator collator;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public OSXCollator() {
         this(Locale.getDefault());
     }
 
     public OSXCollator(Locale locale) {
-            collator = Collator.getInstance(locale);
+        collator = Collator.getInstance(locale);
 
-            if (collator instanceof RuleBasedCollator) {
-                String rules = ((RuleBasedCollator) collator).getRules();
+        if (collator instanceof RuleBasedCollator) {
+            String rules = ((RuleBasedCollator) collator).getRules();
 
-                // If hyphen is ignored except for tertiary difference, make it
-                // a primary difference, and move in front of the first primary
-                // difference found in the rules
-                int pos = rules.indexOf(",'-'");
-                int primaryRelationPos = rules.indexOf('<');
-                if (primaryRelationPos == rules.indexOf("'<'")) {
-                    primaryRelationPos = rules.indexOf('<', primaryRelationPos + 2);
-                }
-                if (pos != -1 && pos < primaryRelationPos) {
-                    rules = rules.substring(0, pos)
-                    + rules.substring(pos + 4, primaryRelationPos)
-                    + "<'-'"
-                    + rules.substring(primaryRelationPos);
-                }
-
-                // If space is ignored except for secondary and tertiary
-                // difference, make it a primary difference, and move in front
-                // of the first primary difference found in the rules
-                pos = rules.indexOf(";' '");
-                primaryRelationPos = rules.indexOf('<');
-                if (primaryRelationPos == rules.indexOf("'<'")) {
-                    primaryRelationPos = rules.indexOf('<', primaryRelationPos + 2);
-                }
-                if (pos != -1 && pos < primaryRelationPos) {
-                    rules = rules.substring(0, pos)
-                    + rules.substring(pos + 4, primaryRelationPos)
-                    + "<' '"
-                    + rules.substring(primaryRelationPos);
-                }
-
-                try {
-                collator = new RuleBasedCollator(rules);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    }
+            // If hyphen is ignored except for tertiary difference, make it
+            // a primary difference, and move in front of the first primary
+            // difference found in the rules
+            int pos = rules.indexOf(",'-'");
+            int primaryRelationPos = rules.indexOf('<');
+            if (primaryRelationPos == rules.indexOf("'<'")) {
+                primaryRelationPos = rules.indexOf('<', primaryRelationPos + 2);
             }
+            if (pos != -1 && pos < primaryRelationPos) {
+                rules = rules.substring(0, pos)
+                        + rules.substring(pos + 4, primaryRelationPos)
+                        + "<'-'"
+                        + rules.substring(primaryRelationPos);
+            }
+
+            // If space is ignored except for secondary and tertiary
+            // difference, make it a primary difference, and move in front
+            // of the first primary difference found in the rules
+            pos = rules.indexOf(";' '");
+            primaryRelationPos = rules.indexOf('<');
+            if (primaryRelationPos == rules.indexOf("'<'")) {
+                primaryRelationPos = rules.indexOf('<', primaryRelationPos + 2);
+            }
+            if (pos != -1 && pos < primaryRelationPos) {
+                rules = rules.substring(0, pos)
+                        + rules.substring(pos + 4, primaryRelationPos)
+                        + "<' '"
+                        + rules.substring(primaryRelationPos);
+            }
+
+            try {
+                collator = new RuleBasedCollator(rules);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public int compare(String source, String target) {
@@ -100,18 +104,21 @@ public class OSXCollator extends Collator {
             return false;
         }
     }
+
     public int hashCode() {
         return collator.hashCode();
     }
 
     private String expandNumbers(String s) {
-        if (s == null) return null;
+        if (s == null) {
+            return null;
+        }
 
         // FIXME - Use StringBuilder here when we abandon support for J2SE 1.4.
         StringBuffer out = new StringBuffer();
         StringBuffer digits = new StringBuffer();
 
-        for (int i=0, n = s.length(); i < n; i++) {
+        for (int i = 0, n = s.length(); i < n; i++) {
             char ch = s.charAt(i);
             //if (Character.isDigit(ch)) {
             if (ch >= '0' && ch <= '9') {

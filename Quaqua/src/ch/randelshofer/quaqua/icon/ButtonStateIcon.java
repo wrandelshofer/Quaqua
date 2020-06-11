@@ -5,14 +5,21 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
-import javax.swing.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import java.awt.Component;
+import java.awt.Image;
+
 /**
  * An Icon with different visuals reflecting the state of the AbstractButton
  * on which it draws on.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ButtonStateIcon extends MultiIcon {
@@ -34,12 +41,13 @@ public class ButtonStateIcon extends MultiIcon {
      * other icons.
      */
     public ButtonStateIcon(Icon e, Icon ep, Icon es, Icon eps, Icon d, Icon ds) {
-        super(new Icon[] {e, ep, es, eps, d, ds});
+        super(new Icon[]{e, ep, es, eps, d, ds});
     }
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
-     *
+     * <p>
      * The array indices are used to represente the following states:
      * [0] Enabled
      * [1] Enabled Pressed
@@ -51,13 +59,14 @@ public class ButtonStateIcon extends MultiIcon {
      * [7] Enabled Inactive Selected
      * [8] Disabled Inactive
      * [9] Disabled Inactive Selected
-     *
+     * <p>
      * If an array element is null, an icon is derived for the state from the
      * other icons.
      */
     public ButtonStateIcon(Image[] images) {
         super(images);
     }
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -79,8 +88,8 @@ public class ButtonStateIcon extends MultiIcon {
     protected Icon getIcon(Component c) {
         Icon icon;
         boolean isActive = QuaquaUtilities.isOnActiveWindow(c)//
-                ||(c instanceof JCheckBoxMenuItem)//
-                ||(c instanceof JRadioButtonMenuItem);
+                || (c instanceof JCheckBoxMenuItem)//
+                || (c instanceof JRadioButtonMenuItem);
 
         if (c instanceof AbstractButton) {
             ButtonModel model = ((AbstractButton) c).getModel();

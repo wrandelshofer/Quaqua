@@ -6,6 +6,7 @@ package ch.randelshofer.quaqua.lion;
 
 import ch.randelshofer.quaqua.border.QuaquaNativeBorder;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
+
 import java.awt.Insets;
 
 /**
@@ -21,7 +22,7 @@ public class QuaquaLionNativeTabBorder extends QuaquaNativeBorder {
     }
 
     public QuaquaLionNativeTabBorder(Insets imageInsets, Insets borderInsets) {
-        super(Widget.tab,  imageInsets, borderInsets);
+        super(Widget.tab, imageInsets, borderInsets);
     }
 
     public QuaquaLionNativeTabBorder(int cacheSize) {

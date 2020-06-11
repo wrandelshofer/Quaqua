@@ -5,7 +5,10 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.DefaultFocusTraversalPolicy;
+import java.awt.DefaultKeyboardFocusManager;
+import java.awt.FocusTraversalPolicy;
 
 /**
  * QuaquaKeyboardFocusManager.
@@ -21,7 +24,9 @@ public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
     private Component lastTraversingComponent;
 
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaKeyboardFocusManager() {
         initDefaults();
     }
@@ -40,7 +45,7 @@ public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
      * FocusTraversalPolicy.
      *
      * @param aComponent the Component that is the basis for the focus
-     *        traversal operation
+     *                   traversal operation
      * @see FocusTraversalPolicy
      * @see Component#transferFocusBackward
      */
@@ -55,7 +60,7 @@ public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
      * FocusTraversalPolicy.
      *
      * @param aComponent the Component that is the basis for the focus
-     *        traversal operation
+     *                   traversal operation
      * @see FocusTraversalPolicy
      * @see Component#transferFocus
      */
@@ -72,6 +77,7 @@ public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
     public Component getLastKeyboardTraversingComponent() {
         return lastTraversingComponent;
     }
+
     /**
      * Sets the most recent component, for which focusPreviousComponent
      * or focusNextComponent was invoked.

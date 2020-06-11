@@ -5,13 +5,23 @@
 
 package ch.randelshofer.quaqua.panther;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
+import ch.randelshofer.quaqua.VisuallyLayoutable;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicSeparatorUI;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Rectangle;
+
 /**
  * A replacement for the AquaSeparatorUI.
  * <p>
@@ -29,7 +39,9 @@ import javax.swing.plaf.basic.*;
  */
 public class QuaquaPantherSeparatorUI extends BasicSeparatorUI implements VisuallyLayoutable {
 
-    /** Creates a new instance of QuaquaSeparatorUI */
+    /**
+     * Creates a new instance of QuaquaSeparatorUI
+     */
     public QuaquaPantherSeparatorUI() {
     }
 
@@ -37,9 +49,9 @@ public class QuaquaPantherSeparatorUI extends BasicSeparatorUI implements Visual
         return new QuaquaPantherSeparatorUI();
     }
 
-    protected void installDefaults( JSeparator s ) {
+    protected void installDefaults(JSeparator s) {
         super.installDefaults(s);
-        LookAndFeel.installBorder( s, "Separator.border");
+        LookAndFeel.installBorder(s, "Separator.border");
     }
 
     public void paint(Graphics g, JComponent c) {
@@ -47,31 +59,31 @@ public class QuaquaPantherSeparatorUI extends BasicSeparatorUI implements Visual
         if (c.getParent() instanceof JPopupMenu) {
             Color highlightColor = UIManager.getColor("Separator.highlight");
             Color shadowColor = UIManager.getColor("Separator.shadow");
-            if ( ((JSeparator)c).getOrientation() == JSeparator.VERTICAL ) {
-                g.setColor( highlightColor );
-                g.drawLine( s.width / 2 - 1 , 1, s.width / 2 - 1, s.height - 2 );
-                g.setColor( shadowColor );
-                g.drawLine( s.width / 2, 1, s.width / 2, s.height - 2);
+            if (((JSeparator) c).getOrientation() == JSeparator.VERTICAL) {
+                g.setColor(highlightColor);
+                g.drawLine(s.width / 2 - 1, 1, s.width / 2 - 1, s.height - 2);
+                g.setColor(shadowColor);
+                g.drawLine(s.width / 2, 1, s.width / 2, s.height - 2);
             } else { // HORIZONTAL
-                g.setColor( highlightColor );
-                g.drawLine( 1, s.height / 2 - 1, s.width - 2, s.height / 2 - 1 );
-                g.setColor( shadowColor );
-                g.drawLine( 1, s.height / 2, s.width - 2, s.height / 2 );
+                g.setColor(highlightColor);
+                g.drawLine(1, s.height / 2 - 1, s.width - 2, s.height / 2 - 1);
+                g.setColor(shadowColor);
+                g.drawLine(1, s.height / 2, s.width - 2, s.height / 2);
             }
         } else {
             Insets insets = c.getInsets();
             Color highlightColor = UIManager.getColor("Separator.foreground");
             Color shadowColor = UIManager.getColor("Separator.background");
-            if ( ((JSeparator)c).getOrientation() == JSeparator.VERTICAL ) {
-                g.setColor( highlightColor );
-                g.drawLine( insets.left, insets.top, insets.left, s.height - insets.bottom - 1);
-                g.setColor( shadowColor );
-                g.drawLine( insets.left + 1, insets.top, insets.left + 1, s.height - insets.bottom - 1);
+            if (((JSeparator) c).getOrientation() == JSeparator.VERTICAL) {
+                g.setColor(highlightColor);
+                g.drawLine(insets.left, insets.top, insets.left, s.height - insets.bottom - 1);
+                g.setColor(shadowColor);
+                g.drawLine(insets.left + 1, insets.top, insets.left + 1, s.height - insets.bottom - 1);
             } else { // HORIZONTAL
-                g.setColor( highlightColor );
-                g.drawLine( insets.left, insets.top, s.width - insets.right - 1, insets.top);
-                g.setColor( shadowColor );
-                g.drawLine( insets.left, insets.top + 1, s.width - insets.right - 1, insets.top + 1);
+                g.setColor(highlightColor);
+                g.drawLine(insets.left, insets.top, s.width - insets.right - 1, insets.top);
+                g.setColor(shadowColor);
+                g.drawLine(insets.left, insets.top + 1, s.width - insets.right - 1, insets.top + 1);
             }
         }
         Debug.paint(g, c, this);
@@ -81,26 +93,28 @@ public class QuaquaPantherSeparatorUI extends BasicSeparatorUI implements Visual
         return getPreferredSize(c);
     }
 
-    public Dimension getPreferredSize( JComponent c ) {
+    public Dimension getPreferredSize(JComponent c) {
         if (c.getParent() instanceof JPopupMenu) {
-            if ( ((JSeparator)c).getOrientation() == JSeparator.VERTICAL )
-                return new Dimension( 12, 0 );
-            else
-                return new Dimension( 0, 12 );
+            if (((JSeparator) c).getOrientation() == JSeparator.VERTICAL) {
+                return new Dimension(12, 0);
+            } else {
+                return new Dimension(0, 12);
+            }
         } else {
             Insets insets = c.getInsets();
-            if ( ((JSeparator)c).getOrientation() == JSeparator.VERTICAL )
+            if (((JSeparator) c).getOrientation() == JSeparator.VERTICAL) {
                 return new Dimension(2 + insets.left + insets.right, insets.top + insets.bottom);
-            else
+            } else {
                 return new Dimension(insets.left + insets.right, 2 + insets.top + insets.bottom);
+            }
         }
     }
 
-    public Dimension getMaximumSize( JComponent c ) {
+    public Dimension getMaximumSize(JComponent c) {
         Dimension d = getPreferredSize(c);
-        if ( ((JSeparator)c).getOrientation() == JSeparator.VERTICAL )
+        if (((JSeparator) c).getOrientation() == JSeparator.VERTICAL) {
             d.height = Integer.MAX_VALUE;
-        else {
+        } else {
             d.width = Integer.MAX_VALUE;
         }
         return d;
@@ -108,15 +122,18 @@ public class QuaquaPantherSeparatorUI extends BasicSeparatorUI implements Visual
 
     public Insets getVisualMargin(JSeparator tc) {
         Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
-        if (margin == null) margin = UIManager.getInsets("Component.visualMargin");
-        return (margin == null) ? new Insets(0, 0, 0 ,0) : margin;
+        if (margin == null) {
+            margin = UIManager.getInsets("Component.visualMargin");
+        }
+        return (margin == null) ? new Insets(0, 0, 0, 0) : margin;
     }
 
     public int getBaseline(JComponent c, int width, int height) {
         return -1;
     }
+
     public Rectangle getVisualBounds(JComponent c, int type, int width, int height) {
-        Rectangle bounds = new Rectangle(0,0,width,height);
+        Rectangle bounds = new Rectangle(0, 0, width, height);
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }

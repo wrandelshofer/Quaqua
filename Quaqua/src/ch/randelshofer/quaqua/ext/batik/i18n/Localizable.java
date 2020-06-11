@@ -33,6 +33,7 @@ public interface Localizable {
      * Provides a way to the user to specify a locale which override the
      * default one. If null is passed to this method, the used locale
      * becomes the global one.
+     *
      * @param l The locale to set.
      */
     void setLocale(Locale l);
@@ -48,11 +49,12 @@ public interface Localizable {
      * in the resource bundle and the message parameters.
      * The messages in the resource bundle must have the syntax described in
      * the java.text.MessageFormat class documentation.
+     *
      * @param key  The key used to retreive the message from the resource
      *             bundle.
      * @param args The objects that compose the message.
-     * @exception MissingResourceException if the key is not in the bundle.
+     * @throws MissingResourceException if the key is not in the bundle.
      */
     String formatMessage(String key, Object[] args)
-        throws MissingResourceException;
+            throws MissingResourceException;
 }

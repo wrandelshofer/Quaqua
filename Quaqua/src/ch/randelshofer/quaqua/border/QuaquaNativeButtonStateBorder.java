@@ -4,11 +4,15 @@
  */
 package ch.randelshofer.quaqua.border;
 
-import ch.randelshofer.quaqua.VisualMargin;
-import javax.swing.JComponent;
 import ch.randelshofer.quaqua.QuaquaUtilities;
+import ch.randelshofer.quaqua.VisualMargin;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JComponent;
+import javax.swing.border.Border;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -18,10 +22,8 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
-import javax.swing.border.Border;
-import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
+
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
 
 /**
  * Native Aqua border for an {@code AbstractButton}.
@@ -66,11 +68,11 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         ButtonModel bm = null;
 
 
-            Insets vm = getVisualMargin(c);
-                x += vm.left;
-                y += vm.top;
-                width -= vm.left + vm.right;
-                height -= vm.top + vm.bottom;
+        Insets vm = getVisualMargin(c);
+        x += vm.left;
+        y += vm.top;
+        width -= vm.left + vm.right;
+        height -= vm.top + vm.bottom;
 
         if (c instanceof AbstractButton) {
             b = (AbstractButton) c;
@@ -112,16 +114,16 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         OSXAquaPainter.Size size;
 
         switch (QuaquaUtilities.getSizeVariant(c)) {
-            case REGULAR:
-            default:
-                size = OSXAquaPainter.Size.regular;
-                break;
-            case SMALL:
-                size = OSXAquaPainter.Size.small;
-                break;
-            case MINI:
-                size = OSXAquaPainter.Size.mini;
-                break;
+        case REGULAR:
+        default:
+            size = OSXAquaPainter.Size.regular;
+            break;
+        case SMALL:
+            size = OSXAquaPainter.Size.small;
+            break;
+        case MINI:
+            size = OSXAquaPainter.Size.mini;
+            break;
 
         }
         painter.setSize(size);
@@ -132,7 +134,7 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
 
     @Override
     protected Image createImage(Component c, int w, int h,
-            GraphicsConfiguration config) {
+                                GraphicsConfiguration config) {
 
         return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
 
@@ -147,17 +149,17 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         ig.dispose();
         painter.paint((BufferedImage) img,//
                 imageInsets.left, imageInsets.top,//
-               w - imageInsets.left - imageInsets.right, //
+                w - imageInsets.left - imageInsets.right, //
                 h - imageInsets.top - imageInsets.bottom);
     }
 
     @Override
     protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
         // round up image size to reduce memory thrashing
-       BufferedImage img=(BufferedImage)createImage(c,(w/32+1)*32,(h/32+1)*32,null);
-       paintToImage(c,img,w,h,args);
-       g.drawImage(img, 0, 0, null);
-       img.flush();
+        BufferedImage img = (BufferedImage) createImage(c, (w / 32 + 1) * 32, (h / 32 + 1) * 32, null);
+        paintToImage(c, img, w, h, args);
+        g.drawImage(img, 0, 0, null);
+        img.flush();
     }
 
     public Insets getBorderInsets(Component c) {
@@ -167,7 +169,8 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
     public boolean isBorderOpaque() {
         return false;
     }
-public Insets getVisualMargin(Component c) {
+
+    public Insets getVisualMargin(Component c) {
         Insets vm = null;
         if (c instanceof JComponent) {
             vm = (Insets) ((JComponent) c).getClientProperty("Quaqua.Component.visualMargin");

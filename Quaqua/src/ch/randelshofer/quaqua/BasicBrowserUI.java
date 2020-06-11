@@ -4,17 +4,25 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.datatransfer.*;
-import java.awt.datatransfer.*;
+import ch.randelshofer.quaqua.datatransfer.CompositeTransferable;
+import ch.randelshofer.quaqua.datatransfer.DefaultTransferable;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.ListCellRenderer;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+import javax.swing.plaf.UIResource;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.tree.*;
 
 /**
  * BasicBrowserUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class BasicBrowserUI extends BrowserUI {
@@ -37,7 +45,7 @@ public class BasicBrowserUI extends BrowserUI {
         c.setFont(UIManager.getFont("List.font"));
         sizeHandleIcon = UIManager.getIcon("Browser.sizeHandleIcon");
         if (sizeHandleIcon == null) {
-           sizeHandleIcon = new ImageIcon(BasicBrowserUI.class.getResource("images/Browser.sizeHandleIcon.png"));
+            sizeHandleIcon = new ImageIcon(BasicBrowserUI.class.getResource("images/Browser.sizeHandleIcon.png"));
         }
 
         browser = (JBrowser) c;
@@ -49,10 +57,10 @@ public class BasicBrowserUI extends BrowserUI {
                 (browser.getColumnCellRenderer() instanceof UIResource)) {
             browser.setColumnCellRenderer(createCellRenderer());
         }
-	TransferHandler th = browser.getTransferHandler();
-	if (th == null || th instanceof UIResource) {
-	    browser.setTransferHandler(defaultTransferHandler);
-	}
+        TransferHandler th = browser.getTransferHandler();
+        if (th == null || th instanceof UIResource) {
+            browser.setTransferHandler(defaultTransferHandler);
+        }
     }
     //
     // Uninstall methods
@@ -60,12 +68,13 @@ public class BasicBrowserUI extends BrowserUI {
 
     @Override
     public void uninstallUI(JComponent c) {
-	uninstallDefaults();
+        uninstallDefaults();
     }
+
     protected void uninstallDefaults() {
-	if (browser.getTransferHandler() instanceof UIResource) {
-	    browser.setTransferHandler(null);
-	}
+        if (browser.getTransferHandler() instanceof UIResource) {
+            browser.setTransferHandler(null);
+        }
     }
 
     @Override
@@ -76,6 +85,7 @@ public class BasicBrowserUI extends BrowserUI {
     protected ListCellRenderer createCellRenderer() {
         return new DefaultColumnCellRenderer.UIResource(browser);
     }
+
     private static final TransferHandler defaultTransferHandler = new BrowserTransferHandler();
 
     static class BrowserTransferHandler extends TransferHandler implements UIResource/*, Comparator*/ {
@@ -85,11 +95,10 @@ public class BasicBrowserUI extends BrowserUI {
         /**
          * Create a Transferable to use as the source for a data transfer.
          *
-         * @param c  The component holding the data to be transfered.  This
-         *  argument is provided to enable sharing of TransferHandlers by
-         *  multiple components.
-         * @return  The representation of the data to be transfered.
-         *
+         * @param c The component holding the data to be transfered.  This
+         *          argument is provided to enable sharing of TransferHandlers by
+         *          multiple components.
+         * @return The representation of the data to be transfered.
          */
         @Override
         protected Transferable createTransferable(JComponent c) {

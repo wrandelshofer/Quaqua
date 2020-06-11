@@ -5,13 +5,18 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+import javax.swing.UIManager;
+import java.awt.BorderLayout;
+import java.awt.Component;
 
 /**
  * QuaquaComboBoxCellRenderer.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaComboBoxCellRenderer implements ListCellRenderer {
@@ -40,8 +45,8 @@ public class QuaquaComboBoxCellRenderer implements ListCellRenderer {
 
         panel.add(valueComponent);
         panel.setBackground((isSelected) ?
-        valueComponent.getBackground() :
-           UIManager.getColor("PopupMenu.background")
+                valueComponent.getBackground() :
+                UIManager.getColor("PopupMenu.background")
         );
 
         return panel;

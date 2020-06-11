@@ -6,16 +6,25 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.colorchooser.*;
-import javax.swing.plaf.*;
-import java.util.*;
+
+import javax.swing.Icon;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.UIResource;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.HashMap;
+
 /**
  * HTMLChooser.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class HTMLChooser extends AbstractColorChooserPanel implements UIResource {
@@ -37,34 +46,38 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
      * W3C HTML 4.1 well known color names.
      */
     private final static Object[][] colorNames = {
-        {"Black", new Color(0x000000)},
-        {"Green", new Color(0x008000)},
-        {"Silver", new Color(0xC0C0C0)},
-        {"Lime", new Color(0x00FF00)},
-        {"Gray", new Color(0x808080)},
-        {"Olive", new Color(0x808000)},
-        {"White", new Color(0xFFFFFF)},
-        {"Yellow", new Color(0xFFFF00)},
-        {"Maroon", new Color(0x800000)},
-        {"Navy", new Color(0x000080)},
-        {"Red", new Color(0xFF0000)},
-        {"Blue", new Color(0x0000FF)},
-        {"Purple", new Color(0x800080)},
-        {"Teal", new Color(0x008080)},
-        {"Fuchsia", new Color(0xFF00FF)},
-        {"Aqua", new Color(0x00FF)}
+            {"Black", new Color(0x000000)},
+            {"Green", new Color(0x008000)},
+            {"Silver", new Color(0xC0C0C0)},
+            {"Lime", new Color(0x00FF00)},
+            {"Gray", new Color(0x808080)},
+            {"Olive", new Color(0x808000)},
+            {"White", new Color(0xFFFFFF)},
+            {"Yellow", new Color(0xFFFF00)},
+            {"Maroon", new Color(0x800000)},
+            {"Navy", new Color(0x000080)},
+            {"Red", new Color(0xFF0000)},
+            {"Blue", new Color(0x0000FF)},
+            {"Purple", new Color(0x800080)},
+            {"Teal", new Color(0x008080)},
+            {"Fuchsia", new Color(0xFF00FF)},
+            {"Aqua", new Color(0x00FF)}
     };
     private final static HashMap nameToColorMap = new HashMap();
+
     static {
-        for (int i=0; i < colorNames.length; i++) {
+        for (int i = 0; i < colorNames.length; i++) {
             nameToColorMap.put(((String) colorNames[i][0]).toLowerCase(), colorNames[i][1]);
         }
     }
 
 
-    /** Creates new form. */
+    /**
+     * Creates new form.
+     */
     public HTMLChooser() {
     }
+
     protected void buildChooser() {
         initComponents();
 
@@ -85,7 +98,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         //
         int textSliderGap = UIManager.getInt("ColorChooser.textSliderGap");
         if (textSliderGap != 0) {
-            Insets fieldInsets = new Insets(0,textSliderGap,0,0);
+            Insets fieldInsets = new Insets(0, textSliderGap, 0, 0);
             GridBagLayout layout = (GridBagLayout) getLayout();
             GridBagConstraints gbc;
             gbc = layout.getConstraints(redField);
@@ -109,16 +122,16 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             public void stateChanged(ChangeEvent evt) {
                 Color c = ccModel.getColor();
                 setColorToModel(c);
-                if (! c.equals(nameToColorMap.get(htmlField.getText().toLowerCase()))) {
-                    if (! htmlField.hasFocus()) {
+                if (!c.equals(nameToColorMap.get(htmlField.getText().toLowerCase()))) {
+                    if (!htmlField.hasFocus()) {
                         String hex = Integer.toHexString(0xffffff & c.getRGB());
                         StringBuffer buf = new StringBuffer(7);
                         buf.append('#');
-                        for (int i=hex.length(); i < 6; i++) {
+                        for (int i = hex.length(); i < 6; i++) {
                             buf.append('0');
                         }
                         buf.append(hex.toUpperCase());
-                        if (! htmlField.getText().equals(buf.toString())) {
+                        if (!htmlField.getText().equals(buf.toString())) {
                             htmlField.setText(buf.toString());
                         }
                     }
@@ -147,7 +160,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         greenField.setMinimumSize(greenField.getPreferredSize());
         blueField.setMinimumSize(blueField.getPreferredSize());
         htmlPanel.setMinimumSize(htmlPanel.getPreferredSize());
-        VisualMarginBorder bm = new VisualMarginBorder(false,false,true,false);
+        VisualMarginBorder bm = new VisualMarginBorder(false, false, true, false);
         redLabel.setBorder(bm);
         greenLabel.setBorder(bm);
         blueLabel.setBorder(bm);
@@ -170,7 +183,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             updateRecursion++;
             if (ccModel.isWebSaveOnly()) {
                 Color c = getColorFromModel();
-                if (! HTMLColorSliderModel.isWebSave(c.getRGB())) {
+                if (!HTMLColorSliderModel.isWebSave(c.getRGB())) {
                     webSaveCheckBox.setSelected(false);
                 }
             }
@@ -189,7 +202,8 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
     }
 
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -241,6 +255,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             public void focusGained(java.awt.event.FocusEvent evt) {
                 fieldFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 redFieldFocusLost(evt);
             }
@@ -266,6 +281,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             public void focusGained(java.awt.event.FocusEvent evt) {
                 fieldFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 greenFieldFocusLost(evt);
             }
@@ -315,6 +331,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             public void focusGained(java.awt.event.FocusEvent evt) {
                 fieldFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 blueFieldFocusLost(evt);
             }
@@ -338,6 +355,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             public void focusGained(java.awt.event.FocusEvent evt) {
                 fieldFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 htmlFieldFocusLost(evt);
             }
@@ -376,33 +394,33 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldFocusGained
-((JTextField) evt.getSource()).selectAll();
+        ((JTextField) evt.getSource()).selectAll();
     }//GEN-LAST:event_fieldFocusGained
 
     private void blueFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_blueFieldFocusLost
         String hex = Integer.toHexString(ccModel.getBoundedRangeModel(2).getValue()).toUpperCase();
-        blueField.setText((hex.length() == 1) ? "0"+hex : hex);
+        blueField.setText((hex.length() == 1) ? "0" + hex : hex);
     }//GEN-LAST:event_blueFieldFocusLost
 
     private void greenFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_greenFieldFocusLost
         String hex = Integer.toHexString(ccModel.getBoundedRangeModel(1).getValue()).toUpperCase();
-        greenField.setText((hex.length() == 1) ? "0"+hex : hex);
+        greenField.setText((hex.length() == 1) ? "0" + hex : hex);
     }//GEN-LAST:event_greenFieldFocusLost
 
     private void redFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_redFieldFocusLost
         String hex = Integer.toHexString(ccModel.getBoundedRangeModel(0).getValue()).toUpperCase();
-        redField.setText((hex.length() == 1) ? "0"+hex : hex);
+        redField.setText((hex.length() == 1) ? "0" + hex : hex);
     }//GEN-LAST:event_redFieldFocusLost
 
     private void htmlFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_htmlFieldFocusLost
         Color mc = ccModel.getColor();
 
         Color fc = (Color) nameToColorMap.get(htmlField.getText().toLowerCase());
-        if (fc == null || ! fc.equals(mc)) {
+        if (fc == null || !fc.equals(mc)) {
             String hex = Integer.toHexString(0xffffff & mc.getRGB());
             StringBuffer buf = new StringBuffer(7);
             buf.append('#');
-            for (int i=hex.length(); i < 6; i++) {
+            for (int i = hex.length(); i < 6; i++) {
                 buf.append('0');
             }
             buf.append(hex.toUpperCase());

@@ -13,7 +13,7 @@ package ch.randelshofer.quaqua.util;
  * Design pattern used: Acceptor
  * Role in design pattern: EventCollector and EventProcessor
  *
- * @author  Werner Randelshofef
+ * @author Werner Randelshofef
  * @version 1.0 2002-05-18 Created
  */
 public class SequentialDispatcher extends EventLoop {
@@ -23,6 +23,7 @@ public class SequentialDispatcher extends EventLoop {
      */
     public SequentialDispatcher() {
     }
+
     /**
      * Creates a new SequentialDispatcher which processes Runnable Objects
      * at the desired thread priority.

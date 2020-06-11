@@ -4,7 +4,6 @@
  */
 package ch.randelshofer.quaqua.mavericks.filechooser;
 
-import ch.randelshofer.quaqua.lion.filechooser.*;
 import ch.randelshofer.quaqua.BrowserPreviewRenderer;
 import ch.randelshofer.quaqua.JBrowser;
 import ch.randelshofer.quaqua.filechooser.FileInfo;
@@ -12,26 +11,50 @@ import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.util.Worker;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.table.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.tree.TreePath;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * The LionFilePreview is used to render the preview column in the JBrowser in
- Quaqua's FileChooserUI's.
+ * Quaqua's FileChooserUI's.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class MavericksFilePreview extends JPanel implements BrowserPreviewRenderer {
@@ -230,7 +253,7 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
                 scaledLength = (float) fileLength;
             }
 
-        return MessageFormat.format(UIManager.getString(label), scaledLength, fileLength);
+            return MessageFormat.format(UIManager.getString(label), scaledLength, fileLength);
         }
     }
 
@@ -247,8 +270,7 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
     }
 
     private class AttributeTableModel
-        extends AbstractTableModel
-    {
+            extends AbstractTableModel {
         private List<String> names = new ArrayList<String>();
         private List<String> values = new ArrayList<String>();
         private int nameWidth;
@@ -265,8 +287,7 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
             }
         }
 
-        public void updatePreferredWidths()
-        {
+        public void updatePreferredWidths() {
             int fudge = 15;
             attributeView.getColumnModel().getColumn(0).setPreferredWidth(nameWidth + fudge);
             attributeView.getColumnModel().getColumn(1).setPreferredWidth(valueWidth + fudge);
@@ -356,31 +377,30 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
         return size != null ? size.width : 0;
     }
 
-    public static Dimension getTextSize(String s, Font f, JComponent c)
-   	{
-   		if (f == null) {
-   			f = c.getFont();
-   			if (f == null) {
-   				return null;
-   			}
-   		}
+    public static Dimension getTextSize(String s, Font f, JComponent c) {
+        if (f == null) {
+            f = c.getFont();
+            if (f == null) {
+                return null;
+            }
+        }
 
-   		FontMetrics fm = null;
+        FontMetrics fm = null;
 
-   		try {
-   			// Workaround a Swing bug (probably old)
-   			fm = c.getFontMetrics(f);
-   		} catch (NullPointerException ex) {
-   		}
+        try {
+            // Workaround a Swing bug (probably old)
+            fm = c.getFontMetrics(f);
+        } catch (NullPointerException ex) {
+        }
 
-   		if (fm == null) {
-   			return null;
-   		}
+        if (fm == null) {
+            return null;
+        }
 
-   		int w = fm.stringWidth(s);
-   		int h = fm.getHeight();
-   		return new Dimension(w, h);
-   	}
+        int w = fm.stringWidth(s);
+        int h = fm.getHeight();
+        return new Dimension(w, h);
+    }
 
     private static class SimpleTableCellRenderer extends JLabel implements TableCellRenderer {
         private Font f;
@@ -407,42 +427,48 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
          *
          * @since 1.5
          */
-        public void invalidate() {}
+        public void invalidate() {
+        }
 
         /**
          * Overridden for performance reasons.
          * See the <a href="#override">Implementation Note</a>
          * for more information.
          */
-        public void validate() {}
+        public void validate() {
+        }
 
         /**
          * Overridden for performance reasons.
          * See the <a href="#override">Implementation Note</a>
          * for more information.
          */
-        public void revalidate() {}
+        public void revalidate() {
+        }
 
         /**
          * Overridden for performance reasons.
          * See the <a href="#override">Implementation Note</a>
          * for more information.
          */
-        public void repaint(long tm, int x, int y, int width, int height) {}
+        public void repaint(long tm, int x, int y, int width, int height) {
+        }
 
         /**
          * Overridden for performance reasons.
          * See the <a href="#override">Implementation Note</a>
          * for more information.
          */
-        public void repaint(Rectangle r) {}
+        public void repaint(Rectangle r) {
+        }
 
         /**
          * Overridden for performance reasons.
          * See the <a href="#override">Implementation Note</a>
          * for more information.
          */
-        public void repaint() {}
+        public void repaint() {
+        }
 
         /**
          * Overridden for performance reasons.
@@ -451,12 +477,12 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
          */
         protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
             // Strings get interned...
-            if (propertyName=="text"
+            if (propertyName == "text"
                     || propertyName == "labelFor"
                     || propertyName == "displayedMnemonic"
                     || ((propertyName == "font" || propertyName == "foreground")
-                        && oldValue != newValue
-                        && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey) != null)) {
+                    && oldValue != newValue
+                    && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey) != null)) {
 
                 super.firePropertyChange(propertyName, oldValue, newValue);
             }
@@ -467,7 +493,8 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
          * See the <a href="#override">Implementation Note</a>
          * for more information.
          */
-        public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
+        public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+        }
     }
 
     private static class GrayLine extends JComponent {
@@ -498,7 +525,7 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
 
             Insets s = getInsets();
             g.setColor(new Color(0xd9d9d9));
-            g.drawLine(s.left, s.top, getWidth()-s.right, s.top);
+            g.drawLine(s.left, s.top, getWidth() - s.right, s.top);
         }
     }
 
@@ -527,9 +554,9 @@ public class MavericksFilePreview extends JPanel implements BrowserPreviewRender
                 float imheight = im.getHeight();
                 if (imwidth > 0 && imheight > 0) {
                     int size = Math.min(cwidth, cheight);
-                    float scale = Math.min(cwidth/imwidth, cheight/imheight);
-                    int extraLeft = (int) Math.max(0, (cwidth - imwidth*scale) / 2);
-                    int extraTop = (int) Math.max(0, (cheight - imheight*scale) / 2);
+                    float scale = Math.min(cwidth / imwidth, cheight / imheight);
+                    int extraLeft = (int) Math.max(0, (cwidth - imwidth * scale) / 2);
+                    int extraTop = (int) Math.max(0, (cheight - imheight * scale) / 2);
                     g.drawImage(im, left + extraLeft, top + extraTop, size, size, null);
                 }
             }

@@ -4,20 +4,36 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.table.*;
-import javax.swing.plaf.basic.*;
-import java.beans.*;
+import ch.randelshofer.quaqua.util.Fonts;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicButtonListener;
+import javax.swing.plaf.basic.BasicCheckBoxUI;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * QuaquaCheckBoxUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayoutable {
@@ -29,9 +45,9 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     /**
      * Preferred spacing between check boxes and other components.
      * /
-    private final static Insets regularSpacing = new Insets(6,6,6,6);
-    private final static Insets smallSpacing = new Insets(6,6,6,6);
-    private final static Insets miniSpacing = new Insets(5,5,5,5);
+     * private final static Insets regularSpacing = new Insets(6,6,6,6);
+     * private final static Insets smallSpacing = new Insets(6,6,6,6);
+     * private final static Insets miniSpacing = new Insets(5,5,5,5);
      */
     public static ComponentUI createUI(JComponent b) {
         return checkboxUI;
@@ -79,19 +95,19 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     }
 
     private boolean isSmall(JComponent c) {
-        boolean isSmall=QuaquaUtilities.getSizeVariant(c)==QuaquaUtilities.SizeVariant.SMALL;
+        boolean isSmall = QuaquaUtilities.getSizeVariant(c) == QuaquaUtilities.SizeVariant.SMALL;
 
         return isSmall;
     }
 
-        public Icon getDefaultIcon(JComponent c) {
+    public Icon getDefaultIcon(JComponent c) {
         switch (QuaquaUtilities.getSizeVariant(c)) {
-            default:
-                return UIManager.getIcon("CheckBox.icon");
-            case SMALL:
-                return UIManager.getIcon("CheckBox.smallIcon");
-            case MINI:
-                return UIManager.getIcon("CheckBox.miniIcon");
+        default:
+            return UIManager.getIcon("CheckBox.icon");
+        case SMALL:
+            return UIManager.getIcon("CheckBox.smallIcon");
+        case MINI:
+            return UIManager.getIcon("CheckBox.miniIcon");
         }
     }
 
@@ -209,10 +225,11 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     /**
      * Method which renders the text of the current button.
      * <p>
-     * @param g Graphics context
-     * @param b Current button to render
+     *
+     * @param g        Graphics context
+     * @param b        Current button to render
      * @param textRect Bounding rectangle to render the text.
-     * @param text String to render
+     * @param text     String to render
      * @since 1.4
      */
     @Override
@@ -399,12 +416,12 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
 
         // Determine rect rectangle
         switch (type) {
-            case VisuallyLayoutable.COMPONENT_BOUNDS:
-                rect = textR.union(iconR);
-                break;
-            case VisuallyLayoutable.TEXT_BOUNDS:
-                rect.setBounds(textR);
-                break;
+        case VisuallyLayoutable.COMPONENT_BOUNDS:
+            rect = textR.union(iconR);
+            break;
+        case VisuallyLayoutable.TEXT_BOUNDS:
+            rect.setBounds(textR);
+            break;
         }
 
         return rect;

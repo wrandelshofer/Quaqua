@@ -149,7 +149,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
     /**
      * Each saved search has its own file system tree model.
      */
-    private Map<File,FileSystemTreeModel> savedSearches;
+    private Map<File, FileSystemTreeModel> savedSearches;
     private FileSystemTreeModel fileSystemModel = null;
 
     // Labels, mnemonics, and tooltips (oh my!)
@@ -211,21 +211,22 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
     private static String goToFolderText = "";
 
 
-    /** XXX - These keystrokes should go into an InputMap created by the
+    /**
+     * XXX - These keystrokes should go into an InputMap created by the
      * BasicQuaquaLookAndFeel class.
      */
     private KeyStroke[] KEYSTROKES = {
-        KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
     };
 
     protected CellRenderer createFileRenderer(JFileChooser fc) {
@@ -250,44 +251,44 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         public void actionPerformed(ActionEvent ae) {
             File file = null;
             switch (ae.getActionCommand().charAt(0)) {
-                case 'd':
-                    file = new File(System.getProperty("user.home") + "/Desktop");
-                    break;
-                case 'c':
-                    FileInfo info = (FileInfo) fileSystemModel.getRoot();
-                    file = info.getResolvedFile();
-                    break;
-                case 'h':
-                    file = new File(System.getProperty("user.home"));
-                    break;
-                case 'k':
-                    file = new File("/Network");
-                    break;
-                case 'i':
-                    //not doing iDisk for now
-                    file = null;
-                    return;
-                case 'a':
-                    file = new File("/Applications");
-                    break;
-                case 'u':
-                    file = new File( "/Applications/Utilities" );
-                    break;
-                case 'g':
-                    requestFileSelectionPath(null);
-                    return;
-                case 'o':
-                    file = new File(System.getProperty("user.home") + "/Documents");
-                    break;
-                case '.':
-                    // toggle show/hide hidden files
-                    boolean isHiding = fc.isFileHidingEnabled();
-                    // Here we want to respond to a change event
-                    fc.setFileHidingEnabled(!isHiding);
-                    return;
-                default:
-                    //Unknown Key Command in: + ae );
-                    break;
+            case 'd':
+                file = new File(System.getProperty("user.home") + "/Desktop");
+                break;
+            case 'c':
+                FileInfo info = (FileInfo) fileSystemModel.getRoot();
+                file = info.getResolvedFile();
+                break;
+            case 'h':
+                file = new File(System.getProperty("user.home"));
+                break;
+            case 'k':
+                file = new File("/Network");
+                break;
+            case 'i':
+                //not doing iDisk for now
+                file = null;
+                return;
+            case 'a':
+                file = new File("/Applications");
+                break;
+            case 'u':
+                file = new File("/Applications/Utilities");
+                break;
+            case 'g':
+                requestFileSelectionPath(null);
+                return;
+            case 'o':
+                file = new File(System.getProperty("user.home") + "/Documents");
+                break;
+            case '.':
+                // toggle show/hide hidden files
+                boolean isHiding = fc.isFileHidingEnabled();
+                // Here we want to respond to a change event
+                fc.setFileHidingEnabled(!isHiding);
+                return;
+            default:
+                //Unknown Key Command in: + ae );
+                break;
             }
             //set the dir if non-null:
             if (file != null) {
@@ -953,34 +954,34 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         KeyListener kl = new TextKeyListener();
 
         Component[] dropComponents = {
-            fc,
-            accessoryPanel,
-            approveButton,
-            columnView,
-            buttonsPanel,
-            cancelButton,
-            controlsPanel,
-            directoryComboBox,
-            fileNameLabel,
-            fileNamePanel,
-            fileNameSpringPanel,
-            fileNameTextField,
-            filesOfTypeLabel,
-            filterComboBox,
-            formatPanel,
-            formatSpringPanel,
-            listView,
-            mainPanel,
-            navigationPanel,
-            newFolderButton,
-            //nextButton,
-            //previousButton,
-            separator,
-            splitPane,
-            viewModeControl,
-            viewsPanel,
-            sidebarTree,
-            sidebarScrollPane
+                fc,
+                accessoryPanel,
+                approveButton,
+                columnView,
+                buttonsPanel,
+                cancelButton,
+                controlsPanel,
+                directoryComboBox,
+                fileNameLabel,
+                fileNamePanel,
+                fileNameSpringPanel,
+                fileNameTextField,
+                filesOfTypeLabel,
+                filterComboBox,
+                formatPanel,
+                formatSpringPanel,
+                listView,
+                mainPanel,
+                navigationPanel,
+                newFolderButton,
+                //nextButton,
+                //previousButton,
+                separator,
+                splitPane,
+                viewModeControl,
+                viewsPanel,
+                sidebarTree,
+                sidebarScrollPane
         };
         for (int i = 0; i < dropComponents.length; i++) {
             Component c = dropComponents[i];
@@ -1298,14 +1299,14 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
     /**
      * Update the selection in the active view to match the selected files of the JFileChooser.
-     *
+     * <p>
      * This method maps the (application provided) file chooser selection to a (possibly new) view selection and a
      * (possibly new) view root.
-     *
+     * <p>
      * In a column view, all elements of a multiple selection must reside in the same parent directory. Although not
      * mandatory for a list view, we enforce the common parent rule in all cases to ensure that the file selection is
      * viewable. The file chooser selection is updated as needed to be consistent with what we display in the view.
-     *
+     * <p>
      * If the view is displaying a smart folder (saved search), we display the file selection in the the smart folder
      * if possible. Otherwise, we switch to the file system model.
      */
@@ -1461,7 +1462,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
     }
 
     public static boolean Object_equals(Object o1, Object o2) {
-        return o1 == null ? o2 == null :  o1.equals(o2);
+        return o1 == null ? o2 == null : o1.equals(o2);
     }
 
     /**
@@ -1747,13 +1748,13 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
     /**
      * Respond to double click on a item in the view that is either traversable or acceptable (or both) or to a single
      * click on a file in a Save dialog.
-     *
+     * <p>
      * A double click on a traversable item installs the item as the current directory (list view only), which may
      * update the display subtree root and the sidebar selection. (Nothing special happens in a column view.)
-     *
+     * <p>
      * A double click on an acceptable (but not traversable) item selects that item as the selected file (possibly
      * adding it to the existing selection) and dismisses the dialog.
-     *
+     * <p>
      * A single click on a file in a Save dialog installs the file name in the file name text field.
      */
     protected class ViewSelectListener implements FileChooserView.SelectListener {
@@ -2066,22 +2067,22 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
                     fc.applyComponentOrientation(o);
                     }
                      */
-//                } else if (s.equals("ancestor")) {
-//                    if (e.getOldValue() == null && e.getNewValue() != null) {
-//                        // Ancestor was added, ensure path is visible and
-//                        // set initial focus
-//                        if (activeView != null) {
-//                            activeView.ensureSelectionIsVisible();
-//                        }
-//                        if (fc.getDialogType() == JFileChooser.SAVE_DIALOG) {
-//                            fileNameTextField.selectAll();
-//                            fileNameTextField.requestFocusInWindow();
-//                        } else {
-//                            if (activeView != null) {
-//                                activeView.requestFocusInWindow();
-//                            }
-//                        }
-//                    }
+                    //                } else if (s.equals("ancestor")) {
+                    //                    if (e.getOldValue() == null && e.getNewValue() != null) {
+                    //                        // Ancestor was added, ensure path is visible and
+                    //                        // set initial focus
+                    //                        if (activeView != null) {
+                    //                            activeView.ensureSelectionIsVisible();
+                    //                        }
+                    //                        if (fc.getDialogType() == JFileChooser.SAVE_DIALOG) {
+                    //                            fileNameTextField.selectAll();
+                    //                            fileNameTextField.requestFocusInWindow();
+                    //                        } else {
+                    //                            if (activeView != null) {
+                    //                                activeView.requestFocusInWindow();
+                    //                            }
+                    //                        }
+                    //                    }
                 }
             }
         };
@@ -2146,13 +2147,13 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
      * Update the current view to display the specified directory. A new view root may be chosen and the sidebar
      * selection may be changed. The file chooser current directory will be changed if needed and the combo box model
      * updated. The view selection will be updated as needed. The approve button enabled state is updated.
+     * <p>
+     * This method may perform some updates asynchronously.
      *
-	 * This method may perform some updates asynchronously.
-	 *
-     * @param f The traversable file to become the current directory. If {@code f} is not a traversable file, the
-     *          nearest traversable ancestor is used (should be the parent).
+     * @param f      The traversable file to become the current directory. If {@code f} is not a traversable file, the
+     *               nearest traversable ancestor is used (should be the parent).
      * @param source The source of this change. (See constants above.)
-     * @param r This runnable is invoked after all updates have been completed.
+     * @param r      This runnable is invoked after all updates have been completed.
      */
     protected void selectDirectory(File f, final int source, final Runnable r) {
 
@@ -2254,12 +2255,11 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
      * Select a subtree of the model to display that contains the specified file and identify the matching sidebar item,
      * if any.
      *
-     * @param f The (resolved) file.
+     * @param f                     The (resolved) file.
      * @param isRestrictedToSidebar If true, new subtree root will be the best matching sidebar item, where a sidebar
-     *  item matches if the file is contained in the subtree defined by that sidebar item. (If there is no matching
-     *  sidebar item, the entire file system tree model is displayed.) If false, the specified file becomes the new
-     *  subtree root, and the sidebar item for that (exact) file is returned (if any).
-     *
+     *                              item matches if the file is contained in the subtree defined by that sidebar item. (If there is no matching
+     *                              sidebar item, the entire file system tree model is displayed.) If false, the specified file becomes the new
+     *                              subtree root, and the sidebar item for that (exact) file is returned (if any).
      * @return a path identifying the matching sidebar item, or null if none.
      */
 
@@ -2451,7 +2451,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             FileSystemTreeModel.Node n = (FileSystemTreeModel.Node) path.getPathComponent(index);
             n.invokeWhenValid(new Runnable() {
                 public void run() {
-                    runAfterValidation(path, index+1, lastIndex, r);
+                    runAfterValidation(path, index + 1, lastIndex, r);
                 }
             });
         }
@@ -2484,8 +2484,8 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value,
-                int index, boolean isSelected,
-                boolean cellHasFocus) {
+                                                      int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
 
 
             // String objects are used to denote delimiters.
@@ -2558,8 +2558,8 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value,
-                boolean isSelected, boolean isExpanded, boolean isLeaf,
-                int row, boolean cellHasFocus) {
+                                                      boolean isSelected, boolean isExpanded, boolean isLeaf,
+                                                      int row, boolean cellHasFocus) {
             super.getTreeCellRendererComponent(tree, value, isSelected,
                     isExpanded, isLeaf, row, false);
 
@@ -2765,7 +2765,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             for (int i = 0; i < count; i++) {
                 Object node = path.getPathComponent(i);
                 if (node.equals(selectedDirectory)) {
-                    return pathPrefix(path, i+1);
+                    return pathPrefix(path, i + 1);
                 }
             }
             return null;
@@ -2806,8 +2806,8 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
         @Override
         public Component getListCellRendererComponent(JList list,
-                Object value, int index, boolean isSelected,
-                boolean cellHasFocus) {
+                                                      Object value, int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
 
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
@@ -3033,6 +3033,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
     /**
      * Is a directory selected as an item in the list view? This method is called only for a Save or Custom dialog.
+     *
      * @param f The uniquely selected file.
      */
     private boolean isDirectorySelectedInSaveDialogListView(File f) {
@@ -3110,16 +3111,17 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
     /**
      * Return the files selected in the current view.
+     *
      * @param useDefault If true and no files are selected in the view, return the display subtree root.
      * @return the selected files.
-    */
+     */
 
     protected List<File> getUISelection(boolean useDefault) {
         List<File> result = new ArrayList<File>();
 
         List<TreePath> paths = activeView.getSelection();
         for (TreePath path : paths) {
-            File f = ((FileSystemTreeModel.Node)path.getLastPathComponent()).getFile();
+            File f = ((FileSystemTreeModel.Node) path.getLastPathComponent()).getFile();
             result.add(f);
         }
 
@@ -3255,9 +3257,9 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
             // Setup Options
             optionPane.setOptions(new Object[]{
-                        UIManager.getString("FileChooser.createFolderButtonText"),
-                        UIManager.getString("FileChooser.cancelButtonText")
-                    });
+                    UIManager.getString("FileChooser.createFolderButtonText"),
+                    UIManager.getString("FileChooser.cancelButtonText")
+            });
             optionPane.setInitialValue(UIManager.getString("FileChooser.createFolderButtonText"));
 
             // Show the dialog
@@ -3464,33 +3466,33 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             }
         }
 
-//
-//
-//
-//        /*
-//          The previous code makes a special case for a file that is part of the selection. Not sure why.
-//        */
-//
-//
-//
-//        if (browser.getSelectionPaths() != null) {
-//            TreePath[] paths = browser.getSelectionPaths();
-//            for (int i = 0; i < paths.length; i++) {
-//                if (((FileSystemTreeModel.Node) paths[i].getLastPathComponent()).getFile().equals(f)) {
-//                    browser.ensurePathIsVisible(paths[i]);
-//                    return;
-//                }
-//            }
-//        } else {
-//            TreePath fullPath = model.toPath(f, subtreeModel.getPathToRoot());
-//            TreePath subPath = subtreeModel.toSubPath(fullPath);
-//            if (subPath == null) {
-//                isAdjusting++;
-//                selectRoot(f);
-//                isAdjusting--;
-//            }
-//            browser.ensurePathIsVisible(fullPath);
-//        }
+        //
+        //
+        //
+        //        /*
+        //          The previous code makes a special case for a file that is part of the selection. Not sure why.
+        //        */
+        //
+        //
+        //
+        //        if (browser.getSelectionPaths() != null) {
+        //            TreePath[] paths = browser.getSelectionPaths();
+        //            for (int i = 0; i < paths.length; i++) {
+        //                if (((FileSystemTreeModel.Node) paths[i].getLastPathComponent()).getFile().equals(f)) {
+        //                    browser.ensurePathIsVisible(paths[i]);
+        //                    return;
+        //                }
+        //            }
+        //        } else {
+        //            TreePath fullPath = model.toPath(f, subtreeModel.getPathToRoot());
+        //            TreePath subPath = subtreeModel.toSubPath(fullPath);
+        //            if (subPath == null) {
+        //                isAdjusting++;
+        //                selectRoot(f);
+        //                isAdjusting--;
+        //            }
+        //            browser.ensurePathIsVisible(fullPath);
+        //        }
     }
 
     /**
@@ -3566,7 +3568,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             if (sidebarTree != null) {
                 selectRootFromSidebarSelection();
             }
-         }
+        }
     }
 
     /**

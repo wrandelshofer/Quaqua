@@ -5,10 +5,11 @@
 package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.QuaquaManager;
-import java.util.HashSet;
+
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+import java.util.HashSet;
 
 /**
  * A document model which silently converts forbidden filename characters

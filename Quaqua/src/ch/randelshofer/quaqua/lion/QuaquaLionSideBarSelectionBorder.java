@@ -4,15 +4,16 @@
  */
 package ch.randelshofer.quaqua.lion;
 
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+
+import javax.swing.border.Border;
+import javax.swing.plaf.UIResource;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import javax.swing.border.*;
-import javax.swing.plaf.UIResource;
 
 /**
  * QuaquaLionSideBarSelectionBorder.
@@ -22,7 +23,9 @@ import javax.swing.plaf.UIResource;
  */
 public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaLionSideBarSelectionBorder() {
     }
 
@@ -39,7 +42,7 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
             g.setPaint(new LinearGradientPaint(
                     x, y + 2, new Color(0x6db1e3),
                     x, y + height - 3, new Color(0x3b89d0)
-                    ));
+            ));
             g.fillRect(x, y + 2, width, height - 3);
 
             // bottom line
@@ -57,7 +60,7 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
                 g.setPaint(new LinearGradientPaint(
                         x, y + 2, new Color(0xbdc7dc),
                         x, y + height - 3, new Color(0x9dabc4)
-                        ));
+                ));
                 g.fillRect(x, y + 2, width, height - 3);
 
                 // bottom line
@@ -75,7 +78,7 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
                 g.setPaint(new LinearGradientPaint(
                         x, y + 2, new Color(0xbdc7dc),
                         x, y + height - 3, new Color(0x9dabc4)
-                        ));
+                ));
                 g.fillRect(x, y + 2, width, height - 3);
 
                 // bottom line

@@ -13,7 +13,9 @@ package ch.randelshofer.quaqua;
  */
 public class QuaquaLookAndFeel15 extends LookAndFeelProxy15 {
 
-    /** Creates a new instance of QuaquaLookAndFeel */
+    /**
+     * Creates a new instance of QuaquaLookAndFeel
+     */
     public QuaquaLookAndFeel15() {
         super(QuaquaManager.getLookAndFeel());
     }

@@ -5,9 +5,15 @@
 
 package ch.randelshofer.quaqua;
 
-import java.lang.reflect.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.plaf.ActionMapUIResource;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * QuaquaLazyActionMap.
@@ -29,15 +35,15 @@ public class QuaquaLazyActionMap extends ActionMapUIResource {
      * <p>
      * This should be used if the ActionMap can be shared.
      *
-     * @param c JComponent to install the ActionMap on.
+     * @param c           JComponent to install the ActionMap on.
      * @param loaderClass Class object that gets loadActionMap invoked
      *                    on.
      * @param defaultsKey Key to use to defaults table to check for
-     *        existing map and what resulting Map will be registered on.
+     *                    existing map and what resulting Map will be registered on.
      */
     static void installLazyActionMap(JComponent c, Class loaderClass,
                                      String defaultsKey) {
-        ActionMap map = (ActionMap)UIManager.get(defaultsKey);
+        ActionMap map = (ActionMap) UIManager.get(defaultsKey);
         if (map == null) {
             map = new QuaquaLazyActionMap(loaderClass);
             UIManager.getLookAndFeelDefaults().put(defaultsKey, map);
@@ -52,19 +58,21 @@ public class QuaquaLazyActionMap extends ActionMapUIResource {
      * <p>
      * This should be used if the ActionMap can be shared.
      *
-     * @param c JComponent to install the ActionMap on.
+     * @param c           JComponent to install the ActionMap on.
      * @param loaderClass Class object that gets loadActionMap invoked
      *                    on.
      * @param defaultsKey Key to use to defaults table to check for
-     *        existing map and what resulting Map will be registered on.
+     *                    existing map and what resulting Map will be registered on.
      */
     static ActionMap getActionMap(Class loaderClass,
                                   String defaultsKey) {
-        ActionMap map = (ActionMap)UIManager.get(defaultsKey);
+        ActionMap map = (ActionMap) UIManager.get(defaultsKey);
         if (map == null) {
             map = new QuaquaLazyActionMap(loaderClass);
-         UIDefaults uide=   UIManager.getLookAndFeelDefaults();
-         if (uide!=null) uide.put(defaultsKey, map);
+            UIDefaults uide = UIManager.getLookAndFeelDefaults();
+            if (uide != null) {
+                uide.put(defaultsKey, map);
+            }
         }
         return map;
     }
@@ -131,11 +139,11 @@ public class QuaquaLazyActionMap extends ActionMapUIResource {
             Object loader = _loader;
 
             _loader = null;
-            Class klass = (Class)loader;
+            Class klass = (Class) loader;
             try {
                 Method method = klass.getDeclaredMethod("loadActionMap",
-                                      new Class[] { QuaquaLazyActionMap.class });
-                method.invoke(klass, new Object[] { this });
+                        new Class[]{QuaquaLazyActionMap.class});
+                method.invoke(klass, new Object[]{this});
             } catch (NoSuchMethodException nsme) {
                 assert false : "LazyActionMap unable to load actions " +
                         klass;

@@ -19,6 +19,8 @@
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered;
 
 
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.GraphicsUtil;
+
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
@@ -32,15 +34,14 @@ import java.awt.image.SampleModel;
 import java.awt.image.SinglePixelPackedSampleModel;
 import java.awt.image.WritableRaster;
 
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.GraphicsUtil;
-
 /**
  * This function will tranform an image from any colorspace into a
  * luminance image.  The alpha channel if any will be copied to the
  * new image.
  *
  * @author <a href="mailto:Thomas.DeWeeese@Kodak.com">Thomas DeWeese</a>
- * @version $Id: Any2LsRGBRed.java 478276 2006-11-22 18:33:37Z dvholten $ */
+ * @version $Id: Any2LsRGBRed.java 478276 2006-11-22 18:33:37Z dvholten $
+ */
 public class Any2LsRGBRed extends AbstractRed {
 
     boolean srcIssRGB = false;
@@ -51,31 +52,35 @@ public class Any2LsRGBRed extends AbstractRed {
      * @param src The image to convert to a luminance image
      */
     public Any2LsRGBRed(CachableRed src) {
-        super(src,src.getBounds(),
-              fixColorModel(src),
-              fixSampleModel(src),
-              src.getTileGridXOffset(),
-              src.getTileGridYOffset(),
-              null);
+        super(src, src.getBounds(),
+                fixColorModel(src),
+                fixSampleModel(src),
+                src.getTileGridXOffset(),
+                src.getTileGridYOffset(),
+                null);
 
         ColorModel srcCM = src.getColorModel();
-        if (srcCM == null) return;
+        if (srcCM == null) {
+            return;
+        }
         ColorSpace srcCS = srcCM.getColorSpace();
-        if (srcCS == ColorSpace.getInstance(ColorSpace.CS_sRGB))
+        if (srcCS == ColorSpace.getInstance(ColorSpace.CS_sRGB)) {
             srcIssRGB = true;
+        }
     }
 
     /**
      * Gamma for linear to sRGB convertion
      */
     private static final double GAMMA = 2.4;
-    private static final double LFACT = 1.0/12.92;
+    private static final double LFACT = 1.0 / 12.92;
 
 
     public static final double sRGBToLsRGB(double value) {
-        if(value <= 0.003928)
-            return value*LFACT;
-        return Math.pow((value+0.055)/1.055, GAMMA);
+        if (value <= 0.003928) {
+            return value * LFACT;
+        }
+        return Math.pow((value + 0.055) / 1.055, GAMMA);
     }
 
     /**
@@ -85,13 +90,14 @@ public class Any2LsRGBRed extends AbstractRed {
      * be on the sRGB scale to begin with.
      */
     private static final int[] sRGBToLsRGBLut = new int[256];
+
     static {
-        final double scale = 1.0/255;
+        final double scale = 1.0 / 255;
 
         // System.out.print("S2L: ");
-        for(int i=0; i<256; i++){
-            double value = sRGBToLsRGB(i*scale);
-            sRGBToLsRGBLut[i] = (int)Math.round(value*255.0);
+        for (int i = 0; i < 256; i++) {
+            double value = sRGBToLsRGB(i * scale);
+            sRGBToLsRGBLut[i] = (int) Math.round(value * 255.0);
             // System.out.print(sRGBToLsRGBLut[i] + ",");
         }
         // System.out.println("");
@@ -99,16 +105,17 @@ public class Any2LsRGBRed extends AbstractRed {
 
     public WritableRaster copyData(WritableRaster wr) {
         // Get my source.
-        CachableRed src   = (CachableRed)getSources().get(0);
-        ColorModel  srcCM = src.getColorModel();
+        CachableRed src = (CachableRed) getSources().get(0);
+        ColorModel srcCM = src.getColorModel();
         SampleModel srcSM = src.getSampleModel();
 
         // Fast case, SRGB source, INT Pack writable raster...
         if (srcIssRGB &&
-            Any2sRGBRed.is_INT_PACK_COMP(wr.getSampleModel())) {
+                Any2sRGBRed.is_INT_PACK_COMP(wr.getSampleModel())) {
             src.copyData(wr);
-            if (srcCM.hasAlpha())
+            if (srcCM.hasAlpha()) {
                 GraphicsUtil.coerceData(wr, srcCM, false);
+            }
             Any2sRGBRed.applyLut_INT(wr, sRGBToLsRGBLut);
             return wr;
         }
@@ -117,7 +124,7 @@ public class Any2LsRGBRed extends AbstractRed {
             // We don't really know much about this source, let's
             // guess based on the number of bands...
 
-            float [][] matrix = null;
+            float[][] matrix = null;
             switch (srcSM.getNumBands()) {
             case 1:
                 matrix = new float[1][3];
@@ -158,30 +165,30 @@ public class Any2LsRGBRed extends AbstractRed {
                 // No alpha ao we don't have to work around the bug
                 // in the color convert op.
                 dstBI = new BufferedImage
-                    (dstCM, wr.createWritableTranslatedChild(0,0),
-                     dstCM.isAlphaPremultiplied(), null);
+                        (dstCM, wr.createWritableTranslatedChild(0, 0),
+                                dstCM.isAlphaPremultiplied(), null);
             } else {
                 // All this nonsense is to work around the fact that
                 // the Color convert op doesn't properly copy the
                 // Alpha from src to dst.
                 SinglePixelPackedSampleModel dstSM;
-                dstSM = (SinglePixelPackedSampleModel)wr.getSampleModel();
-                int [] masks = dstSM.getBitMasks();
+                dstSM = (SinglePixelPackedSampleModel) wr.getSampleModel();
+                int[] masks = dstSM.getBitMasks();
                 SampleModel dstSMNoA = new SinglePixelPackedSampleModel
-                    (dstSM.getDataType(), dstSM.getWidth(), dstSM.getHeight(),
-                     dstSM.getScanlineStride(),
-                     new int[] {masks[0], masks[1], masks[2]});
+                        (dstSM.getDataType(), dstSM.getWidth(), dstSM.getHeight(),
+                                dstSM.getScanlineStride(),
+                                new int[]{masks[0], masks[1], masks[2]});
                 ColorModel dstCMNoA = GraphicsUtil.Linear_sRGB;
 
                 WritableRaster dstWr;
                 dstWr = Raster.createWritableRaster(dstSMNoA,
-                                                    wr.getDataBuffer(),
-                                                    new Point(0,0));
+                        wr.getDataBuffer(),
+                        new Point(0, 0));
                 dstWr = dstWr.createWritableChild
-                    (wr.getMinX()-wr.getSampleModelTranslateX(),
-                     wr.getMinY()-wr.getSampleModelTranslateY(),
-                     wr.getWidth(), wr.getHeight(),
-                     0, 0, null);
+                        (wr.getMinX() - wr.getSampleModelTranslateX(),
+                                wr.getMinY() - wr.getSampleModelTranslateY(),
+                                wr.getWidth(), wr.getHeight(),
+                                0, 0, null);
 
                 dstBI = new BufferedImage(dstCMNoA, dstWr, false, null);
             }
@@ -191,13 +198,13 @@ public class Any2LsRGBRed extends AbstractRed {
             // lead to out of range values.
             ColorModel srcBICM = srcCM;
             WritableRaster srcWr;
-            if ( srcCM.hasAlpha() && srcCM.isAlphaPremultiplied() ) {
+            if (srcCM.hasAlpha() && srcCM.isAlphaPremultiplied()) {
                 Rectangle wrR = wr.getBounds();
                 SampleModel sm = srcCM.createCompatibleSampleModel
-                    (wrR.width, wrR.height);
+                        (wrR.width, wrR.height);
 
                 srcWr = Raster.createWritableRaster
-                    (sm, new Point(wrR.x, wrR.y));
+                        (sm, new Point(wrR.x, wrR.y));
                 src.copyData(srcWr);
                 srcBICM = GraphicsUtil.coerceData(srcWr, srcCM, false);
             } else {
@@ -207,9 +214,9 @@ public class Any2LsRGBRed extends AbstractRed {
 
             BufferedImage srcBI;
             srcBI = new BufferedImage(srcBICM,
-                                      srcWr.createWritableTranslatedChild(0,0),
-                                      false,
-                                      null);
+                    srcWr.createWritableTranslatedChild(0, 0),
+                    false,
+                    null);
 
             /*
              * System.out.println("src: " + srcBI.getWidth() + "x" +
@@ -221,27 +228,28 @@ public class Any2LsRGBRed extends AbstractRed {
             ColorConvertOp op = new ColorConvertOp(null);
             op.filter(srcBI, dstBI);
 
-            if (dstCM.hasAlpha())
-                copyBand(srcWr, srcSM.getNumBands()-1,
-                         wr,    getSampleModel().getNumBands()-1);
+            if (dstCM.hasAlpha()) {
+                copyBand(srcWr, srcSM.getNumBands() - 1,
+                        wr, getSampleModel().getNumBands() - 1);
+            }
         }
         return wr;
     }
 
-        /**
-         * This function 'fixes' the source's color model.  Right now
-         * it just selects if it should have one or two bands based on
-         * if the source had an alpha channel.
-         */
+    /**
+     * This function 'fixes' the source's color model.  Right now
+     * it just selects if it should have one or two bands based on
+     * if the source had an alpha channel.
+     */
     protected static ColorModel fixColorModel(CachableRed src) {
-        ColorModel  cm = src.getColorModel();
+        ColorModel cm = src.getColorModel();
         if (cm != null) {
-            if (cm.hasAlpha())
+            if (cm.hasAlpha()) {
                 return GraphicsUtil.Linear_sRGB_Unpre;
+            }
 
             return GraphicsUtil.Linear_sRGB;
-        }
-        else {
+        } else {
             // No ColorModel so try to make some intelligent
             // decisions based just on the number of bands...
             // 1 bands -> replicated into RGB
@@ -269,15 +277,16 @@ public class Any2LsRGBRed extends AbstractRed {
      */
     protected static SampleModel fixSampleModel(CachableRed src) {
         SampleModel sm = src.getSampleModel();
-        ColorModel  cm = src.getColorModel();
+        ColorModel cm = src.getColorModel();
 
         boolean alpha = false;
 
-        if (cm != null)
+        if (cm != null) {
             alpha = cm.hasAlpha();
-        else {
+        } else {
             switch (sm.getNumBands()) {
-            case 1: case 3:
+            case 1:
+            case 3:
                 alpha = false;
                 break;
             default:
@@ -285,17 +294,18 @@ public class Any2LsRGBRed extends AbstractRed {
                 break;
             }
         }
-        if (alpha)
+        if (alpha) {
             return new SinglePixelPackedSampleModel
-                (DataBuffer.TYPE_INT,
-                 sm.getWidth(),
-                 sm.getHeight(),
-                 new int [] {0xFF0000, 0xFF00, 0xFF, 0xFF000000});
-        else
+                    (DataBuffer.TYPE_INT,
+                            sm.getWidth(),
+                            sm.getHeight(),
+                            new int[]{0xFF0000, 0xFF00, 0xFF, 0xFF000000});
+        } else {
             return new SinglePixelPackedSampleModel
-                (DataBuffer.TYPE_INT,
-                 sm.getWidth(),
-                 sm.getHeight(),
-                 new int [] {0xFF0000, 0xFF00, 0xFF});
+                    (DataBuffer.TYPE_INT,
+                            sm.getWidth(),
+                            sm.getHeight(),
+                            new int[]{0xFF0000, 0xFF00, 0xFF});
+        }
     }
 }

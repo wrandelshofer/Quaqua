@@ -5,8 +5,9 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.tree.*;
+import javax.swing.tree.TreePath;
+import java.awt.Component;
+
 /**
  * Identifies components that can be used to paint the preview column in a
  * JBrowser. Unlike other renderers, this one is not just used for a rubber stamp.
@@ -32,7 +33,7 @@ import javax.swing.tree.*;
  * }
  * </pre>
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public interface BrowserPreviewRenderer {
@@ -41,13 +42,12 @@ public interface BrowserPreviewRenderer {
      * value. That component is then added to the preview column of the JBrowser.
      *
      * @param browser The JBrowser we're painting.
-     * @param paths The paths returned by browser.getSelectionPaths(). This
-     * is granted to be a non-null array containing at least one element.
+     * @param paths   The paths returned by browser.getSelectionPaths(). This
+     *                is granted to be a non-null array containing at least one element.
      * @return The component.
-     *
      */
-      public Component getPreviewRendererComponent(
-          JBrowser browser,
-          TreePath[] paths
-          );
+    public Component getPreviewRendererComponent(
+            JBrowser browser,
+            TreePath[] paths
+    );
 }

@@ -4,16 +4,35 @@
  */
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.text.View;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * QuaquaMenuPainter.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaMenuPainter {
@@ -29,6 +48,7 @@ public class QuaquaMenuPainter {
         }
         return instance;
     }
+
     final static int defaultMenuItemGap = 2;
     final static int kAcceleratorArrowSpace = 0;
     final static int kAcceleratorArrowMargin = 20;
@@ -58,7 +78,9 @@ public class QuaquaMenuPainter {
         public void paintIcon(java.awt.Component component, java.awt.Graphics graphics, int param, int param3) {
             // do nothing
         }
-    };
+    }
+
+    ;
 
     private void resetRects() {
         iconRect.setBounds(zeroRect);
@@ -87,9 +109,9 @@ public class QuaquaMenuPainter {
     }
 
     protected void paintMenuItem(QuaquaMenuPainterClient client, Graphics g,
-            JComponent c, Icon checkIcon, Icon arrowIcon, Color background,
-            Color foreground, Color disabledForeground, Color selectionForeground,
-            int textIconGap, Font acceleratorFont) {
+                                 JComponent c, Icon checkIcon, Icon arrowIcon, Color background,
+                                 Color foreground, Color disabledForeground, Color selectionForeground,
+                                 int textIconGap, Font acceleratorFont) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
 
 
@@ -145,8 +167,8 @@ public class QuaquaMenuPainter {
 
         java.awt.Container container;
         for (container = menuItem.getParent();
-                container != null && !(container instanceof JPopupMenu);
-                container = container.getParent()) {
+             container != null && !(container instanceof JPopupMenu);
+             container = container.getParent()) {
             // empty for-loop body
         }
 
@@ -198,8 +220,8 @@ public class QuaquaMenuPainter {
                     g.setFont(textFont);
                     g.drawString(acceleratorKeyText,
                             (acceleratorRect.x
-                            + acceleratorRect.width
-                            - kAcceleratorArrowSpace - acceleratorKeyWidth),
+                                    + acceleratorRect.width
+                                    - kAcceleratorArrowSpace - acceleratorKeyWidth),
                             baseline);
                 } else {
                     int x = acceleratorRect.x + kAcceleratorArrowSpace + acceleratorKeyWidth;
@@ -322,7 +344,7 @@ public class QuaquaMenuPainter {
     /* */
 
     protected void paintCheck(Graphics g, JComponent c,
-            Icon checkIcon) {
+                              Icon checkIcon) {
         if (useCheckAndArrow((JMenuItem) c)) {
             checkIcon.paintIcon(c, g, checkIconRect.x,
                     checkIconRect.y);
@@ -330,7 +352,7 @@ public class QuaquaMenuPainter {
     }
 
     protected void paintIcon(Graphics g, JComponent c,
-            Rectangle rectangle, boolean isEnabled) {
+                             Rectangle rectangle, boolean isEnabled) {
         AbstractButton abstractButton = (AbstractButton) c;
         ButtonModel buttonModel = abstractButton.getModel();
         Icon icon;
@@ -351,8 +373,8 @@ public class QuaquaMenuPainter {
 
 
     public void drawString(QuaquaMenuPainterClient client,
-            Graphics g, String text, int mnemonicChar, int x,
-            int y, boolean isEnabled, boolean isSelected) {
+                           Graphics g, String text, int mnemonicChar, int x,
+                           int y, boolean isEnabled, boolean isSelected) {
         int mnemonicPos = -1;
         if (mnemonicChar != 0) {
             char mnemonicUpperCase = Character.toUpperCase((char) mnemonicChar);
@@ -496,38 +518,38 @@ public class QuaquaMenuPainter {
             int keyCode = accelerator.getKeyCode();
             if (keyCode != 0) {
                 switch (keyCode) {
-                    case KeyEvent.VK_ENTER:
-                        //buf.append('\u2305'); // Unicode: PROJECTIVE
-                        //buf.append('\u23ce'); // Unicode: RETURN SYMBOL
-                        buf.append('\u21a9'); // Unicode: LEFTWARDS ARROW WITH HOOK
-                        break;
-                    case KeyEvent.VK_BACK_SPACE:
-                        buf.append('\u232b'); // Unicode: ERASE TO THE LEFT
-                        break;
-                    case KeyEvent.VK_DELETE:
-                        buf.append('\u2326'); // Unicode: ERASE TO THE RIGHT
-                        break;
-                    case KeyEvent.VK_UP:
-                        buf.append('\u2191'); // Unicode: UPWARDS ARROW
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        buf.append('\u2193'); // Unicode: DOWNWARDS ARROW
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        buf.append('\u2190'); // Unicode: LEFTWARDS ARROW
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        buf.append('\u2192'); // Unicode: RIGHTWARDS ARROW
-                        break;
-                    case KeyEvent.VK_PLUS:
-                        buf.append('+');
-                        break;
-                    case KeyEvent.VK_MINUS:
-                        buf.append('-');
-                        break;
-                    default:
-                        buf.append(KeyEvent.getKeyText(keyCode));
-                        break;
+                case KeyEvent.VK_ENTER:
+                    //buf.append('\u2305'); // Unicode: PROJECTIVE
+                    //buf.append('\u23ce'); // Unicode: RETURN SYMBOL
+                    buf.append('\u21a9'); // Unicode: LEFTWARDS ARROW WITH HOOK
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                    buf.append('\u232b'); // Unicode: ERASE TO THE LEFT
+                    break;
+                case KeyEvent.VK_DELETE:
+                    buf.append('\u2326'); // Unicode: ERASE TO THE RIGHT
+                    break;
+                case KeyEvent.VK_UP:
+                    buf.append('\u2191'); // Unicode: UPWARDS ARROW
+                    break;
+                case KeyEvent.VK_DOWN:
+                    buf.append('\u2193'); // Unicode: DOWNWARDS ARROW
+                    break;
+                case KeyEvent.VK_LEFT:
+                    buf.append('\u2190'); // Unicode: LEFTWARDS ARROW
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    buf.append('\u2192'); // Unicode: RIGHTWARDS ARROW
+                    break;
+                case KeyEvent.VK_PLUS:
+                    buf.append('+');
+                    break;
+                case KeyEvent.VK_MINUS:
+                    buf.append('-');
+                    break;
+                default:
+                    buf.append(KeyEvent.getKeyText(keyCode));
+                    break;
                 }
             } else {
                 buf.append(accelerator.getKeyChar());

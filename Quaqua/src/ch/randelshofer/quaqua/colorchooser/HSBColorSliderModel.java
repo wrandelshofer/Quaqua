@@ -4,12 +4,13 @@
  */
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.DefaultBoundedRangeModel;
+import java.awt.Color;
+
 /**
  * ColorSliderModel for the HSB color model (hue, saturation, brightness).
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 May 22, 2005 Created.
  */
 public class HSBColorSliderModel extends ColorSliderModel {
@@ -18,18 +19,18 @@ public class HSBColorSliderModel extends ColorSliderModel {
      * Creates a new instance.
      */
     public HSBColorSliderModel() {
-        super(new DefaultBoundedRangeModel[] {
-            new DefaultBoundedRangeModel(0, 0, 0, 359),
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100)
+        super(new DefaultBoundedRangeModel[]{
+                new DefaultBoundedRangeModel(0, 0, 0, 359),
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100)
         });
     }
 
     public int getRGB() {
         return Color.HSBtoRGB(
-        components[0].getValue() / 360f,
-        components[1].getValue() / 100f,
-        components[2].getValue() / 100f
+                components[0].getValue() / 360f,
+                components[1].getValue() / 100f,
+                components[2].getValue() / 100f
         );
     }
 
@@ -42,9 +43,9 @@ public class HSBColorSliderModel extends ColorSliderModel {
 
     public int toRGB(int[] values) {
         return Color.HSBtoRGB(
-        values[0] / 360f,
-        values[1] / 100f,
-        values[2] / 100f
+                values[0] / 360f,
+                values[1] / 100f,
+                values[2] / 100f
         );
     }
 }

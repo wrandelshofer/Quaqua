@@ -4,18 +4,23 @@
  */
 package ch.randelshofer.quaqua.util;
 
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.QuaquaManager;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.font.*;
-import java.awt.geom.*;
-import javax.swing.*;
+import javax.swing.UIManager;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
 
 /**
  * Fonts.
  *
- * @author  Werner Randelshofer, Switzerland
+ * @author Werner Randelshofer, Switzerland
  * @version $Id$
  */
 public class Fonts {
@@ -28,7 +33,9 @@ public class Fonts {
      */
     private static FontRenderContext defaultFontRenderContext = new FontRenderContext(new AffineTransform(), true, true);
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     private Fonts() {
     }
 

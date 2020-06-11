@@ -4,8 +4,8 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import java.awt.Component;
 
 /**
  * A cell renderer that does not care what kind of container it is used in.

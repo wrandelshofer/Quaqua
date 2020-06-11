@@ -5,10 +5,17 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JRootPane;
+import javax.swing.LookAndFeel;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicLookAndFeel;
+import java.awt.Component;
+
 /**
  * A J2SE5 backwards compatible version of the {@link LookAndFeelProxy} class.
  *
@@ -23,11 +30,13 @@ public class LookAndFeelProxy15 extends BasicLookAndFeel {
 
     /**
      * Creates a new instance which proxies the supplied target.
+     *
      * @param target Proxy target.
      */
     public LookAndFeelProxy15(LookAndFeel target) {
         this.target = target;
     }
+
     /**
      * Creates a new instance with a null target.
      */
@@ -36,6 +45,7 @@ public class LookAndFeelProxy15 extends BasicLookAndFeel {
 
     /**
      * Sets the target of this proxy.
+     *
      * @param target Proxy target.
      */
     protected void setTarget(LookAndFeel target) {
@@ -108,13 +118,13 @@ public class LookAndFeelProxy15 extends BasicLookAndFeel {
      * the additional feedback.
      *
      * @param component Component the error occured in, may be null
-     *			indicating the error condition is not directly
-     *			associated with a <code>Component</code>.
+     *                  indicating the error condition is not directly
+     *                  associated with a <code>Component</code>.
      */
     @Override
     public void provideErrorFeedback(Component component) {
         try {
-        Methods.invoke(target, "provideErrorFeedback", Component.class, component);
+            Methods.invoke(target, "provideErrorFeedback", Component.class, component);
         } catch (NoSuchMethodException e) {
             throw new InternalError(e.getMessage());
         }
@@ -129,7 +139,7 @@ public class LookAndFeelProxy15 extends BasicLookAndFeel {
      * Window decorations should override this and return true.
      *
      * @return True if the RootPaneUI instances created support client side
-     *              decorations
+     * decorations
      * @see JDialog#setDefaultLookAndFeelDecorated
      * @see JFrame#setDefaultLookAndFeelDecorated
      * @see JRootPane#setWindowDecorationStyle
@@ -138,7 +148,7 @@ public class LookAndFeelProxy15 extends BasicLookAndFeel {
     @Override
     public boolean getSupportsWindowDecorations() {
         try {
-        return ((Boolean) Methods.invoke(target, "getSupportsWindowDecorations")).booleanValue();
+            return ((Boolean) Methods.invoke(target, "getSupportsWindowDecorations")).booleanValue();
         } catch (NoSuchMethodException e) {
             throw new InternalError(e.getMessage());
         }

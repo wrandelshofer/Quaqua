@@ -4,7 +4,7 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import javax.swing.*;
+import javax.swing.Icon;
 import java.io.File;
 
 /**
@@ -17,6 +17,7 @@ public interface SidebarTreeFileNode {
      * Returns the resolved file object.
      */
     public File getResolvedFile();
+
     /**
      * Returns the user name of the file.
      */

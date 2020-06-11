@@ -4,20 +4,30 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
+import ch.randelshofer.quaqua.util.Debug;
+import ch.randelshofer.quaqua.util.Methods;
 import ch.randelshofer.quaqua.util.ViewportPainter;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.event.*;
+
+import javax.swing.JComponent;
+import javax.swing.JViewport;
+import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicViewportUI;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * The Quaqua user interface delegate for a JViewport.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaViewportUI extends BasicViewportUI {

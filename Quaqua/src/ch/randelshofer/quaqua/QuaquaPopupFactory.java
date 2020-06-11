@@ -4,12 +4,36 @@
  */
 package ch.randelshofer.quaqua;
 
+import javax.swing.JApplet;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
+import javax.swing.JSeparator;
+import javax.swing.JWindow;
+import javax.swing.MenuElement;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
+import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 import java.applet.Applet;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Insets;
+import java.awt.Panel;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import javax.swing.*;
-import javax.swing.border.LineBorder;
 
 /**
  * QuaquaPopupFactory to work around a bug with heavy weight popups
@@ -63,13 +87,13 @@ public class QuaquaPopupFactory extends PopupFactory {
      * Returns the popup type to use for the specified parameters.
      */
     private int getPopupType(Component owner, Component contents,
-            int ownerX, int ownerY) {
+                             int ownerX, int ownerY) {
         return getPopupType(owner);
     }
 
     @Override
     public Popup getPopup(Component owner, Component contents,
-            int x, int y) throws IllegalArgumentException {
+                          int x, int y) throws IllegalArgumentException {
         if (contents == null) {
             throw new IllegalArgumentException(
                     "Popup.getPopup must be passed non-null contents");
@@ -90,27 +114,27 @@ public class QuaquaPopupFactory extends PopupFactory {
      * <code>popupType</code>.
      */
     private Popup getPopup(Component owner, Component contents,
-            int ownerX, int ownerY, int popupType) {
+                           int ownerX, int ownerY, int popupType) {
         /*if (GraphicsEnvironment.isHeadless()) {
         return getHeadlessPopup(owner, contents, ownerX, ownerY);
         }*/
         switch (popupType) {
-            case LIGHT_WEIGHT_POPUP:
-                return getLightWeightPopup(owner, contents, ownerX, ownerY);
-            case MEDIUM_WEIGHT_POPUP:
-                return getMediumWeightPopup(owner, contents, ownerX, ownerY);
-            case HEAVY_WEIGHT_POPUP:
-                return getHeavyWeightPopup(owner, contents, ownerX, ownerY);
+        case LIGHT_WEIGHT_POPUP:
+            return getLightWeightPopup(owner, contents, ownerX, ownerY);
+        case MEDIUM_WEIGHT_POPUP:
+            return getMediumWeightPopup(owner, contents, ownerX, ownerY);
+        case HEAVY_WEIGHT_POPUP:
+            return getHeavyWeightPopup(owner, contents, ownerX, ownerY);
         }
         return getLightWeightPopup(owner, contents, ownerX, ownerY);
-//       return null;
+        //       return null;
     }
 
     /**
      * Creates a light weight popup.
      */
     private Popup getLightWeightPopup(Component owner, Component contents,
-            int ownerX, int ownerY) {
+                                      int ownerX, int ownerY) {
         return LightWeightPopup.getLightWeightPopup(owner, contents, ownerX,
                 ownerY);
     }
@@ -119,7 +143,7 @@ public class QuaquaPopupFactory extends PopupFactory {
      * Creates a medium weight popup.
      */
     private Popup getMediumWeightPopup(Component owner, Component contents,
-            int ownerX, int ownerY) {
+                                       int ownerX, int ownerY) {
         return MediumWeightPopup.getMediumWeightPopup(owner, contents,
                 ownerX, ownerY);
     }
@@ -128,10 +152,11 @@ public class QuaquaPopupFactory extends PopupFactory {
      * Creates a heavy weight popup.
      */
     private Popup getHeavyWeightPopup(Component owner, Component contents,
-            int ownerX, int ownerY) {
+                                      int ownerX, int ownerY) {
         return HeavyWeightPopup.getHeavyWeightPopup(owner, contents, ownerX,
                 ownerY);
     }
+
     /**
      * Max number of items to store in any one particular cache.
      */
@@ -143,11 +168,17 @@ public class QuaquaPopupFactory extends PopupFactory {
      */
     private static class ContainerPopup extends Popup {
 
-        /** Component we are to be added to. */
+        /**
+         * Component we are to be added to.
+         */
         Component owner;
-        /** Desired x location. */
+        /**
+         * Desired x location.
+         */
         int x;
-        /** Desired y location. */
+        /**
+         * Desired y location.
+         */
         int y;
         // the component which represents the popup
         Component component;
@@ -196,14 +227,14 @@ public class QuaquaPopupFactory extends PopupFactory {
         }
 
         void reset(Component owner, Component contents, int ownerX,
-                int ownerY) {
+                   int ownerY) {
             if ((owner instanceof JFrame) || (owner instanceof JDialog)
                     || (owner instanceof JWindow)) {
                 // Force the content to be added to the layered pane, otherwise
                 // we'll get an exception when adding to the RootPaneContainer.
                 owner = ((RootPaneContainer) owner).getLayeredPane();
             }
-////            super.reset(owner, contents, ownerX, ownerY);
+            ////            super.reset(owner, contents, ownerX, ownerY);
 
             x = ownerX;
             y = ownerY;
@@ -245,7 +276,7 @@ public class QuaquaPopupFactory extends PopupFactory {
                 int width = c.getWidth();
                 int height = c.getHeight();
                 for (parent = owner.getParent(); parent != null;
-                        parent = parent.getParent()) {
+                     parent = parent.getParent()) {
                     if (parent instanceof JFrame
                             || parent instanceof JDialog
                             || parent instanceof JWindow) {
@@ -305,7 +336,7 @@ public class QuaquaPopupFactory extends PopupFactory {
          * <code>owner</code>, this will return null.
          */
         static Popup getLightWeightPopup(Component owner, Component contents,
-                int ownerX, int ownerY) {
+                                         int ownerX, int ownerY) {
             LightWeightPopup popup = new LightWeightPopup();
             popup.reset(owner, contents, ownerX, ownerY);
             /*
@@ -383,12 +414,13 @@ public class QuaquaPopupFactory extends PopupFactory {
         //
         // Local methods
         //
+
         /**
          * Resets the <code>Popup</code> to an initial state.
          */
         @Override
         void reset(Component owner, Component contents, int ownerX,
-                int ownerY) {
+                   int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
             JComponent c = (JComponent) getComponent();
@@ -407,7 +439,9 @@ public class QuaquaPopupFactory extends PopupFactory {
 
         private static final Object mediumWeightPopupCacheKey =
                 new StringBuffer("PopupFactory.mediumPopupCache");
-        /** Child of the panel. The contents are added to this. */
+        /**
+         * Child of the panel. The contents are added to this.
+         */
         private JRootPane rootPane;
 
         /**
@@ -416,7 +450,7 @@ public class QuaquaPopupFactory extends PopupFactory {
          * <code>owner</code>, this will return null.
          */
         static Popup getMediumWeightPopup(Component owner, Component contents,
-                int ownerX, int ownerY) {
+                                          int ownerX, int ownerY) {
             MediumWeightPopup popup = new MediumWeightPopup();
 
             if (popup == null) {
@@ -503,7 +537,7 @@ public class QuaquaPopupFactory extends PopupFactory {
          */
         @Override
         void reset(Component owner, Component contents, int ownerX,
-                int ownerY) {
+                   int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
             Component c = getComponent();
@@ -526,7 +560,7 @@ public class QuaquaPopupFactory extends PopupFactory {
          * the specified children.
          */
         static Popup getHeavyWeightPopup(Component owner, Component contents,
-                int ownerX, int ownerY) {
+                                         int ownerX, int ownerY) {
             HeavyWeightPopup popup = new HeavyWeightPopup();
             /*
             if (!popup.fitsOnScreen() ||
@@ -581,7 +615,7 @@ public class QuaquaPopupFactory extends PopupFactory {
             }
             wnd.getRootPane().putClientProperty("Window.alpha", windowAlpha);
             try {
-            wnd.setBackground(new Color(0xffffff, true));
+                wnd.setBackground(new Color(0xffffff, true));
             } catch (UnsupportedOperationException e) {
                 // bail
             }
@@ -611,7 +645,7 @@ public class QuaquaPopupFactory extends PopupFactory {
 
         @Override
         void reset(Component owner, Component contents, int ownerX,
-                int ownerY) {
+                   int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
             Window window = (Window) getComponent();

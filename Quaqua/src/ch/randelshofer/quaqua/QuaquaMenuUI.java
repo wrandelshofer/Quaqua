@@ -7,11 +7,21 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicMenuUI;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 /**
  * A replacement for the AquaMenuUI.
  * <p>
@@ -19,7 +29,7 @@ import javax.swing.plaf.basic.*;
  * It is just here to achieve a consistent look with the other Quaqua menu UI
  * classes.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient {
@@ -29,12 +39,14 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
     public static ComponentUI createUI(JComponent x) {
         return new QuaquaMenuUI();
     }
+
     @Override
     protected void installDefaults() {
         super.installDefaults();
-	QuaquaUtilities.installProperty(menuItem, "opaque", Boolean.TRUE);
+        QuaquaUtilities.installProperty(menuItem, "opaque", Boolean.TRUE);
         //menuItem.setOpaque(true);
     }
+
     /*
     protected MenuDragMouseListener createMenuDragMouseListener(JComponent c) {
 	return getHandler();
@@ -46,22 +58,22 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
     */
     @Override
     protected void paintMenuItem(Graphics g, JComponent c,
-    Icon checkIcon, Icon arrowIcon, Color background,
-    Color foreground, int defaultTextIconGap) {
+                                 Icon checkIcon, Icon arrowIcon, Color background,
+                                 Color foreground, int defaultTextIconGap) {
         QuaquaMenuPainter.getInstance().paintMenuItem(this, g, c, checkIcon,
-        arrowIcon, background, foreground,
-        disabledForeground,
-        selectionForeground, defaultTextIconGap,
-        acceleratorFont);
+                arrowIcon, background, foreground,
+                disabledForeground,
+                selectionForeground, defaultTextIconGap,
+                acceleratorFont);
     }
 
     @Override
     protected Dimension getPreferredMenuItemSize(JComponent c,
-    Icon checkIcon,
-    Icon arrowIcon,
-    int defaultTextIconGap) {
+                                                 Icon checkIcon,
+                                                 Icon arrowIcon,
+                                                 int defaultTextIconGap) {
         Dimension d = QuaquaMenuPainter.getInstance()
-        .getPreferredMenuItemSize(c, checkIcon, arrowIcon, defaultTextIconGap, acceleratorFont);
+                .getPreferredMenuItemSize(c, checkIcon, arrowIcon, defaultTextIconGap, acceleratorFont);
         return d;
     }
 
@@ -69,7 +81,7 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
     public void paintBackground(Graphics gr, JComponent component, int menuWidth, int menuHeight) {
         AbstractButton menuItem = (AbstractButton) component;
 
-        if(menuItem.isOpaque()) {
+        if (menuItem.isOpaque()) {
             Graphics2D g = (Graphics2D) gr;
             Color oldColor = g.getColor();
             boolean isTopLevel = ((JMenu) menuItem).isTopLevelMenu();
@@ -84,7 +96,7 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
                     g.setPaint(PaintableColor.getPaint(menuItem.getBackground(), menuItem));
                 }
             }
-            g.fillRect(0,0, menuWidth, menuHeight);
+            g.fillRect(0, 0, menuWidth, menuHeight);
 
             if (isTopLevel) {
                 String bbName = (isSelected) ? "MenuBar.selectedBorder" : "MenuBar.border";

@@ -9,13 +9,14 @@ package ch.randelshofer.quaqua.colorchooser;
  * ColorSliderModel for the HTML color model (red, green, blue, restricted
  * to values considered as web-save).
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0.1 2005-08-28 Method toWebSave generates now ARGB value instead
  * of just an RGB value. Method isWebSave ignores the alpha channel of a color.
  * <br>1.0 May 22, 2005 Created.
  */
 public class HTMLColorSliderModel extends RGBColorSliderModel {
     private boolean isWebSaveOnly = true;
+
     /**
      * Creates a new instance.
      */
@@ -25,9 +26,10 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
     public int getRGB() {
         return getRGB(components[0].getValue(), components[1].getValue(), components[2].getValue());
     }
+
     public int getInterpolatedRGB(int component, float value) {
         if (isWebSaveOnly) {
-            for (int i=0, n = getComponentCount(); i < n; i++) {
+            for (int i = 0, n = getComponentCount(); i < n; i++) {
                 values[i] = Math.round(components[i].getValue() / 51f) * 51;
             }
             values[component] = Math.round((value * components[component].getMaximum()) / 51f) * 51;
@@ -36,6 +38,7 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
             return super.getInterpolatedRGB(component, value);
         }
     }
+
     protected int getRGB(int r, int g, int b) {
         if (isWebSaveOnly) {
             return 0xff000000 | (Math.round(r / 51f) * 51) << 16 | (Math.round(g / 51f) * 51) << 8 | Math.round(b / 51f) * 51;
@@ -57,9 +60,9 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
     public int toRGB(int[] values) {
         if (isWebSaveOnly) {
             return 0xff000000
-            | (Math.round(values[0] / 51f) * 51) << 16
-            | (Math.round(values[1] / 51f) * 51) << 8
-            | (Math.round(values[2] / 51f) * 51);
+                    | (Math.round(values[0] / 51f) * 51) << 16
+                    | (Math.round(values[1] / 51f) * 51) << 8
+                    | (Math.round(values[2] / 51f) * 51);
         } else {
             return super.toRGB(values);
         }
@@ -72,6 +75,7 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
         }
         fireColorChanged(-1);
     }
+
     public boolean isWebSaveOnly() {
         return isWebSaveOnly;
     }
@@ -79,11 +83,12 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
     public static boolean isWebSave(int rgb) {
         return (rgb & 0xffffff) == (toWebSave(rgb) & 0xffffff);
     }
+
     public static int toWebSave(int rgb) {
         return
-        (rgb & 0xff000000)
-        | ((Math.round(((rgb & 0xff0000) >> 16) / 51f) * 51) << 16)
-        | ((Math.round(((rgb & 0x00ff00) >> 8) / 51f) * 51) << 8)
-        | (Math.round((rgb & 0x0000ff) / 51f) * 51);
+                (rgb & 0xff000000)
+                        | ((Math.round(((rgb & 0xff0000) >> 16) / 51f) * 51) << 16)
+                        | ((Math.round(((rgb & 0x00ff00) >> 8) / 51f) * 51) << 8)
+                        | (Math.round((rgb & 0x0000ff) / 51f) * 51);
     }
 }

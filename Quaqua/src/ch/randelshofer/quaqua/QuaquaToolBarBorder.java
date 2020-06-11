@@ -7,23 +7,27 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+
+import javax.swing.JComponent;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicToolBarUI;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
 
 /**
  * QuaquaToolBarBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaToolBarBorder
@@ -40,32 +44,32 @@ public class QuaquaToolBarBorder
             String style = getStyle(c);
             if (style.equals("gradient") || style.equals("placard")) {
                 g.setPaint(
-                        new LinearGradientPaint(x, y, new Color(0xfdfdfd),x, height / 2, new Color(0xf5f5f5)));
+                        new LinearGradientPaint(x, y, new Color(0xfdfdfd), x, height / 2, new Color(0xf5f5f5)));
                 g.fillRect(x, y, width, height / 2);
                 g.setColor(new Color(0xebebeb));
                 g.fillRect(x, y + height / 2, width, height - height / 2);
 
             } else if (style.equals("bottom") /*&& isTextured*/) {
                 Color[] gradient = (Color[]) UIManager.get(isActive ? "ToolBar.bottom.gradient" : "ToolBar.bottom.gradientInactive");
-                    if (gradient == null) {
-                        g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
-                    } else if (gradient.length == 2) {
-                        g.setPaint(
-                                new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
-                                new float[]{0f, 1f},
-                                gradient));
-                    } else if (gradient.length == 3) {
-                        g.setPaint(
-                                new LinearGradientPaint(new Point2D.Float(x, y+1), new Point2D.Float(x, y+height -2),
-                                new float[]{0f, 0.25f, 1f},
-                                gradient));
-                    } else if (gradient.length == 4) {
-                        g.setPaint(
-                                new LinearGradientPaint(new Point2D.Float(x, y+1), new Point2D.Float(x, y+height -2),
-                                new float[]{0f, 0.25f, 0.5f, 1f},
-                                gradient));
-                    }
-                    g.fillRect(x, y+1, width, height-1);
+                if (gradient == null) {
+                    g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                } else if (gradient.length == 2) {
+                    g.setPaint(
+                            new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
+                                    new float[]{0f, 1f},
+                                    gradient));
+                } else if (gradient.length == 3) {
+                    g.setPaint(
+                            new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
+                                    new float[]{0f, 0.25f, 1f},
+                                    gradient));
+                } else if (gradient.length == 4) {
+                    g.setPaint(
+                            new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
+                                    new float[]{0f, 0.25f, 0.5f, 1f},
+                                    gradient));
+                }
+                g.fillRect(x, y + 1, width, height - 1);
             } else if (style.equals("title")) {
                 g.setPaint(PaintableColor.getPaint(UIManager.getColor("ToolBar.title.background"), c));
                 g.fillRect(x, y, width, height);
@@ -137,20 +141,20 @@ public class QuaquaToolBarBorder
             if (isDividerDrawn) {
                 g.setColor(divider);
                 switch (dividerLocation) {
-                    case NORTH:
-                        g.fillRect(x, y, w, 1);
-                        break;
-                    case EAST:
-                        g.fillRect(x + w - 1, y, 1, h);
-                        break;
-                    case SOUTH:
-                        g.fillRect(x, y + h - 1, w, 1);
-                        break;
-                    case WEST:
-                        g.fillRect(x, y, 1, h);
-                        break;
-                    default:
-                        break;
+                case NORTH:
+                    g.fillRect(x, y, w, 1);
+                    break;
+                case EAST:
+                    g.fillRect(x + w - 1, y, 1, h);
+                    break;
+                case SOUTH:
+                    g.fillRect(x, y + h - 1, w, 1);
+                    break;
+                case WEST:
+                    g.fillRect(x, y, 1, h);
+                    break;
+                default:
+                    break;
                 }
             }
         }
@@ -244,20 +248,20 @@ public class QuaquaToolBarBorder
                     //newInsets.left++;
                 } else {
                     switch (getDividerLocation(c)) {
-                        case SOUTH:
-                            newInsets.bottom++;
-                            break;
-                        case EAST:
-                            newInsets.right++;
-                            break;
-                        case NORTH:
-                            newInsets.top++;
-                            break;
-                        case WEST:
-                            newInsets.left++;
-                            break;
-                        default:
-                            break;
+                    case SOUTH:
+                        newInsets.bottom++;
+                        break;
+                    case EAST:
+                        newInsets.right++;
+                        break;
+                    case NORTH:
+                        newInsets.top++;
+                        break;
+                    case WEST:
+                        newInsets.left++;
+                        break;
+                    default:
+                        break;
                     }
                 }
             }

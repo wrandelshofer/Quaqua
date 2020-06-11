@@ -6,14 +6,31 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.ActivatableUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.event.*;
-import java.lang.reflect.*;
+
+import javax.swing.CellRendererPane;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.MouseInputListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicListUI;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.reflect.Method;
 
 /**
  * QuaquaListUI for Java 1.4.
@@ -39,6 +56,7 @@ public class QuaquaListUI extends BasicListUI {
         }
         VERTICAL = value;
     }
+
     private final static Method getLayoutOrientation;
 
     static {
@@ -50,7 +68,9 @@ public class QuaquaListUI extends BasicListUI {
         getLayoutOrientation = value;
     }
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaListUI() {
     }
 
@@ -79,7 +99,7 @@ public class QuaquaListUI extends BasicListUI {
 
     public void paintStripes(Graphics g, JComponent c) {
         if (isStriped && list.getModel() != null //&& list.getLayoutOrientation() == JList.VERTICAL
-                ) {
+        ) {
             // Now check if we need to paint some stripes
             Dimension vs = c.getSize();
             Dimension ts = list.getSize();
@@ -128,6 +148,7 @@ public class QuaquaListUI extends BasicListUI {
             }
         }
     }
+
     /**
      * The layout orientation of the list.
      */

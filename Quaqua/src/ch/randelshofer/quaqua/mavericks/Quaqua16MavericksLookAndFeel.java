@@ -7,7 +7,7 @@ package ch.randelshofer.quaqua.mavericks;
 import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.mountainlion.Quaqua16MountainLionLookAndFeel;
 
-import javax.swing.*;
+import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 
 /**
@@ -15,13 +15,13 @@ import javax.swing.plaf.ColorUIResource;
  */
 public class Quaqua16MavericksLookAndFeel extends Quaqua16MountainLionLookAndFeel {
 
-	public Quaqua16MavericksLookAndFeel() {
-		super();
-	}
+    public Quaqua16MavericksLookAndFeel() {
+        super();
+    }
 
-	protected Quaqua16MavericksLookAndFeel(String className) {
-		super(className);
-	}
+    protected Quaqua16MavericksLookAndFeel(String className) {
+        super(className);
+    }
 
     @Override
     public String getDescription() {
@@ -47,50 +47,50 @@ public class Quaqua16MavericksLookAndFeel extends Quaqua16MountainLionLookAndFee
         // NOTE: Change code below, to override different
         // UI classes of the target look and feel.
         Object[] uiDefaults = {
-            "BrowserUI", quaquaPrefix + "BrowserUI",
-            "ButtonUI", quaquaPrefix + "ButtonUI",
-            "CheckBoxUI", quaquaPrefix + "CheckBoxUI",
-            "ColorChooserUI", quaquaPrefix + "ColorChooserUI",
-            "FileChooserUI", quaquaMavericksPrefix + "FileChooserUI",
-            "FormattedTextFieldUI", quaquaPrefix + "FormattedTextFieldUI",
-            "RadioButtonUI", quaquaPrefix + "RadioButtonUI",
-            "ToggleButtonUI", quaquaPrefix + "ToggleButtonUI",
-            "SeparatorUI", quaquaPantherPrefix + "SeparatorUI",
-            //"MenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
-            //"ProgressBarUI", basicPrefix + "ProgressBarUI",
-            "ScrollBarUI", quaquaPrefix + "ScrollBarUI",
-            "ScrollPaneUI", quaquaPrefix + "ScrollPaneUI",
-            "SplitPaneUI", quaquaPrefix + "SplitPaneUI",
-            //"SliderUI", quaquaPrefix + "SliderUI",
-            //"SpinnerUI", quaquaPrefix + "SpinnerUI",
-            "ToolBarSeparatorUI", quaquaPrefix + "ToolBarSeparatorUI",
-            //"PopupMenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
-            "TextAreaUI", quaquaPrefix + "TextAreaUI",
-            "TextFieldUI", quaquaPrefix + "TextFieldUI",
-            "PasswordFieldUI", quaquaPrefix + "PasswordFieldUI",
-            "TextPaneUI", quaquaPrefix + "TextPaneUI",
-            "EditorPaneUI", quaquaPrefix + "EditorPaneUI",
-            "TreeUI", quaquaPrefix + "TreeUI",
-            "LabelUI", quaquaPrefix + "LabelUI",
-            "ListUI", quaquaPrefix + "ListUI",
-            //"TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
-            "ToolBarUI", quaquaPrefix + "ToolBarUI",
-            //"ToolTipUI", basicPrefix + "ToolTipUI",
-            "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
-            "TableUI", quaquaPrefix + "TableUI",
-            //"TableHeaderUI", quaquaPrefix + "TableHeaderUI",
-            // "InternalFrameUI", basicPrefix + "InternalFrameUI",
-            //"DesktopPaneUI", quaquaPrefix + "DesktopPaneUI",
-            //"DesktopIconUI", basicPrefix + "DesktopIconUI",
-            "OptionPaneUI", quaquaPrefix + "OptionPaneUI",
-            "PanelUI", quaquaPrefix + "PanelUI",
-            "ViewportUI", quaquaPrefix + "ViewportUI",
-            // Do not create a RootPaneUI on our own, unless we also
-            // create our own ButtonUI. Aqua's RootPaneUI is responsible
-            // for updating the border of the ButtonUI, when it is the default,
-            // and for propagating window activation/dectivation events to
-            // all the child components of a window.
-            "RootPaneUI", quaquaPrefix + "RootPaneUI",};
+                "BrowserUI", quaquaPrefix + "BrowserUI",
+                "ButtonUI", quaquaPrefix + "ButtonUI",
+                "CheckBoxUI", quaquaPrefix + "CheckBoxUI",
+                "ColorChooserUI", quaquaPrefix + "ColorChooserUI",
+                "FileChooserUI", quaquaMavericksPrefix + "FileChooserUI",
+                "FormattedTextFieldUI", quaquaPrefix + "FormattedTextFieldUI",
+                "RadioButtonUI", quaquaPrefix + "RadioButtonUI",
+                "ToggleButtonUI", quaquaPrefix + "ToggleButtonUI",
+                "SeparatorUI", quaquaPantherPrefix + "SeparatorUI",
+                //"MenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
+                //"ProgressBarUI", basicPrefix + "ProgressBarUI",
+                "ScrollBarUI", quaquaPrefix + "ScrollBarUI",
+                "ScrollPaneUI", quaquaPrefix + "ScrollPaneUI",
+                "SplitPaneUI", quaquaPrefix + "SplitPaneUI",
+                //"SliderUI", quaquaPrefix + "SliderUI",
+                //"SpinnerUI", quaquaPrefix + "SpinnerUI",
+                "ToolBarSeparatorUI", quaquaPrefix + "ToolBarSeparatorUI",
+                //"PopupMenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
+                "TextAreaUI", quaquaPrefix + "TextAreaUI",
+                "TextFieldUI", quaquaPrefix + "TextFieldUI",
+                "PasswordFieldUI", quaquaPrefix + "PasswordFieldUI",
+                "TextPaneUI", quaquaPrefix + "TextPaneUI",
+                "EditorPaneUI", quaquaPrefix + "EditorPaneUI",
+                "TreeUI", quaquaPrefix + "TreeUI",
+                "LabelUI", quaquaPrefix + "LabelUI",
+                "ListUI", quaquaPrefix + "ListUI",
+                //"TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
+                "ToolBarUI", quaquaPrefix + "ToolBarUI",
+                //"ToolTipUI", basicPrefix + "ToolTipUI",
+                "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
+                "TableUI", quaquaPrefix + "TableUI",
+                //"TableHeaderUI", quaquaPrefix + "TableHeaderUI",
+                // "InternalFrameUI", basicPrefix + "InternalFrameUI",
+                //"DesktopPaneUI", quaquaPrefix + "DesktopPaneUI",
+                //"DesktopIconUI", basicPrefix + "DesktopIconUI",
+                "OptionPaneUI", quaquaPrefix + "OptionPaneUI",
+                "PanelUI", quaquaPrefix + "PanelUI",
+                "ViewportUI", quaquaPrefix + "ViewportUI",
+                // Do not create a RootPaneUI on our own, unless we also
+                // create our own ButtonUI. Aqua's RootPaneUI is responsible
+                // for updating the border of the ButtonUI, when it is the default,
+                // and for propagating window activation/dectivation events to
+                // all the child components of a window.
+                "RootPaneUI", quaquaPrefix + "RootPaneUI",};
         putDefaults(table, uiDefaults);
 
         /*
@@ -107,32 +107,33 @@ public class Quaqua16MavericksLookAndFeel extends Quaqua16MountainLionLookAndFee
         // do nothing
         }*/
         uiDefaults = new Object[]{
-                    "PopupMenuUI", quaquaPrefix + "PopupMenuUI",};
+                "PopupMenuUI", quaquaPrefix + "PopupMenuUI",};
         putDefaults(table, uiDefaults);
 
 
         // FIXME Menu related workarounds work only if useScreenMenuBar is off.
         if (!isUseScreenMenuBar()) {
             uiDefaults = new Object[]{
-                        "MenuBarUI", quaquaPrefix + "MenuBarUI",
-                        "MenuUI", quaquaPrefix + "MenuUI",
-                        "MenuItemUI", quaquaPrefix + "MenuItemUI",
-                        "CheckBoxMenuItemUI", quaquaPrefix + "MenuItemUI",
-                        "RadioButtonMenuItemUI", quaquaPrefix + "MenuItemUI"
-                    };
+                    "MenuBarUI", quaquaPrefix + "MenuBarUI",
+                    "MenuUI", quaquaPrefix + "MenuUI",
+                    "MenuItemUI", quaquaPrefix + "MenuItemUI",
+                    "CheckBoxMenuItemUI", quaquaPrefix + "MenuItemUI",
+                    "RadioButtonMenuItemUI", quaquaPrefix + "MenuItemUI"
+            };
             putDefaults(table, uiDefaults);
         }
     }
+
     @Override
     protected void initDesignDefaults(UIDefaults table) {
 
         super.initDesignDefaults(table);
 
         Object[] uiDefaults = {
-            "FileChooser.listView.extraColumnTextColor", new ColorUIResource(80, 80, 80),
-            "FileChooser.listView.headerColor", new ColorUIResource(100, 100, 120),
-            "FileChooser.listView.headerBorderColor", new ColorUIResource(190, 190, 190),
-            //
+                "FileChooser.listView.extraColumnTextColor", new ColorUIResource(80, 80, 80),
+                "FileChooser.listView.headerColor", new ColorUIResource(100, 100, 120),
+                "FileChooser.listView.headerBorderColor", new ColorUIResource(190, 190, 190),
+                //
         };
 
         putDefaults(table, uiDefaults);

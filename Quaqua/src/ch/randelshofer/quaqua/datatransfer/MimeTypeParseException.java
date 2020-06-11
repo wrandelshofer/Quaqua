@@ -10,9 +10,9 @@ package ch.randelshofer.quaqua.datatransfer;
  * <p>
  * Implementation taken from java.awt.datatransfer.TypeParseException.java 1.10 01/12/03
  *
- * @serial exclude
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
+ * @serial exclude
  */
 public class MimeTypeParseException extends Exception {
 
@@ -29,7 +29,7 @@ public class MimeTypeParseException extends Exception {
     /**
      * Constructs a MimeTypeParseException with the specified detail message.
      *
-     * @param   s   the detail message.
+     * @param s the detail message.
      */
     public MimeTypeParseException(String s) {
         super(s);

@@ -5,13 +5,16 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+
 /**
  * VisuallyLayoutableIcon takes an icon and a layout rectangle. The layout rectangle is
  * relative to the upper left corner of the icon.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class VisuallyLayoutableIcon implements Icon {

@@ -4,18 +4,16 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.border.OverlayBorder;
-import ch.randelshofer.quaqua.border.FocusBorder;
-import ch.randelshofer.quaqua.border.ButtonStateBorder;
 import ch.randelshofer.quaqua.border.AnimatedBorder;
+import ch.randelshofer.quaqua.border.ButtonStateBorder;
 import ch.randelshofer.quaqua.border.CompositeVisualMarginBorder;
+import ch.randelshofer.quaqua.border.FocusBorder;
+import ch.randelshofer.quaqua.border.OverlayBorder;
 import ch.randelshofer.quaqua.border.PressedCueBorder;
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.SegmentPosition;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.image.BufferedImage;
+import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.InsetsUtil;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
@@ -24,11 +22,12 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.UIResource;
-
-import ch.randelshofer.quaqua.util.Images;
-import ch.randelshofer.quaqua.util.InsetsUtil;
 import javax.swing.plaf.InsetsUIResource;
+import javax.swing.plaf.UIResource;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.image.BufferedImage;
 
 /**
  * QuaquaButtonBorder.
@@ -68,7 +67,7 @@ import javax.swing.plaf.InsetsUIResource;
  * <li><code>icon</code> Rounded Bevel button. No size constraints.</li>
  * </ul>
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource {
@@ -95,12 +94,16 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
      */
     private String defaultStyle;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaButtonBorder(String defaultStyle) {
         this.defaultStyle = defaultStyle;
     }
 
-    /** Returns a Border that implements the VisualMargin interface. */
+    /**
+     * Returns a Border that implements the VisualMargin interface.
+     */
     public Border getActualBorder(Component c) {
         Border b = null;
         String style = getStyle(c);
@@ -115,29 +118,29 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             segpos = "last";
         }
         if (segpos == null//
-                || !"first".equals(segpos) && !"middle".equals(segpos) && ! !"last".equals(segpos)) {
+                || !"first".equals(segpos) && !"middle".equals(segpos) && !!"last".equals(segpos)) {
             segpos = "only";
         }
 
         // Explicitly chosen styles
         if ("text".equals(style) || "push".equals(style)) {
             switch (QuaquaUtilities.getSizeVariant(c)) {
-                case SMALL:
-                case MINI:
-                    b = getSmallPushButtonBorder();
-                    break;
-                default:
-                    b = getRegularPushButtonBorder();
-                    break;
+            case SMALL:
+            case MINI:
+                b = getSmallPushButtonBorder();
+                break;
+            default:
+                b = getRegularPushButtonBorder();
+                break;
             }
         } else if ("toolBar".equals(style)) {
             if (toolBarBorder == null) {
                 toolBarBorder = new CompositeVisualMarginBorder(new CompoundBorder(
                         new EmptyBorder(-1, -1, -1, -2),
                         new QuaquaToolBarButtonStateBorder(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
-                        10, true,
-                        new Insets(8, 10, 15, 10), new Insets(4, 6, 4, 6), true, false)),//
+                                Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
+                                10, true,
+                                new Insets(8, 10, 15, 10), new Insets(4, 6, 4, 6), true, false)),//
                         0, 0, 0, 0);
             }
             b = toolBarBorder;
@@ -146,9 +149,9 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                 toolBarRolloverBorder = new CompositeVisualMarginBorder(new CompoundBorder(
                         new EmptyBorder(-1, -1, -1, -2),
                         new QuaquaToolBarButtonStateBorder(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
-                        10, true,
-                        new Insets(8, 10, 15, 10), new Insets(4, 6, 4, 6), true, true)),//
+                                Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
+                                10, true,
+                                new Insets(8, 10, 15, 10), new Insets(4, 6, 4, 6), true, true)),//
                         0, 0, 0, 0);
             }
             b = toolBarRolloverBorder;
@@ -167,13 +170,13 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             if (colorWellBorder == null) {
                 colorWellBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
-                        new QuaquaColorWellBorder() /*)*/,
-                        new CompoundBorder(
-                        new EmptyBorder(-2, -2, -2, -2),
-                        new FocusBorder(
-                        QuaquaBorderFactory.create(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
-                        new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),//
+                                new QuaquaColorWellBorder() /*)*/,
+                                new CompoundBorder(
+                                        new EmptyBorder(-2, -2, -2, -2),
+                                        new FocusBorder(
+                                                QuaquaBorderFactory.create(
+                                                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
+                                                        new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),//
                         0, 0, 0, 0);
             }
             b = colorWellBorder;
@@ -182,20 +185,20 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                 Insets borderInsets = new Insets(4, 3, 3, 3);
                 Border focusBorder = new FocusBorder(
                         QuaquaBorderFactory.create(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/RoundedBevel.focusRing.png")),
-                        new Insets(10, 9, 10, 8), borderInsets, true));
+                                Images.createImage(QuaquaButtonBorder.class.getResource("images/RoundedBevel.focusRing.png")),
+                                new Insets(10, 9, 10, 8), borderInsets, true));
 
                 bevelBorder = new CompositeVisualMarginBorder(
                         new CompoundBorder(
-                        new EmptyBorder(-3, -2, -2, -2),
-                        new OverlayBorder(
-                        new ButtonStateBorder(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/RoundedBevel.borders.png")),
-                        10, true,
-                        new Insets(10, 9, 10, 8), borderInsets, true),
-                        new CompoundBorder(
-                        new EmptyBorder(0, -1, 0, -1),
-                        focusBorder))),//
+                                new EmptyBorder(-3, -2, -2, -2),
+                                new OverlayBorder(
+                                        new ButtonStateBorder(
+                                                Images.createImage(QuaquaButtonBorder.class.getResource("images/RoundedBevel.borders.png")),
+                                                10, true,
+                                                new Insets(10, 9, 10, 8), borderInsets, true),
+                                        new CompoundBorder(
+                                                new EmptyBorder(0, -1, 0, -1),
+                                                focusBorder))),//
                         0, 0, 0, 0);
             }
             b = bevelBorder;
@@ -206,14 +209,14 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                 Insets borderInsets = new Insets(3, 5, 3, 5);
                 toggleBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
-                        new ButtonStateBorder(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
-                        10, true,
-                        new Insets(8, 10, 15, 10), borderInsets, true),
-                        new FocusBorder(
-                        QuaquaBorderFactory.create(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.focusRing.png")),
-                        new Insets(8, 10, 15, 10), borderInsets, false))),
+                                new ButtonStateBorder(
+                                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
+                                        10, true,
+                                        new Insets(8, 10, 15, 10), borderInsets, true),
+                                new FocusBorder(
+                                        QuaquaBorderFactory.create(
+                                                Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.focusRing.png")),
+                                                new Insets(8, 10, 15, 10), borderInsets, false))),
                         2, 2, 2, 2);
             }
             b = toggleBorder;
@@ -223,14 +226,14 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                 Insets borderInsets = new Insets(3, 1, 3, 5);
                 toggleEastBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
-                        new ButtonStateBorder(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.east.borders.png")),
-                        10, true,
-                        new Insets(8, 1, 15, 10), borderInsets, true),
-                        new FocusBorder(
-                        QuaquaBorderFactory.create(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.east.focusRing.png")),
-                        new Insets(8, 4, 15, 10), borderInsets, false))),
+                                new ButtonStateBorder(
+                                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.east.borders.png")),
+                                        10, true,
+                                        new Insets(8, 1, 15, 10), borderInsets, true),
+                                new FocusBorder(
+                                        QuaquaBorderFactory.create(
+                                                Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.east.focusRing.png")),
+                                                new Insets(8, 4, 15, 10), borderInsets, false))),
                         2, 0, 2, 2, false, true, false, false);
             }
             b = toggleEastBorder;
@@ -239,14 +242,14 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                 Insets borderInsets = new Insets(3, 1, 3, 1);
                 toggleCenterBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
-                        new ButtonStateBorder(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.center.borders.png")),
-                        10, true,
-                        new Insets(8, 0, 15, 1), borderInsets, true),
-                        new FocusBorder(
-                        QuaquaBorderFactory.create(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.center.focusRing.png")),
-                        new Insets(8, 4, 15, 4), borderInsets, false))),
+                                new ButtonStateBorder(
+                                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.center.borders.png")),
+                                        10, true,
+                                        new Insets(8, 0, 15, 1), borderInsets, true),
+                                new FocusBorder(
+                                        QuaquaBorderFactory.create(
+                                                Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.center.focusRing.png")),
+                                                new Insets(8, 4, 15, 4), borderInsets, false))),
                         2, 0, 2, 0, false, true, false, true);
             }
             b = toggleCenterBorder;
@@ -255,14 +258,14 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                 Insets borderInsets = new Insets(3, 5, 3, 1);
                 toggleWestBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
-                        new ButtonStateBorder(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.west.borders.png")),
-                        10, true,
-                        new Insets(8, 10, 15, 1), borderInsets, true),
-                        new FocusBorder(
-                        QuaquaBorderFactory.create(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.west.focusRing.png")),
-                        new Insets(8, 10, 15, 4), borderInsets, false))),
+                                new ButtonStateBorder(
+                                        Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.west.borders.png")),
+                                        10, true,
+                                        new Insets(8, 10, 15, 1), borderInsets, true),
+                                new FocusBorder(
+                                        QuaquaBorderFactory.create(
+                                                Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.west.focusRing.png")),
+                                                new Insets(8, 10, 15, 4), borderInsets, false))),
                         2, 2, 2, 0, false, false, false, true);
             }
             b = toggleWestBorder;
@@ -276,13 +279,13 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             b = getSquareBorder();
         } else {
             switch (QuaquaUtilities.getSizeVariant(c)) {
-                case SMALL:
-                case MINI:
-                    b = getSmallPushButtonBorder();
-                    break;
-                default:
-                    b = getRegularPushButtonBorder();
-                    break;
+            case SMALL:
+            case MINI:
+                b = getSmallPushButtonBorder();
+                break;
+            default:
+                b = getRegularPushButtonBorder();
+                break;
             }
         }
         if (b == null) {
@@ -307,8 +310,8 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             }
             ButtonStateBorder buttonStateBorder = new ButtonStateBorder(
                     Images.split(
-                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.borders.png")),
-                    10, true),
+                            Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.borders.png")),
+                            10, true),
                     new Insets(11, 13, 13, 13),
                     borderInsets,
                     true);
@@ -319,13 +322,13 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
             regularPushButtonBorder = new CompositeVisualMarginBorder(
                     new OverlayBorder(
-                    buttonStateBorder,
-                    new FocusBorder(
-                    QuaquaBorderFactory.create(
-                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.focusRing.png")),
-                    new Insets(12, 13, 12, 13),
-                    borderInsets,
-                    false))),
+                            buttonStateBorder,
+                            new FocusBorder(
+                                    QuaquaBorderFactory.create(
+                                            Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.focusRing.png")),
+                                            new Insets(12, 13, 12, 13),
+                                            borderInsets,
+                                            false))),
                     2, 4, 2, 4);
         }
         return regularPushButtonBorder;
@@ -335,13 +338,13 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         if (squareBorder == null) {
             squareBorder = new CompositeVisualMarginBorder(
                     new OverlayBorder(
-                    QuaquaBorderFactory.createSquareButtonBorder(),
-                    new CompoundBorder(
-                    new EmptyBorder(-2, -2, -2, -2),
-                    new FocusBorder(
-                    QuaquaBorderFactory.create(
-                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
-                    new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),
+                            QuaquaBorderFactory.createSquareButtonBorder(),
+                            new CompoundBorder(
+                                    new EmptyBorder(-2, -2, -2, -2),
+                                    new FocusBorder(
+                                            QuaquaBorderFactory.create(
+                                                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
+                                                    new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),
                     0, 0, 0, 0) {
 
                 @Override
@@ -352,16 +355,16 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
                     if (insets instanceof javax.swing.plaf.UIResource) {
                         switch (getSegmentPosition(c)) {
-                            case first:
-                                insets.right = -1;
-                                break;
-                            case middle:
-                                insets.left = 0;
-                                insets.right = -1;
-                                break;
-                            case last:
-                                insets.left = 0;
-                                break;
+                        case first:
+                            insets.right = -1;
+                            break;
+                        case middle:
+                            insets.left = 0;
+                            insets.right = -1;
+                            break;
+                        case last:
+                            insets.left = 0;
+                            break;
                         }
                     }
                     return insets;
@@ -375,15 +378,15 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         if (placardBorder == null) {
             placardBorder = new CompositeVisualMarginBorder(
                     new OverlayBorder(
-                    new CompoundBorder(
-                    new EmptyBorder(-1, 0, -1, 0),
-                    QuaquaBorderFactory.createPlacardButtonBorder()),
-                    new CompoundBorder(
-                    new EmptyBorder(-1, -1, -1, -1),
-                    new FocusBorder(
-                    QuaquaBorderFactory.create(
-                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
-                    new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),
+                            new CompoundBorder(
+                                    new EmptyBorder(-1, 0, -1, 0),
+                                    QuaquaBorderFactory.createPlacardButtonBorder()),
+                            new CompoundBorder(
+                                    new EmptyBorder(-1, -1, -1, -1),
+                                    new FocusBorder(
+                                            QuaquaBorderFactory.create(
+                                                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
+                                                    new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),
                     0, 0, 0, 0) {
 
                 @Override
@@ -402,16 +405,16 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
                     if (insets instanceof javax.swing.plaf.UIResource) {
                         switch (getSegmentPosition(c)) {
-                            case first:
-                                insets.right = -1;
-                                break;
-                            case middle:
-                                insets.left = 0;
-                                insets.right = -1;
-                                break;
-                            case last:
-                                insets.left = 0;
-                                break;
+                        case first:
+                            insets.right = -1;
+                            break;
+                        case middle:
+                            insets.left = 0;
+                            insets.right = -1;
+                            break;
+                        case last:
+                            insets.left = 0;
+                            break;
                         }
                     }
                     return insets;
@@ -425,8 +428,8 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         if (tableHeaderBorder == null) {
             tableHeaderBorder = new CompositeVisualMarginBorder(
                     new ButtonStateBorder(
-                    Images.createImage(QuaquaButtonBorder.class.getResource("images/TableHeader.borders.png")),
-                    4, true, new Insets(7, 1, 8, 1), new Insets(1, 2, 1, 2), true),
+                            Images.createImage(QuaquaButtonBorder.class.getResource("images/TableHeader.borders.png")),
+                            4, true, new Insets(7, 1, 8, 1), new Insets(1, 2, 1, 2), true),
                     0, 0, 0, 0);
         }
         return tableHeaderBorder;
@@ -448,8 +451,8 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             }
             ButtonStateBorder buttonStateBorder = new ButtonStateBorder(
                     Images.split(
-                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.small.borders.png")),
-                    10, true),
+                            Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.small.borders.png")),
+                            10, true),
                     new Insets(9, 13, 12, 13),
                     borderInsets,
                     true);
@@ -459,15 +462,15 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
             smallPushButtonBorder = new CompositeVisualMarginBorder(
                     new CompoundBorder(
-                    new EmptyBorder(-2, -3, -2, -3),
-                    new OverlayBorder(
-                    buttonStateBorder,
-                    new FocusBorder(
-                    QuaquaBorderFactory.create(
-                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.small.focusRing.png")),
-                    new Insets(9, 14, 12, 14),
-                    borderInsets,
-                    false)))),
+                            new EmptyBorder(-2, -3, -2, -3),
+                            new OverlayBorder(
+                                    buttonStateBorder,
+                                    new FocusBorder(
+                                            QuaquaBorderFactory.create(
+                                                    Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.small.focusRing.png")),
+                                                    new Insets(9, 14, 12, 14),
+                                                    borderInsets,
+                                                    false)))),
                     0, 0, 0, 0);
         }
         return smallPushButtonBorder;
@@ -475,7 +478,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
     /**
      * Returns the default button margin for the specified component.
-     *
+     * <p>
      * FIXME: We should not create a new Insets instance on each method call.
      */
     public Insets getDefaultMargin(JComponent c) {
@@ -569,7 +572,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
     }
 
     protected String getStyle(Component c) {
-        return QuaquaButtonUI.getStyle(c,defaultStyle);
+        return QuaquaButtonUI.getStyle(c, defaultStyle);
     }
 
     /**
@@ -600,7 +603,8 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
      * /
      * public boolean hasDisabledCue(JComponent c) {
      * return false;
-     * }*/
+     * }
+     */
     public Insets getBorderInsets(Component c) {
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;

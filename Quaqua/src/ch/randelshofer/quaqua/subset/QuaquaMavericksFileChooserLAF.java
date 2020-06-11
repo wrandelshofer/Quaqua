@@ -4,7 +4,8 @@
  */
 package ch.randelshofer.quaqua.subset;
 
-import javax.swing.*;
+import javax.swing.LookAndFeel;
+import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 
 /**
@@ -34,10 +35,9 @@ import javax.swing.plaf.ColorUIResource;
  * are designed to automatically detect the appropriate Quaqua Look and Feel
  * implementation for current Java VM.
  *
+ * @author Werner Randelshofer
  * @see ch.randelshofer.quaqua.QuaquaManager
  * @see ch.randelshofer.quaqua.QuaquaLookAndFeel
- *
- * @author Werner Randelshofer
  */
 public class QuaquaMavericksFileChooserLAF extends Quaqua16LionFileChooserLAF {
 
@@ -93,8 +93,8 @@ public class QuaquaMavericksFileChooserLAF extends Quaqua16LionFileChooserLAF {
         String quaquaMavericksPrefix = "ch.randelshofer.quaqua.mavericks.QuaquaMavericks";
 
         Object[] uiDefaults = {
-            "BrowserUI", quaquaPrefix + "BrowserUI",
-            "FileChooserUI", quaquaMavericksPrefix + "FileChooserUI",};
+                "BrowserUI", quaquaPrefix + "BrowserUI",
+                "FileChooserUI", quaquaMavericksPrefix + "FileChooserUI",};
         table.putDefaults(uiDefaults);
     }
 
@@ -104,10 +104,10 @@ public class QuaquaMavericksFileChooserLAF extends Quaqua16LionFileChooserLAF {
         super.initComponentDefaults(table);
 
         Object[] uiDefaults = {
-            "FileChooser.listView.extraColumnTextColor", new ColorUIResource(80, 80, 80),
-            "FileChooser.listView.headerColor", new ColorUIResource(120, 120, 120),
-            "FileChooser.listView.headerBorderColor", new ColorUIResource(190, 190, 190),
-            //
+                "FileChooser.listView.extraColumnTextColor", new ColorUIResource(80, 80, 80),
+                "FileChooser.listView.headerColor", new ColorUIResource(120, 120, 120),
+                "FileChooser.listView.headerBorderColor", new ColorUIResource(190, 190, 190),
+                //
         };
         table.putDefaults(uiDefaults);
     }

@@ -5,17 +5,21 @@
 
 package ch.randelshofer.quaqua.util;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 /**
  * This Enumeration is a wrapper over an Iterator.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class IteratorEnumeration implements Enumeration {
     private Iterator iterator;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public IteratorEnumeration(Iterator iterator) {
         this.iterator = iterator;
     }

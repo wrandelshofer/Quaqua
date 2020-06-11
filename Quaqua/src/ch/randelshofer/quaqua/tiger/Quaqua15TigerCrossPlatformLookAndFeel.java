@@ -4,12 +4,17 @@
  */
 package ch.randelshofer.quaqua.tiger;
 
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.QuaquaLookAndFeel;
+import ch.randelshofer.quaqua.QuaquaManager;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.InsetsUIResource;
+import java.awt.Color;
 
 /**
  * The Quaqua15TigerCrossPlatformLookAndFeel provides bug fixes and enhancements for Apple's
@@ -23,11 +28,11 @@ import java.awt.*;
  * are designed to autodetect the appropriate Quaqua Look and Feel
  * implementation for current Java VM.
  * <p>
- * @see QuaquaManager
- * @see QuaquaLookAndFeel
  *
  * @author Werner Randelshofer
  * @version $Id$
+ * @see QuaquaManager
+ * @see QuaquaLookAndFeel
  */
 public class Quaqua15TigerCrossPlatformLookAndFeel extends Quaqua15TigerLookAndFeel {
 
@@ -67,14 +72,14 @@ public class Quaqua15TigerCrossPlatformLookAndFeel extends Quaqua15TigerLookAndF
             Object menuHighlight = makeTextureColor(0x3471cf, pantherDir + "MenuBar.texture.S.png");
 
             Object[] uiDefaults = {
-                "window", controlBackground, /* Default color for the interior of windows */
-                "control", controlBackground, /* Default color for controls (buttons, sliders, etc) */
-                "menu", menuBackground, /* Default color for the interior of menus */
-                "menuHighlight", menuHighlight, /* Default color for the interior of menus */
-                // Quaqua specific 'system' colors
-                "listHighlight", table.get("textHighlight"), /* List background color when selected */
-                "listHighlightText", table.get("textHighlightText"), /* List color when selected */
-                "listHighlightBorder", new ColorUIResource(0x808080), /* List color when selected */};
+                    "window", controlBackground, /* Default color for the interior of windows */
+                    "control", controlBackground, /* Default color for controls (buttons, sliders, etc) */
+                    "menu", menuBackground, /* Default color for the interior of menus */
+                    "menuHighlight", menuHighlight, /* Default color for the interior of menus */
+                    // Quaqua specific 'system' colors
+                    "listHighlight", table.get("textHighlight"), /* List background color when selected */
+                    "listHighlightText", table.get("textHighlightText"), /* List color when selected */
+                    "listHighlightBorder", new ColorUIResource(0x808080), /* List color when selected */};
             table.putDefaults(uiDefaults);
         }
 
@@ -103,45 +108,45 @@ public class Quaqua15TigerCrossPlatformLookAndFeel extends Quaqua15TigerLookAndF
 
 
         Object[] uiDefaults = {
-            // Set this to true, to sort files by type instead of by name
-            "FileChooser.orderByType", Boolean.FALSE,
-            "FileChooser.previewLabelForeground", new ColorUIResource(0x808080),
-            "FileChooser.previewValueForeground", new ColorUIResource(0x000000),
-            "FileChooser.previewLabelInsets", new InsetsUIResource(1, 0, 0, 4),
-            "FileChooser.previewLabelDelimiter", "",
-            "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
-            "CheckBoxMenuItem.selectionBackground", new ColorUIResource(0x3875d7),
-            "CheckBoxMenuItem.selectionForeground", new ColorUIResource(0xffffff),
-            "CheckBoxMenuItem.background", menuBackground,
-            "ColorChooser.colorPickerMagnifier", makeBufferedImage(commonDir + "ColorChooser.colorPickerMagnifierPC.png"),
-            "ColorChooser.colorPickerHotSpot", new UIDefaults.ProxyLazyValue("java.awt.Point", new Object[]{22, 22}),
-            "ColorChooser.colorPickerGlassRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{1, 1, 21, 21}),
-            // Pick point relative to hot spot
-            "ColorChooser.colorPickerPickOffset", new UIDefaults.ProxyLazyValue("java.awt.Point", new Object[]{-10, -10}),
-            "ColorChooser.colorPickerCaptureRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{-13, -13, 8, 8}),
-            "ColorChooser.colorPickerZoomRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{2, 2, 24, 24}),
-            "ComboBox.popupBorder", popupMenuBorder,
-            "Menu.submenuPopupOffsetY", -5,
-            "Menu.selectionBackground", new ColorUIResource(0x3875d7),
-            "Menu.selectionForeground", new ColorUIResource(0xffffff),
-            "Menu.background", menuBackground,
-            "MenuItem.selectionBackground", new ColorUIResource(0x3875d7),
-            "MenuItem.selectionForeground", new ColorUIResource(0xffffff),
-            "MenuItem.background", menuBackground,
-            "PopupMenu.border", popupMenuBorder,
-            "PopupMenu.background", menuBackground,
-            "RadioButtonMenuItem.selectionBackground", new ColorUIResource(0x3875d7),
-            "RadioButtonMenuItem.selectionForeground", new ColorUIResource(0xffffff),
-            "RadioButtonMenuItem.background", menuBackground,
-            "RootPane.frameBorder", rootPaneBorder,
-            "RootPane.plainDialogBorder", rootPaneBorder,
-            "RootPane.informationDialogBorder", rootPaneBorder,
-            "RootPane.errorDialogBorder", rootPaneBorder,
-            "RootPane.colorChooserDialogBorder", rootPaneBorder,
-            "RootPane.fileChooserDialogBorder", rootPaneBorder,
-            "RootPane.questionDialogBorder", rootPaneBorder,
-            "RootPane.warningDialogBorder", rootPaneBorder,
-            "Sheet.border", rootPaneBorder,};
+                // Set this to true, to sort files by type instead of by name
+                "FileChooser.orderByType", Boolean.FALSE,
+                "FileChooser.previewLabelForeground", new ColorUIResource(0x808080),
+                "FileChooser.previewValueForeground", new ColorUIResource(0x000000),
+                "FileChooser.previewLabelInsets", new InsetsUIResource(1, 0, 0, 4),
+                "FileChooser.previewLabelDelimiter", "",
+                "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
+                "CheckBoxMenuItem.selectionBackground", new ColorUIResource(0x3875d7),
+                "CheckBoxMenuItem.selectionForeground", new ColorUIResource(0xffffff),
+                "CheckBoxMenuItem.background", menuBackground,
+                "ColorChooser.colorPickerMagnifier", makeBufferedImage(commonDir + "ColorChooser.colorPickerMagnifierPC.png"),
+                "ColorChooser.colorPickerHotSpot", new UIDefaults.ProxyLazyValue("java.awt.Point", new Object[]{22, 22}),
+                "ColorChooser.colorPickerGlassRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{1, 1, 21, 21}),
+                // Pick point relative to hot spot
+                "ColorChooser.colorPickerPickOffset", new UIDefaults.ProxyLazyValue("java.awt.Point", new Object[]{-10, -10}),
+                "ColorChooser.colorPickerCaptureRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{-13, -13, 8, 8}),
+                "ColorChooser.colorPickerZoomRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{2, 2, 24, 24}),
+                "ComboBox.popupBorder", popupMenuBorder,
+                "Menu.submenuPopupOffsetY", -5,
+                "Menu.selectionBackground", new ColorUIResource(0x3875d7),
+                "Menu.selectionForeground", new ColorUIResource(0xffffff),
+                "Menu.background", menuBackground,
+                "MenuItem.selectionBackground", new ColorUIResource(0x3875d7),
+                "MenuItem.selectionForeground", new ColorUIResource(0xffffff),
+                "MenuItem.background", menuBackground,
+                "PopupMenu.border", popupMenuBorder,
+                "PopupMenu.background", menuBackground,
+                "RadioButtonMenuItem.selectionBackground", new ColorUIResource(0x3875d7),
+                "RadioButtonMenuItem.selectionForeground", new ColorUIResource(0xffffff),
+                "RadioButtonMenuItem.background", menuBackground,
+                "RootPane.frameBorder", rootPaneBorder,
+                "RootPane.plainDialogBorder", rootPaneBorder,
+                "RootPane.informationDialogBorder", rootPaneBorder,
+                "RootPane.errorDialogBorder", rootPaneBorder,
+                "RootPane.colorChooserDialogBorder", rootPaneBorder,
+                "RootPane.fileChooserDialogBorder", rootPaneBorder,
+                "RootPane.questionDialogBorder", rootPaneBorder,
+                "RootPane.warningDialogBorder", rootPaneBorder,
+                "Sheet.border", rootPaneBorder,};
         table.putDefaults(uiDefaults);
     }
 

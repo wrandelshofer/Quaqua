@@ -5,9 +5,12 @@
 
 package test;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 /**
  * Please use  this default cell editor instead of
@@ -17,7 +20,7 @@ import javax.swing.border.*;
  * which contains the cell editor, and it also properly renders a border
  * around the field which is currently being edit.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0  20 March 2005  Created.
  */
 public class DefaultCellEditor2 extends DefaultCellEditor {
@@ -25,7 +28,7 @@ public class DefaultCellEditor2 extends DefaultCellEditor {
     /**
      * Constructs a <code>DefaultCellEditor</code> that uses a text field.
      *
-     * @param textField  a <code>JTextField</code> object
+     * @param textField a <code>JTextField</code> object
      */
     public DefaultCellEditor2(JTextField textField) {
         super(textField);
@@ -35,7 +38,7 @@ public class DefaultCellEditor2 extends DefaultCellEditor {
     /**
      * Constructs a <code>DefaultCellEditor</code> object that uses a check box.
      *
-     * @param checkBox  a <code>JCheckBox</code> object
+     * @param checkBox a <code>JCheckBox</code> object
      */
     public DefaultCellEditor2(JCheckBox checkBox) {
         super(checkBox);
@@ -46,7 +49,7 @@ public class DefaultCellEditor2 extends DefaultCellEditor {
      * Constructs a <code>DefaultCellEditor</code> object that uses a
      * combo box.
      *
-     * @param comboBox  a <code>JComboBox</code> object
+     * @param comboBox a <code>JComboBox</code> object
      */
     public DefaultCellEditor2(JComboBox comboBox) {
         super(comboBox);

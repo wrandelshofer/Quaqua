@@ -5,25 +5,63 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.peer.*;
-import java.beans.*;
-import java.lang.reflect.*;
-import java.security.*;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JRootPane;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.MouseInputListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicRootPaneUI;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.peer.ComponentPeer;
+import java.beans.PropertyChangeEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.AccessControlException;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.WeakHashMap;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
 
 /**
  * QuaquaRootPaneUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaRootPaneUI extends BasicRootPaneUI {
@@ -32,11 +70,11 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
      * Keys to lookup borders in defaults table.
      */
     private static final String[] borderKeys = new String[]{
-        null, "RootPane.frameBorder", "RootPane.plainDialogBorder",
-        "RootPane.informationDialogBorder",
-        "RootPane.errorDialogBorder", "RootPane.colorChooserDialogBorder",
-        "RootPane.fileChooserDialogBorder", "RootPane.questionDialogBorder",
-        "RootPane.warningDialogBorder"
+            null, "RootPane.frameBorder", "RootPane.plainDialogBorder",
+            "RootPane.informationDialogBorder",
+            "RootPane.errorDialogBorder", "RootPane.colorChooserDialogBorder",
+            "RootPane.fileChooserDialogBorder", "RootPane.questionDialogBorder",
+            "RootPane.warningDialogBorder"
     };
     /**
      * Height and width of resize handle on the lower right corner of the window.
@@ -106,7 +144,9 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         return new QuaquaRootPaneUI();
     }
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaRootPaneUI() {
     }
 
@@ -228,7 +268,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                 "RootPane.font");
         LookAndFeel.installBorder(c, "RootPane.border");
 
-	QuaquaUtilities.installProperty(c, "opaque", UIManager.get("RootPane.opaque"));
+        QuaquaUtilities.installProperty(c, "opaque", UIManager.get("RootPane.opaque"));
 
         // By default, we should delay window ordering, but
         // it does not seem to work as expected. It appears that we need to
@@ -595,7 +635,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
             root.repaint();
             root.revalidate();
         }
-// Reset the cursor, as we may have changed it to a resize cursor
+        // Reset the cursor, as we may have changed it to a resize cursor
 
         if (window != null) {
             window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -632,10 +672,6 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         } else if (name.equals("JComponent.sizeVariant")) {
             QuaquaUtilities.applySizeVariant(rootpane);
         }
-
-
-
-
 
 
     }
@@ -721,8 +757,8 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
      * layeredPane, glassPane, menuBar and titlePane, if one has been
      * installed.
      */
-// NOTE: Ideally this would extends JRootPane.RootLayout, but that
-//       would force this to be non-static.
+    // NOTE: Ideally this would extends JRootPane.RootLayout, but that
+    //       would force this to be non-static.
     private static class QuaquaRootLayout implements LayoutManager2 {
 
         private boolean isVertical(Container parent) {
@@ -1063,7 +1099,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                 dragHeight = w.getHeight();
                 dragCursor =
                         (dragWindowOffset.x >= dragWidth - BORDER_DRAG_THICKNESS &&
-                        dragWindowOffset.y >= dragHeight - BORDER_DRAG_THICKNESS) ? Cursor.SE_RESIZE_CURSOR : 0;
+                                dragWindowOffset.y >= dragHeight - BORDER_DRAG_THICKNESS) ? Cursor.SE_RESIZE_CURSOR : 0;
             }
         }
 
@@ -1083,7 +1119,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         }
 
         private void adjust(Rectangle bounds, Dimension min, int deltaX,
-                int deltaY, int deltaWidth, int deltaHeight) {
+                            int deltaY, int deltaWidth, int deltaHeight) {
             bounds.x += deltaX;
             bounds.y += deltaY;
             bounds.width += deltaWidth;
@@ -1121,7 +1157,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
 
                     boolean isOnDefaultScreen =
                             w.getGraphicsConfiguration().getDevice() ==
-                            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                                    GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
                     // If an edge of the window is within the snap distance of the
                     // edge of another window, then align it to it.
@@ -1134,7 +1170,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                         do {
                             snapBounds = new LinkedList();
                             try {
-                                for (Iterator i = allRootPanes.keySet().iterator(); i.hasNext();) {
+                                for (Iterator i = allRootPanes.keySet().iterator(); i.hasNext(); ) {
                                     JRootPane otherRootPane = (JRootPane) i.next();
                                     Window other = SwingUtilities.getWindowAncestor(otherRootPane);
                                     if (other != null && other.isShowing() && other != w) {
@@ -1164,7 +1200,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                         Dimension windowDim = w.getSize();
                         Rectangle windowRect = new Rectangle(windowPt.x, windowPt.y, windowDim.width, windowDim.height);
                         Rectangle snapper = new Rectangle();
-                        for (Iterator i = snapBounds.iterator(); i.hasNext();) {
+                        for (Iterator i = snapBounds.iterator(); i.hasNext(); ) {
                             Rectangle r = (Rectangle) i.next();
 
                             snapper.setBounds(r);
@@ -1252,46 +1288,46 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                 Dimension min = w.getMinimumSize();
 
                 switch (dragCursor) {
-                    case Cursor.E_RESIZE_CURSOR:
-                        adjust(r, min, 0, 0, pt.x + (dragWidth - dragOffsetX) -
-                                r.width, 0);
-                        break;
-                    case Cursor.S_RESIZE_CURSOR:
-                        adjust(r, min, 0, 0, 0, pt.y + (dragHeight - dragOffsetY) -
-                                r.height);
-                        break;
-                    case Cursor.N_RESIZE_CURSOR:
-                        adjust(r, min, 0, pt.y - dragOffsetY, 0,
-                                -(pt.y - dragOffsetY));
-                        break;
-                    case Cursor.W_RESIZE_CURSOR:
-                        adjust(r, min, pt.x - dragOffsetX, 0,
-                                -(pt.x - dragOffsetX), 0);
-                        break;
-                    case Cursor.NE_RESIZE_CURSOR:
-                        adjust(r, min, 0, pt.y - dragOffsetY,
-                                pt.x + (dragWidth - dragOffsetX) - r.width,
-                                -(pt.y - dragOffsetY));
-                        break;
-                    case Cursor.SE_RESIZE_CURSOR:
-                        adjust(r, min, 0, 0,
-                                pt.x + (dragWidth - dragOffsetX) - r.width,
-                                pt.y + (dragHeight - dragOffsetY) -
-                                r.height);
-                        break;
-                    case Cursor.NW_RESIZE_CURSOR:
-                        adjust(r, min, pt.x - dragOffsetX,
-                                pt.y - dragOffsetY,
-                                -(pt.x - dragOffsetX),
-                                -(pt.y - dragOffsetY));
-                        break;
-                    case Cursor.SW_RESIZE_CURSOR:
-                        adjust(r, min, pt.x - dragOffsetX, 0,
-                                -(pt.x - dragOffsetX),
-                                pt.y + (dragHeight - dragOffsetY) - r.height);
-                        break;
-                    default:
-                        break;
+                case Cursor.E_RESIZE_CURSOR:
+                    adjust(r, min, 0, 0, pt.x + (dragWidth - dragOffsetX) -
+                            r.width, 0);
+                    break;
+                case Cursor.S_RESIZE_CURSOR:
+                    adjust(r, min, 0, 0, 0, pt.y + (dragHeight - dragOffsetY) -
+                            r.height);
+                    break;
+                case Cursor.N_RESIZE_CURSOR:
+                    adjust(r, min, 0, pt.y - dragOffsetY, 0,
+                            -(pt.y - dragOffsetY));
+                    break;
+                case Cursor.W_RESIZE_CURSOR:
+                    adjust(r, min, pt.x - dragOffsetX, 0,
+                            -(pt.x - dragOffsetX), 0);
+                    break;
+                case Cursor.NE_RESIZE_CURSOR:
+                    adjust(r, min, 0, pt.y - dragOffsetY,
+                            pt.x + (dragWidth - dragOffsetX) - r.width,
+                            -(pt.y - dragOffsetY));
+                    break;
+                case Cursor.SE_RESIZE_CURSOR:
+                    adjust(r, min, 0, 0,
+                            pt.x + (dragWidth - dragOffsetX) - r.width,
+                            pt.y + (dragHeight - dragOffsetY) -
+                                    r.height);
+                    break;
+                case Cursor.NW_RESIZE_CURSOR:
+                    adjust(r, min, pt.x - dragOffsetX,
+                            pt.y - dragOffsetY,
+                            -(pt.x - dragOffsetX),
+                            -(pt.y - dragOffsetY));
+                    break;
+                case Cursor.SW_RESIZE_CURSOR:
+                    adjust(r, min, pt.x - dragOffsetX, 0,
+                            -(pt.x - dragOffsetX),
+                            pt.y + (dragHeight - dragOffsetY) - r.height);
+                    break;
+                default:
+                    break;
                 }
                 if (!r.equals(startBounds)) {
                     w.setBounds(r);

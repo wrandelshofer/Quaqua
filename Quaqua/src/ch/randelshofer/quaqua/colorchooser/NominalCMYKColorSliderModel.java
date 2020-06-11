@@ -4,7 +4,8 @@
  */
 package ch.randelshofer.quaqua.colorchooser;
 
-import javax.swing.*;
+import javax.swing.DefaultBoundedRangeModel;
+
 /**
  * A ColorSliderModel for CMYK color models (cyan, magenta, yellow, black) with
  * nominally converted color components from/to an RGB color model.
@@ -12,7 +13,7 @@ import javax.swing.*;
  * This model may not be very useful. It assumes that the color components
  * perfectly absorb the desired wavelenghts.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class NominalCMYKColorSliderModel extends ColorSliderModel {
@@ -20,11 +21,11 @@ public class NominalCMYKColorSliderModel extends ColorSliderModel {
      * Creates a new instance.
      */
     public NominalCMYKColorSliderModel() {
-        super(new DefaultBoundedRangeModel[] {
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100)
+        super(new DefaultBoundedRangeModel[]{
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100)
         });
     }
 
@@ -42,9 +43,9 @@ public class NominalCMYKColorSliderModel extends ColorSliderModel {
         blue = 1f - yellow * (1f - black) - black;
 
         return 0xff000000
-        | ((int) (red * 255) << 16)
-        | ((int) (green * 255) << 8)
-        | (int) (blue * 255);
+                | ((int) (red * 255) << 16)
+                | ((int) (green * 255) << 8)
+                | (int) (blue * 255);
     }
 
     public void setRGB(int rgb) {
@@ -85,8 +86,8 @@ public class NominalCMYKColorSliderModel extends ColorSliderModel {
         green = 1f - magenta * (1f - black) - black;
         blue = 1f - yellow * (1f - black) - black;
         return 0xff000000
-        | ((int) (red * 255) << 16)
-        | ((int) (green * 255) << 8)
-        | (int) (blue * 255);
+                | ((int) (red * 255) << 16)
+                | ((int) (green * 255) << 8)
+                | (int) (blue * 255);
     }
 }

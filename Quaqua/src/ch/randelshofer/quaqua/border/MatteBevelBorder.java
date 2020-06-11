@@ -5,19 +5,24 @@
 
 package ch.randelshofer.quaqua.border;
 
-import java.awt.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 /**
  * MatteBevelBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class MatteBevelBorder implements Border {
     private Insets borderInsets;
     private Border bevelBorder;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public MatteBevelBorder(Insets borderInsets, Border bevelBorder) {
         this.borderInsets = borderInsets;
         this.bevelBorder = bevelBorder;

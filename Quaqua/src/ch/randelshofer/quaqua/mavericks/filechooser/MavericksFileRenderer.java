@@ -4,23 +4,39 @@
  */
 package ch.randelshofer.quaqua.mavericks.filechooser;
 
-import ch.randelshofer.quaqua.leopard.filechooser.*;
-import ch.randelshofer.quaqua.osx.OSXFile;
-import javax.swing.*;
-
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
-import ch.randelshofer.quaqua.filechooser.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+import ch.randelshofer.quaqua.filechooser.CellRenderer;
+import ch.randelshofer.quaqua.filechooser.FileInfo;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
 import ch.randelshofer.quaqua.icon.EmptyIcon;
+import ch.randelshofer.quaqua.osx.OSXFile;
 
-import java.awt.*;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
  * Quaqua FileChooserUI's.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class MavericksFileRenderer extends JLabel implements ListCellRenderer, CellRenderer {
@@ -49,9 +65,9 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
     private double labelRadius = 4.8;
 
     public MavericksFileRenderer(JFileChooser fileChooser,
-            Icon expandingIcon, Icon expandedIcon,
-            Icon selectedExpandingIcon, Icon selectedExpandedIcon,
-            Icon focusedSelectedExpandingIcon, Icon focusedSelectedExpandedIcon) {
+                                 Icon expandingIcon, Icon expandedIcon,
+                                 Icon selectedExpandingIcon, Icon selectedExpandedIcon,
+                                 Icon focusedSelectedExpandingIcon, Icon focusedSelectedExpandedIcon) {
         this.fileChooser = fileChooser;
         this.expandingIcon = expandingIcon;
         this.expandedIcon = expandedIcon;
@@ -117,8 +133,8 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
-            int index, boolean isSelected,
-            boolean cellHasFocus) {
+                                                  int index, boolean isSelected,
+                                                  boolean cellHasFocus) {
         return getCellRendererComponent(list, value, isSelected, cellHasFocus, false);
     }
 
@@ -128,10 +144,10 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
     }
 
     protected Component getCellRendererComponent(JComponent container,
-        Object value,
-        boolean isSelected,
-        boolean cellHasFocus,
-        boolean isListView) {
+                                                 Object value,
+                                                 boolean isSelected,
+                                                 boolean cellHasFocus,
+                                                 boolean isListView) {
 
         this.isListView = isListView;
 
@@ -235,13 +251,13 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
 
         if (labelColor != null) {
 
-                // Paint the label as a filled circle with an outline
-                double r = labelRadius;
-                Shape s = new Ellipse2D.Double(labelRect.x, labelRect.y, r * 2, r * 2);
-                g.setPaint(labelColor);
-                g.fill(s);
-                g.setPaint(isSelected && isActive ? Color.WHITE : Color.LIGHT_GRAY);
-                g.draw(s);
+            // Paint the label as a filled circle with an outline
+            double r = labelRadius;
+            Shape s = new Ellipse2D.Double(labelRect.x, labelRect.y, r * 2, r * 2);
+            g.setPaint(labelColor);
+            g.fill(s);
+            g.setPaint(isSelected && isActive ? Color.WHITE : Color.LIGHT_GRAY);
+            g.draw(s);
 
 
         }
@@ -265,6 +281,7 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
 
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
     }
+
     /**
      * The following variables are used for laying out the renderer.
      * This variables are static, because FileRenderer is always called
@@ -278,7 +295,8 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
     private static Rectangle arrowIconRect = new Rectangle();
     private static Rectangle viewRect = new Rectangle();
     private static Rectangle labelRect = new Rectangle();
-    /** r is used in getPreferredSize and in paintComponent. It must not be
+    /**
+     * r is used in getPreferredSize and in paintComponent. It must not be
      * used in any method called by one of these.
      */
     private static Rectangle r = new Rectangle();

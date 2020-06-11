@@ -4,19 +4,23 @@
  */
 package ch.randelshofer.quaqua.border;
 
-import javax.swing.text.JTextComponent;
 import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+
 import javax.swing.UIManager;
+import javax.swing.text.JTextComponent;
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.Kernel;
-import java.awt.image.ConvolveOp;
-import ch.randelshofer.quaqua.QuaquaUtilities;
 import java.awt.Component;
 import java.awt.Graphics;
-import static java.lang.Math.*;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.exp;
+import static java.lang.Math.pow;
 
 /**
  * {@code FocusedBorder}.
@@ -31,7 +35,7 @@ public abstract class AbstractFocusedPainter {
     private final static ConvolveOp edgeTopOp = new ConvolveOp(new Kernel(1, 3, new float[]{1, 0, -1}));
     private final static ConvolveOp edgeBottomOp = new ConvolveOp(new Kernel(1, 3, new float[]{-1, 0, 1}));
     private static float[] gaussian;
-//    private final static float[] gaussian = gaussian(2f, 2.5f , 0.9f);
+    //    private final static float[] gaussian = gaussian(2f, 2.5f , 0.9f);
     private static ConvolveOp gaussianVOp;
     private static ConvolveOp gaussianHOp;
 
@@ -55,9 +59,12 @@ public abstract class AbstractFocusedPainter {
 
     protected void paint(Component c, Graphics cgx, int x, int y, int width, int height) {
         boolean isEditable;
-        if (c instanceof JTextComponent) isEditable=((JTextComponent)c).isEditable();
-                else isEditable=true;
-        if (QuaquaUtilities.isFocused(c)&&isEditable) {
+        if (c instanceof JTextComponent) {
+            isEditable = ((JTextComponent) c).isEditable();
+        } else {
+            isEditable = true;
+        }
+        if (QuaquaUtilities.isFocused(c) && isEditable) {
 
             Graphics2D cg = (Graphics2D) cgx;
             int slack = 2;
@@ -71,7 +78,7 @@ public abstract class AbstractFocusedPainter {
             doPaint(c, bg, slack, slack, width, height);
             cg.drawImage(borderImg, x - slack, y - slack, c);
 
-            paintFocusRing(borderImg, focusImg, cgx, x-slack,y-slack);
+            paintFocusRing(borderImg, focusImg, cgx, x - slack, y - slack);
 
 
             bg.dispose();
@@ -80,7 +87,8 @@ public abstract class AbstractFocusedPainter {
         }
     }
 
-    /** Paints an focus ring on cgx.
+    /**
+     * Paints an focus ring on cgx.
      *
      * @param borderImg The input image which is used to compute the border.
      * @param focusImg  A temporary image. Must have the same size as borderImg.
@@ -88,33 +96,35 @@ public abstract class AbstractFocusedPainter {
      */
     public static void paintFocusRing(BufferedImage borderImg, BufferedImage focusImg, Graphics cgx, int x, int y) {
 
-            Graphics2D cg = (Graphics2D) cgx;
-            Graphics2D fg = focusImg.createGraphics();
+        Graphics2D cg = (Graphics2D) cgx;
+        Graphics2D fg = focusImg.createGraphics();
 
-            /* Must clear the focusImg as we reuse the focusImg for performance */
-            fg.setBackground(new Color(0, 0, 0, 0));
-            fg.clearRect(0, 0, borderImg.getWidth(), borderImg.getHeight());
+        /* Must clear the focusImg as we reuse the focusImg for performance */
+        fg.setBackground(new Color(0, 0, 0, 0));
+        fg.clearRect(0, 0, borderImg.getWidth(), borderImg.getHeight());
 
-            // generate the focusImg from the borderImg
-            fg.setComposite(AlphaComposite.SrcOver);
-            fg.drawImage(borderImg, edgeLeftOp, 0, 0);
-            fg.drawImage(borderImg, edgeRightOp, 0, 0);
-            fg.drawImage(borderImg, edgeTopOp, 0, 0);
-            fg.drawImage(borderImg, edgeBottomOp, 0, 0);
-            fg.setComposite(AlphaComposite.SrcIn);
-            fg.setColor(UIManager.getColor("Focus.color"));
-            fg.fillRect(0, 0, borderImg.getWidth(), borderImg.getHeight());
+        // generate the focusImg from the borderImg
+        fg.setComposite(AlphaComposite.SrcOver);
+        fg.drawImage(borderImg, edgeLeftOp, 0, 0);
+        fg.drawImage(borderImg, edgeRightOp, 0, 0);
+        fg.drawImage(borderImg, edgeTopOp, 0, 0);
+        fg.drawImage(borderImg, edgeBottomOp, 0, 0);
+        fg.setComposite(AlphaComposite.SrcIn);
+        fg.setColor(UIManager.getColor("Focus.color"));
+        fg.fillRect(0, 0, borderImg.getWidth(), borderImg.getHeight());
 
-            // draw the focusImg blurred onto the component
-            cg.drawImage(focusImg, gaussianHOp, x, y);
-            cg.drawImage(focusImg, gaussianVOp, x, y);
+        // draw the focusImg blurred onto the component
+        cg.drawImage(focusImg, gaussianHOp, x, y);
+        cg.drawImage(focusImg, gaussianVOp, x, y);
 
-            fg.dispose();
+        fg.dispose();
     }
 
     protected abstract void doPaint(Component c, Graphics cgx, int x, int y, int width, int height);
 
-    /** Creates a gaussian kernel with the specified radius, sigma and sum. */
+    /**
+     * Creates a gaussian kernel with the specified radius, sigma and sum.
+     */
     private static float[] gaussian(float radius, float sigma, float sum) {
         int r = (int) Math.ceil(radius);
         float[] gaussian = new float[r * 2 + 1];
@@ -132,7 +142,9 @@ public abstract class AbstractFocusedPainter {
         return gaussian;
     }
 
-    /** Creates a pyramid kernel with the specified radius and sum. */
+    /**
+     * Creates a pyramid kernel with the specified radius and sum.
+     */
     private static float[] pyramid(float radius, float sum) {
         int r = (int) Math.ceil(radius);
         float[] pyramid = new float[r * 2 + 1];
@@ -149,7 +161,8 @@ public abstract class AbstractFocusedPainter {
         return pyramid;
     }
 
-    /** Normalizes the kernel so that all its elements add up to the given
+    /**
+     * Normalizes the kernel so that all its elements add up to the given
      * sum.
      *
      * @param kernel

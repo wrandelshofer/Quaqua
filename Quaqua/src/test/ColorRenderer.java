@@ -5,12 +5,23 @@
 
 package test;
 
-import javax.swing.*;
-
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ColorRenderer extends JLabel implements TableCellRenderer {
     Border m_UnselectedBorder = null;
@@ -25,9 +36,7 @@ public class ColorRenderer extends JLabel implements TableCellRenderer {
         setOpaque(true);
     }
 
-    public Component getTableCellRendererComponent(JTable table, Object color, boolean isSelected, boolean hasFocus, int row, int column)
-
-    {
+    public Component getTableCellRendererComponent(JTable table, Object color, boolean isSelected, boolean hasFocus, int row, int column) {
         setBackground((Color) color);
         if (m_IsBordered) {
             if (isSelected) {
@@ -76,6 +85,7 @@ public class ColorRenderer extends JLabel implements TableCellRenderer {
             return editorComponent;
         }
     }
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
@@ -87,25 +97,25 @@ public class ColorRenderer extends JLabel implements TableCellRenderer {
             public void run() {
                 JFrame f = new JFrame("Color Renderer Test");
                 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                DefaultTableModel model = new DefaultTableModel(new Object[] {"Color", "Color"}, 4) {
+                DefaultTableModel model = new DefaultTableModel(new Object[]{"Color", "Color"}, 4) {
                     public Class getColumnClass(int column) {
                         return Color.class;
                     }
                 };
-                for (int y=0; y < 2; y++) {
-                for (int x=0; x < 2; x++) {
-                model.setValueAt(Color.red, y, x);
-                }
+                for (int y = 0; y < 2; y++) {
+                    for (int x = 0; x < 2; x++) {
+                        model.setValueAt(Color.red, y, x);
+                    }
                 }
                 JTable table = new JTable();
-                table.putClientProperty("Quaqua.Table.style","striped");
+                table.putClientProperty("Quaqua.Table.style", "striped");
                 table.setModel(model);
                 table.setDefaultRenderer(Color.class, new ColorRenderer(true));
                 table.setDefaultEditor(Color.class, new ColorEditor(new JButton()));
                 JScrollPane sc = new JScrollPane();
                 sc.setViewportView(table);
                 f.getContentPane().add(sc);
-                f.setSize(400,400);
+                f.setSize(400, 400);
                 f.setVisible(true);
             }
         });

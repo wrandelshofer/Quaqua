@@ -8,15 +8,15 @@ package ch.randelshofer.quaqua.tiger.filechooser;
 import ch.randelshofer.quaqua.filechooser.BasicOSXFileSystemView;
 import ch.randelshofer.quaqua.osx.OSXFile;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.Arrays;
 
 /**
  * A file system view for Mac OS X 10.4 (Tiger).
  * <p>
  * Note: This file system view only works on top of Apple's Macintosh Runtime for Java.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class OSXTigerFileSystemView extends BasicOSXFileSystemView {
@@ -24,41 +24,41 @@ public class OSXTigerFileSystemView extends BasicOSXFileSystemView {
     public OSXTigerFileSystemView() {
 
         String[] names = {
-            "AppleShare PDS",
-            "automount",
-            "bin",
-            "Cleanup At Startup",
-            "cores",
-            "Desktop DB",
-            "Desktop DF",
-            "dev",
-            "etc",
-            "home",
-            "mach",
-            "mach_kernel",
-            "mach_kernel.ctfsys",
-            "mach.sym",
-            "net",
-            "opt",
-            "private",
-            "sbin",
-            "Temporary Items",
-            "TheVolumeSettingsFolder",
-            "TheFindByContentFolder",
-            "tmp",
-            "Trash",
-            "usr",
-            "var",
-            "Volumes",
-            "\u0003\u0002\u0001Move&Rename",
+                "AppleShare PDS",
+                "automount",
+                "bin",
+                "Cleanup At Startup",
+                "cores",
+                "Desktop DB",
+                "Desktop DF",
+                "dev",
+                "etc",
+                "home",
+                "mach",
+                "mach_kernel",
+                "mach_kernel.ctfsys",
+                "mach.sym",
+                "net",
+                "opt",
+                "private",
+                "sbin",
+                "Temporary Items",
+                "TheVolumeSettingsFolder",
+                "TheFindByContentFolder",
+                "tmp",
+                "Trash",
+                "usr",
+                "var",
+                "Volumes",
+                "\u0003\u0002\u0001Move&Rename",
         };
 
         hiddenTopLevelNames.addAll(Arrays.asList(names));
 
         names = new String[]{
-                    "$RECYCLE.BIN",
-                    "Thumbs.db",
-                    "desktop.ini",};
+                "$RECYCLE.BIN",
+                "Thumbs.db",
+                "desktop.ini",};
 
         hiddenDirectoryNames.addAll(Arrays.asList(names));
     }
@@ -84,7 +84,7 @@ public class OSXTigerFileSystemView extends BasicOSXFileSystemView {
                 // hidden
                 return true;
             } else if (hiddenTopLevelNames.contains(name)
-            && (f.getParent() == null || isRoot(f.getParentFile()))) {
+                    && (f.getParent() == null || isRoot(f.getParentFile()))) {
                 return true;
             } else if (hiddenDirectoryNames.contains(name)) {
                 return true;

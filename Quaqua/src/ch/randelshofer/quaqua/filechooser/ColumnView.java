@@ -4,9 +4,7 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import ch.randelshofer.quaqua.QuaquaManager;
-
-import javax.swing.*;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.tree.TreePath;

@@ -5,8 +5,12 @@
 
 package ch.randelshofer.quaqua.color;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.JRootPane;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Paint;
+import java.awt.Point;
+import java.awt.Window;
 
 /**
  * This is a Color with an optional 'hidden' Paint attribute.
@@ -15,7 +19,7 @@ import javax.swing.*;
  * but Quaqua UI components will paint using the Paint instead of with the
  * Color.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public abstract class PaintableColor extends Color {
@@ -25,12 +29,15 @@ public abstract class PaintableColor extends Color {
     public PaintableColor(int argb, boolean hasAlpha) {
         super(argb, hasAlpha);
     }
+
     public PaintableColor(int rgb) {
         super(rgb);
     }
+
     public PaintableColor(int r, int g, int b) {
         super(r, g, b);
     }
+
     public PaintableColor(int r, int g, int b, int a) {
         super(r, g, b, a);
     }
@@ -38,6 +45,7 @@ public abstract class PaintableColor extends Color {
     public final Paint getPaint(Component c, int xOffset, int yOffset) {
         return getPaint(c, xOffset, yOffset, c.getWidth(), c.getHeight());
     }
+
     public abstract Paint getPaint(Component c, int x, int y, int width, int height);
 
     /**
@@ -48,6 +56,7 @@ public abstract class PaintableColor extends Color {
     public static Paint getPaint(Color color, Component c) {
         return getPaint(color, c, 0, 0);
     }
+
     /**
      * xOffset and yOffset are used to achieve the shifted texture effect that
      * is used to render tabbed panes with Jaguar design.
@@ -57,13 +66,14 @@ public abstract class PaintableColor extends Color {
      */
     public static Paint getPaint(Color color, Component c, int xOffset, int yOffset) {
         return (color instanceof PaintableColor)
-        ? ((PaintableColor) color).getPaint(c, xOffset, yOffset)
-        : color;
+                ? ((PaintableColor) color).getPaint(c, xOffset, yOffset)
+                : color;
     }
+
     public static Paint getPaint(Color color, Component c, int x, int y, int width, int height) {
         return (color instanceof PaintableColor)
-        ? ((PaintableColor) color).getPaint(c, x, y, width, height)
-        : color;
+                ? ((PaintableColor) color).getPaint(c, x, y, width, height)
+                : color;
     }
 
     /**
@@ -73,12 +83,12 @@ public abstract class PaintableColor extends Color {
     protected static Point getRootPaneOffset(Component c) {
         int x = 0, y = 0;
 
-        if (! (c instanceof Window)) {
-        while (c != null && ! (c instanceof JRootPane)) {
-            x -= c.getX();
-            y -= c.getY();
-            c = c.getParent();
-        }
+        if (!(c instanceof Window)) {
+            while (c != null && !(c instanceof JRootPane)) {
+                x -= c.getX();
+                y -= c.getY();
+                c = c.getParent();
+            }
         }
         return new Point(x, y);
     }

@@ -6,7 +6,8 @@ package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.QuaquaManager;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.tree.TreePath;
@@ -26,16 +27,16 @@ public abstract class ListView extends JPanel implements FileChooserView {
 
     public static ListView create(int design, JFileChooser fc) {
         switch (design) {
-            case QuaquaManager.LION:
-            case QuaquaManager.MOUNTAIN_LION:
-                return new ch.randelshofer.quaqua.lion.filechooser.ListView(fc);
-            case QuaquaManager.MAVERICKS:
-            case QuaquaManager.YOSEMITE:
-            case QuaquaManager.EL_CAPITAN:
-            case QuaquaManager.SIERRA:
-                return new ch.randelshofer.quaqua.mavericks.filechooser.ListView(fc);
-            default:
-                return null;
+        case QuaquaManager.LION:
+        case QuaquaManager.MOUNTAIN_LION:
+            return new ch.randelshofer.quaqua.lion.filechooser.ListView(fc);
+        case QuaquaManager.MAVERICKS:
+        case QuaquaManager.YOSEMITE:
+        case QuaquaManager.EL_CAPITAN:
+        case QuaquaManager.SIERRA:
+            return new ch.randelshofer.quaqua.mavericks.filechooser.ListView(fc);
+        default:
+            return null;
         }
     }
 

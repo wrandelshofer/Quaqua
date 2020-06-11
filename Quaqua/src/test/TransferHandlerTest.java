@@ -4,17 +4,32 @@
  */
 package test;
 
-import java.awt.datatransfer.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Date;
+import java.util.Iterator;
 
 /**
  * TransferHandlerTest.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class TransferHandlerTest extends javax.swing.JPanel {
@@ -27,11 +42,10 @@ public class TransferHandlerTest extends javax.swing.JPanel {
         /**
          * Create a Transferable to use as the source for a data transfer.
          *
-         * @param c  The component holding the data to be transfered.  This
-         *  argument is provided to enable sharing of TransferHandlers by
-         *  multiple components.
-         * @return  The representation of the data to be transfered.
-         *
+         * @param c The component holding the data to be transfered.  This
+         *          argument is provided to enable sharing of TransferHandlers by
+         *          multiple components.
+         * @return The representation of the data to be transfered.
          */
         protected Transferable createTransferable(JComponent c) {
             if (c instanceof JTable) {
@@ -117,11 +131,11 @@ public class TransferHandlerTest extends javax.swing.JPanel {
          * DND drop operation.  The <code>Transferable</code> represents
          * the data to be imported into the component.
          *
-         * @param comp  the component to receive the transfer; this
-         *  argument is provided to enable sharing of <code>TransferHandler</code>s
-         *  by multiple components
-         * @param t     the data to import
-         * @return  true if the data was inserted into the component, false otherwise
+         * @param comp the component to receive the transfer; this
+         *             argument is provided to enable sharing of <code>TransferHandler</code>s
+         *             by multiple components
+         * @param t    the data to import
+         * @return true if the data was inserted into the component, false otherwise
          */
         public boolean importData(JComponent comp, Transferable t) {
             JTable table = (JTable) comp;
@@ -132,25 +146,25 @@ public class TransferHandlerTest extends javax.swing.JPanel {
                     java.util.List fileList;
                     try {
                         fileList = (java.util.List) t.getTransferData(DataFlavor.javaFileListFlavor);
-                        for (Iterator i = fileList.iterator(); i.hasNext();) {
+                        for (Iterator i = fileList.iterator(); i.hasNext(); ) {
                             File file = (File) i.next();
                             Object[] rowData = new Object[dtm.getColumnCount()];
                             switch (rowData.length) {
-                                case 0:
-                                    break;
-                                default:
+                            case 0:
+                                break;
+                            default:
                                 // run through
-                                case 4:
-                                    rowData[3] = file.isDirectory() ? "Directory" : "File";
+                            case 4:
+                                rowData[3] = file.isDirectory() ? "Directory" : "File";
                                 // run through
-                                case 3:
-                                    rowData[2] = new Double(file.length());
+                            case 3:
+                                rowData[2] = new Double(file.length());
                                 // run through
-                                case 2:
-                                    rowData[1] = new Date(file.lastModified()).toString();
+                            case 2:
+                                rowData[1] = new Date(file.lastModified()).toString();
                                 // run through
-                                case 1:
-                                    rowData[0] = file.getName();
+                            case 1:
+                                rowData[0] = file.getName();
                                 // run through
                             }
                             dtm.addRow(rowData);
@@ -205,6 +219,7 @@ public class TransferHandlerTest extends javax.swing.JPanel {
          * Returns an array of DataFlavor objects indicating the flavors the data
          * can be provided in.  The array should be ordered according to preference
          * for providing the data (from most richly descriptive to least descriptive).
+         *
          * @return an array of data flavors in which this data can be transferred
          */
         public DataFlavor[] getTransferDataFlavors() {
@@ -240,6 +255,7 @@ public class TransferHandlerTest extends javax.swing.JPanel {
         /**
          * Returns whether or not the specified data flavor is supported for
          * this object.
+         *
          * @param flavor the requested flavor for the data
          * @return boolean indicating whether or not the data flavor is supported
          */
@@ -258,11 +274,11 @@ public class TransferHandlerTest extends javax.swing.JPanel {
          * of the object returned is defined by the representation class of the flavor.
          *
          * @param flavor the requested flavor for the data
+         * @throws IOException                if the data is no longer available
+         *                                    in the requested flavor.
+         * @throws UnsupportedFlavorException if the requested data flavor is
+         *                                    not supported.
          * @see DataFlavor#getRepresentationClass
-         * @exception IOException                if the data is no longer available
-         *              in the requested flavor.
-         * @exception UnsupportedFlavorException if the requested data flavor is
-         *              not supported.
          */
         public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
             if (isRicherFlavor(flavor)) {
@@ -328,9 +344,11 @@ public class TransferHandlerTest extends javax.swing.JPanel {
         }
 
         // --- html flavors ----------------------------------------------------------
+
         /**
          * Returns whether or not the specified data flavor is an HTML flavor that
          * is supported.
+         *
          * @param flavor the requested flavor for the data
          * @return boolean indicating whether or not the data flavor is supported
          */
@@ -360,9 +378,11 @@ public class TransferHandlerTest extends javax.swing.JPanel {
         }
 
         // --- plain text flavors ----------------------------------------------------
+
         /**
          * Returns whether or not the specified data flavor is an plain flavor that
          * is supported.
+         *
          * @param flavor the requested flavor for the data
          * @return boolean indicating whether or not the data flavor is supported
          */
@@ -392,9 +412,11 @@ public class TransferHandlerTest extends javax.swing.JPanel {
         }
 
         // --- string flavorss --------------------------------------------------------
+
         /**
          * Returns whether or not the specified data flavor is a String flavor that
          * is supported.
+         *
          * @param flavor the requested flavor for the data
          * @return boolean indicating whether or not the data flavor is supported
          */
@@ -435,7 +457,8 @@ public class TransferHandlerTest extends javax.swing.JPanel {
 
     }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -452,26 +475,26 @@ public class TransferHandlerTest extends javax.swing.JPanel {
         setLayout(new java.awt.GridBagLayout());
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null}
-            },
-            new String [] {
-                "Name", "Last Modified", "Length", "Kind"
-            }
+                new Object[][]{
+                        {null, null, null, null}
+                },
+                new String[]{
+                        "Name", "Last Modified", "Length", "Kind"
+                }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class
+            Class[] types = new Class[]{
+                    java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            boolean[] canEdit = new boolean[]{
+                    false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         scrollPane.setViewportView(table);
@@ -517,6 +540,7 @@ public class TransferHandlerTest extends javax.swing.JPanel {
         });
         fileChooser.showOpenDialog(this);
     }//GEN-LAST:event_openFileChooser
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

@@ -5,13 +5,14 @@
 
 package ch.randelshofer.quaqua.util;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.JViewport;
+import java.awt.Graphics;
+
 /**
  * This interface is implemented by user interface delegates that wish to
  * paint onto the content area of a JViewport.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public interface ViewportPainter {

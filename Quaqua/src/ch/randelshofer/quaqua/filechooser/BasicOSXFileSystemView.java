@@ -6,18 +6,23 @@ package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.UIManager;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * BasicOSXFileSystemView.
- *
+ * <p>
  * A common base class for OS X file system views. The key feature of an OS X file system view is that the Unix root
  * directory is mapped to the system volume. Also, there is no OS X file that corresponds exactly to the Computer node
  * in the file chooser tree model, but the Volumes folder is the closest, so we use that.
- *
+ * <p>
  * This class also supports custom lists of hidden files.
  */
 public abstract class BasicOSXFileSystemView extends QuaquaFileSystemView {
@@ -190,7 +195,7 @@ public abstract class BasicOSXFileSystemView extends QuaquaFileSystemView {
      * parent directory in the filesystem.
      *
      * @param folder a <code>File</code> object representing a directory or special folder
-     * @param file a <code>File</code> object
+     * @param file   a <code>File</code> object
      * @return <code>true</code> if <code>folder</code> is a directory or special folder and contains <code>file</code>.
      */
     @Override
@@ -203,8 +208,7 @@ public abstract class BasicOSXFileSystemView extends QuaquaFileSystemView {
     }
 
     /**
-     *
-     * @param parent a <code>File</code> object representing a directory or special folder
+     * @param parent   a <code>File</code> object representing a directory or special folder
      * @param fileName a name of a file or folder which exists in <code>parent</code>
      * @return a File object. This is normally constructed with <code>new
      * File(parent, fileName)</code> except when parent and child are both
@@ -243,7 +247,7 @@ public abstract class BasicOSXFileSystemView extends QuaquaFileSystemView {
      * Return the user's default starting directory for the file chooser.
      *
      * @return a <code>File</code> object representing the default
-     *         starting folder
+     * starting folder
      */
     public File getDefaultDirectory() {
         return getHomeDirectory();

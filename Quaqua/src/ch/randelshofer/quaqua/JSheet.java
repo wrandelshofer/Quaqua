@@ -64,7 +64,7 @@ import java.beans.PropertyChangeListener;
  * OSXSheetSupport}. To activate that behavior, set the UIManager property
  * {@code "Sheet.experimentalSheet"} to {@code Boolean.TRUE}.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class JSheet extends JDialog {
@@ -116,7 +116,7 @@ public class JSheet extends JDialog {
     private static final boolean isDocumentModalitySupported;
     /**
      * If this is set to true, the JSheet tries to use an experimental JNI method to be shown as a native window.
-    **/
+     **/
     private boolean isExperimentalSheet;
     /**
      * This variable is only used in Java 1.5 and previous versions.
@@ -137,6 +137,7 @@ public class JSheet extends JDialog {
 
     /**
      * Creates a new JSheet.
+     *
      * @param owner the frame which shall own the JSheet
      */
     public JSheet(Frame owner) {
@@ -146,6 +147,7 @@ public class JSheet extends JDialog {
 
     /**
      * Creates a new JSheet.
+     *
      * @param owner the dialog which shall own the JSheet
      */
     public JSheet(Dialog owner) {
@@ -198,14 +200,15 @@ public class JSheet extends JDialog {
         // so that the JSheet is handled correctly
         windowEventHandler = new WindowAdapter() {
             //public void windowIconified(WindowEvent e) {
-                // TODO The sheet is reshown when the parent window is iconified.
-                // setVisible(false) on the sheet only deiconifies the owner window.
+            // TODO The sheet is reshown when the parent window is iconified.
+            // setVisible(false) on the sheet only deiconifies the owner window.
             //}
 
             @Override
             public void windowActivated(WindowEvent e) {
-                if (JSheet.this.isVisible() && JSheet.this.getOwner() == e.getWindow())
+                if (JSheet.this.isVisible() && JSheet.this.getOwner() == e.getWindow()) {
                     JSheet.this.toFront();
+                }
             }
         };
     }
@@ -225,7 +228,7 @@ public class JSheet extends JDialog {
     protected void installSheet() {
         if (!isNativeSheetSupported() && !isInstalled && isExperimentalSheet()) {
             Window owner = getOwner();
-            if(owner != null) {
+            if (owner != null) {
                 owner.addWindowListener(windowEventHandler);
             }
             isInstalled = true;
@@ -344,6 +347,7 @@ public class JSheet extends JDialog {
     /**
      * If this returns true, the JSheet uses a transition effect when shown
      * and when hidden.
+     *
      * @return the value
      */
     public boolean isAnimated() {
@@ -538,6 +542,7 @@ public class JSheet extends JDialog {
 
     /**
      * Adds a sheet listener.
+     *
      * @param l the value
      */
     public void addSheetListener(SheetListener l) {
@@ -546,6 +551,7 @@ public class JSheet extends JDialog {
 
     /**
      * Removes a sheet listener.
+     *
      * @param l the value
      */
     public void removeSheetListener(SheetListener l) {
@@ -554,9 +560,10 @@ public class JSheet extends JDialog {
 
     /**
      * Notify all listeners that have registered interest for
-     *   notification on this event type.  The event instance
-     *   is lazily created using the parameters passed into
-     *   the fire method.
+     * notification on this event type.  The event instance
+     * is lazily created using the parameters passed into
+     * the fire method.
+     *
      * @param pane the value
      */
     protected void fireOptionSelected(JOptionPane pane) {
@@ -575,7 +582,7 @@ public class JSheet extends JDialog {
             } else {
                 option = JOptionPane.CLOSED_OPTION;
                 Object[] options = pane.getOptions();
-                for (int i = 0,  n = options.length; i < n; i++) {
+                for (int i = 0, n = options.length; i < n; i++) {
                     if (options[i].equals(value)) {
                         option = i;
                         break;
@@ -592,12 +599,13 @@ public class JSheet extends JDialog {
 
     /**
      * Notify all listeners that have registered interest for
-     *   notification on this event type.  The event instance
-     *   is lazily created using the parameters passed into
-     *   the fire method.
-     * @param pane the pane
-     * @param option the option
-     * @param value the value
+     * notification on this event type.  The event instance
+     * is lazily created using the parameters passed into
+     * the fire method.
+     *
+     * @param pane       the pane
+     * @param option     the option
+     * @param value      the value
      * @param inputValue the input value
      */
     protected void fireOptionSelected(JOptionPane pane, int option, Object value, Object inputValue) {
@@ -619,10 +627,11 @@ public class JSheet extends JDialog {
 
     /**
      * Notify all listeners that have registered interest for
-     *   notification on this event type.  The event instance
-     *   is lazily created using the parameters passed into
-     *   the fire method.
-     * @param pane the pane
+     * notification on this event type.  The event instance
+     * is lazily created using the parameters passed into
+     * the fire method.
+     *
+     * @param pane   the pane
      * @param option the option
      */
     protected void fireOptionSelected(JFileChooser pane, int option) {
@@ -645,9 +654,9 @@ public class JSheet extends JDialog {
     /**
      * Displays an option pane as a sheet on its parent window.
      *
-     * @param pane The option pane.
+     * @param pane            The option pane.
      * @param parentComponent The parent of the option pane.
-     * @param listener The listener for SheetEvents.
+     * @param listener        The listener for SheetEvents.
      */
     public static void showSheet(JOptionPane pane, Component parentComponent, SheetListener listener) {
         final JSheet sheet = createSheet(pane, parentComponent, styleFromMessageType(pane.getMessageType()));
@@ -660,11 +669,11 @@ public class JSheet extends JDialog {
      * <i>No</i> and <i>Cancel</i>.
      *
      * @param parentComponent determines the {@code Frame} in which the
-     *          sheet is displayed; if {@code null},
-     *          or if the {@code parentComponent} has no
-     *          {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
-     * @param listener The listener for SheetEvents.
+     *                        sheet is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
+     * @param listener        The listener for SheetEvents.
      */
     public static void showConfirmSheet(Component parentComponent, Object message, SheetListener listener) {
         showConfirmSheet(parentComponent, message,
@@ -676,17 +685,17 @@ public class JSheet extends JDialog {
      * by the {@code optionType} parameter.
      *
      * @param parentComponent determines the {@code Frame} in which the
-     *          sheet is displayed; if {@code null},
-     *          or if the {@code parentComponent} has no
-     *          {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
-     * @param optionType an int designating the options available on the dialog:
-     *                  {@code YES_NO_OPTION}, or
-     *          {@code YES_NO_CANCEL_OPTION}
-     * @param listener The listener for SheetEvents.
+     *                        sheet is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
+     * @param optionType      an int designating the options available on the dialog:
+     *                        {@code YES_NO_OPTION}, or
+     *                        {@code YES_NO_CANCEL_OPTION}
+     * @param listener        The listener for SheetEvents.
      */
     public static void showConfirmSheet(Component parentComponent,
-            Object message, int optionType, SheetListener listener) {
+                                        Object message, int optionType, SheetListener listener) {
         showConfirmSheet(parentComponent, message, optionType,
                 JOptionPane.QUESTION_MESSAGE, listener);
     }
@@ -700,24 +709,24 @@ public class JSheet extends JDialog {
      * a default icon from the Look and Feel.
      *
      * @param parentComponent determines the {@code Frame} in
-     *          which the dialog is displayed; if {@code null},
-     *          or if the {@code parentComponent} has no
-     *          {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
-     * @param optionType an integer designating the options available
-     *          on the dialog: {@code YES_NO_OPTION},
-     *          or {@code YES_NO_CANCEL_OPTION}
-     * @param messageType an integer designating the kind of message this is;
-     *                  primarily used to determine the icon from the pluggable
-     *                  Look and Feel: {@code JOptionPane.ERROR_MESSAGE},
-     *          {@code JOptionPane.INFORMATION_MESSAGE},
-     *                  {@code JOptionPane.WARNING_MESSAGE},
-     *                  {@code JOptionPane.QUESTION_MESSAGE},
-     *          or {@code JOptionPane.PLAIN_MESSAGE}
-     * @param listener The listener for SheetEvents.
+     *                        which the dialog is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
+     * @param optionType      an integer designating the options available
+     *                        on the dialog: {@code YES_NO_OPTION},
+     *                        or {@code YES_NO_CANCEL_OPTION}
+     * @param messageType     an integer designating the kind of message this is;
+     *                        primarily used to determine the icon from the pluggable
+     *                        Look and Feel: {@code JOptionPane.ERROR_MESSAGE},
+     *                        {@code JOptionPane.INFORMATION_MESSAGE},
+     *                        {@code JOptionPane.WARNING_MESSAGE},
+     *                        {@code JOptionPane.QUESTION_MESSAGE},
+     *                        or {@code JOptionPane.PLAIN_MESSAGE}
+     * @param listener        The listener for SheetEvents.
      */
     public static void showConfirmSheet(Component parentComponent,
-            Object message, int optionType, int messageType, SheetListener listener) {
+                                        Object message, int optionType, int messageType, SheetListener listener) {
         showConfirmSheet(parentComponent, message, optionType,
                 messageType, null, listener);
     }
@@ -729,26 +738,26 @@ public class JSheet extends JDialog {
      * a default icon from the look and feel.
      *
      * @param parentComponent determines the {@code Frame} in which the
-     *          dialog is displayed; if {@code null},
-     *          or if the {@code parentComponent} has no
-     *          {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the Object to display
-     * @param optionType an int designating the options available on the dialog:
-     *                  {@code YES_NO_OPTION},
-     *          or {@code YES_NO_CANCEL_OPTION}
-     * @param messageType an int designating the kind of message this is,
-     *                  primarily used to determine the icon from the pluggable
-     *                  Look and Feel: {@code JOptionPane.ERROR_MESSAGE},
-     *          {@code JOptionPane.INFORMATION_MESSAGE},
-     *                  {@code JOptionPane.WARNING_MESSAGE},
-     *                  {@code JOptionPane.QUESTION_MESSAGE},
-     *          or {@code JOptionPane.PLAIN_MESSAGE}
-     * @param icon      the icon to display in the dialog
-     * @param listener The listener for SheetEvents.
+     *                        dialog is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the Object to display
+     * @param optionType      an int designating the options available on the dialog:
+     *                        {@code YES_NO_OPTION},
+     *                        or {@code YES_NO_CANCEL_OPTION}
+     * @param messageType     an int designating the kind of message this is,
+     *                        primarily used to determine the icon from the pluggable
+     *                        Look and Feel: {@code JOptionPane.ERROR_MESSAGE},
+     *                        {@code JOptionPane.INFORMATION_MESSAGE},
+     *                        {@code JOptionPane.WARNING_MESSAGE},
+     *                        {@code JOptionPane.QUESTION_MESSAGE},
+     *                        or {@code JOptionPane.PLAIN_MESSAGE}
+     * @param icon            the icon to display in the dialog
+     * @param listener        The listener for SheetEvents.
      */
     public static void showConfirmSheet(Component parentComponent,
-            Object message, int optionType,
-            int messageType, Icon icon, SheetListener listener) {
+                                        Object message, int optionType,
+                                        int messageType, Icon icon, SheetListener listener) {
         showOptionSheet(parentComponent, message, optionType,
                 messageType, icon, null, null, listener);
     }
@@ -757,13 +766,13 @@ public class JSheet extends JDialog {
      * Shows a question-message sheet requesting input from the user
      * parented to {@code parentComponent}.
      *
-     * @param parentComponent  the parent {@code Component} for the
-     *      dialog
-     * @param message the message
-     * @param listener The listener for SheetEvents.
+     * @param parentComponent the parent {@code Component} for the
+     *                        dialog
+     * @param message         the message
+     * @param listener        The listener for SheetEvents.
      */
     public static void showInputSheet(Component parentComponent,
-            Object message, SheetListener listener) {
+                                      Object message, SheetListener listener) {
         showInputSheet(parentComponent, message, JOptionPane.QUESTION_MESSAGE, listener);
     }
 
@@ -772,15 +781,15 @@ public class JSheet extends JDialog {
      * parented to {@code parentComponent}. The input value will be
      * initialized to {@code initialSelectionValue}.
      *
-     * @param parentComponent  the parent {@code Component} for the
-     *      dialog
-     * @param message the {@code Object} to display
+     * @param parentComponent       the parent {@code Component} for the
+     *                              dialog
+     * @param message               the {@code Object} to display
      * @param initialSelectionValue the value used to initialize the input
-     *                 field
-     * @param listener The listener for SheetEvents.
+     *                              field
+     * @param listener              The listener for SheetEvents.
      */
     public static void showInputSheet(Component parentComponent, Object message,
-            Object initialSelectionValue, SheetListener listener) {
+                                      Object initialSelectionValue, SheetListener listener) {
         showInputSheet(parentComponent, message,
                 JOptionPane.QUESTION_MESSAGE, null, null,
                 initialSelectionValue, listener);
@@ -790,19 +799,19 @@ public class JSheet extends JDialog {
      * Shows a sheet requesting input from the user parented to
      * {@code parentComponent} and message type {@code messageType}.
      *
-     * @param parentComponent  the parent {@code Component} for the
-     *          dialog
-     * @param message  the {@code Object} to display
-     * @param messageType the type of message that is to be displayed:
-     *                  {@code JOptionPane.ERROR_MESSAGE},
-     *          {@code JOptionPane.INFORMATION_MESSAGE},
-     *          {@code JOptionPane.WARNING_MESSAGE},
-     *                  {@code JOptionPane.QUESTION_MESSAGE},
-     *          or {@code JOptionPane.PLAIN_MESSAGE}
-     * @param listener The listener for SheetEvents.
+     * @param parentComponent the parent {@code Component} for the
+     *                        dialog
+     * @param message         the {@code Object} to display
+     * @param messageType     the type of message that is to be displayed:
+     *                        {@code JOptionPane.ERROR_MESSAGE},
+     *                        {@code JOptionPane.INFORMATION_MESSAGE},
+     *                        {@code JOptionPane.WARNING_MESSAGE},
+     *                        {@code JOptionPane.QUESTION_MESSAGE},
+     *                        or {@code JOptionPane.PLAIN_MESSAGE}
+     * @param listener        The listener for SheetEvents.
      */
     public static void showInputSheet(Component parentComponent,
-            Object message, int messageType, SheetListener listener) {
+                                      Object message, int messageType, SheetListener listener) {
         showInputSheet(parentComponent, message,
                 messageType, null, null, null, listener);
     }
@@ -820,25 +829,25 @@ public class JSheet extends JDialog {
      * {@code JComboBox}, {@code JList}, or
      * {@code JTextField} will be used.
      *
-     * @param parentComponent  the parent {@code Component} for the
-     *          dialog
-     * @param message  the {@code Object} to display
-     * @param messageType the type of message to be displayed:
-     *                  {@code JOptionPane.ERROR_MESSAGE},
-     *          {@code JOptionPane.INFORMATION_MESSAGE},
-     *          {@code JOptionPane.WARNING_MESSAGE},
-     *                  {@code JOptionPane.QUESTION_MESSAGE},
-     *          or {@code JOptionPane.PLAIN_MESSAGE}
-     * @param icon     the {@code Icon} image to display
-     * @param selectionValues an array of {@code Object}s that
-     *          gives the possible selections
+     * @param parentComponent       the parent {@code Component} for the
+     *                              dialog
+     * @param message               the {@code Object} to display
+     * @param messageType           the type of message to be displayed:
+     *                              {@code JOptionPane.ERROR_MESSAGE},
+     *                              {@code JOptionPane.INFORMATION_MESSAGE},
+     *                              {@code JOptionPane.WARNING_MESSAGE},
+     *                              {@code JOptionPane.QUESTION_MESSAGE},
+     *                              or {@code JOptionPane.PLAIN_MESSAGE}
+     * @param icon                  the {@code Icon} image to display
+     * @param selectionValues       an array of {@code Object}s that
+     *                              gives the possible selections
      * @param initialSelectionValue the value used to initialize the input
-     *                 field
-     * @param listener The listener for SheetEvents.
+     *                              field
+     * @param listener              The listener for SheetEvents.
      */
     public static void showInputSheet(Component parentComponent,
-            Object message, int messageType, Icon icon,
-            Object[] selectionValues, Object initialSelectionValue, SheetListener listener) {
+                                      Object message, int messageType, Icon icon,
+                                      Object[] selectionValues, Object initialSelectionValue, SheetListener listener) {
 
         JOptionPane pane = new JOptionPane(message, messageType,
                 JOptionPane.OK_CANCEL_OPTION, icon,
@@ -869,13 +878,13 @@ public class JSheet extends JDialog {
      * Brings up an information-message sheet.
      *
      * @param parentComponent determines the {@code Frame} in
-     *      which the dialog is displayed; if {@code null},
-     *      or if the {@code parentComponent} has no
-     *      {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
+     *                        which the dialog is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
      */
     public static void showMessageSheet(Component parentComponent,
-            Object message) {
+                                        Object message) {
         showMessageSheet(parentComponent, message,
                 JOptionPane.INFORMATION_MESSAGE);
     }
@@ -884,14 +893,14 @@ public class JSheet extends JDialog {
      * Brings up an information-message sheet.
      *
      * @param parentComponent determines the {@code Frame} in
-     *      which the dialog is displayed; if {@code null},
-     *      or if the {@code parentComponent} has no
-     *      {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
-     * @param listener This listener is notified when the sheet is dismissed.
+     *                        which the dialog is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
+     * @param listener        This listener is notified when the sheet is dismissed.
      */
     public static void showMessageSheet(Component parentComponent,
-            Object message, SheetListener listener) {
+                                        Object message, SheetListener listener) {
         showMessageSheet(parentComponent, message,
                 JOptionPane.INFORMATION_MESSAGE, listener);
     }
@@ -901,19 +910,19 @@ public class JSheet extends JDialog {
      * icon determined by the {@code messageType} parameter.
      *
      * @param parentComponent determines the {@code Frame}
-     *      in which the dialog is displayed; if {@code null},
-     *      or if the {@code parentComponent} has no
-     *      {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
-     * @param messageType the type of message to be displayed:
-     *                  {@code JOptionPane.ERROR_MESSAGE},
-     *          {@code JOptionPane.INFORMATION_MESSAGE},
-     *          {@code JOptionPane.WARNING_MESSAGE},
-     *                  {@code JOptionPane.QUESTION_MESSAGE},
-     *          or {@code JOptionPane.PLAIN_MESSAGE}
+     *                        in which the dialog is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
+     * @param messageType     the type of message to be displayed:
+     *                        {@code JOptionPane.ERROR_MESSAGE},
+     *                        {@code JOptionPane.INFORMATION_MESSAGE},
+     *                        {@code JOptionPane.WARNING_MESSAGE},
+     *                        {@code JOptionPane.QUESTION_MESSAGE},
+     *                        or {@code JOptionPane.PLAIN_MESSAGE}
      */
     public static void showMessageSheet(Component parentComponent,
-            Object message, int messageType) {
+                                        Object message, int messageType) {
         showMessageSheet(parentComponent, message, messageType, null, null);
     }
 
@@ -922,20 +931,20 @@ public class JSheet extends JDialog {
      * icon determined by the {@code messageType} parameter.
      *
      * @param parentComponent determines the {@code Frame}
-     *      in which the dialog is displayed; if {@code null},
-     *      or if the {@code parentComponent} has no
-     *      {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
-     * @param messageType the type of message to be displayed:
-     *                  {@code JOptionPane.ERROR_MESSAGE},
-     *          {@code JOptionPane.INFORMATION_MESSAGE},
-     *          {@code JOptionPane.WARNING_MESSAGE},
-     *                  {@code JOptionPane.QUESTION_MESSAGE},
-     *          or {@code JOptionPane.PLAIN_MESSAGE}
-     * @param listener This listener is notified when the sheet is dismissed.
+     *                        in which the dialog is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
+     * @param messageType     the type of message to be displayed:
+     *                        {@code JOptionPane.ERROR_MESSAGE},
+     *                        {@code JOptionPane.INFORMATION_MESSAGE},
+     *                        {@code JOptionPane.WARNING_MESSAGE},
+     *                        {@code JOptionPane.QUESTION_MESSAGE},
+     *                        or {@code JOptionPane.PLAIN_MESSAGE}
+     * @param listener        This listener is notified when the sheet is dismissed.
      */
     public static void showMessageSheet(Component parentComponent,
-            Object message, int messageType, SheetListener listener) {
+                                        Object message, int messageType, SheetListener listener) {
         showMessageSheet(parentComponent, message, messageType, null, listener);
     }
 
@@ -943,22 +952,22 @@ public class JSheet extends JDialog {
      * Brings up a sheet displaying a message, specifying all parameters.
      *
      * @param parentComponent determines the {@code Frame} in which the
-     *          sheet is displayed; if {@code null},
-     *          or if the {@code parentComponent} has no
-     *          {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
-     * @param messageType the type of message to be displayed:
-     *                  {@code JOptionPane.ERROR_MESSAGE},
-     *          {@code JOptionPane.INFORMATION_MESSAGE},
-     *          {@code JOptionPane.WARNING_MESSAGE},
-     *                  {@code JOptionPane.QUESTION_MESSAGE},
-     *          or {@code JOptionPane.PLAIN_MESSAGE}
-     * @param icon      an icon to display in the sheet that helps the user
-     *                  identify the kind of message that is being displayed
-     * @param listener This listener is notified when the sheet is dismissed.
+     *                        sheet is displayed; if {@code null},
+     *                        or if the {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
+     * @param messageType     the type of message to be displayed:
+     *                        {@code JOptionPane.ERROR_MESSAGE},
+     *                        {@code JOptionPane.INFORMATION_MESSAGE},
+     *                        {@code JOptionPane.WARNING_MESSAGE},
+     *                        {@code JOptionPane.QUESTION_MESSAGE},
+     *                        or {@code JOptionPane.PLAIN_MESSAGE}
+     * @param icon            an icon to display in the sheet that helps the user
+     *                        identify the kind of message that is being displayed
+     * @param listener        This listener is notified when the sheet is dismissed.
      */
     public static void showMessageSheet(Component parentComponent,
-            Object message, int messageType, Icon icon, SheetListener listener) {
+                                        Object message, int messageType, Icon icon, SheetListener listener) {
         showOptionSheet(parentComponent, message, JOptionPane.DEFAULT_OPTION,
                 messageType, icon, null, null, listener);
     }
@@ -979,37 +988,37 @@ public class JSheet extends JDialog {
      * a default icon from the look and feel.
      *
      * @param parentComponent determines the {@code Frame}
-     *          in which the dialog is displayed;  if
-     *                  {@code null}, or if the
-     *          {@code parentComponent} has no
-     *          {@code Frame}, the sheet is displayed as a dialog.
-     * @param message   the {@code Object} to display
-     * @param optionType an integer designating the options available on the
-     *          dialog: {@code YES_NO_OPTION},
-     *          or {@code YES_NO_CANCEL_OPTION}
-     * @param messageType an integer designating the kind of message this is,
-     *                  primarily used to determine the icon from the
-     *          pluggable Look and Feel: {@code JOptionPane.ERROR_MESSAGE},
-     *          {@code JOptionPane.INFORMATION_MESSAGE},
-     *                  {@code JOptionPane.WARNING_MESSAGE},
-     *                  {@code JOptionPane.QUESTION_MESSAGE},
-     *          or {@code JOptionPane.PLAIN_MESSAGE}
-     * @param icon      the icon to display in the dialog
-     * @param options   an array of objects indicating the possible choices
-     *                  the user can make; if the objects are components, they
-     *                  are rendered properly; non-{@code String}
-     *          objects are
-     *                  rendered using their {@code toString} methods;
-     *                  if this parameter is {@code null},
-     *          the options are determined by the Look and Feel
-     * @param initialValue the object that represents the default selection
-     *                  for the dialog; only meaningful if {@code options}
-     *          is used; can be {@code null}
-     * @param listener The listener for SheetEvents.
+     *                        in which the dialog is displayed;  if
+     *                        {@code null}, or if the
+     *                        {@code parentComponent} has no
+     *                        {@code Frame}, the sheet is displayed as a dialog.
+     * @param message         the {@code Object} to display
+     * @param optionType      an integer designating the options available on the
+     *                        dialog: {@code YES_NO_OPTION},
+     *                        or {@code YES_NO_CANCEL_OPTION}
+     * @param messageType     an integer designating the kind of message this is,
+     *                        primarily used to determine the icon from the
+     *                        pluggable Look and Feel: {@code JOptionPane.ERROR_MESSAGE},
+     *                        {@code JOptionPane.INFORMATION_MESSAGE},
+     *                        {@code JOptionPane.WARNING_MESSAGE},
+     *                        {@code JOptionPane.QUESTION_MESSAGE},
+     *                        or {@code JOptionPane.PLAIN_MESSAGE}
+     * @param icon            the icon to display in the dialog
+     * @param options         an array of objects indicating the possible choices
+     *                        the user can make; if the objects are components, they
+     *                        are rendered properly; non-{@code String}
+     *                        objects are
+     *                        rendered using their {@code toString} methods;
+     *                        if this parameter is {@code null},
+     *                        the options are determined by the Look and Feel
+     * @param initialValue    the object that represents the default selection
+     *                        for the dialog; only meaningful if {@code options}
+     *                        is used; can be {@code null}
+     * @param listener        The listener for SheetEvents.
      */
     public static void showOptionSheet(Component parentComponent,
-            Object message, int optionType, int messageType,
-            Icon icon, Object[] options, Object initialValue, SheetListener listener) {
+                                       Object message, int optionType, int messageType,
+                                       Icon icon, Object[] options, Object initialValue, SheetListener listener) {
 
         JOptionPane pane = new JOptionPane(message, messageType,
                 optionType, icon,
@@ -1028,22 +1037,22 @@ public class JSheet extends JDialog {
 
     private static int styleFromMessageType(int messageType) {
         switch (messageType) {
-            case JOptionPane.ERROR_MESSAGE:
-                return JRootPane.ERROR_DIALOG;
-            case JOptionPane.QUESTION_MESSAGE:
-                return JRootPane.QUESTION_DIALOG;
-            case JOptionPane.WARNING_MESSAGE:
-                return JRootPane.WARNING_DIALOG;
-            case JOptionPane.INFORMATION_MESSAGE:
-                return JRootPane.INFORMATION_DIALOG;
-            case JOptionPane.PLAIN_MESSAGE:
-            default:
-                return JRootPane.PLAIN_DIALOG;
+        case JOptionPane.ERROR_MESSAGE:
+            return JRootPane.ERROR_DIALOG;
+        case JOptionPane.QUESTION_MESSAGE:
+            return JRootPane.QUESTION_DIALOG;
+        case JOptionPane.WARNING_MESSAGE:
+            return JRootPane.WARNING_DIALOG;
+        case JOptionPane.INFORMATION_MESSAGE:
+            return JRootPane.INFORMATION_DIALOG;
+        case JOptionPane.PLAIN_MESSAGE:
+        default:
+            return JRootPane.PLAIN_DIALOG;
         }
     }
 
     private static JSheet createSheet(final JOptionPane pane, Component parentComponent,
-            int style) {
+                                      int style) {
         Window window = getWindowForComponent(parentComponent);
         final JSheet sheet;
         if (window instanceof Frame) {
@@ -1125,12 +1134,12 @@ public class JSheet extends JDialog {
      * {@code Dialog}.
      *
      * @param parentComponent the {@code Component} to check for a
-     *      {@code Frame} or {@code Dialog}
+     *                        {@code Frame} or {@code Dialog}
      * @return the {@code Frame} or {@code Dialog} that
-     *      contains the component, or the default
-     *          frame if the component is {@code null},
-     *      or does not have a valid
-     *          {@code Frame} or {@code Dialog} parent
+     * contains the component, or the default
+     * frame if the component is {@code null},
+     * or does not have a valid
+     * {@code Frame} or {@code Dialog} parent
      */
     static Window getWindowForComponent(Component parentComponent) {
         if (parentComponent == null) {
@@ -1147,9 +1156,9 @@ public class JSheet extends JDialog {
      * text that appears in the approve button is determined by
      * the L&amp;F.
      *
-     * @param chooser the chooser
-     * @param    parent  the parent component of the dialog,
-     *          can be {@code null}.
+     * @param chooser  the chooser
+     * @param parent   the parent component of the dialog,
+     *                 can be {@code null}.
      * @param listener The listener for SheetEvents.
      */
     public static void showSaveSheet(JFileChooser chooser, Component parent, SheetListener listener) {
@@ -1162,9 +1171,9 @@ public class JSheet extends JDialog {
      * text that appears in the approve button is determined by
      * the L&amp;F.
      *
-     * @param chooser the chooser
-     * @param    parent  the parent component of the dialog,
-     *          can be {@code null}.
+     * @param chooser  the chooser
+     * @param parent   the parent component of the dialog,
+     *                 can be {@code null}.
      * @param listener The listener for SheetEvents.
      */
     public static void showOpenSheet(JFileChooser chooser, Component parent, SheetListener listener) {
@@ -1175,14 +1184,14 @@ public class JSheet extends JDialog {
     /**
      * Displays a custom file chooser sheet with a custom approve button.
      *
-     * @param chooser the chooser
-     * @param   parent  the parent component of the dialog;
-     *          can be {@code null}
-     * @param   approveButtonText the text of the {@code ApproveButton}
-     * @param listener The listener for SheetEvents.
+     * @param chooser           the chooser
+     * @param parent            the parent component of the dialog;
+     *                          can be {@code null}
+     * @param approveButtonText the text of the {@code ApproveButton}
+     * @param listener          The listener for SheetEvents.
      */
     public static void showSheet(final JFileChooser chooser, Component parent,
-            String approveButtonText, SheetListener listener) {
+                                 String approveButtonText, SheetListener listener) {
         if (approveButtonText != null) {
             chooser.setApproveButtonText(approveButtonText);
             chooser.setDialogType(JFileChooser.CUSTOM_DIALOG);

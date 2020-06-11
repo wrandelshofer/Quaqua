@@ -62,7 +62,9 @@ public class FileSystemTreeModel implements TreeModel {
      * This is used for keeping track of the validation state of a node.
      */
     public final static int VALID = 2;
-    /** We store all our listeners here. */
+    /**
+     * We store all our listeners here.
+     */
     protected EventListenerList listenerList = new EventListenerList();
     /**
      * We need a JFileChooser to determine the user presentable (localized) name
@@ -117,11 +119,12 @@ public class FileSystemTreeModel implements TreeModel {
      * This is set to true, when we optimize for speed rather than for quality.
      */
     private boolean doItFast;
+
     /**
      * Creates a new instance.
      *
      * @param fileChooser The JFileChooser is used to determine the user
-     * presentable (localized) names of the files.
+     *                    presentable (localized) names of the files.
      */
     public FileSystemTreeModel(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
@@ -245,7 +248,7 @@ public class FileSystemTreeModel implements TreeModel {
      * the appropriate event.
      */
     private void insertNodeInto(FileSystemTreeModel.Node newChild,
-            FileSystemTreeModel.Node parent, int index) {
+                                FileSystemTreeModel.Node parent, int index) {
         parent.insert(newChild, index);
 
         int[] newIndices = new int[1];
@@ -273,7 +276,7 @@ public class FileSystemTreeModel implements TreeModel {
 
     /**
      * Creates a node for the specified file.
-     *
+     * <p>
      * This is used to create nodes depending on their type (file, directory,
      * alias to file, or alias to directory) and depending on the "resolveAliases"
      * property.
@@ -470,7 +473,7 @@ public class FileSystemTreeModel implements TreeModel {
      * If <code>newValue</code> signifies a truly new value
      * the model should post a <code>treeNodesChanged</code> event.
      *
-     * @param path path to the node that the user has altered
+     * @param path     path to the node that the user has altered
      * @param newValue the new value from the TreeCellEditor
      */
     public void valueForPathChanged(javax.swing.tree.TreePath path, Object newValue) {
@@ -597,11 +600,12 @@ public class FileSystemTreeModel implements TreeModel {
     //
     //  Events
     //
+
     /**
      * Adds a listener for the TreeModelEvent posted after the tree changes.
      *
-     * @see     #removeTreeModelListener
-     * @param   l       the listener to add
+     * @param l the listener to add
+     * @see #removeTreeModelListener
      */
     public void addTreeModelListener(TreeModelListener l) {
         listenerList.add(TreeModelListener.class, l);
@@ -610,8 +614,8 @@ public class FileSystemTreeModel implements TreeModel {
     /**
      * Removes a listener previously added with <B>addTreeModelListener()</B>.
      *
-     * @see     #addTreeModelListener
-     * @param   l       the listener to remove
+     * @param l the listener to remove
+     * @see #addTreeModelListener
      */
     public void removeTreeModelListener(TreeModelListener l) {
         listenerList.remove(TreeModelListener.class, l);
@@ -643,15 +647,15 @@ public class FileSystemTreeModel implements TreeModel {
      * is lazily created using the parameters passed into
      * the fire method.
      *
-     * @param source the node being changed
-     * @param path the path to the root node
+     * @param source       the node being changed
+     * @param path         the path to the root node
      * @param childIndices the indices of the changed elements
-     * @param children the changed elements
+     * @param children     the changed elements
      * @see EventListenerList
      */
     protected void fireTreeNodesChanged(TreeModel source, Object[] path,
-            int[] childIndices,
-            Object[] children) {
+                                        int[] childIndices,
+                                        Object[] children) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -675,15 +679,15 @@ public class FileSystemTreeModel implements TreeModel {
      * is lazily created using the parameters passed into
      * the fire method.
      *
-     * @param source the node where new elements are being inserted
-     * @param path the path to the root node
+     * @param source       the node where new elements are being inserted
+     * @param path         the path to the root node
      * @param childIndices the indices of the new elements
-     * @param children the new elements
+     * @param children     the new elements
      * @see EventListenerList
      */
     protected void fireTreeNodesInserted(TreeModel source, Object[] path,
-            int[] childIndices,
-            Object[] children) {
+                                         int[] childIndices,
+                                         Object[] children) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -707,15 +711,15 @@ public class FileSystemTreeModel implements TreeModel {
      * is lazily created using the parameters passed into
      * the fire method.
      *
-     * @param source the node where elements are being removed
-     * @param path the path to the root node
+     * @param source       the node where elements are being removed
+     * @param path         the path to the root node
      * @param childIndices the indices of the removed elements
-     * @param children the removed elements
+     * @param children     the removed elements
      * @see EventListenerList
      */
     protected void fireTreeNodesRemoved(TreeModel source, Object[] path,
-            int[] childIndices,
-            Object[] children) {
+                                        int[] childIndices,
+                                        Object[] children) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -740,7 +744,7 @@ public class FileSystemTreeModel implements TreeModel {
      * the fire method.
      *
      * @param source the node where the tree model has changed
-     * @param path the path to the root node
+     * @param path   the path to the root node
      * @see EventListenerList
      */
     protected void fireTreeStructureChanged(TreeModel source, Object[] path) {
@@ -871,7 +875,7 @@ public class FileSystemTreeModel implements TreeModel {
         public Node(File f, String userName, boolean isHidden) {
             this.file = f;
             this.userName = userName;
-            this.isHidden=isHidden;
+            this.isHidden = isHidden;
         }
 
         /**
@@ -905,6 +909,7 @@ public class FileSystemTreeModel implements TreeModel {
             validateInfo();
             return fileLabel;
         }
+
         public String[] getTagNames() {
             validateInfo();
             return tagNames;
@@ -931,7 +936,8 @@ public class FileSystemTreeModel implements TreeModel {
             return false;
         }
 
-        /** Changes the traversability of a directory node.
+        /**
+         * Changes the traversability of a directory node.
          * This method has no effect on non-directory nodes.
          */
         public void setTraversable(boolean newValue) {
@@ -1003,7 +1009,7 @@ public class FileSystemTreeModel implements TreeModel {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            invokeWhenValid(r, counter-1);
+                            invokeWhenValid(r, counter - 1);
                         }
                     });
                 }
@@ -1136,7 +1142,7 @@ public class FileSystemTreeModel implements TreeModel {
 
         public void removeFromParent() {
             if (parent != null) {
-                ((MutableTreeNode)parent).remove(this);
+                ((MutableTreeNode) parent).remove(this);
             }
         }
 
@@ -1171,8 +1177,8 @@ public class FileSystemTreeModel implements TreeModel {
          * Returns the root of the tree that contains this node.  The root is
          * the ancestor with a null parent.
          *
-         * @see	#isNodeAncestor
-         * @return	the root of the tree that contains this node
+         * @see    #isNodeAncestor
+         * @return the root of the tree that contains this node
          */
         public TreeNode getRoot() {
             TreeNode ancestor = this;
@@ -1270,7 +1276,9 @@ public class FileSystemTreeModel implements TreeModel {
          */
         private Runnable validator;
 
-        /** Whether the directory is traversable. */
+        /**
+         * Whether the directory is traversable.
+         */
         private Boolean isTraversable;
 
         private class DirectoryValidator implements Runnable {
@@ -1337,7 +1345,7 @@ public class FileSystemTreeModel implements TreeModel {
                 //          - Create a fresh node for the file
 
                 ArrayList freshNodeList = new ArrayList(freshFiles.length);
-                boolean isFileHidingEnabled=fileChooser.isFileHidingEnabled();
+                boolean isFileHidingEnabled = fileChooser.isFileHidingEnabled();
                 QuaquaFileSystemView fsv = getFileSystemView();
                 for (int i = 0; i < freshFiles.length; i++) {
                     File freshFile = freshFiles[i];
@@ -1367,7 +1375,7 @@ public class FileSystemTreeModel implements TreeModel {
                         freshIsTraversable = fileChooser.isTraversable(freshFile);
                         resolvedFreshFile = freshFile;
                     }
-                    boolean freshIsHidden=fsv.isHiddenFile(freshFile);
+                    boolean freshIsHidden = fsv.isHiddenFile(freshFile);
 
                     /*
                       Special case: Network is visible under Computer even if it is hidden under /.
@@ -1386,7 +1394,7 @@ public class FileSystemTreeModel implements TreeModel {
                         //       be done in the other method.
                         if (freshIsAlias) {
                             if (freshIsDirectory) {
-                                Node n=new AliasDirectoryNode(freshFile, resolvedFreshFile, freshIsHidden);
+                                Node n = new AliasDirectoryNode(freshFile, resolvedFreshFile, freshIsHidden);
                                 n.setTraversable(freshIsTraversable);
                                 freshNodeList.add(n);
                             } else {
@@ -1394,7 +1402,7 @@ public class FileSystemTreeModel implements TreeModel {
                             }
                         } else {
                             if (freshIsDirectory) {
-                                Node n=new DirectoryNode(freshFile, freshIsHidden);
+                                Node n = new DirectoryNode(freshFile, freshIsHidden);
                                 n.setTraversable(freshIsTraversable);
                                 freshNodeList.add(n);
                             } else {
@@ -1510,7 +1518,7 @@ public class FileSystemTreeModel implements TreeModel {
 
                         if (newChildren.size() > 0 || deletedChildren.size() > 0) {
                             // Unlink deleted children
-                            for (Iterator i = deletedChildren.iterator(); i.hasNext();) {
+                            for (Iterator i = deletedChildren.iterator(); i.hasNext(); ) {
                                 Node n = (Node) i.next();
                                 n.parent = null;
                                 n.invalidateChildren();
@@ -1581,14 +1589,15 @@ public class FileSystemTreeModel implements TreeModel {
                 });
             }
         }
+
         /**
          * The time until the directory is considered to stay valid.
          * The bestBeforeDate is a timestamp in milliseconds, that we can compare
          * with the curent time using System.currentTimeMillis().
-         *
+         * <p>
          * The value 0 is used to mark nodes which have never been validated before.
          * Directories which have never been visited before are validated with
-         * precedence over directories which had been visited already. 
+         * precedence over directories which had been visited already.
          */
         private long bestBeforeTimeMillis = 0;
 
@@ -1614,12 +1623,14 @@ public class FileSystemTreeModel implements TreeModel {
         public String getFileKind() {
             return "folder";
         }
-        /** Changes the traversability of a directory node.
+
+        /**
+         * Changes the traversability of a directory node.
          * This method has no effect on non-directory nodes.
          */
         @Override
         public void setTraversable(boolean newValue) {
-            isTraversable=newValue;
+            isTraversable = newValue;
         }
 
         @Override
@@ -1667,7 +1678,7 @@ public class FileSystemTreeModel implements TreeModel {
         @Override
         public void stopValidationSubtree() {
             validator = null;
-            for (Enumeration i = super.children(); i.hasMoreElements();) {
+            for (Enumeration i = super.children(); i.hasMoreElements(); ) {
                 ((Node) i.nextElement()).stopValidationSubtree();
             }
         }
@@ -1767,7 +1778,7 @@ public class FileSystemTreeModel implements TreeModel {
 
         private void removeAll(LinkedList deletedChildren) {
             children.removeAll(deletedChildren);
-            for (Iterator i = deletedChildren.iterator(); i.hasNext();) {
+            for (Iterator i = deletedChildren.iterator(); i.hasNext(); ) {
                 Node n = (Node) i.next();
                 n.parent = null;
             }
@@ -1840,7 +1851,7 @@ public class FileSystemTreeModel implements TreeModel {
             if (aChild.getParent() != this) {
                 throw new IllegalArgumentException("argument is not a child");
             }
-            remove(getIndex(aChild));	// linear search
+            remove(getIndex(aChild));    // linear search
         }
 
         @Override

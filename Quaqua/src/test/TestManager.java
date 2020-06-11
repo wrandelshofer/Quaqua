@@ -7,14 +7,14 @@ package test;
 
 import ch.randelshofer.quaqua.util.Methods;
 
-import javax.swing.*;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
-import java.awt.*;
+import java.awt.Font;
 import java.util.Set;
 
 /**
-    Support loose coupling between the test program and Quaqua APIs, allowing tests to run without the Quaqua code.
-*/
+ * Support loose coupling between the test program and Quaqua APIs, allowing tests to run without the Quaqua code.
+ */
 
 public class TestManager {
 

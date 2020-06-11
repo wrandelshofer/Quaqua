@@ -5,18 +5,52 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.text.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.text.*;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.AbstractAction;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.SpinnerUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicSpinnerUI;
+import javax.swing.text.InternationalFormatter;
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FocusTraversalPolicy;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.AttributedCharacterIterator;
+import java.text.CharacterIterator;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Map;
+
 /**
  * QuaquaSpinnerUI.
  *
@@ -58,6 +92,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     public static ComponentUI createUI(JComponent c) {
         return new QuaquaSpinnerUI();
     }
+
     /**
      * Create a component that will replace the spinner models value
      * with the object returned by <code>spinner.getPreviousValue</code>.
@@ -67,7 +102,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * then override this method to return null.
      *
      * @return a component that will replace the spinners model with the
-     *     next value in the sequence, or null
+     * next value in the sequence, or null
      * @see #installUI
      * @see #createNextButton
      */
@@ -88,7 +123,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * then override this method to return null.
      *
      * @return a component that will replace the spinners model with the
-     *     next value in the sequence, or null
+     * next value in the sequence, or null
      * @see #installUI
      * @see #createPreviousButton
      */
@@ -101,11 +136,11 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
 
     private JButton createArrowButton(int direction, ArrowButtonHandler handler) {
         JButton b = new JButton();
-        if (! (b.getUI() instanceof QuaquaButtonUI)) {
+        if (!(b.getUI() instanceof QuaquaButtonUI)) {
             b.setUI((ButtonUI) QuaquaButtonUI.createUI(b));
         }
         b.setBorderPainted(false);
-        b.setMargin(new Insets(0,0,0,0));
+        b.setMargin(new Insets(0, 0, 0, 0));
         b.addActionListener(handler);
         b.addMouseListener(handler);
         b.setFocusable(false);
@@ -117,9 +152,10 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         } else {
             b.setBorder(buttonBorder);
         }
-        b.putClientProperty("Quaqua.Component.visualMargin", new Insets(0,0,0,3));
+        b.putClientProperty("Quaqua.Component.visualMargin", new Insets(0, 0, 0, 3));
         return b;
     }
+
     /**
      * Create a <code>LayoutManager</code> that manages the <code>editor</code>,
      * <code>nextButton</code>, and <code>previousButton</code>
@@ -137,6 +173,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     protected LayoutManager createLayout() {
         return new SpinnerLayout();
     }
+
     /**
      * Create a <code>PropertyChangeListener</code> that can be
      * added to the JSpinner itself.  Typically, this listener
@@ -152,6 +189,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     protected PropertyChangeListener createPropertyChangeListener() {
         return new PropertyChangeHandler();
     }
+
     /**
      * Updates the enabled state of the children Components based on the
      * enabled state of the <code>JSpinner</code>.
@@ -166,15 +204,16 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * <code>Component</code>s of <code>c</code>.
      */
     private void updateEnabledState(Container c, boolean enabled) {
-        for (int counter = c.getComponentCount() - 1; counter >= 0;counter--) {
+        for (int counter = c.getComponentCount() - 1; counter >= 0; counter--) {
             Component child = c.getComponent(counter);
 
             child.setEnabled(enabled);
             if (child instanceof Container) {
-                updateEnabledState((Container)child, enabled);
+                updateEnabledState((Container) child, enabled);
             }
         }
     }
+
     /**
      * Updates the font of the children Components based on the
      * font of the <code>JSpinner</code>.
@@ -183,7 +222,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         Font f = spinner.getFont();
         JComponent editor = spinner.getEditor();
         editor.setFont(f);
-        for (int i=0; i < editor.getComponentCount(); i++) {
+        for (int i = 0; i < editor.getComponentCount(); i++) {
             editor.getComponent(i).setFont(f);
         }
         if (f.getSize() <= 11) {
@@ -226,6 +265,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         installEditorFocusInputMap(editor);
         return editor;
     }
+
     /**
      * Called by the <code>PropertyChangeListener</code> when the
      * <code>JSpinner</code> editor property changes.  It's the responsibility
@@ -249,6 +289,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         installEditorFocusInputMap(newEditor);
         spinner.add(newEditor, "Editor");
     }
+
     /**
      * Remove the border around the inner editor component for LaFs
      * that install an outside border around the spinner,
@@ -256,14 +297,14 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     private void installEditorBorderListener(JComponent editor) {
         if (!UIManager.getBoolean("Spinner.editorBorderPainted")) {
             if (editor instanceof JPanel &&
-            editor.getBorder() == null &&
-            editor.getComponentCount() > 0) {
+                    editor.getBorder() == null &&
+                    editor.getComponentCount() > 0) {
 
-                editor = (JComponent)editor.getComponent(0);
+                editor = (JComponent) editor.getComponent(0);
             }
             if (editor != null &&
-            (editor.getBorder() == null ||
-            editor.getBorder() instanceof UIResource)) {
+                    (editor.getBorder() == null ||
+                            editor.getBorder() instanceof UIResource)) {
                 editor.addPropertyChangeListener(propertyChangeListener);
             }
         }
@@ -272,60 +313,65 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     private void removeEditorBorderListener(JComponent editor) {
         if (!UIManager.getBoolean("Spinner.editorBorderPainted")) {
             if (editor instanceof JPanel &&
-            editor.getComponentCount() > 0) {
+                    editor.getComponentCount() > 0) {
 
-                editor = (JComponent)editor.getComponent(0);
+                editor = (JComponent) editor.getComponent(0);
             }
             if (editor != null) {
                 editor.removePropertyChangeListener(propertyChangeListener);
             }
         }
     }
+
     /**
      * Installs the KeyboardActions onto the JSpinner.
      */
     private void installEditorFocusInputMap(JComponent editor) {
         if (editor instanceof JPanel &&
-        editor.getComponentCount() > 0) {
+                editor.getComponentCount() > 0) {
 
-            editor = (JComponent)editor.getComponent(0);
+            editor = (JComponent) editor.getComponent(0);
         }
         if (editor != null) {
             InputMap iMap = getInputMap(JComponent.
-            WHEN_FOCUSED);
+                    WHEN_FOCUSED);
 
             SwingUtilities.replaceUIInputMap(editor, JComponent.
-            WHEN_FOCUSED,
-            iMap);
+                            WHEN_FOCUSED,
+                    iMap);
 
             //SwingUtilities.replaceUIActionMap(editor, getActionMap());
         }
     }
+
     /**
      * Returns the InputMap to install for <code>condition</code>.
      */
     private InputMap getInputMap(int condition) {
         switch (condition) {
-            case JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT :
-                return (InputMap)UIManager.get("Spinner.ancestorInputMap");
-            case JComponent.WHEN_FOCUSED :
-                return (InputMap)UIManager.get("Spinner.focusInputMap");
-            default :
-                return null;
+        case JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT:
+            return (InputMap) UIManager.get("Spinner.ancestorInputMap");
+        case JComponent.WHEN_FOCUSED:
+            return (InputMap) UIManager.get("Spinner.focusInputMap");
+        default:
+            return null;
         }
     }
 
     private JButton getNextButton() {
         return (JButton) ((SpinnerLayout) spinner.getLayout()).nextButton;
     }
+
     private JButton getPreviousButton() {
         return (JButton) ((SpinnerLayout) spinner.getLayout()).previousButton;
     }
+
     private JComponent getEditor() {
         return (JComponent) ((SpinnerLayout) spinner.getLayout()).editor;
     }
+
     @Override
-    public void paint( Graphics g, JComponent c ) {
+    public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         Debug.paint(g, c, this);
     }
@@ -337,10 +383,10 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     private void maybeRemoveEditorBorder(JComponent editor) {
         if (!UIManager.getBoolean("Spinner.editorBorderPainted")) {
             if (editor instanceof JPanel &&
-            editor.getBorder() == null &&
-            editor.getComponentCount() > 0) {
+                    editor.getBorder() == null &&
+                    editor.getComponentCount() > 0) {
 
-                editor = (JComponent)editor.getComponent(0);
+                editor = (JComponent) editor.getComponent(0);
             }
 
             if (editor != null && editor.getBorder() instanceof UIResource) {
@@ -348,6 +394,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
             }
         }
     }
+
     /**
      * Calls <code>installDefaults</code>, <code>installListeners</code>,
      * and then adds the components returned by <code>createNextButton</code>,
@@ -363,10 +410,11 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     @Override
     public void installUI(JComponent c) {
         super.installUI(c);
-	QuaquaUtilities.installProperty(c, "opaque", UIManager.get("Spinner.opaque"));
+        QuaquaUtilities.installProperty(c, "opaque", UIManager.get("Spinner.opaque"));
         //c.setOpaque(UIManager.getBoolean("Spinner.opaque"));
         updateFont();
     }
+
     /**
      * Initializes <code>propertyChangeListener</code> with
      * a shared object that delegates interesting PropertyChangeEvents
@@ -414,7 +462,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * of a single button pressed/released gesture.
      */
     private static class ArrowButtonHandler extends AbstractAction
-    implements MouseListener, UIResource {
+            implements MouseListener, UIResource {
         final javax.swing.Timer autoRepeatTimer;
         final boolean isNext;
         JSpinner spinner = null;
@@ -429,9 +477,9 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         private JSpinner eventToSpinner(AWTEvent e) {
             Object src = e.getSource();
             while ((src instanceof Component) && !(src instanceof JSpinner)) {
-                src = ((Component)src).getParent();
+                src = ((Component) src).getParent();
             }
-            return (src instanceof JSpinner) ? (JSpinner)src : null;
+            return (src instanceof JSpinner) ? (JSpinner) src : null;
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -444,15 +492,15 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
                     int calendarField = getCalendarField(spinner);
                     spinner.commitEdit();
                     if (calendarField != -1) {
-                        ((SpinnerDateModel)spinner.getModel()).
-                        setCalendarField(calendarField);
+                        ((SpinnerDateModel) spinner.getModel()).
+                                setCalendarField(calendarField);
                     }
                     Object value = (isNext) ? spinner.getNextValue() :
-                        spinner.getPreviousValue();
-                        if (value != null) {
-                            spinner.setValue(value);
-                            select(spinner);
-                        }
+                            spinner.getPreviousValue();
+                    if (value != null) {
+                        spinner.setValue(value);
+                        select(spinner);
+                    }
                 } catch (IllegalArgumentException iae) {
                     UIManager.getLookAndFeel().provideErrorFeedback(spinner);
                 } catch (ParseException pe) {
@@ -469,7 +517,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
             JComponent editor = spinner.getEditor();
 
             if (editor instanceof JSpinner.DateEditor) {
-                JSpinner.DateEditor dateEditor = (JSpinner.DateEditor)editor;
+                JSpinner.DateEditor dateEditor = (JSpinner.DateEditor) editor;
                 JFormattedTextField ftf = dateEditor.getTextField();
                 Format format = dateEditor.getFormat();
                 Object value;
@@ -477,18 +525,18 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
                 if (format != null && (value = spinner.getValue()) != null) {
                     SpinnerDateModel model = dateEditor.getModel();
                     DateFormat.Field field = DateFormat.Field.ofCalendarField(
-                    model.getCalendarField());
+                            model.getCalendarField());
 
                     if (field != null) {
                         try {
                             AttributedCharacterIterator iterator = format.
-                            formatToCharacterIterator(value);
+                                    formatToCharacterIterator(value);
                             if (!select(ftf, iterator, field) &&
-                            field == DateFormat.Field.HOUR0) {
+                                    field == DateFormat.Field.HOUR0) {
                                 select(ftf, iterator, DateFormat.Field.HOUR1);
                             }
+                        } catch (IllegalArgumentException iae) {
                         }
-                        catch (IllegalArgumentException iae) {}
                     }
                 }
             }
@@ -499,20 +547,20 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
          * false otherwise.
          */
         private boolean select(JFormattedTextField ftf,
-        AttributedCharacterIterator iterator,
-        DateFormat.Field field) {
+                               AttributedCharacterIterator iterator,
+                               DateFormat.Field field) {
             int max = ftf.getDocument().getLength();
 
             iterator.first();
             do {
                 Map attrs = iterator.getAttributes();
 
-                if (attrs != null && attrs.containsKey(field)){
+                if (attrs != null && attrs.containsKey(field)) {
                     int start = iterator.getRunStart(field);
                     int end = iterator.getRunLimit(field);
 
                     if (start != -1 && end != -1 && start <= max &&
-                    end <= max) {
+                            end <= max) {
                         ftf.select(start, end);
                     }
                     return true;
@@ -530,15 +578,15 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
             JComponent editor = spinner.getEditor();
 
             if (editor instanceof JSpinner.DateEditor) {
-                JSpinner.DateEditor dateEditor = (JSpinner.DateEditor)editor;
+                JSpinner.DateEditor dateEditor = (JSpinner.DateEditor) editor;
                 JFormattedTextField ftf = dateEditor.getTextField();
                 int start = ftf.getSelectionStart();
                 JFormattedTextField.AbstractFormatter formatter =
-                ftf.getFormatter();
+                        ftf.getFormatter();
 
                 if (formatter instanceof InternationalFormatter) {
                     Format.Field[] fields = ((InternationalFormatter)
-                    formatter).getFields(start);
+                            formatter).getFields(start);
 
                     for (int counter = 0; counter < fields.length; counter++) {
                         if (fields[counter] instanceof DateFormat.Field) {
@@ -546,10 +594,9 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
 
                             if (fields[counter] == DateFormat.Field.HOUR1) {
                                 calendarField = Calendar.HOUR;
-                            }
-                            else {
+                            } else {
                                 calendarField = ((DateFormat.Field)
-                                fields[counter]).getCalendarField();
+                                        fields[counter]).getCalendarField();
                             }
                             if (calendarField != -1) {
                                 return calendarField;
@@ -590,10 +637,10 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
          */
         private void focusSpinnerIfNecessary() {
             Component fo = KeyboardFocusManager.
-            getCurrentKeyboardFocusManager().getFocusOwner();
+                    getCurrentKeyboardFocusManager().getFocusOwner();
             if (spinner.isRequestFocusEnabled() && (
-            fo == null ||
-            !SwingUtilities.isDescendingFrom(fo, spinner))) {
+                    fo == null ||
+                            !SwingUtilities.isDescendingFrom(fo, spinner))) {
                 Container root = spinner;
 
                 if (!root.isFocusCycleRoot()) {
@@ -604,13 +651,14 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
                     Component child = ftp.getComponentAfter(root, spinner);
 
                     if (child != null && SwingUtilities.isDescendingFrom(
-                    child, spinner)) {
+                            child, spinner)) {
                         child.requestFocus();
                     }
                 }
             }
         }
     }
+
     /**
      * A simple layout manager for the editor and the next/previous buttons.
      * See the BasicSpinnerUI javadoc for more information about exactly
@@ -624,11 +672,9 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         public void addLayoutComponent(String name, Component c) {
             if ("Next".equals(name)) {
                 nextButton = c;
-            }
-            else if ("Previous".equals(name)) {
+            } else if ("Previous".equals(name)) {
                 previousButton = c;
-            }
-            else if ("Editor".equals(name)) {
+            } else if ("Editor".equals(name)) {
                 editor = c;
             }
         }
@@ -636,11 +682,9 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         public void removeLayoutComponent(Component c) {
             if (c == nextButton) {
                 c = null;
-            }
-            else if (c == previousButton) {
+            } else if (c == previousButton) {
                 previousButton = null;
-            }
-            else if (c == editor) {
+            } else if (c == editor) {
                 editor = null;
             }
         }
@@ -662,7 +706,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
             Dimension size = new Dimension(editorD.width, editorD.height);
 
             // Subtract -1 because we let the buttons overlap the editor field.
-            size.width += Math.max(nextD.width, previousD.width) -1;
+            size.width += Math.max(nextD.width, previousD.width) - 1;
             Insets insets = parent.getInsets();
             size.width += insets.left + insets.right;
             size.height += insets.top + insets.bottom;
@@ -680,7 +724,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         }
 
         public void layoutContainer(Container parent) {
-            int width  = parent.getWidth();
+            int width = parent.getWidth();
             int height = parent.getHeight();
 
             Insets insets = parent.getInsets();
@@ -720,13 +764,14 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
             int nextY = previousY - nextD.height;
 
             // Add 1 because we let the editor overlap with the buttons.
-            setBounds(editor,         editorX,  insets.top, editorWidth + 1, editorHeight);
+            setBounds(editor, editorX, insets.top, editorWidth + 1, editorHeight);
             //setBounds(nextButton,     buttonsX, nextY,      buttonsWidth, nextHeight);
             //setBounds(previousButton, buttonsX, previousY,  buttonsWidth, previousHeight);
-            setBounds(nextButton,     buttonsX, nextY,      nextD.width, nextD.height);
-            setBounds(previousButton, buttonsX, previousY,  previousD.width, previousD.height);
+            setBounds(nextButton, buttonsX, nextY, nextD.width, nextD.height);
+            setBounds(previousButton, buttonsX, previousY, previousD.width, previousD.height);
         }
     }
+
     /**
      * Detect JSpinner property changes we're interested in and delegate.  Subclasses
      * shouldn't need to replace the default propertyChangeListener (although they
@@ -737,37 +782,35 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         public void propertyChange(PropertyChangeEvent e) {
             String name = e.getPropertyName();
             if (e.getSource() instanceof JSpinner) {
-                JSpinner spinner = (JSpinner)(e.getSource());
+                JSpinner spinner = (JSpinner) (e.getSource());
                 SpinnerUI spinnerUI = spinner.getUI();
                 if (spinnerUI instanceof QuaquaSpinnerUI) {
-                    QuaquaSpinnerUI ui = (QuaquaSpinnerUI)spinnerUI;
+                    QuaquaSpinnerUI ui = (QuaquaSpinnerUI) spinnerUI;
 
                     if ("editor".equals(name)) {
-                        JComponent oldEditor = (JComponent)e.getOldValue();
-                        JComponent newEditor = (JComponent)e.getNewValue();
+                        JComponent oldEditor = (JComponent) e.getOldValue();
+                        JComponent newEditor = (JComponent) e.getNewValue();
                         ui.replaceEditor(oldEditor, newEditor);
                         ui.updateEnabledState();
                         ui.updateFont();
-                    }
-                    else if ("enabled".equals(name)) {
+                    } else if ("enabled".equals(name)) {
                         ui.updateEnabledState();
-                    }
-                    else if ("font".equals(name)) {
+                    } else if ("font".equals(name)) {
                         ui.updateFont();
-       } else if (name.equals("JComponent.sizeVariant")) {
-            QuaquaUtilities.applySizeVariant(spinner);
+                    } else if (name.equals("JComponent.sizeVariant")) {
+                        QuaquaUtilities.applySizeVariant(spinner);
                     }
                 }
             } else if (e.getSource() instanceof JComponent) {
-                JComponent c = (JComponent)e.getSource();
+                JComponent c = (JComponent) e.getSource();
                 if ((c.getParent() instanceof JPanel) &&
-                (c.getParent().getParent() instanceof JSpinner) &&
-                "border".equals(name)) {
+                        (c.getParent().getParent() instanceof JSpinner) &&
+                        "border".equals(name)) {
 
-                    JSpinner spinner = (JSpinner)c.getParent().getParent();
+                    JSpinner spinner = (JSpinner) c.getParent().getParent();
                     SpinnerUI spinnerUI = spinner.getUI();
                     if (spinnerUI instanceof BasicSpinnerUI) {
-                        QuaquaSpinnerUI ui = (QuaquaSpinnerUI)spinnerUI;
+                        QuaquaSpinnerUI ui = (QuaquaSpinnerUI) spinnerUI;
                         ui.maybeRemoveEditorBorder(c);
                     }
                 }
@@ -777,57 +820,61 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
 
     protected Insets getMargin() {
         Insets margin = (Insets) spinner.getClientProperty("Quaqua.Component.visualMargin");
-        if (margin == null) margin = UIManager.getInsets("Component.visualMargin");
+        if (margin == null) {
+            margin = UIManager.getInsets("Component.visualMargin");
+        }
         return (Insets) margin.clone();
     }
+
     @Override
     public int getBaseline(JComponent c, int width, int height) {
         Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
         return (vb == null) ? -1 : vb.y + vb.height;
     }
+
     public Rectangle getVisualBounds(JComponent c, int layoutType, int width, int height) {
-        Rectangle bounds = new Rectangle(0,0,width,height);
+        Rectangle bounds = new Rectangle(0, 0, width, height);
         if (layoutType == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
 
         switch (layoutType) {
-            case VisuallyLayoutable.COMPONENT_BOUNDS :
-                Insets margin = getMargin();
-                bounds.x += margin.left;
-                bounds.y += margin.top;
-                bounds.width -= margin.left + margin.right;
-                bounds.height -= margin.top + margin.bottom;
-                break;
-            case VisuallyLayoutable.TEXT_BOUNDS :
-                JComponent editor = getEditor();
-                if (editor instanceof JPanel) {
-                    editor = (JComponent) editor.getComponent(0);
-                }
-                Object ui = Methods.invokeGetter(editor, "getUI", null);
-                Insets insets = spinner.getInsets();
-                int editorHeight = height - (insets.top + insets.bottom);
-                int editorWidth;
-                Dimension nextD = getNextButton().getPreferredSize();
-                Dimension previousD = getPreviousButton().getPreferredSize();
-                int buttonsWidth = Math.max(nextD.width, previousD.width);
-                Insets buttonInsets = new Insets(0,0,0,0); // XXX - BAD VALUES
-                if (spinner.getComponentOrientation().isLeftToRight()) {
-                    ///int editorX = insets.left;
-                    editorWidth = width - insets.left - buttonsWidth - buttonInsets.right;
-                } else {
-                    //int editorX = buttonInsets.left + buttonsWidth;
-                    editorWidth = width - buttonInsets.left - buttonsWidth - insets.right;
-                }
+        case VisuallyLayoutable.COMPONENT_BOUNDS:
+            Insets margin = getMargin();
+            bounds.x += margin.left;
+            bounds.y += margin.top;
+            bounds.width -= margin.left + margin.right;
+            bounds.height -= margin.top + margin.bottom;
+            break;
+        case VisuallyLayoutable.TEXT_BOUNDS:
+            JComponent editor = getEditor();
+            if (editor instanceof JPanel) {
+                editor = (JComponent) editor.getComponent(0);
+            }
+            Object ui = Methods.invokeGetter(editor, "getUI", null);
+            Insets insets = spinner.getInsets();
+            int editorHeight = height - (insets.top + insets.bottom);
+            int editorWidth;
+            Dimension nextD = getNextButton().getPreferredSize();
+            Dimension previousD = getPreviousButton().getPreferredSize();
+            int buttonsWidth = Math.max(nextD.width, previousD.width);
+            Insets buttonInsets = new Insets(0, 0, 0, 0); // XXX - BAD VALUES
+            if (spinner.getComponentOrientation().isLeftToRight()) {
+                ///int editorX = insets.left;
+                editorWidth = width - insets.left - buttonsWidth - buttonInsets.right;
+            } else {
+                //int editorX = buttonInsets.left + buttonsWidth;
+                editorWidth = width - buttonInsets.left - buttonsWidth - insets.right;
+            }
 
-                if (ui instanceof VisuallyLayoutable) {
-                    Rectangle editorBounds = ((VisuallyLayoutable) ui).getVisualBounds(editor, layoutType, editorWidth, editorHeight);
-                    bounds.x += editorBounds.x;
-                    bounds.y += editorBounds.y;
-                    bounds.width = editorBounds.width;
-                    bounds.height = editorBounds.height;
-                }
-                break;
+            if (ui instanceof VisuallyLayoutable) {
+                Rectangle editorBounds = ((VisuallyLayoutable) ui).getVisualBounds(editor, layoutType, editorWidth, editorHeight);
+                bounds.x += editorBounds.x;
+                bounds.y += editorBounds.y;
+                bounds.width = editorBounds.width;
+                bounds.height = editorBounds.height;
+            }
+            break;
         }
         return bounds;
     }

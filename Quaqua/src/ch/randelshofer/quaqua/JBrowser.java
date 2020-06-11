@@ -4,20 +4,79 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.plaf.ListUI;
-import javax.swing.tree.*;
-import java.util.*;
+import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.SizeConstrainedPanel;
+
 import javax.accessibility.Accessible;
+import javax.swing.AbstractListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.JViewport;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.Scrollable;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.plaf.ListUI;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.dnd.DropTarget;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.EventListener;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * JBrowser provides a user interface for displaying and selecting items from a
@@ -49,11 +108,9 @@ import javax.swing.border.EmptyBorder;
  * editable by the user.</li>
  * </ul>
  *
- * @see JBrowserViewport
- *
- *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
+ * @see JBrowserViewport
  */
 public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
@@ -152,19 +209,33 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     //
     // Bound property names
     //
-    /** Bound property name for {@code cellRenderer}. */
+    /**
+     * Bound property name for {@code cellRenderer}.
+     */
     public final static String CELL_RENDERER_PROPERTY = "cellRenderer";
-    /** Bound property name for {@code cellRenderer}. */
+    /**
+     * Bound property name for {@code cellRenderer}.
+     */
     public final static String PREVIEW_RENDERER_PROPERTY = "previewRenderer";
-    /** Bound property name for {@code treeModel}. */
+    /**
+     * Bound property name for {@code treeModel}.
+     */
     public final static String TREE_MODEL_PROPERTY = "model";
-    /** Bound property name for selectionModel. */
+    /**
+     * Bound property name for selectionModel.
+     */
     public final static String SELECTION_MODEL_PROPERTY = "selectionModel";
-    /** Bound property name for preferredCellWidth. */
+    /**
+     * Bound property name for preferredCellWidth.
+     */
     public final static String FIXED_CELL_WIDTH_PROPERTY = "fixedCellWidth";
-    /** Bound property name for minimumCellWidth. */
+    /**
+     * Bound property name for minimumCellWidth.
+     */
     public final static String MINIMUM_CELL_WIDTH_PROPERTY = "minimumCellWidth";
-    /** Bound property name for columnsResizable. */
+    /**
+     * Bound property name for columnsResizable.
+     */
     public final static String COLUMNS_RESIZABLE_PROPERTY = "columnsResizable";
     private Object prototypeCellValue;
     /**
@@ -188,7 +259,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Should the preview column be filled?
      **/
     private boolean shouldFillPreviewColumn = false;
-    /** This border is used when the Look and Feel does not specify a
+    /**
+     * This border is used when the Look and Feel does not specify a
      * "List.cellNoFocusBorder".
      */
     private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
@@ -211,7 +283,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * By default, the browser defines a leaf node as any node without
      * children.
      *
-     * @param value  an array of {@code Object}s
+     * @param value an array of {@code Object}s
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Object[] value) {
@@ -225,7 +297,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * displayed. By default, the
      * tree defines a leaf node as any node without children.
      *
-     * @param value  a {@code Vector}
+     * @param value a {@code Vector}
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Vector value) {
@@ -240,7 +312,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * becomes a child of the new root node. By default, the tree defines
      * a leaf node as any node without children.
      *
-     * @param value  a {@code Hashtable}
+     * @param value a {@code Hashtable}
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Hashtable value) {
@@ -253,7 +325,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * {@code TreeNode} as its root, which does not display the root node.
      * By default, the tree defines a leaf node as any node without children.
      *
-     * @param root  a {@code TreeNode} object
+     * @param root a {@code TreeNode} object
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(TreeNode root) {
@@ -266,10 +338,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * the root node and which decides whether a node is a
      * leaf node in the specified manner.
      *
-     * @param root  a {@code TreeNode} object
-     * @param asksAllowsChildren  if false, any node without children is a
-     *              leaf node; if true, only nodes that do not allow
-     *              children are leaf nodes
+     * @param root               a {@code TreeNode} object
+     * @param asksAllowsChildren if false, any node without children is a
+     *                           leaf node; if true, only nodes that do not allow
+     *                           children are leaf nodes
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(TreeNode root, boolean asksAllowsChildren) {
@@ -280,7 +352,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Creates an instance of {@code JBrowser} which does not display the
      * root node -- the tree is created using the specified data model.
      *
-     * @param newModel  the {@code TreeModel} to use as the data model
+     * @param newModel the {@code TreeModel} to use as the data model
      */
     public JBrowser(TreeModel newModel) {
         super();
@@ -312,7 +384,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Sets the look and feel (L&amp;F) object that renders this component.
      *
-     * @param ui  the {@code BrowserUI} L&amp;F object
+     * @param ui the {@code BrowserUI} L&amp;F object
      * @see UIDefaults#getUI
      */
     public void setUI(BrowserUI ui) {
@@ -365,7 +437,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * is {@code false}.
      *
      * <p>
-     *
+     * <p>
      * When automatic drag handling is enabled,
      * most look and feels begin a drag-and-drop operation
      * whenever the user presses the mouse button over a selection
@@ -375,7 +447,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * how selections behave.
      *
      * <p>
-     *
+     * <p>
      * Some look and feels might not support automatic drag and drop;
      * they will ignore this property.  You can work around such
      * look and feels by modifying the component
@@ -383,15 +455,14 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * {@code TransferHandler}.
      *
      * @param b the value to set the {@code dragEnabled} property to
-     * @exception HeadlessException if
-     *            {@code b} is {@code true} and
-     *            {@code GraphicsEnvironment.isHeadless()}
-     *            returns {@code true}
+     * @throws HeadlessException if
+     *                           {@code b} is {@code true} and
+     *                           {@code GraphicsEnvironment.isHeadless()}
+     *                           returns {@code true}
      * @see java.awt.GraphicsEnvironment#isHeadless
      * @see #getDragEnabled
      * @see #setTransferHandler
      * @see TransferHandler
-     *
      */
     public void setDragEnabled(boolean b) {
         if (b && GraphicsEnvironment.isHeadless()) {
@@ -465,8 +536,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * objects as children. Otherwise, a new root is created with the
      * specified object as its value.
      *
-     * @param value  the {@code Object} used as the foundation for
-     *		the {@code TreeModel}
+     * @param value the {@code Object} used as the foundation for
+     *              the {@code TreeModel}
      * @return a {@code TreeModel} wrapping the specified object
      */
     protected static TreeModel createTreeModel(Object value) {
@@ -501,9 +572,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *          the left edge of the display area, minus any left margin
      * @param y an integer giving the number of pixels vertically from
      *          the top of the display area, minus any top margin
-     * @return  the {@code TreePath} for the node closest to that location,
-     *
-     *
+     * @return the {@code TreePath} for the node closest to that location,
      * @see #getPathForLocation
      * @see #getPathBounds
      */
@@ -544,7 +613,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *
      * @param path the {@code TreePath} identifying the node
      * @return the {@code Rectangle} the node is drawn in,
-     *		or {@code null}
+     * or {@code null}
      */
     public Rectangle getPathBounds(TreePath path) {
         if (path.getPathCount() <= getListColumnCount()) {
@@ -573,6 +642,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * cell over which the mouse is hovering.
      * The tooltip is shown only for cells which are wider than the current
      * width of the browser column.
+     *
      * @param newValue the value
      */
     public void setShowCellTips(boolean newValue) {
@@ -590,6 +660,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Returns true if the JBrowser shows cell tips for list cells that don't
      * fit into a column.
+     *
      * @return the value
      */
     public boolean isShowCellTips() {
@@ -599,6 +670,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Sets the origin of the cell tip tooltip relative to the origin of
      * the cell renderer.
+     *
      * @param newValue the value
      */
     public void setShowCellTipOrigin(Point newValue) {
@@ -610,6 +682,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Returns the origin of the cell tip tooltip relative to the origin of
      * the cell renderer.
+     *
      * @return the value
      */
     public Point getCellTipOrigin() {
@@ -665,7 +738,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * visible without changing the selection of the JBrowser.
      *
      * @param path the {@code TreePath} specifying the node to make
-     * visible.
+     *             visible.
      */
     public void ensurePathIsVisible(TreePath path) {
         TreePath selectionPath = selectionModel.getSelectionPath();
@@ -677,7 +750,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
             for (int i = 0; i < path.getPathCount() - 1 && i < getListColumnCount(); i++) {
                 JList columnList = getColumnList(i);
-                int index0 = findListElement(columnList, path.getPathComponent(i+1));
+                int index0 = findListElement(columnList, path.getPathComponent(i + 1));
 
                 Rectangle bounds = columnList.getCellBounds(index0, index0);
 
@@ -720,7 +793,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Removes the node identified by the specified path from the current
      * selection.
      *
-     * @param path  the {@code TreePath} identifying a node
+     * @param path the {@code TreePath} identifying a node
      */
     public void removeSelectionPath(TreePath path) {
         if (path.getPathCount() <= getListColumnCount()) {
@@ -737,7 +810,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *          the left edge of the display area, minus any left margin
      * @param y an integer giving the number of pixels vertically from
      *          the top of the display area, minus any top margin
-     * @return  the {@code TreePath} for the node at that location
+     * @return the {@code TreePath} for the node at that location
      */
     public TreePath getPathForLocation(int x, int y) {
         // XXX - Check if closest path intersects x,y.
@@ -772,7 +845,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This is a JavaBeans bound property.
      *
-     * @param width   the width, in pixels, for all cells in this list
+     * @param width the width, in pixels, for all cells in this list
      * @see #setMinimumCellWidth
      * @see JComponent#addPropertyChangeListener
      */
@@ -806,7 +879,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This is a JavaBeans bound property.
      *
-     * @param newValue   the width, in pixels.
+     * @param newValue the width, in pixels.
      * @see #setFixedCellWidth
      * @see JComponent#addPropertyChangeListener
      */
@@ -824,7 +897,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Sets the width of a column.
      *
      * @param column Index of the column.
-     * @param width The width.
+     * @param width  The width.
      */
     public void setColumnWidth(int column, int width) {
         JList l = getColumnList(column);
@@ -862,8 +935,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Sets the width of the preview column.
      *
-     * @param width
-     *            The width.
+     * @param width The width.
      **/
     public void setPreviewColumnWidth(int width) {
         if (previewColumn == null) {
@@ -878,6 +950,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Gets the width of the preview column.
+     *
      * @return the value
      */
     public int getPreviewColumnWidth() {
@@ -887,17 +960,18 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
         return p.getPreferredSize().width;
     }
+
     /**
      * Gets whether the preview column should expand to fill available horizontal space.
      **/
     public boolean isPreviewColumnFilled() {
         return shouldFillPreviewColumn;
     }
+
     /**
      * Sets whether the preview column should expand to fill available horizontal space.
      *
-     * @param newValue
-     *            The new value.
+     * @param newValue The new value.
      **/
     public void setPreviewColumnFilled(boolean newValue) {
         boolean oldValue = shouldFillPreviewColumn;
@@ -911,8 +985,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Sets whether columns should be resizable.
      *
-     * @param newValue
-     *            The new value.
+     * @param newValue The new value.
      **/
     public void setColumnsResizable(boolean newValue) {
         boolean oldValue = columnsResizable;
@@ -950,7 +1023,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * This is a JavaBeans bound property.
      *
      * @param cellRenderer the {@code ListCellRenderer}
-     * 				that paints browser cells
+     *                     that paints browser cells
      * @see #getColumnCellRenderer
      * @see #setCellRenderer
      */
@@ -974,7 +1047,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * This is a JavaBeans bound property.
      *
      * @return The {@code ListCellRenderer}
-     * 				that paints browser cells
+     * that paints browser cells
      */
     public ListCellRenderer getColumnCellRenderer() {
         return cellRenderer;
@@ -992,7 +1065,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * This is a JavaBeans bound property.
      *
      * @param cellRenderer the {@code ListCellRenderer}
-     * 				that paints browser cells
+     *                     that paints browser cells
      * @see #getCellRenderer
      * @see #setColumnCellRenderer
      */
@@ -1019,7 +1092,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * This is a JavaBeans bound property.
      *
      * @return The {@code BrowserCellRenderer}
-     * 				that paints browser cells
+     * that paints browser cells
      */
     public BrowserCellRenderer getCellRenderer() {
         return (cellRenderer instanceof BrowserCellRendererWrapper) ? ((BrowserCellRendererWrapper) cellRenderer).browserCellRenderer : null;
@@ -1034,7 +1107,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * This is a JavaBeans bound property.
      *
      * @param newValue the {@code ListCellRenderer}
-     * 				that paints the preview column.
+     *                 that paints the preview column.
      * @see #getColumnCellRenderer
      */
     public void setPreviewRenderer(BrowserPreviewRenderer newValue) {
@@ -1137,9 +1210,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Sets the tree's selection model.
      *
      * @param selectionModel the {@code TreeSelectionModel} to use.
+     * @throws IllegalArgumentException if the selectionModel is null.
      * @see TreeSelectionModel
-     *
-     * @exception IllegalArgumentException if the selectionModel is null.
      */
     public void setSelectionModel(TreeSelectionModel selectionModel) {
         if (selectionModel == null) {
@@ -1201,7 +1273,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Returns the path to the first selected node.
      *
      * @return the {@code TreePath} for the first selected node,
-     *		or {@code null} if nothing is currently selected
+     * or {@code null} if nothing is currently selected
      */
     public TreePath getSelectionPath() {
         if (getListColumnCount() == 0) {
@@ -1219,7 +1291,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Returns the paths of all selected values.
      *
      * @return an array of {@code TreePath} objects indicating the selected
-     *         nodes, or {@code null} if nothing is currently selected
+     * nodes, or {@code null} if nothing is currently selected
      */
     public TreePath[] getSelectionPaths() {
         return getSelectionModel().getSelectionPaths();
@@ -1230,7 +1302,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * All path components except the last one of the paths must be equal.
      *
      * @param paths an array of {@code TreePath} objects that specifies
-     *		the nodes to select
+     *              the nodes to select
      */
     public void setSelectionPaths(TreePath[] paths) {
         getSelectionModel().setSelectionPaths(paths);
@@ -1241,8 +1313,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * registered on this component.
      *
      * @return all of this component's {@code KeyListener}s
-     *         or an empty array if no key
-     *         listeners are currently registered
+     * or an empty array if no key
+     * listeners are currently registered
      */
     @Override
     public synchronized KeyListener[] getKeyListeners() {
@@ -1254,25 +1326,25 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
             TreePath[] paths = getSelectionPaths();
             switch ((paths == null) ? 0 : paths.length) {
-                case 0:
-                    remove(previewColumn);
-                    break;
-                case 1:
-                    if (treeModel.isLeaf(paths[0].getLastPathComponent())) {
-                        p.removeAll();
-                        p.add(previewRenderer.getPreviewRendererComponent(this, paths));
-                        setPreviewColumnWidth(getPreviewColumnWidth());
-                        add(previewColumn);
-                    } else {
-                        remove(previewColumn);
-                    }
-                    break;
-                default:
+            case 0:
+                remove(previewColumn);
+                break;
+            case 1:
+                if (treeModel.isLeaf(paths[0].getLastPathComponent())) {
                     p.removeAll();
                     p.add(previewRenderer.getPreviewRendererComponent(this, paths));
-                    setPreviewColumnWidth(getFixedCellWidth());
+                    setPreviewColumnWidth(getPreviewColumnWidth());
                     add(previewColumn);
-                    break;
+                } else {
+                    remove(previewColumn);
+                }
+                break;
+            default:
+                p.removeAll();
+                p.add(previewRenderer.getPreviewRendererComponent(this, paths));
+                setPreviewColumnWidth(getFixedCellWidth());
+                add(previewColumn);
+                break;
             }
 
             revalidate();
@@ -1306,7 +1378,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *
      * @param e the {@code TreeSelectionEvent} to be fired;
      *          generated by the
-     *		{@code TreeSelectionModel}
+     *          {@code TreeSelectionModel}
      *          when a node is selected or deselected
      * @see EventListenerList
      */
@@ -1369,7 +1441,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * expanded and viewable. If the last item in the path is not a
      * leaf, an additional column is shown.
      *
-     * @param path  the {@code TreePath} identifying a node
+     * @param path the {@code TreePath} identifying a node
      */
     private void expandPath(TreePath path) {
         //boolean oldPathIsLeaf = expandedPath == null || treeModel.isLeaf(expandedPath.getLastPathComponent());
@@ -1449,6 +1521,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Appends a new column to the browser.
+     *
      * @param path the value
      */
     protected void addColumn(final TreePath path) {
@@ -1474,16 +1547,16 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         int selectionMode;
         switch (selectionModel.getSelectionMode()) {
-            case TreeSelectionModel.CONTIGUOUS_TREE_SELECTION:
-                selectionMode = ListSelectionModel.SINGLE_INTERVAL_SELECTION;
-                break;
-            case TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION:
-                selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
-                break;
-            case TreeSelectionModel.SINGLE_TREE_SELECTION:
-            default:
-                selectionMode = ListSelectionModel.SINGLE_SELECTION;
-                break;
+        case TreeSelectionModel.CONTIGUOUS_TREE_SELECTION:
+            selectionMode = ListSelectionModel.SINGLE_INTERVAL_SELECTION;
+            break;
+        case TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION:
+            selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+            break;
+        case TreeSelectionModel.SINGLE_TREE_SELECTION:
+        default:
+            selectionMode = ListSelectionModel.SINGLE_SELECTION;
+            break;
         }
 
         l.setSelectionMode(selectionMode);
@@ -1507,12 +1580,12 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         @Override
         public void updateUI() {
             // Allow the column list UI to be customized for use in a browser
-            ListUI basicUI = (ListUI)UIManager.getUI(this);
+            ListUI basicUI = (ListUI) UIManager.getUI(this);
             setUI(getColumnListUI(basicUI));
 
             ListCellRenderer renderer = getCellRenderer();
             if (renderer instanceof Component) {
-                SwingUtilities.updateComponentTreeUI((Component)renderer);
+                SwingUtilities.updateComponentTreeUI((Component) renderer);
             }
         }
 
@@ -1572,6 +1645,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Removes the specified column from the browser.
+     *
      * @param columnIndex the value
      */
     protected void removeColumn(int columnIndex) {
@@ -1593,14 +1667,15 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         ((ColumnListModel) l.getModel()).dispose();
     }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     private void initComponents() {//GEN-BEGIN:initComponents
 
-		setLayout(new BrowserLayout());
+        setLayout(new BrowserLayout());
         //setLayout(new java.awt.GridLayout(1, 0));
 
     }//GEN-END:initComponents
@@ -1648,9 +1723,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *
      * @param visibleRect the view area visible within the viewport
      * @param orientation either {@code SwingConstants.VERTICAL}
-     *		or {@code SwingConstants.HORIZONTAL}
-     * @param direction less than zero to scroll up/left,
-     *		greater than zero for down/right
+     *                    or {@code SwingConstants.HORIZONTAL}
+     * @param direction   less than zero to scroll up/left,
+     *                    greater than zero for down/right
      * @return the "unit" increment for scrolling in the specified direction
      * @see JScrollBar#setUnitIncrement(int)
      */
@@ -1659,36 +1734,36 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         int increment = 0;
         if (direction > 0) {
             switch (orientation) {
-                case SwingConstants.HORIZONTAL:
-                    for (int i = components.length - 1; i
-                            >= 0; i--) {
-                        Rectangle cbounds = components[i].getBounds();
-                        if (cbounds.x + cbounds.width > visibleRect.x + visibleRect.width) {
-                            increment = Math.min(10, cbounds.x + cbounds.width - visibleRect.x - visibleRect.width);
-                        }
-
+            case SwingConstants.HORIZONTAL:
+                for (int i = components.length - 1; i
+                        >= 0; i--) {
+                    Rectangle cbounds = components[i].getBounds();
+                    if (cbounds.x + cbounds.width > visibleRect.x + visibleRect.width) {
+                        increment = Math.min(10, cbounds.x + cbounds.width - visibleRect.x - visibleRect.width);
                     }
-                    break;
-                case SwingConstants.VERTICAL:
-                    increment = 10;
-                    break;
+
+                }
+                break;
+            case SwingConstants.VERTICAL:
+                increment = 10;
+                break;
             }
 
         } else {
             switch (orientation) {
-                case SwingConstants.HORIZONTAL:
-                    for (int i = 0; i
-                            < components.length; i++) {
-                        Rectangle cbounds = components[i].getBounds();
-                        if (cbounds.x < visibleRect.x) {
-                            increment = Math.min(10, visibleRect.x - cbounds.x);
-                        }
-
+            case SwingConstants.HORIZONTAL:
+                for (int i = 0; i
+                        < components.length; i++) {
+                    Rectangle cbounds = components[i].getBounds();
+                    if (cbounds.x < visibleRect.x) {
+                        increment = Math.min(10, visibleRect.x - cbounds.x);
                     }
-                    break;
-                case SwingConstants.VERTICAL:
-                    increment = 10;
-                    break;
+
+                }
+                break;
+            case SwingConstants.VERTICAL:
+                increment = 10;
+                break;
             }
 
         }
@@ -1733,9 +1808,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *
      * @param visibleRect the view area visible within the viewport
      * @param orientation either {@code SwingConstants.VERTICAL}
-     *		or {@code SwingConstants.HORIZONTAL}
-     * @param direction less than zero to scroll up/left,
-     *		greater than zero for down/right
+     *                    or {@code SwingConstants.HORIZONTAL}
+     * @param direction   less than zero to scroll up/left,
+     *                    greater than zero for down/right
      * @return the "unit" increment for scrolling in the specified direction
      * @see JScrollBar#setUnitIncrement(int)
      */
@@ -1744,40 +1819,40 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         int increment = 0;
         if (direction > 0) {
             switch (orientation) {
-                case SwingConstants.HORIZONTAL:
-                    for (int i = components.length - 1; i >= 0; i--) {
-                        Rectangle cbounds = components[i].getBounds();
+            case SwingConstants.HORIZONTAL:
+                for (int i = components.length - 1; i >= 0; i--) {
+                    Rectangle cbounds = components[i].getBounds();
 
-                        if (cbounds.x > visibleRect.x) {
-                            increment = cbounds.x - visibleRect.x;
-                        } else if (cbounds.x + cbounds.width > visibleRect.x + visibleRect.width) {
-                            increment = cbounds.x - visibleRect.x;
-                        }
+                    if (cbounds.x > visibleRect.x) {
+                        increment = cbounds.x - visibleRect.x;
+                    } else if (cbounds.x + cbounds.width > visibleRect.x + visibleRect.width) {
+                        increment = cbounds.x - visibleRect.x;
                     }
-                    break;
-                case SwingConstants.VERTICAL:
-                    increment = 10;
-                    break;
+                }
+                break;
+            case SwingConstants.VERTICAL:
+                increment = 10;
+                break;
             }
 
         } else {
             switch (orientation) {
-                case SwingConstants.HORIZONTAL:
-                    for (int i = 0; i
-                            < components.length; i++) {
-                        Rectangle cbounds = components[i].getBounds();
-                        if (cbounds.x + cbounds.width < visibleRect.x) {
-                            increment = visibleRect.x - cbounds.x;
-                        }
+            case SwingConstants.HORIZONTAL:
+                for (int i = 0; i
+                        < components.length; i++) {
+                    Rectangle cbounds = components[i].getBounds();
+                    if (cbounds.x + cbounds.width < visibleRect.x) {
+                        increment = visibleRect.x - cbounds.x;
+                    }
 
-                    }
-                    if (increment == 0) {
-                        increment = visibleRect.x - components[0].getBounds().x;
-                    }
-                    break;
-                case SwingConstants.VERTICAL:
-                    increment = 10;
-                    break;
+                }
+                if (increment == 0) {
+                    increment = visibleRect.x - components[0].getBounds().x;
+                }
+                break;
+            case SwingConstants.VERTICAL:
+                increment = 10;
+                break;
             }
 
         }
@@ -1884,12 +1959,12 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * all other arguments. To control the conversion, subclass this
      * method and use any of the arguments you need.
      *
-     * @param value the {@code Object} to convert to text
+     * @param value    the {@code Object} to convert to text
      * @param selected true if the node is selected
      * @param expanded true if the node is expanded
-     * @param leaf  true if the node is a leaf node
-     * @param row  an integer specifying the node's display row, where 0 is
-     *             the first row in the display
+     * @param leaf     true if the node is a leaf node
+     * @param row      an integer specifying the node's display row, where 0 is
+     *                 the first row in the display
      * @param hasFocus true if the node has the focus
      * @return the {@code String} representation of the node's value
      */
@@ -2060,7 +2135,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             sizeUnknown = false;
 
             return dim;
-            }
+        }
 
         /* Required by LayoutManager. */
         public Dimension minimumLayoutSize(Container parent) {
@@ -2334,59 +2409,59 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * selection changes.
          *
          * @param evt the {@code TreeSelectionEvent} generated by the
-         *		{@code TreeSelectionModel}
+         *            {@code TreeSelectionModel}
          */
         public void valueChanged(TreeSelectionEvent evt) {
             // Expand columns to match the selection
             switch (selectionModel.getSelectionCount()) {
-                case 0:
-                    expandPath(new TreePath(treeModel.getRoot()));
-                    {
-                        int count = getListColumnCount();
-                        if (count > 0) {
-                            getColumnList(count - 1).clearSelection();
-                        }
-                    }
-                    break;
-                case 1: {
-                    TreePath selectionPath = selectionModel.getSelectionPath();
-                    expandPath(selectionPath);
-                    if (!treeModel.isLeaf(selectionPath.getLastPathComponent())) {
-                        int count = getListColumnCount();
-                        getColumnList(count - 1).clearSelection();
-                    }
-                    break;
+            case 0:
+                expandPath(new TreePath(treeModel.getRoot()));
+            {
+                int count = getListColumnCount();
+                if (count > 0) {
+                    getColumnList(count - 1).clearSelection();
                 }
-                default: {
-                    TreePath leadSelectionPath = selectionModel.getLeadSelectionPath();
-                    TreePath parentPath = leadSelectionPath.getParentPath();
-                    expandPath(parentPath);
-                    if (parentPath != null) {
-                        JList list = getColumnList(parentPath.getPathCount() - 1);
+            }
+            break;
+            case 1: {
+                TreePath selectionPath = selectionModel.getSelectionPath();
+                expandPath(selectionPath);
+                if (!treeModel.isLeaf(selectionPath.getLastPathComponent())) {
+                    int count = getListColumnCount();
+                    getColumnList(count - 1).clearSelection();
+                }
+                break;
+            }
+            default: {
+                TreePath leadSelectionPath = selectionModel.getLeadSelectionPath();
+                TreePath parentPath = leadSelectionPath.getParentPath();
+                expandPath(parentPath);
+                if (parentPath != null) {
+                    JList list = getColumnList(parentPath.getPathCount() - 1);
 
-                        TreePath[] selectionPaths = selectionModel.getSelectionPaths();
-                        int[] indices = new int[selectionPaths.length];
-                        int leadPathIndex = -1;
-                        for (int i = 0; i < selectionPaths.length; i++) {
-                            indices[i] = treeModel.getIndexOfChild(parentPath.getLastPathComponent(), selectionPaths[i].getLastPathComponent());
-                            if (selectionPaths[i].equals(leadSelectionPath)) {
-                                leadPathIndex = i;
-                            }
-                        }
-                        int swap = indices[leadPathIndex];
-                        indices[leadPathIndex] = indices[indices.length - 1];
-                        indices[indices.length - 1] = swap;
-
-                        // Want to preserve the list anchor. The list anchor should respond to the list UI, not the tree model.
-                        int anchorIndex = list.getAnchorSelectionIndex();
-                        list.setSelectedIndices(indices);
-                        if (anchorIndex >= 0 && list.isSelectedIndex(anchorIndex)) {
-                            list.getSelectionModel().setAnchorSelectionIndex(anchorIndex);
+                    TreePath[] selectionPaths = selectionModel.getSelectionPaths();
+                    int[] indices = new int[selectionPaths.length];
+                    int leadPathIndex = -1;
+                    for (int i = 0; i < selectionPaths.length; i++) {
+                        indices[i] = treeModel.getIndexOfChild(parentPath.getLastPathComponent(), selectionPaths[i].getLastPathComponent());
+                        if (selectionPaths[i].equals(leadSelectionPath)) {
+                            leadPathIndex = i;
                         }
                     }
+                    int swap = indices[leadPathIndex];
+                    indices[leadPathIndex] = indices[indices.length - 1];
+                    indices[indices.length - 1] = swap;
 
-                    break;
+                    // Want to preserve the list anchor. The list anchor should respond to the list UI, not the tree model.
+                    int anchorIndex = list.getAnchorSelectionIndex();
+                    list.setSelectedIndices(indices);
+                    if (anchorIndex >= 0 && list.isSelectedIndex(anchorIndex)) {
+                        list.getSelectionModel().setAnchorSelectionIndex(anchorIndex);
+                    }
                 }
+
+                break;
+            }
             }
 
             JBrowser.this.requestFocusInWindow();
@@ -2431,16 +2506,16 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             if (evt.getPropertyName().equals("selectionMode")) {
                 int selectionMode;
                 switch (selectionModel.getSelectionMode()) {
-                    case TreeSelectionModel.CONTIGUOUS_TREE_SELECTION:
-                        selectionMode = ListSelectionModel.SINGLE_INTERVAL_SELECTION;
-                        break;
-                    case TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION:
-                        selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
-                        break;
-                    case TreeSelectionModel.SINGLE_TREE_SELECTION:
-                    default:
-                        selectionMode = ListSelectionModel.SINGLE_SELECTION;
-                        break;
+                case TreeSelectionModel.CONTIGUOUS_TREE_SELECTION:
+                    selectionMode = ListSelectionModel.SINGLE_INTERVAL_SELECTION;
+                    break;
+                case TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION:
+                    selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+                    break;
+                case TreeSelectionModel.SINGLE_TREE_SELECTION:
+                default:
+                    selectionMode = ListSelectionModel.SINGLE_SELECTION;
+                    break;
                 }
 
                 for (int i = 0; i < getListColumnCount(); i++) {
@@ -2476,7 +2551,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                         JBrowser.this, evt.getID(), evt.getWhen(), evt.getModifiers(),
                         x, y,
                         evt.getClickCount(), evt.isPopupTrigger() //, evt.getButton()
-                        );
+                );
                 for (int i = 0; i < listeners.length; i++) {
                     ((MouseListener) listeners[i]).mouseReleased(refiredEvent);
                 }
@@ -2548,7 +2623,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                         JBrowser.this, evt.getID(), evt.getWhen(), evt.getModifiers(),
                         x, y,
                         evt.getClickCount(), evt.isPopupTrigger() //, evt.getButton()
-                        );
+                );
                 for (int i = 0; i < listeners.length; i++) {
                     ((MouseListener) listeners[i]).mouseClicked(refiredEvent);
                 }
@@ -2728,9 +2803,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         // implements javax.swing.ListSelectionModel
+
         /**
          * Returns the selection mode.
-         * @return  one of the these values:
+         *
+         * @return one of the these values:
          * <ul>
          * <li>SINGLE_SELECTION
          * <li>SINGLE_INTERVAL_SELECTION
@@ -2743,28 +2820,30 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         // implements javax.swing.ListSelectionModel
+
         /**
          * Sets the selection mode.  The default is
          * MULTIPLE_INTERVAL_SELECTION.
-         * @param selectionMode  one of three values:
-         * <ul>
-         * <li>SINGLE_SELECTION
-         * <li>SINGLE_INTERVAL_SELECTION
-         * <li>MULTIPLE_INTERVAL_SELECTION
-         * </ul>
-         * @exception IllegalArgumentException  if {@code selectionMode}
-         *		is not one of the legal values shown above
+         *
+         * @param selectionMode one of three values:
+         *                      <ul>
+         *                      <li>SINGLE_SELECTION
+         *                      <li>SINGLE_INTERVAL_SELECTION
+         *                      <li>MULTIPLE_INTERVAL_SELECTION
+         *                      </ul>
+         * @throws IllegalArgumentException if {@code selectionMode}
+         *                                  is not one of the legal values shown above
          * @see #setSelectionMode
          */
         public void setSelectionMode(int selectionMode) {
             switch (selectionMode) {
-                case SINGLE_SELECTION:
-                case SINGLE_INTERVAL_SELECTION:
-                case MULTIPLE_INTERVAL_SELECTION:
-                    this.selectionMode = selectionMode;
-                    break;
-                default:
-                    throw new IllegalArgumentException("invalid selectionMode");
+            case SINGLE_SELECTION:
+            case SINGLE_INTERVAL_SELECTION:
+            case MULTIPLE_INTERVAL_SELECTION:
+                this.selectionMode = selectionMode;
+                break;
+            default:
+                throw new IllegalArgumentException("invalid selectionMode");
             }
         }
 
@@ -2793,12 +2872,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * registered on this {@code DefaultListSelectionModel}.
          *
          * @return all of this model's {@code ListSelectionListener}s
-         *         or an empty
-         *         array if no list selection listeners are currently registered
-         *
+         * or an empty
+         * array if no list selection listeners are currently registered
          * @see #addListSelectionListener
          * @see #removeListSelectionListener
-         *
          * @since 1.4
          */
         public ListSelectionListener[] getListSelectionListeners() {
@@ -2834,10 +2911,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         /**
-         * @param firstIndex the first index in the interval
-         * @param lastIndex the last index in the interval
+         * @param firstIndex  the first index in the interval
+         * @param lastIndex   the last index in the interval
          * @param isAdjusting true if this is the final change in a series of
-         *		adjustments
+         *                    adjustments
          * @see EventListenerList
          */
         protected void fireValueChanged(int firstIndex, int lastIndex, boolean isAdjusting) {
@@ -2894,24 +2971,22 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * with the following code:
          *
          * <pre>ListSelectionListener[] lsls = (ListSelectionListener[])(m.getListeners(ListSelectionListener.class));</pre>
-         *
+         * <p>
          * If no such listeners exist,
          * this method returns an empty array.
          *
-         * @param listenerType  the type of listeners requested;
-         *          this parameter should specify an interface
-         *          that descends from {@code java.util.EventListener}
+         * @param listenerType the type of listeners requested;
+         *                     this parameter should specify an interface
+         *                     that descends from {@code java.util.EventListener}
          * @return an array of all objects registered as
-         *          <code><em>Foo</em>Listener</code>s
-         *          on this model,
-         *          or an empty array if no such
-         *          listeners have been added
-         * @exception ClassCastException if {@code listenerType} doesn't
-         *          specify a class or interface that implements
-         *          {@code java.util.EventListener}
-         *
+         * <code><em>Foo</em>Listener</code>s
+         * on this model,
+         * or an empty array if no such
+         * listeners have been added
+         * @throws ClassCastException if {@code listenerType} doesn't
+         *                            specify a class or interface that implements
+         *                            {@code java.util.EventListener}
          * @see #getListSelectionListeners
-         *
          * @since 1.3
          */
         public EventListener[] getListeners(Class listenerType) {
@@ -2993,7 +3068,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         /**
          * Sets the value of the leadAnchorNotificationEnabled flag.
-         * @see		#isLeadAnchorNotificationEnabled()
+         *
+         * @see        #isLeadAnchorNotificationEnabled()
          */
         public void setLeadAnchorNotificationEnabled(boolean flag) {
             leadAnchorNotificationEnabled = flag;
@@ -3008,8 +3084,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * include only the elements that have been selected or deselected since
          * the last change. Either way, the model continues to maintain the lead
          * and anchor variables internally. The default is true.
-         * @return 	the value of the {@code leadAnchorNotificationEnabled} flag
-         * @see		#setLeadAnchorNotificationEnabled(boolean)
+         *
+         * @return the value of the {@code leadAnchorNotificationEnabled} flag
+         * @see        #setLeadAnchorNotificationEnabled(boolean)
          */
         public boolean isLeadAnchorNotificationEnabled() {
             return leadAnchorNotificationEnabled;
@@ -3040,7 +3117,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         private void changeSelection(int clearMin, int clearMax,
-                int setMin, int setMax, boolean clearFirst) {
+                                     int setMin, int setMax, boolean clearFirst) {
             for (int i = Math.min(setMin, clearMin); i <= Math.max(setMax, clearMax); i++) {
 
                 boolean shouldClear = contains(clearMin, clearMax, i);
@@ -3064,10 +3141,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             fireValueChanged();
         }
 
-        /**   Change the selection with the effect of first clearing the values
-         *   in the inclusive range [clearMin, clearMax] then setting the values
-         *   in the inclusive range [setMin, setMax]. Do this in one pass so
-         *   that no values are cleared if they would later be set.
+        /**
+         * Change the selection with the effect of first clearing the values
+         * in the inclusive range [clearMin, clearMax] then setting the values
+         * in the inclusive range [setMin, setMax]. Do this in one pass so
+         * that no values are cleared if they would later be set.
          */
         private void changeSelection(int clearMin, int clearMax, int setMin, int setMax) {
             changeSelection(clearMin, clearMax, setMin, setMax, true);
@@ -3249,9 +3327,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * Returns a clone of this selection model with the same selection.
          * {@code listenerLists} are not duplicated.
          *
-         * @exception CloneNotSupportedException if the selection model does not
-         *    both (a) implement the Cloneable interface and (b) define a
-         *    {@code clone} method.
+         * @throws CloneNotSupportedException if the selection model does not
+         *                                    both (a) implement the Cloneable interface and (b) define a
+         *                                    {@code clone} method.
          */
         @Override
         public Object clone() throws CloneNotSupportedException {
@@ -3400,7 +3478,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             if (expandedIcon == null) {
                 BufferedImage iconImages[] = Images.split(
                         Toolkit.getDefaultToolkit().createImage(
-                        DefaultColumnCellRenderer.class.getResource("snowleopard/images/Browser.disclosureIcons.png")),
+                                DefaultColumnCellRenderer.class.getResource("snowleopard/images/Browser.disclosureIcons.png")),
                         6, true);
 
                 expandedIcon = new ImageIcon(iconImages[0]);
@@ -3474,8 +3552,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         public Component getListCellRendererComponent(JList list, Object value,
-                int index, boolean isSelected,
-                boolean cellHasFocus) {
+                                                      int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
             //setComponentOrientation(list.getComponentOrientation());
             boolean isFocused = QuaquaUtilities.isFocused(list);
             boolean isLeaf = getModel().isLeaf(value);
@@ -3572,8 +3650,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
     }
 
-    protected ListUI getColumnListUI(ListUI basicUI)
-    {
+    protected ListUI getColumnListUI(ListUI basicUI) {
         return basicUI;
     }
 

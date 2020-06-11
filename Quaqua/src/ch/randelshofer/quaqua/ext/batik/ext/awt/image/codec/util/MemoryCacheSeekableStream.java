@@ -20,8 +20,8 @@ package ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A subclass of <code>SeekableStream</code> that may be used to wrap
@@ -40,31 +40,49 @@ import java.util.ArrayList;
  */
 public final class MemoryCacheSeekableStream extends SeekableStream {
 
-    /** The source input stream. */
+    /**
+     * The source input stream.
+     */
     private InputStream src;
 
-    /** Position of first unread byte. */
+    /**
+     * Position of first unread byte.
+     */
     private long pointer = 0;
 
-    /** Log_2 of the sector size. */
+    /**
+     * Log_2 of the sector size.
+     */
     private static final int SECTOR_SHIFT = 9;
 
-    /** The sector size. */
+    /**
+     * The sector size.
+     */
     private static final int SECTOR_SIZE = 1 << SECTOR_SHIFT;
 
-    /** A mask to determine the offset within a sector. */
+    /**
+     * A mask to determine the offset within a sector.
+     */
     private static final int SECTOR_MASK = SECTOR_SIZE - 1;
 
-    /** A Vector of source sectors. */
+    /**
+     * A Vector of source sectors.
+     */
     private List data = new ArrayList();
 
-    /** Number of sectors stored. */
+    /**
+     * Number of sectors stored.
+     */
     int sectors = 0;
 
-    /** Number of bytes read. */
+    /**
+     * Number of bytes read.
+     */
     int length = 0;
 
-    /** True if we've previously reached the end of the source stream */
+    /**
+     * True if we've previously reached the end of the source stream
+     */
     boolean foundEOS = false;
 
     /**
@@ -92,7 +110,7 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
             return length;
         }
 
-        int sector = (int)(pos >> SECTOR_SHIFT);
+        int sector = (int) (pos >> SECTOR_SHIFT);
 
         // First unread sector
         int startSector = length >> SECTOR_SHIFT;
@@ -135,8 +153,8 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
     /**
      * Returns the current offset in this file.
      *
-     * @return     the offset from the beginning of the file, in bytes,
-     *             at which the next read occurs.
+     * @return the offset from the beginning of the file, in bytes,
+     * at which the next read occurs.
      */
     public long getFilePointer() {
         return pointer;
@@ -146,11 +164,11 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
      * Sets the file-pointer offset, measured from the beginning of this
      * file, at which the next read occurs.
      *
-     * @param      pos   the offset position, measured in bytes from the
-     *                   beginning of the file, at which to set the file
-     *                   pointer.
-     * @exception  IOException  if <code>pos</code> is less than
-     *                          <code>0</code> or if an I/O error occurs.
+     * @param pos the offset position, measured in bytes from the
+     *            beginning of the file, at which to set the file
+     *            pointer.
+     * @throws IOException if <code>pos</code> is less than
+     *                     <code>0</code> or if an I/O error occurs.
      */
     public void seek(long pos) throws IOException {
         if (pos < 0) {
@@ -167,16 +185,16 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
      * blocks until input data is available, the end of the stream is detected,
      * or an exception is thrown.
      *
-     * @return     the next byte of data, or <code>-1</code> if the end of the
-     *             stream is reached.
+     * @return the next byte of data, or <code>-1</code> if the end of the
+     * stream is reached.
      */
     public int read() throws IOException {
         long next = pointer + 1;
         long pos = readUntil(next);
         if (pos >= next) {
             byte[] buf =
-                (byte[])data.get((int)(pointer >> SECTOR_SHIFT));
-            return buf[(int)(pointer++ & SECTOR_MASK)] & 0xff;
+                    (byte[]) data.get((int) (pointer >> SECTOR_SHIFT));
+            return buf[(int) (pointer++ & SECTOR_MASK)] & 0xff;
         } else {
             return -1;
         }
@@ -221,13 +239,13 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
      * file, then an <code>IOException</code> is thrown. In particular, an
      * <code>IOException</code> is thrown if the input stream has been closed.
      *
-     * @param      b     the buffer into which the data is read.
-     * @param      off   the start offset in array <code>b</code>
-     *                   at which the data is written.
-     * @param      len   the maximum number of bytes to read.
-     * @return     the total number of bytes read into the buffer, or
-     *             <code>-1</code> if there is no more data because the end of
-     *             the stream has been reached.
+     * @param b   the buffer into which the data is read.
+     * @param off the start offset in array <code>b</code>
+     *            at which the data is written.
+     * @param len the maximum number of bytes to read.
+     * @return the total number of bytes read into the buffer, or
+     * <code>-1</code> if there is no more data because the end of
+     * the stream has been reached.
      */
     public int read(byte[] b, int off, int len) throws IOException {
         if (b == null) {
@@ -246,10 +264,10 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
             return -1;
         }
 
-        byte[] buf = (byte[])data.get((int)(pointer >> SECTOR_SHIFT));
-        int nbytes = Math.min(len, SECTOR_SIZE - (int)(pointer & SECTOR_MASK));
-        System.arraycopy(buf, (int)(pointer & SECTOR_MASK),
-                         b, off, nbytes);
+        byte[] buf = (byte[]) data.get((int) (pointer >> SECTOR_SHIFT));
+        int nbytes = Math.min(len, SECTOR_SIZE - (int) (pointer & SECTOR_MASK));
+        System.arraycopy(buf, (int) (pointer & SECTOR_MASK),
+                b, off, nbytes);
         pointer += nbytes;
         return nbytes;
     }

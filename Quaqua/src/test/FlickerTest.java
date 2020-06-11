@@ -4,7 +4,12 @@
  */
 package test;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 /**
  * FlickerTest demonstrates the flickering that occurs, when a look and feel
  * decorated frame is resized.
@@ -20,7 +25,9 @@ import javax.swing.*;
  */
 public class FlickerTest {
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public FlickerTest() {
     }
 
@@ -48,7 +55,7 @@ public class FlickerTest {
                 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 f.getContentPane().add(new JLabel("Resize me, and see me flicker"));
                 f.pack();
-                f.setLocation(0,80);
+                f.setLocation(0, 80);
                 f.setVisible(true);
 
 

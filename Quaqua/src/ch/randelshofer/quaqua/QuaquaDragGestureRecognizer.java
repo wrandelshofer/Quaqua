@@ -4,15 +4,19 @@
  */
 package ch.randelshofer.quaqua;
 
+import javax.swing.JComponent;
+import javax.swing.TransferHandler;
 import java.awt.dnd.DnDConstants;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 /**
  * This is a blunt copy of BasicDragGestureRecognizer from J2SE5.
  *
  * @author Werner Randelshofer
- * @version $Id$
+ *  @version $Id$
  */
 public class QuaquaDragGestureRecognizer implements MouseListener, MouseMotionListener {
 
@@ -32,6 +36,7 @@ public class QuaquaDragGestureRecognizer implements MouseListener, MouseMotionLi
         int tr2 = getMotionThreshold() * getMotionThreshold();
         return /*dx > dy &&*/ ((dx * dx > tr2) || (dy * dy > tr2));
     }
+
     public static boolean exceedsCheckTreshold(MouseEvent a, MouseEvent b) {
         if (a == null || b == null) {
             return true;
@@ -89,13 +94,13 @@ public class QuaquaDragGestureRecognizer implements MouseListener, MouseMotionLi
     }
 
     public void mouseEntered(MouseEvent e) {
-    //dndArmedEvent = null;
+        //dndArmedEvent = null;
     }
 
     public void mouseExited(MouseEvent e) {
-    //if (dndArmedEvent != null && mapDragOperationFromModifiers(e) == TransferHandler.NONE) {
-    //    dndArmedEvent = null;
-    //}
+        //if (dndArmedEvent != null && mapDragOperationFromModifiers(e) == TransferHandler.NONE) {
+        //    dndArmedEvent = null;
+        //}
     }
 
     public void mouseDragged(MouseEvent e) {

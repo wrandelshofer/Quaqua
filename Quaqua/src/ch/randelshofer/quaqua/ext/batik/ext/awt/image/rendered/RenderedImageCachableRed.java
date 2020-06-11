@@ -46,10 +46,12 @@ import java.util.Vector;
 public class RenderedImageCachableRed implements CachableRed {
 
     public static CachableRed wrap(RenderedImage ri) {
-        if (ri instanceof CachableRed)
+        if (ri instanceof CachableRed) {
             return (CachableRed) ri;
-        if (ri instanceof BufferedImage)
-            return new BufferedImageCachableRed((BufferedImage)ri);
+        }
+        if (ri instanceof BufferedImage) {
+            return new BufferedImageCachableRed((BufferedImage) ri);
+        }
         return new RenderedImageCachableRed(ri);
     }
 
@@ -57,7 +59,7 @@ public class RenderedImageCachableRed implements CachableRed {
     private Vector srcs = new Vector(0);
 
     public RenderedImageCachableRed(RenderedImage src) {
-        if(src == null){
+        if (src == null) {
             throw new IllegalArgumentException();
         }
         this.src = src;
@@ -69,14 +71,15 @@ public class RenderedImageCachableRed implements CachableRed {
 
     public Rectangle getBounds() {
         return new Rectangle(getMinX(),    // could we cache the rectangle??
-                             getMinY(),
-                             getWidth(),
-                             getHeight());
+                getMinY(),
+                getWidth(),
+                getHeight());
     }
 
     public int getMinX() {
         return src.getMinX();
     }
+
     public int getMinY() {
         return src.getMinY();
     }
@@ -84,6 +87,7 @@ public class RenderedImageCachableRed implements CachableRed {
     public int getWidth() {
         return src.getWidth();
     }
+
     public int getHeight() {
         return src.getHeight();
     }
@@ -99,6 +103,7 @@ public class RenderedImageCachableRed implements CachableRed {
     public int getMinTileX() {
         return src.getMinTileX();
     }
+
     public int getMinTileY() {
         return src.getMinTileY();
     }
@@ -106,6 +111,7 @@ public class RenderedImageCachableRed implements CachableRed {
     public int getNumXTiles() {
         return src.getNumXTiles();
     }
+
     public int getNumYTiles() {
         return src.getNumYTiles();
     }
@@ -121,6 +127,7 @@ public class RenderedImageCachableRed implements CachableRed {
     public int getTileWidth() {
         return src.getTileWidth();
     }
+
     public int getTileHeight() {
         return src.getTileHeight();
     }
@@ -151,11 +158,11 @@ public class RenderedImageCachableRed implements CachableRed {
 
     public Shape getDependencyRegion(int srcIndex, Rectangle outputRgn) {
         throw new IndexOutOfBoundsException
-            ("Nonexistant source requested.");
+                ("Nonexistant source requested.");
     }
 
     public Shape getDirtyRegion(int srcIndex, Rectangle inputRgn) {
         throw new IndexOutOfBoundsException
-            ("Nonexistant source requested.");
+                ("Nonexistant source requested.");
     }
 }

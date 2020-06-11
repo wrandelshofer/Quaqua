@@ -4,24 +4,49 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.event.PopupMenuListener;
-import javax.swing.event.PopupMenuEvent;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import java.io.Serializable;
-import java.beans.*;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.ComboBoxModel;
+import javax.swing.InputMap;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionListener;
-import static java.lang.Math.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.plaf.basic.BasicComboPopup;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 
 /**
  * QuaquaComboPopup.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaComboPopup extends BasicComboPopup {
@@ -31,7 +56,9 @@ public class QuaquaComboPopup extends BasicComboPopup {
     private Component lastFocused;
     private JRootPane invokerRootPane;
     private boolean focusTraversalKeysEnabled;
-    /** comboCellBorder is used to accommodate the cell in the combo popup. */
+    /**
+     * comboCellBorder is used to accommodate the cell in the combo popup.
+     */
     private final static Border comboCellBorder = new EmptyBorder(0, 7, 0, 7);
 
     public QuaquaComboPopup(JComboBox cBox, QuaquaComboBoxUI qqui) {
@@ -150,7 +177,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
     private void updateCellRenderer(boolean isTableCellEditor) {
         list.setCellRenderer(
                 new QuaquaComboBoxCellRenderer(
-                comboBox.getRenderer(), isTableCellEditor, comboBox.isEditable()));
+                        comboBox.getRenderer(), isTableCellEditor, comboBox.isEditable()));
     }
 
     private int getMaximumRowCount() {
@@ -393,7 +420,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      * behavior.
      *
      * @return a <code>MouseMotionListener</code> which will be added to
-     *         the combo box or null
+     * the combo box or null
      */
     @Override
     protected MouseMotionListener createMouseMotionListener() {

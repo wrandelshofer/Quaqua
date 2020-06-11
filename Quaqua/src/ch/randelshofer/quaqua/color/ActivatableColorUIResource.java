@@ -5,10 +5,16 @@
 
 package ch.randelshofer.quaqua.color;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
 import javax.swing.plaf.UIResource;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Paint;
+import java.awt.PaintContext;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ColorModel;
 
 /**
  * ActivatableColorUIResource is a color, that can be rendered using an

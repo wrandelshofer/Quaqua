@@ -6,18 +6,36 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
-import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
+import ch.randelshofer.quaqua.util.Debug;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JTabbedPane;
+import javax.swing.RootPaneContainer;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.PanelUI;
+import javax.swing.plaf.basic.BasicPanelUI;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.geom.Path2D;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
+
 /**
  * QuaquaPanelUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaPanelUI extends BasicPanelUI {
@@ -25,15 +43,16 @@ public class QuaquaPanelUI extends BasicPanelUI {
     private static PanelUI panelUI;
 
     public static ComponentUI createUI(JComponent c) {
-        if(panelUI == null) {
+        if (panelUI == null) {
             panelUI = new QuaquaPanelUI();
         }
         return panelUI;
     }
+
     @Override
     protected void installDefaults(JPanel p) {
         super.installDefaults(p);
-	QuaquaUtilities.installProperty(p, "opaque", UIManager.get("Panel.opaque"));
+        QuaquaUtilities.installProperty(p, "opaque", UIManager.get("Panel.opaque"));
     }
 
     @Override
@@ -42,8 +61,9 @@ public class QuaquaPanelUI extends BasicPanelUI {
     }
 
     public static boolean isInTabbedPane(Component comp) {
-        if(comp == null)
+        if (comp == null) {
             return false;
+        }
         Container parent = comp.getParent();
         while (parent != null) {
             if (parent instanceof JTabbedPane) {
@@ -62,7 +82,7 @@ public class QuaquaPanelUI extends BasicPanelUI {
 
     @Override
     public void paint(Graphics gr, JComponent c) {
-            Graphics2D g = (Graphics2D) gr;
+        Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
         if (c.isOpaque()) {
             g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
@@ -71,7 +91,7 @@ public class QuaquaPanelUI extends BasicPanelUI {
 
         Border backgroundBorder = null;
         Graphics2D bg = (Graphics2D) g.create();
-        Insets insets = new Insets(0,0,0,0);
+        Insets insets = new Insets(0, 0, 0, 0);
         if (c.getBorder() instanceof BackgroundBorder) {
             backgroundBorder = ((BackgroundBorder) c.getBorder()).getBackgroundBorder();
         } else if (c.getBorder() instanceof TitledBorder) {
@@ -146,38 +166,36 @@ public class QuaquaPanelUI extends BasicPanelUI {
         int labelH = size.height;
         int position = getTitlePosition(tb);
         switch (position) {
-            case TitledBorder.ABOVE_TOP:
-                insets.left = 0;
-                insets.right = 0;
-                break;
-            case TitledBorder.TOP:
-                insets.top = edge + insets.top/2 - labelH/2;
-                if (insets.top < edge) {
-                }
-                else {
-                    labelY += insets.top;
-                }
-                break;
-            case TitledBorder.BELOW_TOP:
-                labelY += insets.top + edge;
-                break;
-            case TitledBorder.ABOVE_BOTTOM:
-                labelY += c.getHeight() - labelH - insets.bottom - edge;
-                break;
-            case TitledBorder.BOTTOM:
-                labelY += c.getHeight() - labelH;
-                insets.bottom = edge + (insets.bottom - labelH) / 2;
-                if (insets.bottom < edge) {
-                }
-                else {
-                    labelY -= insets.bottom;
-                }
-                break;
-            case TitledBorder.BELOW_BOTTOM:
-                insets.left = 0;
-                insets.right = 0;
-                labelY += c.getHeight() - labelH;
-                break;
+        case TitledBorder.ABOVE_TOP:
+            insets.left = 0;
+            insets.right = 0;
+            break;
+        case TitledBorder.TOP:
+            insets.top = edge + insets.top / 2 - labelH / 2;
+            if (insets.top < edge) {
+            } else {
+                labelY += insets.top;
+            }
+            break;
+        case TitledBorder.BELOW_TOP:
+            labelY += insets.top + edge;
+            break;
+        case TitledBorder.ABOVE_BOTTOM:
+            labelY += c.getHeight() - labelH - insets.bottom - edge;
+            break;
+        case TitledBorder.BOTTOM:
+            labelY += c.getHeight() - labelH;
+            insets.bottom = edge + (insets.bottom - labelH) / 2;
+            if (insets.bottom < edge) {
+            } else {
+                labelY -= insets.bottom;
+            }
+            break;
+        case TitledBorder.BELOW_BOTTOM:
+            insets.left = 0;
+            insets.right = 0;
+            labelY += c.getHeight() - labelH;
+            break;
         }
         insets.left += edge + 5;
         insets.right += edge + 5;
@@ -188,15 +206,15 @@ public class QuaquaPanelUI extends BasicPanelUI {
             labelW = size.width;
         }
         switch (getJustification(c, tb)) {
-            case TitledBorder.LEFT:
-                labelX += insets.left;
-                break;
-            case TitledBorder.RIGHT:
-                labelX += c.getWidth() - insets.right - labelW;
-                break;
-            case TitledBorder.CENTER:
-                labelX += (c.getWidth() - labelW) / 2;
-                break;
+        case TitledBorder.LEFT:
+            labelX += insets.left;
+            break;
+        case TitledBorder.RIGHT:
+            labelX += c.getWidth() - insets.right - labelW;
+            break;
+        case TitledBorder.CENTER:
+            labelX += (c.getWidth() - labelW) / 2;
+            break;
         }
 
         return new Rectangle(labelX, labelY, labelW, labelH);
@@ -245,20 +263,20 @@ public class QuaquaPanelUI extends BasicPanelUI {
         */
 
         switch (getTitlePosition(tb)) {
-            case TitledBorder.ABOVE_TOP:
-                top = titledBorderInsets.top - borderInsets.top - top;
-                break;
-            case TitledBorder.TOP: {
-                top = (titledBorderInsets.top - top) / 2;
-                break;
-            }
-            case TitledBorder.BOTTOM: {
-                bottom = (titledBorderInsets.bottom - bottom) / 2;
-                break;
-            }
-            case TitledBorder.BELOW_BOTTOM:
-                bottom = titledBorderInsets.bottom - borderInsets.bottom;
-                break;
+        case TitledBorder.ABOVE_TOP:
+            top = titledBorderInsets.top - borderInsets.top - top;
+            break;
+        case TitledBorder.TOP: {
+            top = (titledBorderInsets.top - top) / 2;
+            break;
+        }
+        case TitledBorder.BOTTOM: {
+            bottom = (titledBorderInsets.bottom - bottom) / 2;
+            break;
+        }
+        case TitledBorder.BELOW_BOTTOM:
+            bottom = titledBorderInsets.bottom - borderInsets.bottom;
+            break;
         }
 
         return new Insets(top, left, bottom, right);
@@ -275,8 +293,7 @@ public class QuaquaPanelUI extends BasicPanelUI {
             if ((0 < i) && (i <= 6)) {
                 return i;
             }
-        }
-        else if (value instanceof String) {
+        } else if (value instanceof String) {
             String s = (String) value;
             if (s.equalsIgnoreCase("ABOVE_TOP")) {
                 return TitledBorder.ABOVE_TOP;

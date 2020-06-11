@@ -5,17 +5,28 @@
 
 package ch.randelshofer.quaqua.util;
 
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.QuaquaBorderFactory;
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Toolkit;
+
 /**
  * GroupBox draws a Aqua-style group box similar to a native Cocoa NSBox.
  * XXX - This class should go away. We can easily get the same functionality
  * by instantiating one of the existing Quaqua border classes.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class GroupBox implements BackgroundBorder {
@@ -61,7 +72,7 @@ public class GroupBox implements BackgroundBorder {
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         // Components that don't have a UI can't deal with BackgroundBorder
         // interface. As a work around, we paint a Etched border.
-        if ((c instanceof Box) || ! (c instanceof JComponent)) {
+        if ((c instanceof Box) || !(c instanceof JComponent)) {
             etchedBorder.paintBorder(c, g, x, y, width, height);
         }
     }
@@ -69,13 +80,13 @@ public class GroupBox implements BackgroundBorder {
     private Border createBorder() {
         int design = QuaquaManager.getDesign();
         String rs = design >= QuaquaManager.MAVERICKS ? "/ch/randelshofer/quaqua/images/GroupBoxMavericks.png" : "/ch/randelshofer/quaqua/images/GroupBox.png";
-        Color fill = design >= QuaquaManager.MAVERICKS ? new Color(0x0A000000,true) : new Color(0x08000000,true);
+        Color fill = design >= QuaquaManager.MAVERICKS ? new Color(0x0A000000, true) : new Color(0x08000000, true);
         return new CompoundBorder(
-                new EmptyBorder(s.top-EXTRA_TOP, s.left-EXTRA_LEFT, s.bottom-EXTRA_BOTTOM, s.right-EXTRA_RIGHT),
+                new EmptyBorder(s.top - EXTRA_TOP, s.left - EXTRA_LEFT, s.bottom - EXTRA_BOTTOM, s.right - EXTRA_RIGHT),
                 QuaquaBorderFactory.create(
                         Toolkit.getDefaultToolkit().createImage(GroupBox.class.getResource(rs)),
-                        new Insets(IMAGE_STRIP,IMAGE_STRIP,IMAGE_STRIP,IMAGE_STRIP),
-                        new Insets(IMAGE_STRIP,IMAGE_STRIP,IMAGE_STRIP,IMAGE_STRIP),
+                        new Insets(IMAGE_STRIP, IMAGE_STRIP, IMAGE_STRIP, IMAGE_STRIP),
+                        new Insets(IMAGE_STRIP, IMAGE_STRIP, IMAGE_STRIP, IMAGE_STRIP),
                         true, fill, false
                 ));
     }

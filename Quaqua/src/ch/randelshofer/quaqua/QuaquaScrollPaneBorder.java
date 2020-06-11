@@ -5,31 +5,41 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import javax.swing.border.Border;
+import javax.swing.text.JTextComponent;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 
 /**
  * QuaquaScrollPaneBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaScrollPaneBorder extends VisualMarginBorder {
 
-    /** Location of the border images. */
+    /**
+     * Location of the border images.
+     */
     private String scrollPaneImagesLocation;
     private String textFieldImagesLocation;
-    /** Array with image bevel borders.
+    /**
+     * Array with image bevel borders.
      * This array is created lazily.
      **/
     private Border[] scrollPaneBorders;
     private Border[] textFieldBorders;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaScrollPaneBorder(String scrollPaneImagesLocation, String textFieldImagesLocation) {
         super(3, 3, 3, 3);
         this.scrollPaneImagesLocation = scrollPaneImagesLocation;
@@ -105,8 +115,8 @@ public class QuaquaScrollPaneBorder extends VisualMarginBorder {
 
         if (viewportView.isEnabled() &&
                 (QuaquaUtilities.isFocused(viewportView) ||
-                (viewportView instanceof JComponent) &&
-                ((JComponent) viewportView).getClientProperty("Quaqua.drawFocusBorder") == Boolean.TRUE)) {
+                        (viewportView instanceof JComponent) &&
+                                ((JComponent) viewportView).getClientProperty("Quaqua.drawFocusBorder") == Boolean.TRUE)) {
             return borders[2];
         } else if (c.isEnabled() && viewportView.isEnabled() && isEditable) {
             return borders[0];

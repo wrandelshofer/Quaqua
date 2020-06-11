@@ -6,26 +6,30 @@
 package ch.randelshofer.quaqua.border;
 
 import ch.randelshofer.quaqua.VisualMargin;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
+
+import javax.swing.JComponent;
+import javax.swing.UIManager;
+import javax.swing.border.AbstractBorder;
+import javax.swing.plaf.InsetsUIResource;
+import javax.swing.plaf.UIResource;
+import java.awt.Component;
+import java.awt.Insets;
 
 /**
  * The VisualMarginBorder is used to visually align components using bounds
  * based on other criterias than the clip bounds of the component.
- *
+ * <p>
  * For example: The clip bounds of a JButton includes its cast shadow and its
  * focus ring. When we align the JButton with a JLabel, we want to align the
  * baseline of the Text of the JButton with the text in the JLabel.
- *
+ * <p>
  * The visual margin may be quite large. We allow to programmatically set a
  * smaller margin using the client property "Quaqua.Component.margin".
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
-public class VisualMarginBorder extends AbstractBorder implements UIResource,VisualMargin,PressedCueBorder {
+public class VisualMarginBorder extends AbstractBorder implements UIResource, VisualMargin, PressedCueBorder {
     /**
      * Defines the margin from the clip bounds of the
      * component to its visually perceived borderline.
@@ -56,18 +60,19 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
     /**
      * Creates a new VisualMarginBorder.
      *
-     * @param top Defines the margin from the clip bounds of the
-     * component to its visual bounds.
-     * @param left Defines the margin from the clip bounds of the
-     * component to its visual bounds.
+     * @param top    Defines the margin from the clip bounds of the
+     *               component to its visual bounds.
+     * @param left   Defines the margin from the clip bounds of the
+     *               component to its visual bounds.
      * @param bottom Defines the margin from the clip bounds of the
-     * component to its visual bounds.
-     * @param right Defines the margin from the clip bounds of the
-     * component to its visual bounds.
+     *               component to its visual bounds.
+     * @param right  Defines the margin from the clip bounds of the
+     *               component to its visual bounds.
      */
     public VisualMarginBorder(int top, int left, int bottom, int right) {
         layoutMargin = new Insets(top, left, bottom, right);
     }
+
     public VisualMarginBorder(int top, int left, int bottom, int right, boolean ftop, boolean fleft, boolean fbottom, boolean fright) {
         layoutMargin = new Insets(top, left, bottom, right);
         isTopFixed = ftop;
@@ -75,6 +80,7 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
         isBottomFixed = fbottom;
         isRightFixed = fright;
     }
+
     public VisualMarginBorder(boolean ftop, boolean fleft, boolean fbottom, boolean fright) {
         layoutMargin = new Insets(0, 0, 0, 0);
         isTopFixed = ftop;
@@ -82,15 +88,17 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
         isBottomFixed = fbottom;
         isRightFixed = fright;
     }
+
     /**
      * Creates a new VisualMarginBorder.
      *
      * @param layoutMargin Defines the margin from the clip bounds of the
-     * component to its visual bounds. The margin has usually negative values!
+     *                     component to its visual bounds. The margin has usually negative values!
      */
     public VisualMarginBorder(Insets layoutMargin) {
         this.layoutMargin = layoutMargin;
     }
+
     /**
      * The UIManager Property to be used for the default margin.
      */
@@ -120,7 +128,8 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
 
     /**
      * Reinitializes the insets parameter with this Border's current Insets.
-     * @param c the component for which this border insets value applies
+     *
+     * @param c      the component for which this border insets value applies
      * @param insets the object to be reinitialized
      * @return the <code>insets</code> object
      */
@@ -128,9 +137,11 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
     public Insets getBorderInsets(Component c, Insets insets) {
         return getVisualMargin(c, insets);
     }
+
     /**
      * Reinitializes the insets parameter with this Border's current Insets.
-     * @param c the component for which this border insets value applies
+     *
+     * @param c      the component for which this border insets value applies
      * @param insets the object to be reinitialized
      * @return the <code>insets</code> object
      */
@@ -140,21 +151,29 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
         insets.bottom = -layoutMargin.bottom;
         insets.right = -layoutMargin.right;
 
-        boolean isUIResource=false;
+        boolean isUIResource = false;
 
         if (c instanceof JComponent) {
             Insets componentMargin = (Insets) ((JComponent) c).getClientProperty(propertyName);
             if (componentMargin == null && propertyName != null) {
                 componentMargin = UIManager.getInsets(uiManagerPropertyName);
-                isUIResource=true;
+                isUIResource = true;
             } else {
-                isUIResource=componentMargin instanceof UIResource;
+                isUIResource = componentMargin instanceof UIResource;
             }
             if (componentMargin != null) {
-                if (! isTopFixed) insets.top += componentMargin.top;
-                if (! isLeftFixed) insets.left += componentMargin.left;
-                if (! isBottomFixed) insets.bottom += componentMargin.bottom;
-                if (! isRightFixed) insets.right += componentMargin.right;
+                if (!isTopFixed) {
+                    insets.top += componentMargin.top;
+                }
+                if (!isLeftFixed) {
+                    insets.left += componentMargin.left;
+                }
+                if (!isBottomFixed) {
+                    insets.bottom += componentMargin.bottom;
+                }
+                if (!isRightFixed) {
+                    insets.right += componentMargin.right;
+                }
             }
         }
         if (isUIResource) {

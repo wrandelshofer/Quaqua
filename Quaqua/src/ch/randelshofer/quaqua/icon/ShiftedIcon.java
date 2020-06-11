@@ -5,8 +5,12 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 /**
  * ShiftedIcon renders a target icon at a different location and can return
  * different width and height values than the target.
@@ -18,15 +22,18 @@ public class ShiftedIcon implements Icon {
     private Icon target;
     private Rectangle shift;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public ShiftedIcon(Icon target, Point shift) {
         this.target = target;
         this.shift = new Rectangle(
                 shift.x, shift.y,
                 target.getIconWidth(),
                 target.getIconHeight()
-                );
+        );
     }
+
     public ShiftedIcon(Icon target, Rectangle shiftAndSize) {
         this.target = target;
         this.shift = shiftAndSize;

@@ -5,6 +5,11 @@
 
 package test;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JRootPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import java.awt.GridBagConstraints;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -12,12 +17,10 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetListener;
-import java.awt.event.*;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import javax.swing.*;
 
 /**
  * RootPaneTest.
@@ -93,7 +96,7 @@ public class RootPaneTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = GridBagConstraints.BASELINE_LEADING;
         add(windowModifiedLabel, gridBagConstraints);
 
-       gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = GridBagConstraints.BASELINE_LEADING;

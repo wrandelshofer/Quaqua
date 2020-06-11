@@ -8,8 +8,9 @@ import ch.randelshofer.quaqua.GenericList;
 import ch.randelshofer.quaqua.JBrowser;
 import ch.randelshofer.quaqua.QuaquaListMouseBehavior;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
@@ -178,8 +179,7 @@ public class QuaquaFileChooserListMouseBehavior extends QuaquaListMouseBehavior 
         }
     }
 
-    private JBrowser findBrowser(Component c)
-    {
+    private JBrowser findBrowser(Component c) {
         while (c != null) {
             if (c instanceof JBrowser) {
                 return (JBrowser) c;
@@ -220,8 +220,7 @@ public class QuaquaFileChooserListMouseBehavior extends QuaquaListMouseBehavior 
     }
 
     @Override
-    protected void trimSelectedInterval(int index, int direction)
-    {
+    protected void trimSelectedInterval(int index, int direction) {
         if (direction > 0) {
             int count = list.getRowCount();
             while (++index < count) {
@@ -257,7 +256,7 @@ public class QuaquaFileChooserListMouseBehavior extends QuaquaListMouseBehavior 
         list.clearSelection();
         int delta = index2 > index1 ? -1 : 1;
         int index = index2;
-        for (;;) {
+        for (; ; ) {
             if (isAcceptableTarget(index)) {
                 list.addSelectionInterval(index, index);
             }
@@ -273,7 +272,7 @@ public class QuaquaFileChooserListMouseBehavior extends QuaquaListMouseBehavior 
     protected void addSelectionInterval(int index1, int index2) {
         int delta = index1 > index2 ? -1 : 1;
         int index = index1;
-        for (;;) {
+        for (; ; ) {
             if (isAcceptableTarget(index)) {
                 list.addSelectionInterval(index, index);
             } else {
@@ -290,7 +289,7 @@ public class QuaquaFileChooserListMouseBehavior extends QuaquaListMouseBehavior 
     protected void toggleSelectionInterval(int index1, int index2) {
         int delta = index1 > index2 ? -1 : 1;
         int index = index1;
-        for (;;) {
+        for (; ; ) {
             if (isAcceptableTarget(index) && !list.isRowSelected(index)) {
                 list.addSelectionInterval(index, index);
             } else {

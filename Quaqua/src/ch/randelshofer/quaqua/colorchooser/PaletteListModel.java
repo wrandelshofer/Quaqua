@@ -5,12 +5,13 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.AbstractListModel;
+import java.awt.Color;
+
 /**
  * PaletteListModel manages a list of PaletteEntry.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class PaletteListModel extends AbstractListModel {
@@ -48,6 +49,7 @@ public class PaletteListModel extends AbstractListModel {
     public void setName(String newValue) {
         name = newValue;
     }
+
     public String getName() {
         return name;
     }
@@ -55,6 +57,7 @@ public class PaletteListModel extends AbstractListModel {
     public void setInfo(String newValue) {
         info = newValue;
     }
+
     public String getInfo() {
         return info;
     }
@@ -90,9 +93,9 @@ public class PaletteListModel extends AbstractListModel {
         // Setting this to a lower value than Integer.MAX_VALUE makes this
         // method search for closer matches.
         //int closestDistance = Integer.MAX_VALUE;
-        int closestDistance = 1024*3;
+        int closestDistance = 1024 * 3;
 
-        for (int i=0, n = getSize(); i < n; i++) {
+        for (int i = 0, n = getSize(); i < n; i++) {
             PaletteEntry entry = (PaletteEntry) getElementAt(i);
             int entryRGB = entry.getColor().getRGB();
             int rDiff = ((entryRGB & 0xff0000) - (refRGB & 0xff0000)) >> 16;
@@ -116,6 +119,7 @@ public class PaletteListModel extends AbstractListModel {
     public void setClosestIndex(int newValue) {
         closestIndex = newValue;
     }
+
     /**
      * Returns the index of the color which is closest to the current color in
      * the color chooser, or -1 of no such color exists.

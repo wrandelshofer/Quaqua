@@ -5,13 +5,18 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.BoundedRangeModel;
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  * This handler adjusts the value of a component in the color slider model,
  * when the user enters text into the text field.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ColorSliderTextFieldHandler implements DocumentListener, ChangeListener {
@@ -31,12 +36,15 @@ public class ColorSliderTextFieldHandler implements DocumentListener, ChangeList
     public void changedUpdate(DocumentEvent evt) {
         docChanged();
     }
+
     public void removeUpdate(DocumentEvent evt) {
         docChanged();
     }
+
     public void insertUpdate(DocumentEvent evt) {
         docChanged();
     }
+
     protected void docChanged() {
         if (textField.hasFocus()) {
             BoundedRangeModel brm = ccModel.getBoundedRangeModel(component);
@@ -50,8 +58,9 @@ public class ColorSliderTextFieldHandler implements DocumentListener, ChangeList
             }
         }
     }
+
     public void stateChanged(ChangeEvent e) {
-        if (! textField.hasFocus()) {
+        if (!textField.hasFocus()) {
             textField.setText(Integer.toString(ccModel.getBoundedRangeModel(component).getValue()));
         }
     }

@@ -8,17 +8,18 @@ import de.sciss.treetable.j.TreeTable;
 import de.sciss.treetable.j.TreeTableCellRenderer;
 import de.sciss.treetable.j.ui.BasicTreeTableUI;
 
-import javax.swing.*;
+import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.tree.TreePath;
-import java.awt.*;
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
-
-*/
+ *
+ */
 
 public class QuaquaTreeTableUI extends BasicTreeTableUI {
 
@@ -71,8 +72,8 @@ public class QuaquaTreeTableUI extends BasicTreeTableUI {
     }
 
     protected PropertyChangeListener createPropertyChangeListener() {
-   		return new MyPropertyChangeListener();
-   	}
+        return new MyPropertyChangeListener();
+    }
 
     protected class MyPropertyChangeListener implements PropertyChangeListener {
 
@@ -82,13 +83,13 @@ public class QuaquaTreeTableUI extends BasicTreeTableUI {
         */
 
         public void propertyChange(PropertyChangeEvent event) {
-//            String name = event.getPropertyName();
-//            if (event.getSource() == treeTable) {
-//                if (name != null && name.equals("Frame.active")) {
-//                    System.err.println("Repainting list view on Frame.active change");  // debug
-//                    treeTable.repaint();
-//                }
-//            }
+            //            String name = event.getPropertyName();
+            //            if (event.getSource() == treeTable) {
+            //                if (name != null && name.equals("Frame.active")) {
+            //                    System.err.println("Repainting list view on Frame.active change");  // debug
+            //                    treeTable.repaint();
+            //                }
+            //            }
             handler.propertyChange(event);
         }
     }

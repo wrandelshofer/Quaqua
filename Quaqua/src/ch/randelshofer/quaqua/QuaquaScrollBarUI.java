@@ -5,20 +5,38 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.border.*;
+
+import javax.swing.BoundedRangeModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * QuaquaScrollBarUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaScrollBarUI extends BasicScrollBarUI {
@@ -106,7 +124,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
             sv = QuaquaUtilities.getSizeVariant(scrollbar);
         }
         return sv == QuaquaUtilities.SizeVariant.SMALL
-                ||sv == QuaquaUtilities.SizeVariant.MINI;
+                || sv == QuaquaUtilities.SizeVariant.MINI;
     }
 
     /**
@@ -143,16 +161,16 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
     public Dimension getPreferredSize(JComponent c) {
         Dimension dim;
         switch (QuaquaUtilities.getSizeVariant(c)) {
-            default:
-            case REGULAR:
-                dim = UIManager.getDimension("ScrollBar.preferredSize");
-                break;
-            case SMALL:
-                dim = UIManager.getDimension("ScrollBar.preferredSize.small");
-                break;
-            case MINI:
-                dim = UIManager.getDimension("ScrollBar.preferredSize.mini");
-                break;
+        default:
+        case REGULAR:
+            dim = UIManager.getDimension("ScrollBar.preferredSize");
+            break;
+        case SMALL:
+            dim = UIManager.getDimension("ScrollBar.preferredSize.small");
+            break;
+        case MINI:
+            dim = UIManager.getDimension("ScrollBar.preferredSize.mini");
+            break;
         }
         return (scrollbar.getOrientation() == JScrollBar.VERTICAL)
                 ? (Dimension) dim.clone() : new Dimension(dim.height, dim.width);
@@ -614,7 +632,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
      */
 
     static void scrollByUnits(JScrollBar scrollbar, int direction,
-            int units, boolean limitToBlock) {
+                              int units, boolean limitToBlock) {
         // This method is called from QuaquaScrollPaneUI to implement wheel
         // scrolling, as well as from scrollByUnit().
         int delta;
@@ -746,24 +764,24 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
             // Clicked in the Thumb area?
             if (getThumbBounds().contains(currentMouseX, currentMouseY)) {
                 switch (scrollbar.getOrientation()) {
-                    case JScrollBar.VERTICAL:
-                        offset = currentMouseY - getThumbBounds().y;
-                        break;
-                    case JScrollBar.HORIZONTAL:
-                        offset = currentMouseX - getThumbBounds().x;
-                        break;
+                case JScrollBar.VERTICAL:
+                    offset = currentMouseY - getThumbBounds().y;
+                    break;
+                case JScrollBar.HORIZONTAL:
+                    offset = currentMouseX - getThumbBounds().x;
+                    break;
                 }
                 isDragging = true;
                 return;
             } else if (getSupportsAbsolutePositioning()
                     || SwingUtilities.isMiddleMouseButton(e)) {
                 switch (scrollbar.getOrientation()) {
-                    case JScrollBar.VERTICAL:
-                        offset = getThumbBounds().height / 2;
-                        break;
-                    case JScrollBar.HORIZONTAL:
-                        offset = getThumbBounds().width / 2;
-                        break;
+                case JScrollBar.VERTICAL:
+                    offset = getThumbBounds().height / 2;
+                    break;
+                case JScrollBar.HORIZONTAL:
+                    offset = getThumbBounds().width / 2;
+                    break;
                 }
                 isDragging = true;
                 setValueFrom(e);
@@ -775,27 +793,27 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
             direction = +1;
 
             switch (scrollbar.getOrientation()) {
-                case JScrollBar.VERTICAL:
-                    if (getThumbBounds().isEmpty()) {
-                        int scrollbarCenter = sbSize.height / 2;
-                        direction = (currentMouseY < scrollbarCenter) ? -1 : +1;
-                    } else {
-                        int thumbY = getThumbBounds().y;
-                        direction = (currentMouseY < thumbY) ? -1 : +1;
-                    }
-                    break;
-                case JScrollBar.HORIZONTAL:
-                    if (getThumbBounds().isEmpty()) {
-                        int scrollbarCenter = sbSize.width / 2;
-                        direction = (currentMouseX < scrollbarCenter) ? -1 : +1;
-                    } else {
-                        int thumbX = getThumbBounds().x;
-                        direction = (currentMouseX < thumbX) ? -1 : +1;
-                    }
-                    if (!scrollbar.getComponentOrientation().isLeftToRight()) {
-                        direction = -direction;
-                    }
-                    break;
+            case JScrollBar.VERTICAL:
+                if (getThumbBounds().isEmpty()) {
+                    int scrollbarCenter = sbSize.height / 2;
+                    direction = (currentMouseY < scrollbarCenter) ? -1 : +1;
+                } else {
+                    int thumbY = getThumbBounds().y;
+                    direction = (currentMouseY < thumbY) ? -1 : +1;
+                }
+                break;
+            case JScrollBar.HORIZONTAL:
+                if (getThumbBounds().isEmpty()) {
+                    int scrollbarCenter = sbSize.width / 2;
+                    direction = (currentMouseX < scrollbarCenter) ? -1 : +1;
+                } else {
+                    int thumbX = getThumbBounds().x;
+                    direction = (currentMouseX < thumbX) ? -1 : +1;
+                }
+                if (!scrollbar.getComponentOrientation().isLeftToRight()) {
+                    direction = -direction;
+                }
+                break;
             }
             scrollByBlock(direction);
 
@@ -890,28 +908,28 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
                 return;
             }
             switch (scrollbar.getOrientation()) {
-                case JScrollBar.VERTICAL:
-                    if (direction > 0) {
-                        if (getThumbBounds().y + getThumbBounds().height
-                                < ((QuaquaTrackListener) trackListener).currentMouseY) {
-                            scrollTimer.start();
-                        }
-                    } else if (getThumbBounds().y
-                            > ((QuaquaTrackListener) trackListener).currentMouseY) {
+            case JScrollBar.VERTICAL:
+                if (direction > 0) {
+                    if (getThumbBounds().y + getThumbBounds().height
+                            < ((QuaquaTrackListener) trackListener).currentMouseY) {
                         scrollTimer.start();
                     }
-                    break;
-                case JScrollBar.HORIZONTAL:
-                    if (direction > 0) {
-                        if (getThumbBounds().x + getThumbBounds().width
-                                < ((QuaquaTrackListener) trackListener).currentMouseX) {
-                            scrollTimer.start();
-                        }
-                    } else if (getThumbBounds().x
-                            > ((QuaquaTrackListener) trackListener).currentMouseX) {
+                } else if (getThumbBounds().y
+                        > ((QuaquaTrackListener) trackListener).currentMouseY) {
+                    scrollTimer.start();
+                }
+                break;
+            case JScrollBar.HORIZONTAL:
+                if (direction > 0) {
+                    if (getThumbBounds().x + getThumbBounds().width
+                            < ((QuaquaTrackListener) trackListener).currentMouseX) {
                         scrollTimer.start();
                     }
-                    break;
+                } else if (getThumbBounds().x
+                        > ((QuaquaTrackListener) trackListener).currentMouseX) {
+                    scrollTimer.start();
+                }
+                break;
             }
         }
 
@@ -1081,17 +1099,17 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
 
     /**
      * A listener to listen for model changes.
-     *
      */
     protected class QuaquaModelListener extends BasicScrollBarUI.ModelListener {
-        private boolean isValueAdjusting=false;
+        private boolean isValueAdjusting = false;
+
         @Override
         public void stateChanged(ChangeEvent e) {
             super.stateChanged(e);
 
-            boolean newValue=scrollbar.getValueIsAdjusting();
-            if (newValue!=isValueAdjusting) {
-                isValueAdjusting=newValue;
+            boolean newValue = scrollbar.getValueIsAdjusting();
+            if (newValue != isValueAdjusting) {
+                isValueAdjusting = newValue;
                 scrollbar.repaint();
             }
         }

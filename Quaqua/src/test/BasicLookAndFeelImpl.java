@@ -9,7 +9,7 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
 
 /**
  * BasicLookAndFeelImpl.
- *
+ * <p>
  * Note: This class must be Java 1.4 compatible.
  *
  * @author Werner Randelshofer

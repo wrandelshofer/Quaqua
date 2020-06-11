@@ -7,9 +7,9 @@ package ch.randelshofer.quaqua.catalina;
 
 import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
+import ch.randelshofer.quaqua.color.ActivatableColorUIResource;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import ch.randelshofer.quaqua.color.GradientColor;
-import ch.randelshofer.quaqua.color.ActivatableColorUIResource;
 import ch.randelshofer.quaqua.mavericks.Quaqua16MavericksLookAndFeel;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
@@ -152,7 +152,7 @@ public class Quaqua16CatalinaLookAndFeel extends Quaqua16MavericksLookAndFeel {
         }
     }
 
-   @Override
+    @Override
     protected void initDesignDefaults(UIDefaults table) {
         final String baseSystemFontName = getBaseSystemFont().getName();
         final String sidebarFontName = "San Francisco";
@@ -174,7 +174,7 @@ public class Quaqua16CatalinaLookAndFeel extends Quaqua16MavericksLookAndFeel {
                 "ch.randelshofer.quaqua.QuaquaNativeTextFieldBorder$UIResource",
                 new Object[]{new Insets(-3, 0, 4, 0), new Insets(6, 8, 6, 8), true});
 
-        Color sidebarListSelectionBackground= (Color)table.get("listHighlight");
+        Color sidebarListSelectionBackground = (Color) table.get("listHighlight");
 
 
         String sideBarIconsPrefix = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Sidebar";
@@ -279,7 +279,7 @@ public class Quaqua16CatalinaLookAndFeel extends Quaqua16MavericksLookAndFeel {
                 "FileView.macminiIcon", makeNativeIcon(iconPrefix + "com.apple.macmini-unibody-no-optical.icns", 16),
                 "FileView.imacIcon", makeNativeIcon(iconPrefix + "com.apple.imac-unibody-21.icns", 16),
                 //
-                            "FormattedTextField.border", textFieldBorder,
+                "FormattedTextField.border", textFieldBorder,
                 "FormattedTextField.borderInsets", new InsetsUIResource(3, 6, 4, 6),
                 "FormattedTextField.smallBorderInsets", new InsetsUIResource(3, 5, 4, 5),
                 "FormattedTextField.miniBorderInsets", new InsetsUIResource(3, 5, 4, 5),
@@ -465,24 +465,24 @@ public class Quaqua16CatalinaLookAndFeel extends Quaqua16MavericksLookAndFeel {
                 //"Tree.expandedIcon", makeIcon(getClass(), leopardDir + "Tree.expandedIcon.png"),
                 //"Tree.leafIcon", makeIcon(getClass(), leopardDir + "Tree.leafIcon.png"),
                 "Tree.alternateBackground.0", listAlternateBackground,
-                "Tree.clickThrough",Boolean.FALSE,
+                "Tree.clickThrough", Boolean.FALSE,
                 "Tree.openIcon", makeIcon(getClass(), leopardDir + "Tree.openIcon.png"),
                 "Tree.closedIcon", makeIcon(getClass(), leopardDir + "Tree.closedIcon.png"),
-                "Tree.sideBar.background", new ActivatableColorUIResource(0xebebeb,0xf6f6f6),
+                "Tree.sideBar.background", new ActivatableColorUIResource(0xebebeb, 0xf6f6f6),
                 "Tree.sideBar.selectionBorder",
                 new QuaquaYosemiteSideBarSelectionBorder(
-                        new ActivatableColorUIResource(sidebarListSelectionBackground,new Color(0xcccccc),new Color(0xcccccc),
+                        new ActivatableColorUIResource(sidebarListSelectionBackground, new Color(0xcccccc), new Color(0xcccccc),
                                 new Color(0xcccccc))),
                 "Tree.leftChildIndent", 8, // 7
                 "Tree.rightChildIndent", 12, // 13
                 "Tree.icons", makeIcons(lionDir + "Tree.icons.png", 15, true),
                 "Tree.sideBar.icons", makeIcons(lionDir + "Tree.sideBar.icons.png", 15, true),
-                "Tree.sideBarCategory.foreground", new ActivatableColorUIResource(0x383838,0x777777),
-                "Tree.sideBarCategory.selectionForeground", new ActivatableColorUIResource(0xffffff,0x777777,0x1f1f1f,0x535353),
+                "Tree.sideBarCategory.foreground", new ActivatableColorUIResource(0x383838, 0x777777),
+                "Tree.sideBarCategory.selectionForeground", new ActivatableColorUIResource(0xffffff, 0x777777, 0x1f1f1f, 0x535353),
                 "Tree.sideBarCategory.font", new FontUIResource(sidebarFontName, Font.PLAIN, 11),
                 "Tree.sideBarCategory.selectionFont", new FontUIResource(sidebarFontName, Font.PLAIN, 11),
-                "Tree.sideBar.foreground", new ActivatableColorUIResource(0x383838,0x777777),
-                "Tree.sideBar.selectionForeground", new ActivatableColorUIResource(0xffffff,0x777777,0x1f1f1f,0x535353),
+                "Tree.sideBar.foreground", new ActivatableColorUIResource(0x383838, 0x777777),
+                "Tree.sideBar.selectionForeground", new ActivatableColorUIResource(0xffffff, 0x777777, 0x1f1f1f, 0x535353),
                 "Tree.sideBar.font", new FontUIResource(sidebarFontName, Font.PLAIN, 11),
                 "Tree.sideBar.selectionFont", new FontUIResource(sidebarFontName, Font.PLAIN, 11),
                 "Tree.rendererMargins", new InsetsUIResource(0, 0, 0, 0),

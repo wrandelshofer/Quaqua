@@ -6,8 +6,11 @@ package ch.randelshofer.quaqua;
 
 import de.sciss.treetable.j.TreeTable;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 /**
  * A wrapper for JTable to support the generic list interface.
@@ -121,7 +124,7 @@ public class TreeTableModel implements GenericList {
     public void scrollToViewRows(int index1, int index2) {
         int columnCount = tt.getColumnCount();
         Rectangle r1 = tt.getCellRect(index1, 0, false);
-        Rectangle r2 = tt.getCellRect(index2, columnCount-1, false);
+        Rectangle r2 = tt.getCellRect(index2, columnCount - 1, false);
         tt.scrollRectToVisible(r1.union(r2));
     }
 

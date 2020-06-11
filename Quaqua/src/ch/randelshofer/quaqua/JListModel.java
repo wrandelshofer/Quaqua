@@ -4,9 +4,13 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
 import javax.swing.plaf.ListUI;
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 /**
  * A wrapper for JList to support the generic list interface.
@@ -117,8 +121,8 @@ public class JListModel implements GenericList {
         if (index != -1) {
             Rectangle cellBounds = list.getCellBounds(index, index);
             if (loc.x > cellBounds.getX() + cellBounds.getWidth()
-                || loc.y > cellBounds.getY() + cellBounds.getHeight()) {
-                    index = -1;
+                    || loc.y > cellBounds.getY() + cellBounds.getHeight()) {
+                index = -1;
             }
         }
 

@@ -4,10 +4,16 @@
  */
 package ch.randelshofer.quaqua.util;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 import java.lang.ref.SoftReference;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A base class used for icons or images that are expensive to paint.
@@ -59,7 +65,7 @@ public abstract class CachedPainter {
      * <code>paintImage</code> is invoked to paint the cached image.
      */
     protected void paint(Component c, Graphics g, int x,
-            int y, int w, int h, Object args) {
+                         int y, int w, int h, Object args) {
         if (w <= 0 || h <= 0) {
             return;
         }
@@ -69,7 +75,7 @@ public abstract class CachedPainter {
         // If the area is larger than 20'000 pixels, render to the passed
         // in Graphics. 20'000 pixels is a bit larger than a rectangle of
         // 160*120 points.
-        if (getCache(key).getMaxCount()==0||w * h > maxCachedImageSize) {
+        if (getCache(key).getMaxCount() == 0 || w * h > maxCachedImageSize) {
             g.translate(x, y);
             paintToImage(c, g, w, h, args);
             g.translate(-x, -y);
@@ -86,13 +92,13 @@ public abstract class CachedPainter {
             if (image instanceof VolatileImage) {
                 // See if we need to recreate the image
                 switch (((VolatileImage) image).validate(config)) {
-                    case VolatileImage.IMAGE_INCOMPATIBLE:
-                        ((VolatileImage) image).flush();
-                        image = null;
-                        break;
-                    case VolatileImage.IMAGE_RESTORED:
-                        draw = true;
-                        break;
+                case VolatileImage.IMAGE_INCOMPATIBLE:
+                    ((VolatileImage) image).flush();
+                    image = null;
+                    break;
+                case VolatileImage.IMAGE_RESTORED:
+                    draw = true;
+                    break;
                 }
             }
             if (image == null) {
@@ -119,14 +125,14 @@ public abstract class CachedPainter {
     /**
      * Paints the representation to cache to the supplied Graphics.
      *
-     * @param c Component painting to
+     * @param c     Component painting to
      * @param image Image to paint to
-     * @param w Width to paint to
-     * @param h Height to paint to
-     * @param args Arguments supplied to <code>paint</code>
+     * @param w     Width to paint to
+     * @param h     Height to paint to
+     * @param args  Arguments supplied to <code>paint</code>
      */
     protected void paintToImage(Component c, Image image,
-            int w, int h, Object args) {
+                                int w, int h, Object args) {
         Graphics g2 = image.getGraphics();
         paintToImage(c, g2, w, h, args);
         g2.dispose();
@@ -135,30 +141,30 @@ public abstract class CachedPainter {
     /**
      * Paints the representation to cache to the supplied Graphics.
      *
-     * @param c Component painting to
-     * @param g Graphics to paint to
-     * @param w Width to paint to
-     * @param h Height to paint to
+     * @param c    Component painting to
+     * @param g    Graphics to paint to
+     * @param w    Width to paint to
+     * @param h    Height to paint to
      * @param args Arguments supplied to <code>paint</code>
      */
     protected abstract void paintToImage(Component c, Graphics g,
-            int w, int h, Object args);
+                                         int w, int h, Object args);
 
     /**
      * Paints the image to the specified location.
      *
-     * @param c Component painting to
-     * @param g Graphics to paint to
-     * @param x X coordinate to paint to
-     * @param y Y coordinate to paint to
-     * @param w Width to paint to
-     * @param h Height to paint to
+     * @param c     Component painting to
+     * @param g     Graphics to paint to
+     * @param x     X coordinate to paint to
+     * @param y     Y coordinate to paint to
+     * @param w     Width to paint to
+     * @param h     Height to paint to
      * @param image Image to paint
-     * @param args Arguments supplied to <code>paint</code>
+     * @param args  Arguments supplied to <code>paint</code>
      */
     protected void paintImage(Component c, Graphics g,
-            int x, int y, int w, int h, Image image,
-            Object args) {
+                              int x, int y, int w, int h, Image image,
+                              Object args) {
         g.drawImage(image, x, y, null);
     }
 
@@ -167,14 +173,14 @@ public abstract class CachedPainter {
      * that require translucency or transparency will need to override this
      * method.
      *
-     * @param c Component painting to
-     * @param w Width of image to create
-     * @param h Height to image to create
+     * @param c      Component painting to
+     * @param w      Width of image to create
+     * @param h      Height to image to create
      * @param config GraphicsConfiguration that will be
-     *        rendered to, this may be null.
+     *               rendered to, this may be null.
      */
     protected Image createImage(Component c, int w, int h,
-            GraphicsConfiguration config) {
+                                GraphicsConfiguration config) {
         if (config == null) {
             return new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         }
@@ -206,7 +212,7 @@ public abstract class CachedPainter {
 
 
         private Entry getEntry(Object key, GraphicsConfiguration config,
-                int w, int h, Object args) {
+                               int w, int h, Object args) {
             synchronized (this) {
                 Entry entry;
                 for (int counter = entries.size() - 1; counter >= 0; counter--) {
@@ -233,7 +239,7 @@ public abstract class CachedPainter {
          * Returns the cached Image, or null, for the specified arguments.
          */
         public Image getImage(Object key, GraphicsConfiguration config,
-                int w, int h, Object args) {
+                              int w, int h, Object args) {
             Entry entry = getEntry(key, config, w, h, args);
             return entry.getImage();
         }
@@ -242,7 +248,7 @@ public abstract class CachedPainter {
          * Sets the cached image for the specified constraints.
          */
         public void setImage(Object key, GraphicsConfiguration config,
-                int w, int h, Object args, Image image) {
+                             int w, int h, Object args, Image image) {
             Entry entry = getEntry(key, config, w, h, args);
             entry.setImage(image);
         }
@@ -288,7 +294,7 @@ public abstract class CachedPainter {
             }
 
             public boolean equals(GraphicsConfiguration config, int w, int h,
-                    Object args) {
+                                  Object args) {
                 if (this.w == w && this.h == h
                         && ((this.config != null && this.config.equals(config))
                         || (this.config == null && config == null))) {

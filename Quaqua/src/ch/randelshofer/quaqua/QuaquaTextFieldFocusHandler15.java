@@ -5,10 +5,15 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.KeyboardFocusManager;
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JPasswordField;
+import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 /**
  * QuaquaTextFieldFocusHandler15. Selects all text of a JTextComponent, if
  * the user used a keyboard focus traversal key, to transfer the focus on the
@@ -52,8 +57,8 @@ public class QuaquaTextFieldFocusHandler15 implements FocusListener {
 
             if (tc.getClientProperty("Quaqua.TextComponent.autoSelect") == Boolean.TRUE ||
                     tc.getClientProperty("Quaqua.TextComponent.autoSelect") == null &&
-                    UIManager.getBoolean(uiProperty)
-                    ) {
+                            UIManager.getBoolean(uiProperty)
+            ) {
                 if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
                     QuaquaKeyboardFocusManager kfm = (QuaquaKeyboardFocusManager) KeyboardFocusManager.getCurrentKeyboardFocusManager();
                     if (event.getOppositeComponent() == kfm.getLastKeyboardTraversingComponent()) {

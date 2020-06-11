@@ -18,7 +18,14 @@ import de.sciss.treetable.j.DefaultTreeTableCellRenderer;
 import de.sciss.treetable.j.TreeColumnModel;
 import de.sciss.treetable.j.TreeTable;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -29,7 +36,10 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.text.DateFormat;
@@ -220,8 +230,7 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
         return new MyTableColumnModel();
     }
 
-    protected class MyTableColumnModel extends DefaultTableColumnModel
-    {
+    protected class MyTableColumnModel extends DefaultTableColumnModel {
         public TableColumn nameColumn;
         public TableColumn dateModifiedColumn;
         public TableColumn sizeColumn;
@@ -272,7 +281,7 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
         */
 
         public MyTableColumn(int modelIndex, int width, boolean canWiden, String name) {
-            super(modelIndex, width+ COLUMN_MARGIN);
+            super(modelIndex, width + COLUMN_MARGIN);
             if (!canWiden) {
                 setMaxWidth(getWidth());
             }
@@ -344,7 +353,7 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
                 c.setForeground(headerColor);
             }
             int columnMargin = tableColumnModel.getColumnMargin();
-            c.setBorder(new EmptyBorder(0, columnMargin/2, 0, columnMargin/2));
+            c.setBorder(new EmptyBorder(0, columnMargin / 2, 0, columnMargin / 2));
             return c;
         }
     }
@@ -360,31 +369,31 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
         }
 
         @Override
-      	public int getColumnCount() {
-      		return columnNames.size();
-      	}
+        public int getColumnCount() {
+            return columnNames.size();
+        }
 
-      	@Override
-      	public String getColumnName(int column) {
-      		return columnNames.get(column);
-      	}
+        @Override
+        public String getColumnName(int column) {
+            return columnNames.get(column);
+        }
 
-      	@Override
-      	public Object getValueAt(Object node, int column) {
-      		FileSystemTreeModel.Node pn = (FileSystemTreeModel.Node)node;
+        @Override
+        public Object getValueAt(Object node, int column) {
+            FileSystemTreeModel.Node pn = (FileSystemTreeModel.Node) node;
             File f = pn.lazyGetResolvedFile();
             switch (column) {
-                case 0:
-                    return pn;  // expected by our file renderer
-                case 1:
-                    return f != null ? getModifiedString(f, tableColumnModel.dateModifiedColumn.getWidth()) : "";
-                case 2:
-                    return getLengthString(pn.getFileLength());
-                case 3:
-                    return getKindString(f);
+            case 0:
+                return pn;  // expected by our file renderer
+            case 1:
+                return f != null ? getModifiedString(f, tableColumnModel.dateModifiedColumn.getWidth()) : "";
+            case 2:
+                return getLengthString(pn.getFileLength());
+            case 3:
+                return getKindString(f);
             }
-      		throw new IllegalArgumentException();
-      	}
+            throw new IllegalArgumentException();
+        }
     }
 
     // Copied from FilePreview
@@ -409,7 +418,7 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
                 scaledLength = (float) fileLength;
             }
 
-        return MessageFormat.format(UIManager.getString(label), scaledLength, fileLength);
+            return MessageFormat.format(UIManager.getString(label), scaledLength, fileLength);
         }
     }
 

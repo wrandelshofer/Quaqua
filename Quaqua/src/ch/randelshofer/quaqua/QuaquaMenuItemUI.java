@@ -5,10 +5,20 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicMenuItemUI;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 /**
  * A replacement for the AquaMenuItemUI.
@@ -105,8 +115,8 @@ public class QuaquaMenuItemUI extends BasicMenuItemUI
     }
 
     protected void paintMenuItem(Graphics g, JComponent c,
-            Icon checkIcon, Icon arrowIcon, Color background,
-            Color foreground, int defaultTextIconGap) {
+                                 Icon checkIcon, Icon arrowIcon, Color background,
+                                 Color foreground, int defaultTextIconGap) {
 
         QuaquaMenuPainter.getInstance().paintMenuItem(this, g, c, checkIcon,
                 arrowIcon, background, foreground,
@@ -116,9 +126,9 @@ public class QuaquaMenuItemUI extends BasicMenuItemUI
     }
 
     protected Dimension getPreferredMenuItemSize(JComponent c,
-            Icon checkIcon,
-            Icon arrowIcon,
-            int defaultTextIconGap) {
+                                                 Icon checkIcon,
+                                                 Icon arrowIcon,
+                                                 int defaultTextIconGap) {
         return QuaquaMenuPainter.getInstance().getPreferredMenuItemSize(c, checkIcon, arrowIcon, defaultTextIconGap, acceleratorFont);
     }
 
@@ -149,5 +159,5 @@ public class QuaquaMenuItemUI extends BasicMenuItemUI
             Border b = ((BackgroundBorder) component.getBorder()).getBackgroundBorder();
             b.paintBorder(component, g, 0, 0, component.getWidth(), component.getHeight());
     }*/
-}
+    }
 }

@@ -4,17 +4,22 @@
  */
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import java.util.*;
+import javax.swing.Action;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.TextAction;
+import javax.swing.text.Utilities;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
 
 /**
  * The QuaquaEditorKit extends the Swing DefaultEditorKit with Mac OS X specific
  * text editing actions.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaEditorKit extends DefaultEditorKit {
@@ -29,6 +34,7 @@ public class QuaquaEditorKit extends DefaultEditorKit {
 
     // TO DO: Use this instead of the code above:
     //actions = TextAction.augmentList(....)
+
     /**
      * Default constructor.
      */
@@ -200,7 +206,9 @@ public class QuaquaEditorKit extends DefaultEditorKit {
             this.beginEndAction = beginEndAction;
         }
 
-        /** The operation to perform when this action is triggered. */
+        /**
+         * The operation to perform when this action is triggered.
+         */
         public void actionPerformed(ActionEvent e) {
             JTextComponent target = getTextComponent(e);
             if (target != null) {

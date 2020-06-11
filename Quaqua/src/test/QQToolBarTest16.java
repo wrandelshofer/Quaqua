@@ -4,10 +4,28 @@
  */
 package test;
 
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.GroupLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
+import javax.swing.JTree;
+import javax.swing.LayoutStyle;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author: Thomas Singer
@@ -66,7 +84,7 @@ public class QQToolBarTest16 {
         final JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(true);
         final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createLeftComponent(), createRightComponent());
-//		splitPane.setDividerSize(5);
+        //		splitPane.setDividerSize(5);
         splitPane.putClientProperty("Quaqua.SplitPane.style", "bar");
         panel.add(splitPane, BorderLayout.CENTER);
         return panel;
@@ -106,12 +124,12 @@ public class QQToolBarTest16 {
         toolBar.putClientProperty("Quaqua.ToolBar.isDividerDrawn", Boolean.FALSE);
 
         JScrollPane tableScroller = new JScrollPane(new JTable(new Object[][]{
-                    {"a", "bc"},
-                    {"d", "ef"}
-                }, new Object[]{
-                    "bla", "blub"
-                }));
-        tableScroller.setBorder(new EmptyBorder(0,0,0,0));
+                {"a", "bc"},
+                {"d", "ef"}
+        }, new Object[]{
+                "bla", "blub"
+        }));
+        tableScroller.setBorder(new EmptyBorder(0, 0, 0, 0));
         JComponent c = createComponent("Files", toolBar, tableScroller);
         return c;
     }
@@ -124,10 +142,10 @@ public class QQToolBarTest16 {
         panel.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup().addGroup(
-                layout.createSequentialGroup().addComponent(label).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(toolBar)).addComponent(scroller));
+                        layout.createSequentialGroup().addComponent(label).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(toolBar)).addComponent(scroller));
         layout.setVerticalGroup(
                 layout.createSequentialGroup().addGroup(
-                layout.createParallelGroup().addComponent(label).addComponent(toolBar)).addComponent(scroller));
+                        layout.createParallelGroup().addComponent(label).addComponent(toolBar)).addComponent(scroller));
         return panel;
     }
 }

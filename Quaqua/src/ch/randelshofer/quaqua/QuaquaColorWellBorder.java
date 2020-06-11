@@ -5,21 +5,27 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 /**
  * QuaquaColorWellBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaColorWellBorder implements Border {
     private Border squareButtonBorder;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaColorWellBorder() {
         this(QuaquaBorderFactory.createSquareButtonBorder());
     }
+
     public QuaquaColorWellBorder(Border squareButtonBorder) {
         this.squareButtonBorder = squareButtonBorder;
     }
@@ -31,9 +37,9 @@ public class QuaquaColorWellBorder implements Border {
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         squareButtonBorder.paintBorder(c, g, x, y, width, height);
         g.setColor(c.getBackground());
-        g.fillRect(x+6,y+6,width-12,height-12);
+        g.fillRect(x + 6, y + 6, width - 12, height - 12);
         g.setColor(c.getBackground().darker());
-        g.drawRect(x+5,y+5,width-11,height-11);
+        g.drawRect(x + 5, y + 5, width - 11, height - 11);
     }
 
     public boolean isBorderOpaque() {

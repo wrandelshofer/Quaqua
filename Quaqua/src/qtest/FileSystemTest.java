@@ -6,15 +6,22 @@
 package qtest;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
-import java.io.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import java.io.CharArrayWriter;
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.Arrays;
-import javax.swing.*;
-import javax.swing.text.*;
 
 /**
  * FileSystemTest.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 February 27, 2006 Created.
  */
 public class FileSystemTest extends javax.swing.JPanel {
@@ -33,44 +40,44 @@ public class FileSystemTest extends javax.swing.JPanel {
         DefaultStyledDocument buf = new DefaultStyledDocument();
         try {
             boolean canWorkWithAliases = OSXFile.canWorkWithAliases();
-            buf.insertString(buf.getLength(), "can work with aliases="+canWorkWithAliases, null);
+            buf.insertString(buf.getLength(), "can work with aliases=" + canWorkWithAliases, null);
             SimpleAttributeSet a;
             if (canWorkWithAliases) {
                 //File dir = new File("/System/Library/Frameworks/JavaVM.framework/Versions");
-                File dir = new File(System.getProperty("user.home")+"/Desktop");
+                File dir = new File(System.getProperty("user.home") + "/Desktop");
                 File[] files = dir.listFiles();
-                for (int i=0; i < files.length; i++) {
+                for (int i = 0; i < files.length; i++) {
                     File f = files[i];
-                    buf.insertString(buf.getLength(),"\n",null);
-                    buf.insertString(buf.getLength(),"\n",null);
+                    buf.insertString(buf.getLength(), "\n", null);
+                    buf.insertString(buf.getLength(), "\n", null);
                     a = new SimpleAttributeSet();
                     StyleConstants.setIcon(a, new ImageIcon(OSXFile.getIconImage(f, 32)));
-                    buf.insertString(buf.getLength(),"icon",a);
+                    buf.insertString(buf.getLength(), "icon", a);
                     a = new SimpleAttributeSet();
                     StyleConstants.setBold(a, true);
-                    buf.insertString(buf.getLength(),"\t"+f.toString(),a);
-                    buf.insertString(buf.getLength(),"\n\tlabel=",null);
-                    buf.insertString(buf.getLength(),Integer.toString(OSXFile.getLabel(f)),null);
-                    buf.insertString(buf.getLength(),"\n\ttags=",null);
-                    buf.insertString(buf.getLength(),Arrays.toString(OSXFile.getTagNames(f)),null);
-                    buf.insertString(buf.getLength(),", is alias=",null);
+                    buf.insertString(buf.getLength(), "\t" + f.toString(), a);
+                    buf.insertString(buf.getLength(), "\n\tlabel=", null);
+                    buf.insertString(buf.getLength(), Integer.toString(OSXFile.getLabel(f)), null);
+                    buf.insertString(buf.getLength(), "\n\ttags=", null);
+                    buf.insertString(buf.getLength(), Arrays.toString(OSXFile.getTagNames(f)), null);
+                    buf.insertString(buf.getLength(), ", is alias=", null);
                     int fileType = OSXFile.getFileType(f);
                     boolean isAlias = fileType == OSXFile.FILE_TYPE_ALIAS;
-                    buf.insertString(buf.getLength(),""+isAlias,null);
+                    buf.insertString(buf.getLength(), "" + isAlias, null);
                     if (isAlias) {
                         File resolved = OSXFile.resolveAlias(f, true);
                         if (resolved == null) {
-                            buf.insertString(buf.getLength(),", can't resolve this alias without user interaction",null);
+                            buf.insertString(buf.getLength(), ", can't resolve this alias without user interaction", null);
                         } else {
-                            buf.insertString(buf.getLength(),", resolved=",null);
-                            buf.insertString(buf.getLength(),resolved.toString(),null);
+                            buf.insertString(buf.getLength(), ", resolved=", null);
+                            buf.insertString(buf.getLength(), resolved.toString(), null);
                             //buf.insertString(buf.getLength(),", type=",null);
                             //buf.insertString(buf.getLength(),Integer.toString(OSXFile.resolveAliasType(f, true)),null);
                         }
                     }
 
-                    buf.insertString(buf.getLength(),"\n\tkind=",null);
-                    buf.insertString(buf.getLength(),OSXFile.getKindString(f),null);
+                    buf.insertString(buf.getLength(), "\n\tkind=", null);
+                    buf.insertString(buf.getLength(), OSXFile.getKindString(f), null);
                 }
             }
         } catch (Throwable t) {
@@ -79,7 +86,7 @@ public class FileSystemTest extends javax.swing.JPanel {
             t.printStackTrace(w);
             w.close();
             try {
-                buf.insertString(buf.getLength(),new String(caw.toCharArray()),null);
+                buf.insertString(buf.getLength(), new String(caw.toCharArray()), null);
             } catch (BadLocationException ex) {
                 ex.printStackTrace();
             }
@@ -94,13 +101,14 @@ public class FileSystemTest extends javax.swing.JPanel {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         FileSystemTest nt = new FileSystemTest();
         f.getContentPane().add(nt);
-        f.setSize(400,400);
+        f.setSize(400, 400);
         f.setVisible(true);
         nt.test();
     }
 
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.

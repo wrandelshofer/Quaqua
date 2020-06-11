@@ -4,17 +4,25 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import ch.randelshofer.quaqua.util.Debug;
+
+import javax.swing.JComponent;
+import javax.swing.JSplitPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import java.awt.Canvas;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 /**
  * QuaquaSplitPaneUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaSplitPaneUI extends BasicSplitPaneUI {
@@ -43,7 +51,7 @@ public class QuaquaSplitPaneUI extends BasicSplitPaneUI {
         splitPane.setContinuousLayout(true);
         setContinuousLayout(splitPane.isContinuousLayout());
          */
-       splitPane.setFocusable(UIManager.getBoolean("SplitPane.focusable"));
+        splitPane.setFocusable(UIManager.getBoolean("SplitPane.focusable"));
     }
 
     /**

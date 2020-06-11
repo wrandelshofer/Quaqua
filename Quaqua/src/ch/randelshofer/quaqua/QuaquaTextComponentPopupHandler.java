@@ -5,10 +5,18 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.text.*;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JPasswordField;
+import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.JTextComponent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 /**
  * TextComponentHandler displays a popup menu on a JTextComponent with the
  * cut/copy and paste actions.
@@ -24,7 +32,9 @@ public class QuaquaTextComponentPopupHandler extends MouseAdapter {
     private AbstractAction copyAction;
     private AbstractAction pasteAction;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaTextComponentPopupHandler() {
         popupMenu = new JPopupMenu();
         popupMenu.add(cutAction = new DefaultEditorKit.CutAction());
@@ -56,14 +66,14 @@ public class QuaquaTextComponentPopupHandler extends MouseAdapter {
         if (src.getClientProperty("Quaqua.TextComponent.showPopup") != Boolean.FALSE &&
                 src.isEnabled() &&
                 isFocusable &&
-                Methods.invokeGetter(src,"getComponentPopupMenu",null) == null) {
-            cutAction.setEnabled(! (src instanceof JPasswordField) &&
+                Methods.invokeGetter(src, "getComponentPopupMenu", null) == null) {
+            cutAction.setEnabled(!(src instanceof JPasswordField) &&
                     src.getSelectionEnd() > src.getSelectionStart() &&
                     src.isEditable()
-                    );
-            copyAction.setEnabled(! (src instanceof JPasswordField) &&
+            );
+            copyAction.setEnabled(!(src instanceof JPasswordField) &&
                     src.getSelectionEnd() > src.getSelectionStart()
-                    );
+            );
             pasteAction.setEnabled(src.isEditable()
             );
             src.requestFocus();

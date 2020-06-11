@@ -4,8 +4,7 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.border.ButtonStateBorder;
-import java.awt.*;
+import ch.randelshofer.quaqua.util.Images;
 
 import javax.swing.CellRendererPane;
 import javax.swing.DefaultButtonModel;
@@ -18,13 +17,16 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-
-import ch.randelshofer.quaqua.util.Images;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 
 /**
  * JButton subclass to help out QuaquaComboBoxUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaComboBoxButton extends JButton {
@@ -62,12 +64,12 @@ public class QuaquaComboBoxButton extends JButton {
      */
     private Border getButtonBorder() {
         switch (QuaquaUtilities.getSizeVariant(comboBox)) {
-            default:
-                return UIManager.getBorder("ComboBox.buttonBorder");
-            case SMALL:
-                return UIManager.getBorder("ComboBox.smallButtonBorder");
-            case MINI:
-                return UIManager.getBorder("ComboBox.miniButtonBorder");
+        default:
+            return UIManager.getBorder("ComboBox.buttonBorder");
+        case SMALL:
+            return UIManager.getBorder("ComboBox.smallButtonBorder");
+        case MINI:
+            return UIManager.getBorder("ComboBox.miniButtonBorder");
 
         }
     }
@@ -193,15 +195,15 @@ public class QuaquaComboBoxButton extends JButton {
             } else {
                 Border border;
                 switch (sizeVariant) {
-                    case SMALL:
-                        border = UIManager.getBorder("ComboBox.smallCellAndButtonBorder");
-                        break;
-                    case MINI:
-                        border = UIManager.getBorder("ComboBox.miniCellAndButtonBorder");
-                        break;
-                    default:
-                        border = UIManager.getBorder("ComboBox.cellAndButtonBorder");
-                        break;
+                case SMALL:
+                    border = UIManager.getBorder("ComboBox.smallCellAndButtonBorder");
+                    break;
+                case MINI:
+                    border = UIManager.getBorder("ComboBox.miniCellAndButtonBorder");
+                    break;
+                default:
+                    border = UIManager.getBorder("ComboBox.cellAndButtonBorder");
+                    break;
                 }
                 if (border != null) {
                     border.paintBorder(this, g, x, y, width, height);

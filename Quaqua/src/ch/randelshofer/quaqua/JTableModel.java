@@ -4,8 +4,12 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 /**
  * A wrapper for JTable to support the generic list interface.
@@ -119,7 +123,7 @@ public class JTableModel implements GenericList {
     public void scrollToViewRows(int index1, int index2) {
         int columnCount = table.getColumnCount();
         Rectangle r1 = table.getCellRect(index1, 0, false);
-        Rectangle r2 = table.getCellRect(index2, columnCount-1, false);
+        Rectangle r2 = table.getCellRect(index2, columnCount - 1, false);
         table.scrollRectToVisible(r1.union(r2));
     }
 

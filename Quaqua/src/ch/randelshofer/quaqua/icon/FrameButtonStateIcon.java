@@ -5,14 +5,20 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
-import javax.swing.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.awt.Component;
+import java.awt.Image;
+
 /**
  * An Icon with different visuals reflecting the state of the AbstractButton
  * on which it draws on.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 2006-02-13 Created.
  */
 public class FrameButtonStateIcon extends MultiIcon {
@@ -32,7 +38,7 @@ public class FrameButtonStateIcon extends MultiIcon {
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
-     *
+     * <p>
      * The array indices are used to represente the following states:
      * [0] Enabled
      * [1] Armed
@@ -42,13 +48,14 @@ public class FrameButtonStateIcon extends MultiIcon {
      * [5] Armed Selected
      * [6] Pressend Selected
      * [7] Disabled Selected
-     *
+     * <p>
      * If an array element is null, an icon is derived for the state from the
      * other icons.
      */
     public FrameButtonStateIcon(Image[] images) {
         super(images);
     }
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -90,7 +97,7 @@ public class FrameButtonStateIcon extends MultiIcon {
                             icon = icons[EP];
                         }
                     } else if (model.isSelected()) {
-                        icon =  (isRollover) ? icons[RS] : icons[ES];
+                        icon = (isRollover) ? icons[RS] : icons[ES];
                     } else {
                         icon = (isRollover) ? icons[R] : icons[E];
                     }

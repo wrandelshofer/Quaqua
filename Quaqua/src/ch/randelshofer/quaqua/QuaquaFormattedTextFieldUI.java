@@ -5,18 +5,39 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
+import ch.randelshofer.quaqua.util.Fonts;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+import ch.randelshofer.quaqua.util.Methods;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.TextUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicFormattedTextFieldUI;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.Caret;
+import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Keymap;
+import javax.swing.text.View;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+
 /**
  * QuaquaFormattedTextFieldUI.
  *
@@ -42,12 +63,12 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     @Override
     public void installUI(JComponent c) {
         super.installUI(c);
-	QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix()+".opaque"));
+        QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix() + ".opaque"));
     }
 
     @Override
     protected void installDefaults() {
-        if (! QuaquaUtilities.isHeadless()) {
+        if (!QuaquaUtilities.isHeadless()) {
             oldDragState = Methods.invokeGetter(getComponent(), "getDragEnabled", true);
             Methods.invokeIfExists(getComponent(), "setDragEnabled", true);
         }
@@ -93,8 +114,9 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     protected FocusListener createFocusListener() {
         return (FocusListener) UIManager.get(getPropertyPrefix() + ".focusHandler");
     }
+
     protected MouseListener createPopupListener() {
-        return (MouseListener) UIManager.get(getPropertyPrefix()+".popupHandler");
+        return (MouseListener) UIManager.get(getPropertyPrefix() + ".popupHandler");
     }
     /*
     protected HierarchyListener createHierarchyListener() {
@@ -118,7 +140,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }
-        return (margin == null) ? new Insets(0, 0, 0 ,0) : (Insets) margin.clone();
+        return (margin == null) ? new Insets(0, 0, 0, 0) : (Insets) margin.clone();
     }
 
 
@@ -142,6 +164,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
         Debug.paint(g, editor, this);
     }
+
     /**
      * Paints a background for the view.  This will only be
      * called if isOpaque() on the associated component is
@@ -162,11 +185,11 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         String name = event.getPropertyName();
         if (name.equals("Frame.active")) {
             QuaquaUtilities.repaintBorder(getComponent());
-       } else if (name.equals("JComponent.sizeVariant")) {
+        } else if (name.equals("JComponent.sizeVariant")) {
             QuaquaUtilities.applySizeVariant(getComponent());
-       } else {
+        } else {
             super.propertyChange(event);
-            }
+        }
     }
 
     @Override
@@ -180,6 +203,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     protected Highlighter createHighlighter() {
         return new QuaquaHighlighter();
     }
+
     /**
      * Creates the keymap to use for the text component, and installs
      * any necessary bindings into it.  By default, the keymap is
@@ -213,6 +237,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         }
         return map;
     }
+
     @Override
     public int getBaseline(JComponent c, int width, int height) {
         JTextComponent textComponent = (JTextComponent) c;
@@ -222,27 +247,28 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
             int h = height - insets.top - insets.bottom;
             int y = insets.top;
             View fieldView = rootView.getView(0);
-            int vspan = (int)fieldView.getPreferredSpan(View.Y_AXIS);
+            int vspan = (int) fieldView.getPreferredSpan(View.Y_AXIS);
             if (height != vspan) {
                 int slop = h - vspan;
                 y += slop / 2;
             }
             FontMetrics fm = textComponent.getFontMetrics(
-            textComponent.getFont());
+                    textComponent.getFont());
             y += fm.getAscent();
             return y;
         }
         return -1;
     }
+
     public Rectangle getVisualBounds(JComponent c, int type, int width, int height) {
-        Rectangle bounds = new Rectangle(0,0,width,height);
+        Rectangle bounds = new Rectangle(0, 0, width, height);
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
 
         JTextComponent b = (JTextComponent) c;
         if (type == VisuallyLayoutable.COMPONENT_BOUNDS
-        && b.getBorder() != null) {
+                && b.getBorder() != null) {
             Border border = b.getBorder();
             if (border instanceof UIResource) {
                 InsetsUtil.subtractInto(getVisualMargin(b), bounds);
@@ -266,40 +292,40 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         }
         return bounds;
     }
+
     @Override
     public Dimension getPreferredSize(JComponent c) {
         // The following code has been derived from BasicTextUI.
-	Document doc = ((JTextComponent) c).getDocument();
-	Insets i = c.getInsets();
-	Dimension d = c.getSize();
+        Document doc = ((JTextComponent) c).getDocument();
+        Insets i = c.getInsets();
+        Dimension d = c.getSize();
         View rootView = getRootView((JTextComponent) c);
 
-	if (doc instanceof AbstractDocument) {
-	    ((AbstractDocument)doc).readLock();
-	}
-	try {
-	    if ((d.width > (i.left + i.right)) && (d.height > (i.top + i.bottom))) {
-		rootView.setSize(d.width - i.left - i.right, d.height - i.top - i.bottom);
-	    }
-            else if (d.width == 0 && d.height == 0) {
+        if (doc instanceof AbstractDocument) {
+            ((AbstractDocument) doc).readLock();
+        }
+        try {
+            if ((d.width > (i.left + i.right)) && (d.height > (i.top + i.bottom))) {
+                rootView.setSize(d.width - i.left - i.right, d.height - i.top - i.bottom);
+            } else if (d.width == 0 && d.height == 0) {
                 // Probably haven't been layed out yet, force some sort of
                 // initial sizing.
                 rootView.setSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
             }
-	    d.width = (int) Math.min((long) rootView.getPreferredSpan(View.X_AXIS) +
-				     (long) i.left + (long) i.right, Integer.MAX_VALUE);
-	    d.height = (int) Math.min((long) rootView.getPreferredSpan(View.Y_AXIS) +
-				      (long) i.top + (long) i.bottom, Integer.MAX_VALUE);
-	} finally {
-	    if (doc instanceof AbstractDocument) {
-		((AbstractDocument)doc).readUnlock();
-	    }
-	}
+            d.width = (int) Math.min((long) rootView.getPreferredSpan(View.X_AXIS) +
+                    (long) i.left + (long) i.right, Integer.MAX_VALUE);
+            d.height = (int) Math.min((long) rootView.getPreferredSpan(View.Y_AXIS) +
+                    (long) i.top + (long) i.bottom, Integer.MAX_VALUE);
+        } finally {
+            if (doc instanceof AbstractDocument) {
+                ((AbstractDocument) doc).readUnlock();
+            }
+        }
 
         // Fix: The preferred width is always two pixels too small
         // on a Mac.
         d.width += 2;
 
-	return d;
+        return d;
     }
 }

@@ -10,12 +10,12 @@
 
 package test;
 
-import java.lang.reflect.*;
-import java.net.*;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 
 /**
- *
  * @author werni
  */
 public class CustomClassLoaderTest {
@@ -33,13 +33,13 @@ public class CustomClassLoaderTest {
             try {
                 // All fine, we can proceed with the test.
                 URLClassLoader l = new URLClassLoader(new URL[]{
-                    new URL("file:./quaqua-test.jar"),
-                    new URL("file:./quaqua.jar"),
+                        new URL("file:./quaqua-test.jar"),
+                        new URL("file:./quaqua.jar"),
                 });
 
                 Class c = l.loadClass("test.QuaquaTest");
-                Method m = c.getMethod("main", new Class[] {String[].class});
-                m.invoke(null, new Object[] {args});
+                Method m = c.getMethod("main", new Class[]{String[].class});
+                m.invoke(null, new Object[]{args});
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -18,7 +18,7 @@
  */
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff;
 
-import  ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.ImageDecodeParam;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.ImageDecodeParam;
 
 /**
  * An instance of {@code ImageDecodeParam} for decoding images in
@@ -67,9 +67,8 @@ import  ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.ImageDecodePar
  * <p><b> This class is not a committed part of the JAI API.  It may
  * be removed or changed in future releases of JAI.</b>
  *
- * @see TIFFDirectory
- *
  * @version $Id$
+ * @see TIFFDirectory
  */
 public class TIFFDecodeParam implements ImageDecodeParam {
 
@@ -77,7 +76,9 @@ public class TIFFDecodeParam implements ImageDecodeParam {
     private Long ifdOffset = null;
     private boolean convertJPEGYCbCrToRGB = true;
 
-    /** Constructs a default instance of {@code TIFFDecodeParam}. */
+    /**
+     * Constructs a default instance of {@code TIFFDecodeParam}.
+     */
     public TIFFDecodeParam() {
     }
 
@@ -107,7 +108,7 @@ public class TIFFDecodeParam implements ImageDecodeParam {
      * deals correctly only with 16 bit unsigned values.
      */
     public byte decode16BitsTo8Bits(int s) {
-        return (byte)((s >> 8) & 0xffff);
+        return (byte) ((s >> 8) & 0xffff);
     }
 
     /**
@@ -116,7 +117,7 @@ public class TIFFDecodeParam implements ImageDecodeParam {
      * 16 bit signed range.
      */
     public byte decodeSigned16BitsTo8Bits(short s) {
-        return (byte)((s + Short.MIN_VALUE) >> 8);
+        return (byte) ((s + Short.MIN_VALUE) >> 8);
     }
 
     /**

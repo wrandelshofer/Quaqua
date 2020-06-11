@@ -5,10 +5,18 @@
 
 package ch.randelshofer.quaqua.leopard.filechooser;
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import ch.randelshofer.quaqua.QuaquaBorderFactory;
+import ch.randelshofer.quaqua.QuaquaComboBoxButton;
+import ch.randelshofer.quaqua.QuaquaManager;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Toolkit;
+
 /**
  * QuaquaLeopardFileChooserPanel.
  *
@@ -20,61 +28,63 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
      * This is the border painted around the cell area.
      */
     private static final Border cellBorder = QuaquaBorderFactory.create(
-    Toolkit.getDefaultToolkit().createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.cellBorder.png")),
-    new Insets(10, 8, 14, 0),
-    new Insets(1, 1, 1, 1),
-    true
+            Toolkit.getDefaultToolkit().createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.cellBorder.png")),
+            new Insets(10, 8, 14, 0),
+            new Insets(1, 1, 1, 1),
+            true
     );
     /**
      * This is the disabled border painted around the cell area.
      */
     private static final Border disabledCellBorder = QuaquaBorderFactory.create(
-    Toolkit.getDefaultToolkit().createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.cellBorder.D.png")),
-    new Insets(10, 8, 14, 0),
-    new Insets(1, 1, 1, 1),
-    true
+            Toolkit.getDefaultToolkit().createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.cellBorder.D.png")),
+            new Insets(10, 8, 14, 0),
+            new Insets(1, 1, 1, 1),
+            true
     );
     /**
      * This is the border painted around the button area.
      */
     private static final Border buttonBorder = QuaquaBorderFactory.create(
-    Toolkit.getDefaultToolkit().createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.buttonBorder.png")),
-    new Insets(10, 1, 14, 8),
-    new Insets(1, 1, 1, 1),
-    true
+            Toolkit.getDefaultToolkit().createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.buttonBorder.png")),
+            new Insets(10, 1, 14, 8),
+            new Insets(1, 1, 1, 1),
+            true
     );
     /**
      * This is the pressed border painted around the button area.
      */
     private static final Border pressedButtonBorder = QuaquaBorderFactory.create(
-    Toolkit.getDefaultToolkit().createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.buttonBorder.P.png")),
-    new Insets(10, 1, 14, 8),
-    new Insets(1, 1, 1, 1),
-    true
+            Toolkit.getDefaultToolkit().createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.buttonBorder.P.png")),
+            new Insets(10, 1, 14, 8),
+            new Insets(1, 1, 1, 1),
+            true
     );
 
-    /** Creates new form. */
+    /**
+     * Creates new form.
+     */
     public QuaquaLeopardFileChooserPanel() {
 
         initComponents();
         int h;
         h = fileNameLabel.getPreferredSize().height;
-        fileNameLabel.setMinimumSize(new Dimension(0,h));
-        fileNameLabel.setPreferredSize(new Dimension(0,h));
-        fileNameLabel.setMaximumSize(new Dimension(32767,h));
+        fileNameLabel.setMinimumSize(new Dimension(0, h));
+        fileNameLabel.setPreferredSize(new Dimension(0, h));
+        fileNameLabel.setMaximumSize(new Dimension(32767, h));
 
         h = fileNameTextField.getPreferredSize().height;
-        fileNameTextField.setPreferredSize(new Dimension(0,h));
-        fileNameTextField.setMinimumSize(new Dimension(0,h));
-        fileNameTextField.setMaximumSize(new Dimension(32767,h));
+        fileNameTextField.setPreferredSize(new Dimension(0, h));
+        fileNameTextField.setMinimumSize(new Dimension(0, h));
+        fileNameTextField.setMaximumSize(new Dimension(32767, h));
 
         h = directoryComboBox.getPreferredSize().height;
-        directoryComboBox.setPreferredSize(new Dimension(0,h));
-        directoryComboBox.setMinimumSize(new Dimension(0,h));
-        directoryComboBox.setMaximumSize(new Dimension(32767,h));
+        directoryComboBox.setPreferredSize(new Dimension(0, h));
+        directoryComboBox.setMinimumSize(new Dimension(0, h));
+        directoryComboBox.setMaximumSize(new Dimension(32767, h));
 
-        Dimension d = new Dimension(28,25);
-        Dimension d2 = new Dimension(29,25);
+        Dimension d = new Dimension(28, 25);
+        Dimension d2 = new Dimension(29, 25);
         previousButton.setPreferredSize(d);
         nextButton.setPreferredSize(d2);
         tableToggleButton.setPreferredSize(d);
@@ -94,21 +104,21 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
         browserToggleButton.setVisible(false);
 
         h = navigationButtonsPanel.getPreferredSize().height;
-        navigationButtonsPanel.setMinimumSize(new Dimension(0,h));
-        navigationButtonsPanel.setPreferredSize(new Dimension(0,h));
-        navigationButtonsPanel.setMaximumSize(new Dimension(32767,h));
+        navigationButtonsPanel.setMinimumSize(new Dimension(0, h));
+        navigationButtonsPanel.setPreferredSize(new Dimension(0, h));
+        navigationButtonsPanel.setMaximumSize(new Dimension(32767, h));
 
         h = filesOfTypeLabel.getPreferredSize().height;
-        filesOfTypeLabel.setMinimumSize(new Dimension(0,h));
-        filesOfTypeLabel.setPreferredSize(new Dimension(0,h));
-        filesOfTypeLabel.setMaximumSize(new Dimension(32767,h));
+        filesOfTypeLabel.setMinimumSize(new Dimension(0, h));
+        filesOfTypeLabel.setPreferredSize(new Dimension(0, h));
+        filesOfTypeLabel.setMaximumSize(new Dimension(32767, h));
 
         h = filterComboBox.getPreferredSize().height;
-        filterComboBox.setPreferredSize(new Dimension(0,h));
-        filterComboBox.setMinimumSize(new Dimension(0,h));
-        filterComboBox.setMaximumSize(new Dimension(32767,h));
+        filterComboBox.setPreferredSize(new Dimension(0, h));
+        filterComboBox.setMinimumSize(new Dimension(0, h));
+        filterComboBox.setMaximumSize(new Dimension(32767, h));
 
-        splitPane.putClientProperty("Quaqua.SplitPane.style","bar");
+        splitPane.putClientProperty("Quaqua.SplitPane.style", "bar");
         separator.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, 0, 3, 0));
 
     }
@@ -121,14 +131,15 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
         JFrame f = new JFrame("Open Dialog");
         f.getContentPane().add(new QuaquaLeopardFileChooserPanel());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ((JComponent) f.getContentPane()).setMinimumSize(new Dimension(518,300));
-        ((JComponent) f.getContentPane()).setPreferredSize(new Dimension(518,300));
+        ((JComponent) f.getContentPane()).setMinimumSize(new Dimension(518, 300));
+        ((JComponent) f.getContentPane()).setPreferredSize(new Dimension(518, 300));
         f.pack();
         f.setVisible(true);
     }
 
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.

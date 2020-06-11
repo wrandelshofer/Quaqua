@@ -50,12 +50,13 @@ public final class RenderingHintsKeyExt {
      * Hint for the destination of the rendering when it is a BufferedImage
      * This works around the fact that Java 2D sometimes lies about the
      * attributes of the Graphics2D device, when it is an image.
-     *
+     * <p>
      * It is strongly suggested that you use
      * ch.randelshofer.quaqua.ext.batik.ext.awt.image.GraphicsUtil.createGraphics to
      * create a Graphics2D from a BufferedImage, this will ensure that
      * the proper things are done in the processes of creating the
-     * Graphics.  */
+     * Graphics.
+     */
     public static final RenderingHints.Key KEY_BUFFERED_IMAGE;
 
     /**
@@ -79,38 +80,38 @@ public final class RenderingHintsKeyExt {
 
     static {
         int base = 10100;
-        RenderingHints.Key trans=null, aoi=null, bi=null, cs=null, atp=null;
+        RenderingHints.Key trans = null, aoi = null, bi = null, cs = null, atp = null;
         while (true) {
             int val = base;
 
             try {
-                trans = new TranscodingHintKey   (val++);
-                aoi   = new AreaOfInterestHintKey(val++);
-                bi    = new BufferedImageHintKey (val++);
-                cs    = new ColorSpaceHintKey    (val++);
-                atp   = new AvoidTilingHintKey   (val++);
+                trans = new TranscodingHintKey(val++);
+                aoi = new AreaOfInterestHintKey(val++);
+                bi = new BufferedImageHintKey(val++);
+                cs = new ColorSpaceHintKey(val++);
+                atp = new AvoidTilingHintKey(val++);
             } catch (Exception e) {
                 System.err.println
-                    ("You have loaded the Batik jar files more than once\n" +
-                     "in the same JVM this is likely a problem with the\n" +
-                     "way you are loading the Batik jar files.");
+                        ("You have loaded the Batik jar files more than once\n" +
+                                "in the same JVM this is likely a problem with the\n" +
+                                "way you are loading the Batik jar files.");
 
-                base = (int)(Math.random()*2000000);
+                base = (int) (Math.random() * 2000000);
                 continue;
             }
             break;
         }
-        KEY_BASE                = base;
-        KEY_TRANSCODING         = trans;
-        KEY_AREA_OF_INTEREST    = aoi;
-        KEY_BUFFERED_IMAGE      = bi;
-        KEY_COLORSPACE          = cs;
+        KEY_BASE = base;
+        KEY_TRANSCODING = trans;
+        KEY_AREA_OF_INTEREST = aoi;
+        KEY_BUFFERED_IMAGE = bi;
+        KEY_COLORSPACE = cs;
         KEY_AVOID_TILE_PAINTING = atp;
     }
 
     /**
      * Do not authorize creation of instances of that class
      */
-    private RenderingHintsKeyExt(){
+    private RenderingHintsKeyExt() {
     }
 }

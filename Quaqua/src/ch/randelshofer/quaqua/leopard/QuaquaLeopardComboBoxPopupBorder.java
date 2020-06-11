@@ -4,10 +4,18 @@
  */
 package ch.randelshofer.quaqua.leopard;
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+
+import javax.swing.border.Border;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.border.*;
 
 /**
  * A replacement for the AquaComboBoxPopupBorder.
@@ -21,7 +29,7 @@ public class QuaquaLeopardComboBoxPopupBorder implements Border {
     protected static Insets itemBorderInsets;
 
     public void paintBorder(Component component, Graphics gr, int x,
-            int y, int width, int height) {
+                            int y, int width, int height) {
         Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,

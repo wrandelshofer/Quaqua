@@ -41,8 +41,7 @@ import java.util.Iterator;
  * <p>
  * Each element of the SidebarListModel implements the interface FileInfo.
  *
- *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class SidebarListModel
@@ -80,27 +79,28 @@ public class SidebarListModel
     static {
         if (QuaquaManager.getProperty("os.name").equals("Mac OS X")) {
             defaultUserItems = new File[]{
-                        null, // null is used to specify a divider
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        new File(QuaquaManager.getProperty("user.home"), "Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    null, // null is used to specify a divider
+                    new File(QuaquaManager.getProperty("user.home"), "Desktop"),
+                    new File(QuaquaManager.getProperty("user.home"), "Documents"),
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         } else if (QuaquaManager.getProperty("os.name").startsWith("Windows")) {
             defaultUserItems = new File[]{
-                        null, // null is used to specify a divider
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        // Japanese ideographs for Desktop:
-                        new File(QuaquaManager.getProperty("user.home"), "\u684c\u9762"),
-                        new File(QuaquaManager.getProperty("user.home"), "My Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    null, // null is used to specify a divider
+                    new File(QuaquaManager.getProperty("user.home"), "Desktop"),
+                    // Japanese ideographs for Desktop:
+                    new File(QuaquaManager.getProperty("user.home"), "\u684c\u9762"),
+                    new File(QuaquaManager.getProperty("user.home"), "My Documents"),
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         } else {
             defaultUserItems = new File[]{
-                        null, // null is used to specify a divider
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
+                    null, // null is used to specify a divider
+                    new File(QuaquaManager.getProperty("user.home"))
+            };
         }
     }
+
     /**
      * This array list holds the user items.
      */
@@ -125,6 +125,7 @@ public class SidebarListModel
         int sequenceNumber = 0;
         boolean isVisible = true;
     }
+
     /**
      * Intervals between validations.
      */
@@ -134,7 +135,9 @@ public class SidebarListModel
      */
     private long bestBefore;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public SidebarListModel(JFileChooser fileChooser, TreePath path, TreeModel model) {
         this.fileChooser = fileChooser;
         this.path = path;
@@ -572,10 +575,10 @@ public class SidebarListModel
                 xml = new BinaryPListParser().parse(sidebarFile);
             }
             String key2 = "", key3 = "", key5 = "";
-            for (Iterator i0 = xml.iterateChildren(); i0.hasNext();) {
+            for (Iterator i0 = xml.iterateChildren(); i0.hasNext(); ) {
                 XMLElement xml1 = (XMLElement) i0.next();
 
-                for (Iterator i1 = xml1.iterateChildren(); i1.hasNext();) {
+                for (Iterator i1 = xml1.iterateChildren(); i1.hasNext(); ) {
                     XMLElement xml2 = (XMLElement) i1.next();
 
                     if (xml2.getName().equals("key")) {
@@ -583,18 +586,18 @@ public class SidebarListModel
                     }
 
                     if (xml2.getName().equals("dict") && key2.equals("systemitems")) {
-                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext();) {
+                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext(); ) {
                             XMLElement xml3 = (XMLElement) i2.next();
                             if (xml3.getName().equals("key")) {
                                 key3 = xml3.getContent();
                             }
                             if (xml3.getName().equals("array") && key3.equals("VolumesList")) {
-                                for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
+                                for (Iterator i3 = xml3.iterateChildren(); i3.hasNext(); ) {
                                     XMLElement xml4 = (XMLElement) i3.next();
 
                                     if (xml4.getName().equals("dict")) {
                                         SystemItemInfo info = new SystemItemInfo();
-                                        for (Iterator i4 = xml4.iterateChildren(); i4.hasNext();) {
+                                        for (Iterator i4 = xml4.iterateChildren(); i4.hasNext(); ) {
                                             XMLElement xml5 = (XMLElement) i4.next();
 
                                             if (xml5.getName().equals("key")) {
@@ -618,13 +621,13 @@ public class SidebarListModel
                         }
                     }
                     if (xml2.getName().equals("dict") && key2.equals("useritems")) {
-                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext();) {
+                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext(); ) {
                             XMLElement xml3 = (XMLElement) i2.next();
-                            for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
+                            for (Iterator i3 = xml3.iterateChildren(); i3.hasNext(); ) {
                                 XMLElement xml4 = (XMLElement) i3.next();
                                 String aliasName = null;
                                 byte[] serializedAlias = null;
-                                for (Iterator i4 = xml4.iterateChildren(); i4.hasNext();) {
+                                for (Iterator i4 = xml4.iterateChildren(); i4.hasNext(); ) {
                                     XMLElement xml5 = (XMLElement) i4.next();
 
                                     if (xml5.getName().equals("key")) {
@@ -720,7 +723,7 @@ public class SidebarListModel
         @Override
         public boolean equals(Object o) {
             return (o instanceof Row)//
-                    ? compareTo(o)==0
+                    ? compareTo(o) == 0
                     : false;
         }
     }

@@ -5,21 +5,32 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import java.awt.event.*;
+import ch.randelshofer.quaqua.util.Fonts;
+import ch.randelshofer.quaqua.util.Methods;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicTextPaneUI;
+import javax.swing.text.Caret;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.MouseListener;
 
 /**
  * QuaquaTextPaneUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayoutable {
@@ -47,15 +58,16 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
         }
         QuaquaTextCursorHandler.getInstance().uninstallListeners(getComponent());
     }
+
     protected MouseListener createPopupListener() {
-        return (MouseListener) UIManager.get(getPropertyPrefix()+".popupHandler");
+        return (MouseListener) UIManager.get(getPropertyPrefix() + ".popupHandler");
     }
 
     @Override
     protected void installDefaults() {
         if (!QuaquaUtilities.isHeadless()) {
             oldDragState = Methods.invokeGetter(getComponent(), "getDragEnabled", true);
-            Methods.invokeIfExists(getComponent(),"setDragEnabled", true);
+            Methods.invokeIfExists(getComponent(), "setDragEnabled", true);
         }
         super.installDefaults();
     }
@@ -63,8 +75,8 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
     @Override
     protected void uninstallDefaults() {
         if (!QuaquaUtilities.isHeadless()) {
-            Methods.invokeIfExists(getComponent(),"setDragEnabled", oldDragState);
-            }
+            Methods.invokeIfExists(getComponent(), "setDragEnabled", oldDragState);
+        }
         super.uninstallDefaults();
     }
 
@@ -97,14 +109,14 @@ public class QuaquaTextPaneUI extends BasicTextPaneUI implements VisuallyLayouta
     }
 
     public Rectangle getVisualBounds(JComponent c, int type, int width, int height) {
-        Rectangle bounds = new Rectangle(0,0,width,height);
+        Rectangle bounds = new Rectangle(0, 0, width, height);
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
 
         JTextComponent b = (JTextComponent) c;
         if (type == VisuallyLayoutable.COMPONENT_BOUNDS
-        && b.getBorder() != null) {
+                && b.getBorder() != null) {
             Border border = b.getBorder();
             if (border instanceof UIResource) {
                 //InsetsUtil.subtractInto(getVisualMargin(b), bounds);

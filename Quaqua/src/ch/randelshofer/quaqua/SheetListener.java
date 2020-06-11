@@ -5,11 +5,12 @@
 
 package ch.randelshofer.quaqua;
 
-import java.util.*;
+import java.util.EventListener;
+
 /**
  * SheetListener.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 26. September 2005 Created.
  */
 public interface SheetListener extends EventListener {

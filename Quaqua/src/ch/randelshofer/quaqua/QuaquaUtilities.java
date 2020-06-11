@@ -4,23 +4,59 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragSource;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.io.*;
-import java.lang.reflect.Method;
-import java.net.*;
-import java.nio.charset.Charset;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JRootPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.JWindow;
+import javax.swing.LookAndFeel;
+import javax.swing.RootPaneContainer;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.View;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
+import java.awt.MediaTracker;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.TexturePaint;
+import java.awt.Toolkit;
+import java.awt.Transparency;
+import java.awt.Window;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragSource;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 
 /**
  * Utility class for the Quaqua LAF.
@@ -32,19 +68,30 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
 
     public enum SizeVariant {
 
-        LARGE(3),REGULAR(2), SMALL(1), MINI(0);
-        /** id establishes an ordering between the sizes. */
+        LARGE(3), REGULAR(2), SMALL(1), MINI(0);
+        /**
+         * id establishes an ordering between the sizes.
+         */
         int id;
+
         SizeVariant(int id) {
-        this.id=id;
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
-        public int getId(){return id;}
-    }
+
     private final static boolean DEBUG = false;
-    /** Holds the class name of SwingUtilities2 once it has been resolved. */
+    /**
+     * Holds the class name of SwingUtilities2 once it has been resolved.
+     */
     private static String swingUtilities2;
 
-    /** Prevent instance creation. */
+    /**
+     * Prevent instance creation.
+     */
     private QuaquaUtilities() {
     }
 
@@ -65,15 +112,15 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * bounds of {@code text} (including &lt; 0), nothing will be
      * underlined.
      *
-     * @param g Graphics to draw with
-     * @param text String to draw
+     * @param g               Graphics to draw with
+     * @param text            String to draw
      * @param underlinedIndex Index of character in text to underline
-     * @param x x coordinate to draw at
-     * @param y y coordinate to draw at
+     * @param x               x coordinate to draw at
+     * @param y               y coordinate to draw at
      * @since 1.4
      */
     public static void drawStringUnderlineCharAt(Graphics g, String text,
-            int underlinedIndex, int x, int y) {
+                                                 int underlinedIndex, int x, int y) {
         g.drawString(text, x, y);
         if (underlinedIndex >= 0 && underlinedIndex < text.length()) {
             FontMetrics fm = g.getFontMetrics();
@@ -91,7 +138,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * within string {@code text}. Matching algorithm is not
      * case-sensitive.
      *
-     * @param text The text to search through, may be null
+     * @param text     The text to search through, may be null
      * @param mnemonic The mnemonic to find the character for.
      * @return index into the string if exists, otherwise -1
      */
@@ -129,9 +176,10 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * or if it is on a Window, which is focused.
      * Always returns true, if the component has no parent window.
      * <p>
-     * @param c The component.
+     *
+     * @param c                         The component.
      * @param isActiveWhenSheetIsActive Set this to true, when the window should
-     * be considered as active when its sheet dialog is active.
+     *                                  be considered as active when its sheet dialog is active.
      */
     public static boolean isOnActiveWindow(Component c, boolean isActiveWhenSheetIsActive) {
         // In the RootPaneUI, we set a client property on the whole component
@@ -184,7 +232,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * such as "Shift", or "Ctrl+Shift".
      *
      * @return string a text description of the combination of modifier
-     *                keys that were held down during the event
+     * keys that were held down during the event
      */
     public static String getKeyModifiersText(int modifiers, boolean leftToRight) {
         return getKeyModifiersUnicode(modifiers, leftToRight);
@@ -256,7 +304,9 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    /** Turns on common rendering hints for UI delegates. */
+    /**
+     * Turns on common rendering hints for UI delegates.
+     */
     public static Object beginGraphics(Graphics2D graphics2d) {
         Object object = graphics2d.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
         graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
@@ -266,7 +316,9 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         return object;
     }
 
-    /** Restores rendering hints for UI delegates. */
+    /**
+     * Restores rendering hints for UI delegates.
+     */
     public static void endGraphics(Graphics2D graphics2d, Object oldHints) {
         if (oldHints != null) {
             graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
@@ -301,7 +353,9 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         return Methods.invokeStaticGetter(GraphicsEnvironment.class, "isHeadless", false);
     }
 
-    /** Returns the class name of SwingUtilities2. */
+    /**
+     * Returns the class name of SwingUtilities2.
+     */
     private static String getSwingUtilities2() {
         if (swingUtilities2 == null) {
             // Location of SwingUtilities2 in J2SE6:
@@ -336,8 +390,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * the additional feedback.
      *
      * @param component Component the error occured in, may be null
-     *			indicating the error condition is not directly
-     *			associated with a {@code Component}.
+     *                  indicating the error condition is not directly
+     *                  associated with a {@code Component}.
      */
     static void provideErrorFeedback(Component component) {
         Toolkit toolkit = null;
@@ -375,6 +429,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
 
     /**
      * Loads the image, returning only when the image is loaded.
+     *
      * @param image the image
      */
     private static void loadImage(Image image) {
@@ -406,17 +461,17 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * into account and translated into LEFT/RIGHT values accordingly.
      */
     public static String layoutCompoundLabel(JComponent c,
-            FontMetrics fm,
-            String text,
-            Icon icon,
-            int verticalAlignment,
-            int horizontalAlignment,
-            int verticalTextPosition,
-            int horizontalTextPosition,
-            Rectangle viewR,
-            Rectangle iconR,
-            Rectangle textR,
-            int textIconGap) {
+                                             FontMetrics fm,
+                                             String text,
+                                             Icon icon,
+                                             int verticalAlignment,
+                                             int horizontalAlignment,
+                                             int verticalTextPosition,
+                                             int horizontalTextPosition,
+                                             Rectangle viewR,
+                                             Rectangle iconR,
+                                             Rectangle textR,
+                                             int textIconGap) {
         boolean orientationIsLeftToRight = true;
         int hAlign = horizontalAlignment;
         int hTextPos = horizontalTextPosition;
@@ -430,23 +485,23 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         // Translate LEADING/TRAILING values in horizontalAlignment
         // to LEFT/RIGHT values depending on the components orientation
         switch (horizontalAlignment) {
-            case LEADING:
-                hAlign = (orientationIsLeftToRight) ? LEFT : RIGHT;
-                break;
-            case TRAILING:
-                hAlign = (orientationIsLeftToRight) ? RIGHT : LEFT;
-                break;
+        case LEADING:
+            hAlign = (orientationIsLeftToRight) ? LEFT : RIGHT;
+            break;
+        case TRAILING:
+            hAlign = (orientationIsLeftToRight) ? RIGHT : LEFT;
+            break;
         }
 
         // Translate LEADING/TRAILING values in horizontalTextPosition
         // to LEFT/RIGHT values depending on the components orientation
         switch (horizontalTextPosition) {
-            case LEADING:
-                hTextPos = (orientationIsLeftToRight) ? LEFT : RIGHT;
-                break;
-            case TRAILING:
-                hTextPos = (orientationIsLeftToRight) ? RIGHT : LEFT;
-                break;
+        case LEADING:
+            hTextPos = (orientationIsLeftToRight) ? LEFT : RIGHT;
+            break;
+        case TRAILING:
+            hTextPos = (orientationIsLeftToRight) ? RIGHT : LEFT;
+            break;
         }
 
         return layoutCompoundLabelImpl(c,
@@ -502,7 +557,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * values in horizontalTextPosition (they will default to RIGHT) and in
      * horizontalAlignment (they will default to CENTER).
      * Use the other version of layoutCompoundLabel() instead.
-     *
+     * <p>
      * This is the same as SwingUtilities.layoutCompoundLabelImpl, except for
      * the algorithm for clipping the text. If a text is too long, "..." are
      * inserted at the middle of the text instead of at the end.
@@ -697,7 +752,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * a window translucent. If the API is not found, this method leaves the
      * window opaque.
      *
-     * @param w The Window.
+     * @param w     The Window.
      * @param value The alpha channel for the window.
      */
     static void setWindowAlpha(Window w, int value) {
@@ -716,7 +771,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    /** Copied from BasicLookAndFeel.
+    /**
+     * Copied from BasicLookAndFeel.
      */
     public static Component compositeRequestFocus(Component component) {
         try {
@@ -764,16 +820,17 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * values cannot be wrapped with the UIResource marker, this method
      * uses private state to determine whether the property has been set
      * by the client.
-     * @throws IllegalArgumentException if the specified property is not
-     *         one which can be set using this method
-     * @throws ClassCastException may be thrown if the property value
-     *         specified does not match the property's type
-     * @throws NullPointerException may be thrown if c or propertyValue is null
-     * @param c the target component for installing the property
+     *
+     * @param c            the target component for installing the property
      * @param propertyName String containing the name of the property to be set
+     * @throws IllegalArgumentException if the specified property is not
+     *                                  one which can be set using this method
+     * @throws ClassCastException       may be thrown if the property value
+     *                                  specified does not match the property's type
+     * @throws NullPointerException     may be thrown if c or propertyValue is null
      */
     public static void installProperty(JComponent c,
-            String propertyName, Object value) {
+                                       String propertyName, Object value) {
         LookAndFeel.installProperty(c, propertyName, value);
     }
 
@@ -807,7 +864,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    /** Gets the size variant of a component.
+    /**
+     * Gets the size variant of a component.
      * <p>
      * The size variant can be explicitly set using the client property
      * "JComponent.sizeVariant="regular"|"small"|"mini".
@@ -829,7 +887,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             if (p != null) {
                 if (p.equals("large")) {
                     sv = SizeVariant.LARGE;
-                }else if (p.equals("regular")) {
+                } else if (p.equals("regular")) {
                     sv = SizeVariant.REGULAR;
                 } else if (p.equals("small")) {
                     sv = SizeVariant.SMALL;
@@ -838,11 +896,13 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
                 }
             }
         }
-        if (sv==null) {
+        if (sv == null) {
 
-              if ((c instanceof TableCellRenderer)
-                || (c instanceof TableCellEditor)
-                || (c.getParent() instanceof JTable)) sv=SizeVariant.SMALL;
+            if ((c instanceof TableCellRenderer)
+                    || (c instanceof TableCellEditor)
+                    || (c.getParent() instanceof JTable)) {
+                sv = SizeVariant.SMALL;
+            }
         }
 
         if (sv == null) {
@@ -867,26 +927,28 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         Font font = c.getFont();
         if (font == null || (font instanceof UIResource)) {
             switch (getSizeVariant(c)) {
-                case REGULAR:
-                default:
-                    font = UIManager.getFont("SystemFont");
-                    break;
-                case SMALL:
-                    font = UIManager.getFont("SmallSystemFont");
-                    break;
-                case MINI:
-                    font = UIManager.getFont("MiniSystemFont");
-                    break;
+            case REGULAR:
+            default:
+                font = UIManager.getFont("SystemFont");
+                break;
+            case SMALL:
+                font = UIManager.getFont("SmallSystemFont");
+                break;
+            case MINI:
+                font = UIManager.getFont("MiniSystemFont");
+                break;
             }
 
             String pstyle = (String) c.getClientProperty("Quaqua.Tree.style");
-            if (pstyle != null && (pstyle.equals("sideBar")||pstyle.equals("sourceList"))) {
+            if (pstyle != null && (pstyle.equals("sideBar") || pstyle.equals("sourceList"))) {
                 font = UIManager.getFont("Tree.sideBar.selectionFont");
             }
-            String bstyle=(String)c.getClientProperty("Quaqua.Button.style");
-            if (bstyle==null) bstyle=(String)c.getClientProperty("JButton.buttonType");
-            if (bstyle!=null && bstyle.equals("tableHeader")) {
-                font=UIManager.getFont("TableHeader.font");
+            String bstyle = (String) c.getClientProperty("Quaqua.Button.style");
+            if (bstyle == null) {
+                bstyle = (String) c.getClientProperty("JButton.buttonType");
+            }
+            if (bstyle != null && bstyle.equals("tableHeader")) {
+                font = UIManager.getFont("TableHeader.font");
             }
         }
         return font == null ? UIManager.getFont("SystemFont") : font;
@@ -909,12 +971,12 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     public static int mapDragOperationFromModifiers(MouseEvent me,
-            TransferHandler th) {
+                                                    TransferHandler th) {
         return convertModifiersToDropAction(me.getModifiersEx(), th.getSourceActions((JComponent) me.getSource()));
     }
 
     public static int convertModifiersToDropAction(final int modifiers,
-            final int supportedActions) {
+                                                   final int supportedActions) {
         int dropAction = DnDConstants.ACTION_NONE;
 
         /*
@@ -935,23 +997,23 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
          */
         switch (modifiers & (InputEvent.SHIFT_DOWN_MASK
                 | InputEvent.CTRL_DOWN_MASK)) {
-            case InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK:
-                dropAction = DnDConstants.ACTION_LINK;
-                break;
-            case InputEvent.CTRL_DOWN_MASK:
-                dropAction = DnDConstants.ACTION_COPY;
-                break;
-            case InputEvent.SHIFT_DOWN_MASK:
+        case InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK:
+            dropAction = DnDConstants.ACTION_LINK;
+            break;
+        case InputEvent.CTRL_DOWN_MASK:
+            dropAction = DnDConstants.ACTION_COPY;
+            break;
+        case InputEvent.SHIFT_DOWN_MASK:
+            dropAction = DnDConstants.ACTION_MOVE;
+            break;
+        default:
+            if ((supportedActions & DnDConstants.ACTION_MOVE) != 0) {
                 dropAction = DnDConstants.ACTION_MOVE;
-                break;
-            default:
-                if ((supportedActions & DnDConstants.ACTION_MOVE) != 0) {
-                    dropAction = DnDConstants.ACTION_MOVE;
-                } else if ((supportedActions & DnDConstants.ACTION_COPY) != 0) {
-                    dropAction = DnDConstants.ACTION_COPY;
-                } else if ((supportedActions & DnDConstants.ACTION_LINK) != 0) {
-                    dropAction = DnDConstants.ACTION_LINK;
-                }
+            } else if ((supportedActions & DnDConstants.ACTION_COPY) != 0) {
+                dropAction = DnDConstants.ACTION_COPY;
+            } else if ((supportedActions & DnDConstants.ACTION_LINK) != 0) {
+                dropAction = DnDConstants.ACTION_LINK;
+            }
         }
 
         return dropAction & supportedActions;
@@ -962,11 +1024,10 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * {@code Component} that is the focus owner, if any.
      *
      * @param c the root of the {@code Component} hierarchy to
-     *        search for the focus owner
+     *          search for the focus owner
      * @return the focus owner, or {@code null} if there is no focus
-     *         owner, or if the focus owner is not {@code comp}, or a
-     *         descendant of {@code comp}
-     *
+     * owner, or if the focus owner is not {@code comp}, or a
+     * descendant of {@code comp}
      * @see java.awt.KeyboardFocusManager#getFocusOwner
      */
     public static Component findFocusOwner(Component c) {
@@ -974,7 +1035,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
 
         // verify focusOwner is a descendant of c
         for (Component temp = focusOwner; temp != null;
-                temp = (temp instanceof Window) ? null : temp.getParent()) {
+             temp = (temp instanceof Window) ? null : temp.getParent()) {
             if (temp == c) {
                 return focusOwner;
             }
@@ -994,29 +1055,30 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         return isTextured;
     }
 
-    /** Returns the visual bounds of the component given in the local
+    /**
+     * Returns the visual bounds of the component given in the local
      * coordinate system of the component.
      *
-     * @param c The component.
+     * @param c    The component.
      * @param type A type from {@link VisuallyLayoutable}.
      * @return The visual bounds. Returns null if the given type is not applicable.
      */
     public static Rectangle getVisualBounds(Component c, int type) {
         if (c instanceof JComponent) {
-            JComponent jc=(JComponent)c;
-            ComponentUI ui=(ComponentUI)Methods.invokeGetter(jc, "getUI",null);
+            JComponent jc = (JComponent) c;
+            ComponentUI ui = (ComponentUI) Methods.invokeGetter(jc, "getUI", null);
             if (ui instanceof VisuallyLayoutable) {
-                VisuallyLayoutable vl=(VisuallyLayoutable)ui;
-                return vl.getVisualBounds(jc,type,jc.getWidth(),jc.getHeight());
+                VisuallyLayoutable vl = (VisuallyLayoutable) ui;
+                return vl.getVisualBounds(jc, type, jc.getWidth(), jc.getHeight());
 
             }
         }
-            return type==VisuallyLayoutable.CLIP_BOUNDS?new Rectangle(0,0,c.getWidth(),c.getHeight()):null;
+        return type == VisuallyLayoutable.CLIP_BOUNDS ? new Rectangle(0, 0, c.getWidth(), c.getHeight()) : null;
     }
 
     /**
-   	  Execute a system command and collect the standard output.
-   	*/
+     * Execute a system command and collect the standard output.
+     */
 
     public static String exec(String[] cmd, Charset cs) {
         try {
@@ -1035,63 +1097,60 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     /**
-   	  Collect the contents of a string using a worker thread. Notify when done.
-   	*/
+     * Collect the contents of a string using a worker thread. Notify when done.
+     */
 
-   	private static class StreamCollector
-   		extends Thread
-   	{
-   		private BufferedReader br;
-   		private String result;
+    private static class StreamCollector
+            extends Thread {
+        private BufferedReader br;
+        private String result;
 
-   		public StreamCollector(Reader r)
-   		{
-   			br = new BufferedReader(r);
-   		}
+        public StreamCollector(Reader r) {
+            br = new BufferedReader(r);
+        }
 
-   		/**
-   		  Return the collected contents, or null if not ready yet.
-   		*/
+        /**
+         * Return the collected contents, or null if not ready yet.
+         */
 
-   		public synchronized String getContents()
-   		{
-   			return result;
-   		}
+        public synchronized String getContents() {
+            return result;
+        }
 
-   		private synchronized void setContents(String s)
-   		{
-   			result = s;
-   			notifyAll();
-   		}
+        private synchronized void setContents(String s) {
+            result = s;
+            notifyAll();
+        }
 
-   		public void run()
-   		{
-   			StringBuilder sb = new StringBuilder();
-   			char[] buffer = new char[1000];
-   			try {
-   				for (;;) {
-   					int count = br.read(buffer, 0, buffer.length);
-   					if (count < 0) break;
-   					if (count > 0) {
-   						sb.append(buffer, 0, count);
-   					} else {
-   						try {
-   							Thread.sleep(200);
-   						} catch (InterruptedException ex) {
-   						}
-   					}
-   				}
-   			} catch (IOException ex) {
-   			}
-   			String s = sb.toString();
-   			setContents(s);
-   		}
-   	}
+        public void run() {
+            StringBuilder sb = new StringBuilder();
+            char[] buffer = new char[1000];
+            try {
+                for (; ; ) {
+                    int count = br.read(buffer, 0, buffer.length);
+                    if (count < 0) {
+                        break;
+                    }
+                    if (count > 0) {
+                        sb.append(buffer, 0, count);
+                    } else {
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException ex) {
+                        }
+                    }
+                }
+            } catch (IOException ex) {
+            }
+            String s = sb.toString();
+            setContents(s);
+        }
+    }
 
-        public static Color darker(Color c, double factor) {
-        return new Color(Math.max((int)(c.getRed()  *factor), 0),
-                         Math.max((int)(c.getGreen()*factor), 0),
-                         Math.max((int)(c.getBlue() *factor), 0),
-                         c.getAlpha());
+    public static Color darker(Color c, double factor) {
+        return new Color(Math.max((int) (c.getRed() * factor), 0),
+                Math.max((int) (c.getGreen() * factor), 0),
+                Math.max((int) (c.getBlue() * factor), 0),
+                c.getAlpha());
     }
 }

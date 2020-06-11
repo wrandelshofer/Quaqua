@@ -5,12 +5,14 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+
 /**
  * OverlayIcon.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0  20 March 2005  Created.
  */
 public class OverlayIcon implements Icon {
@@ -26,9 +28,12 @@ public class OverlayIcon implements Icon {
     public OverlayIcon(Object first, Object second) {
         this((Icon) first, (Icon) second);
     }
-    /** Creates a new instance. */
+
+    /**
+     * Creates a new instance.
+     */
     public OverlayIcon(Icon first, Icon second) {
-        this.icons = new Icon[] { first, second };
+        this.icons = new Icon[]{first, second};
     }
 
     public int getIconHeight() {
@@ -40,9 +45,9 @@ public class OverlayIcon implements Icon {
     }
 
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        for (int i=0; i < icons.length; i++) {
-            if (icons[i]!=null) {
-            icons[i].paintIcon(c, g, x, y);
+        for (int i = 0; i < icons.length; i++) {
+            if (icons[i] != null) {
+                icons[i].paintIcon(c, g, x, y);
             }
         }
     }

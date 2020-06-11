@@ -4,15 +4,17 @@
  */
 package test;
 
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
 
 /**
  * NonEDTTest.
  *
  * @author Werner Randelshofer
- * @version 1.0 May 1, 2008 Created.
+ *  @version 1.0 May 1, 2008 Created.
  */
 public class NonEDTTest {
 

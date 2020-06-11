@@ -4,26 +4,23 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.JButton;
-
-import ch.randelshofer.quaqua.border.PressedCueBorder;
-
-import javax.swing.JToolBar;
-import java.util.HashMap;
-
-import ch.randelshofer.quaqua.border.CompositeVisualMarginBorder;
-import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.util.Images;
-import ch.randelshofer.quaqua.border.ButtonStateBorder;
-import ch.randelshofer.quaqua.util.InsetsUtil;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
+import ch.randelshofer.quaqua.border.ButtonStateBorder;
+import ch.randelshofer.quaqua.border.CompositeVisualMarginBorder;
 import ch.randelshofer.quaqua.border.FocusedBorder;
-
-import javax.swing.JComponent;
-
+import ch.randelshofer.quaqua.border.PressedCueBorder;
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
+import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.InsetsUtil;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JToolBar;
+import javax.swing.border.Border;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -33,11 +30,12 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
-import javax.swing.border.Border;
+import java.util.HashMap;
 
-import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.SegmentPosition;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 
 /**
  * Native Aqua border for an {@code AbstractButton}.

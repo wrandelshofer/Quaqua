@@ -5,11 +5,12 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import javax.swing.*;
+import javax.swing.DefaultBoundedRangeModel;
+
 /**
  * A ColorSliderModel for RGB color components (red, green, blue).
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 May 22, 2005 Created.
  */
 public class RGBColorSliderModel extends ColorSliderModel {
@@ -17,10 +18,10 @@ public class RGBColorSliderModel extends ColorSliderModel {
      * Creates a new instance.
      */
     public RGBColorSliderModel() {
-        super(new DefaultBoundedRangeModel[] {
-            new DefaultBoundedRangeModel(255, 0, 0, 255),
-            new DefaultBoundedRangeModel(255, 0, 0, 255),
-            new DefaultBoundedRangeModel(255, 0, 0, 255)
+        super(new DefaultBoundedRangeModel[]{
+                new DefaultBoundedRangeModel(255, 0, 0, 255),
+                new DefaultBoundedRangeModel(255, 0, 0, 255),
+                new DefaultBoundedRangeModel(255, 0, 0, 255)
         });
     }
 
@@ -35,7 +36,7 @@ public class RGBColorSliderModel extends ColorSliderModel {
     public void setRGB(int rgb) {
         components[0].setValue((rgb & 0xff0000) >> 16);
         components[1].setValue((rgb & 0x00ff00) >> 8);
-        components[2].setValue( rgb & 0x0000ff);
+        components[2].setValue(rgb & 0x0000ff);
     }
 
     public int toRGB(int[] values) {

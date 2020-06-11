@@ -5,6 +5,7 @@
 package ch.randelshofer.quaqua.osx;
 
 import ch.randelshofer.quaqua.QuaquaManager;
+
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -19,15 +20,16 @@ import java.security.AccessControlException;
  * <a
  * href="http://hg.openjdk.java.net/macosx-port/macosx-port/jdk/file/tip/src/macosx/classes/com/apple/laf/"
  * >OpenJDK LaF classes</a><br>
- *
+ * <p>
  * <a href="http://hg.openjdk.java.net/macosx-port/macosx-port/jdk/file/tip/src/macosx/classes/apple/laf/"
  * >OpenJDK JRSUIControl classes</a><br>
- *
+ * <p>
  * <a href="http://hg.openjdk.java.net/macosx-port/macosx-port/jdk/file/tip/src/macosx/native/com/apple/laf/"
  * >
  * OpenJDK native code.
  * </a>
- *</p>
+ * </p>
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -37,7 +39,9 @@ public class OSXAquaPainter {
      * This variable is set to true, if native code is available.
      */
     private static volatile Boolean isNativeCodeAvailable;
-    /** The handle to the native control. */
+    /**
+     * The handle to the native control.
+     */
     private long handle;
     private Widget widget;
     /**
@@ -118,7 +122,9 @@ public class OSXAquaPainter {
         return widget;
     }
 
-    /** Property keys. */
+    /**
+     * Property keys.
+     */
     public enum Key {
 
         widget(1),
@@ -159,7 +165,9 @@ public class OSXAquaPainter {
         public int getId() {
             return id;
         }
-    };
+    }
+
+    ;
 
     public enum Widget {
 
@@ -458,122 +466,152 @@ public class OSXAquaPainter {
         releaseControl();
     }
 
-    /** Sets the widget type of the JRSUIControl. */
+    /**
+     * Sets the widget type of the JRSUIControl.
+     */
     public void setWidget(Widget widget) {
-        this.widget=widget;
+        this.widget = widget;
         if (createControl()) {
             nativeSetWidget(handle, widget.getId());
         }
     }
 
-    /** Sets the state of the JRSUIControl. */
+    /**
+     * Sets the state of the JRSUIControl.
+     */
     public void setState(State state) {
         if (createControl()) {
             nativeSetState(handle, state.getId());
         }
     }
 
-    /** Sets a key value of the JRSUIControl. */
+    /**
+     * Sets a key value of the JRSUIControl.
+     */
     public void setValueByKey(Key key, double value) {
         if (createControl()) {
             nativeSetValueByKey(handle, key.getId(), value);
         }
     }
 
-    /** Sets the size variant of the JRSUIControl. */
+    /**
+     * Sets the size variant of the JRSUIControl.
+     */
     public void setSize(Size size) {
         if (createControl()) {
             nativeSetSize(handle, size.getId());
         }
     }
 
-    /** Sets the direction of the JRSUIControl. */
+    /**
+     * Sets the direction of the JRSUIControl.
+     */
     public void setDirection(Direction direction) {
         if (createControl()) {
             nativeSetDirection(handle, direction.getId());
         }
     }
 
-    /** Sets the orientation of the JRSUIControl. */
+    /**
+     * Sets the orientation of the JRSUIControl.
+     */
     public void setOrientation(Orientation orientation) {
         if (createControl()) {
             nativeSetOrientation(handle, orientation.getId());
         }
     }
 
-    /** Sets the horizontal alignment of the JRSUIControl. */
+    /**
+     * Sets the horizontal alignment of the JRSUIControl.
+     */
     public void setHorizontalAlignment(HorizontalAlignment halignment) {
         if (createControl()) {
             nativeSetHorizontalAlignment(handle, halignment.getId());
         }
     }
 
-    /** Sets the vertical alignment of the JRSUIControl. */
+    /**
+     * Sets the vertical alignment of the JRSUIControl.
+     */
     public void setVerticalAlignment(VerticalAlignment valignment) {
         if (createControl()) {
             nativeSetVerticalAlignment(handle, valignment.getId());
         }
     }
 
-    /** Sets the segment position of the JRSUIControl. */
+    /**
+     * Sets the segment position of the JRSUIControl.
+     */
     public void setSegmentPosition(SegmentPosition segpos) {
         if (createControl()) {
             nativeSetSegmentPosition(handle, segpos.getId());
         }
     }
 
-    /** Specifies the desired scroll bar part of the JRSUIControl. */
+    /**
+     * Specifies the desired scroll bar part of the JRSUIControl.
+     */
     public void setScrollBarPart(ScrollBarPart sbpart) {
         if (createControl()) {
             nativeSetScrollBarPart(handle, sbpart.getId());
         }
     }
 
-    /** Specifies the desired variant of the JRSUIControl. */
+    /**
+     * Specifies the desired variant of the JRSUIControl.
+     */
     public void setVariant(Variant variant) {
         if (createControl()) {
             nativeSetVariant(handle, variant.getId());
         }
     }
 
-    /** Specifies the desired window type of the JRSUIControl. */
+    /**
+     * Specifies the desired window type of the JRSUIControl.
+     */
     public void setWindowType(WindowType wtype) {
         if (createControl()) {
             nativeSetWindowType(handle, wtype.getId());
         }
     }
 
-    /** Specifies whether to show arrows on a JRSUIControl. */
+    /**
+     * Specifies whether to show arrows on a JRSUIControl.
+     */
     public void setShowArrows(boolean b) {
         if (createControl()) {
             nativeSetShowArrows(handle, b);
         }
     }
 
-    /** Specifies whether to animate a JRSUIControl. */
+    /**
+     * Specifies whether to animate a JRSUIControl.
+     */
     public void setAnimating(boolean b) {
         if (createControl()) {
             nativeSetAnimating(handle, b);
         }
     }
 
-    /** Paints the widget on the specified image.
+    /**
+     * Paints the widget on the specified image.
      * The image data must be of type {@code BufferedImage.TYPE_INT_ARGB_PRE}.
      */
     public void paint(int[] imageData, int imgWidth, int imgHeight,//
-            double x, double y, double width, double height) {
+                      double x, double y, double width, double height) {
         if (createControl()) {
             nativePaint(imageData, imgWidth, imgHeight, handle, x, imgHeight - y - height, width, height);
         }
     }
 
-    /** Paints the widget on the specified image.
+    /**
+     * Paints the widget on the specified image.
      * The image data must be of type {@code BufferedImage.TYPE_INT_ARGB_PRE}.
      *
      * @throws IllegalArgumentException if the image type is not {@code BufferedImage.TYPE_INT_ARGB_PRE}.
      */
     public void paint(BufferedImage image,//
-            double x, double y, double width, double height) {
+                      double x, double y, double width, double height) {
         if (image.getType() != BufferedImage.TYPE_INT_ARGB_PRE) {
             throw new IllegalArgumentException("Unsupported image type=" + image.getType());
         }
@@ -597,62 +635,96 @@ public class OSXAquaPainter {
      * Returns the version of the native code library. If the version
      * does not match with the version that we expect, we can not use
      * it.
+     *
      * @return The version number of the native code.
      */
     private static native int nativeGetNativeCodeVersion();
 
-    /** Creates a JRSUIControl and returns a handle to it. */
+    /**
+     * Creates a JRSUIControl and returns a handle to it.
+     */
     private static native long nativeCreateControl(boolean isFlipped);
 
-    /** Disposes of the JRSUIControl. */
+    /**
+     * Disposes of the JRSUIControl.
+     */
     private static native void nativeReleaseControl(long handle);
 
-    /** Sets a property value on a JRSUIControl. */
+    /**
+     * Sets a property value on a JRSUIControl.
+     */
     private static native void nativeSetValueByKey(long ctrlHandle, int key, double value);
 
-    /** Sets the widget type on a JRSUIControl. */
+    /**
+     * Sets the widget type on a JRSUIControl.
+     */
     private static native void nativeSetWidget(long ctrlHandle, int widget);
 
-    /** Sets the state of the JRSUIControl. */
+    /**
+     * Sets the state of the JRSUIControl.
+     */
     private static native void nativeSetState(long ctrlHandle, int state);
 
-    /** Sets the size variant of the JRSUIControl. */
+    /**
+     * Sets the size variant of the JRSUIControl.
+     */
     private static native void nativeSetSize(long ctrlHandle, int size);
 
-    /** Sets the direction of the JRSUIControl. */
+    /**
+     * Sets the direction of the JRSUIControl.
+     */
     private static native void nativeSetDirection(long ctrlHandle, int direction);
 
-    /** Sets the orientation of the JRSUIControl. */
+    /**
+     * Sets the orientation of the JRSUIControl.
+     */
     private static native void nativeSetOrientation(long ctrlHandle, int orientation);
 
-    /** Sets the horizontal alignment of the JRSUIControl. */
+    /**
+     * Sets the horizontal alignment of the JRSUIControl.
+     */
     private static native void nativeSetHorizontalAlignment(long ctrlHandle, int halignment);
 
-    /** Sets the vertical alignment of the JRSUIControl. */
+    /**
+     * Sets the vertical alignment of the JRSUIControl.
+     */
     private static native void nativeSetVerticalAlignment(long ctrlHandle, int valignment);
 
-    /** Sets the segment position of the JRSUIControl. */
+    /**
+     * Sets the segment position of the JRSUIControl.
+     */
     private static native void nativeSetSegmentPosition(long ctrlHandle, int segpos);
 
-    /** Specifies the desired scroll bar part of the JRSUIControl. */
+    /**
+     * Specifies the desired scroll bar part of the JRSUIControl.
+     */
     private static native void nativeSetScrollBarPart(long ctrlHandle, int sbpart);
 
-    /** Specifies the desired variant of the JRSUIControl. */
+    /**
+     * Specifies the desired variant of the JRSUIControl.
+     */
     private static native void nativeSetVariant(long ctrlHandle, int variant);
 
-    /** Specifies the desired window type of the JRSUIControl. */
+    /**
+     * Specifies the desired window type of the JRSUIControl.
+     */
     private static native void nativeSetWindowType(long ctrlHandle, int wtype);
 
-    /** Specifies whether to show arrows on a JRSUIControl. */
+    /**
+     * Specifies whether to show arrows on a JRSUIControl.
+     */
     private static native void nativeSetShowArrows(long ctrlHandle, boolean b);
 
-    /** Specifies whether to animate a JRSUIControl. */
+    /**
+     * Specifies whether to animate a JRSUIControl.
+     */
     private static native void nativeSetAnimating(long ctrlHandle, boolean b);
 
-    /** Paints the widget on the specified image.
+    /**
+     * Paints the widget on the specified image.
      * Note: The coordinate system of the native paint method has its origin
      * at the lower left corner. (Java has the origin at the top left corner.
      */
     private static native void nativePaint(int[] imgData, int imgWidth, int imgHeight,//
-            long ctrlHandle, double x, double y, double width, double height);
+                                           long ctrlHandle, double x, double y, double width, double height);
 }

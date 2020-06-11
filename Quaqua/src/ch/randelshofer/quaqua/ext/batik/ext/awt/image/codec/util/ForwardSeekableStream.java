@@ -16,10 +16,14 @@ import java.io.InputStream;
  */
 public class ForwardSeekableStream extends SeekableStream {
 
-    /** The source <code>InputStream</code>. */
+    /**
+     * The source <code>InputStream</code>.
+     */
     private InputStream src;
 
-    /** The current position. */
+    /**
+     * The current position.
+     */
     long pointer = 0L;
 
     /**
@@ -30,7 +34,9 @@ public class ForwardSeekableStream extends SeekableStream {
         this.src = src;
     }
 
-    /** Forwards the request to the real <code>InputStream</code>. */
+    /**
+     * Forwards the request to the real <code>InputStream</code>.
+     */
     public final int read() throws IOException {
         int result = src.read();
         if (result != -1) {
@@ -39,7 +45,9 @@ public class ForwardSeekableStream extends SeekableStream {
         return result;
     }
 
-    /** Forwards the request to the real <code>InputStream</code>. */
+    /**
+     * Forwards the request to the real <code>InputStream</code>.
+     */
     public final int read(byte[] b, int off, int len) throws IOException {
         int result = src.read(b, off, len);
         if (result != -1) {
@@ -48,19 +56,25 @@ public class ForwardSeekableStream extends SeekableStream {
         return result;
     }
 
-    /** Forwards the request to the real <code>InputStream</code>. */
+    /**
+     * Forwards the request to the real <code>InputStream</code>.
+     */
     public final long skip(long n) throws IOException {
         long skipped = src.skip(n);
         pointer += skipped;
         return skipped;
     }
 
-    /** Forwards the request to the real <code>InputStream</code>. */
+    /**
+     * Forwards the request to the real <code>InputStream</code>.
+     */
     public final int available() throws IOException {
         return src.available();
     }
 
-    /** Forwards the request to the real <code>InputStream</code>. */
+    /**
+     * Forwards the request to the real <code>InputStream</code>.
+     */
     public final void close() throws IOException {
         src.close();
     }
@@ -85,17 +99,23 @@ public class ForwardSeekableStream extends SeekableStream {
         src.reset();
     }
 
-    /** Forwards the request to the real <code>InputStream</code>. */
+    /**
+     * Forwards the request to the real <code>InputStream</code>.
+     */
     public boolean markSupported() {
         return src.markSupported();
     }
 
-    /** Returns <code>false</code> since seking backwards is not supported. */
+    /**
+     * Returns <code>false</code> since seking backwards is not supported.
+     */
     public final boolean canSeekBackwards() {
         return false;
     }
 
-    /** Returns the current position in the stream (bytes read). */
+    /**
+     * Returns the current position in the stream (bytes read).
+     */
     public final long getFilePointer() {
         return pointer;
     }

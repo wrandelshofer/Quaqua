@@ -5,16 +5,23 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.JList;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+
 /**
  * PaletteEntryCellRenderer.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 19 septembre 2005 Created.
  */
 public class PaletteEntryCellRenderer extends DefaultListCellRenderer {
-    /** The following colors are used to draw the marker that marks the
+    /**
+     * The following colors are used to draw the marker that marks the
      * closest color in the palette.
      * The "closest color" is used, when the palette does not contain an
      * exact match to the currently selected color in the color chooser.
@@ -32,6 +39,7 @@ public class PaletteEntryCellRenderer extends DefaultListCellRenderer {
         public void setColor(Color c) {
             this.color = c;
         }
+
         public Color getColor() {
             return color;
         }
@@ -66,11 +74,11 @@ public class PaletteEntryCellRenderer extends DefaultListCellRenderer {
     }
 
     public Component getListCellRendererComponent(
-    JList list,
-    Object value,
-    int index,
-    boolean isSelected,
-    boolean cellHasFocus) {
+            JList list,
+            Object value,
+            int index,
+            boolean isSelected,
+            boolean cellHasFocus) {
 
         setComponentOrientation(list.getComponentOrientation());
         if (isSelected) {
@@ -99,17 +107,17 @@ public class PaletteEntryCellRenderer extends DefaultListCellRenderer {
         int width = getWidth();
         int height = getHeight();
         g.setColor(getBackground());
-        g.fillRect(0,0,width,height);
+        g.fillRect(0, 0, width, height);
         if (isClosestColor) {
             g.setColor(closestMarker1);
-            g.fillRect(0,0,width,2);
-            g.fillRect(0,height - 2,width,2);
+            g.fillRect(0, 0, width, 2);
+            g.fillRect(0, height - 2, width, 2);
             g.setColor(closestMarker2);
-            g.fillRect(0,2,width,1);
-            g.fillRect(0,height - 3,width,1);
+            g.fillRect(0, 2, width, 1);
+            g.fillRect(0, height - 3, width, 1);
             g.setColor(closestMarker3);
-            g.fillRect(0,3,width,1);
-            g.fillRect(0,height - 4,width,1);
+            g.fillRect(0, 3, width, 1);
+            g.fillRect(0, height - 4, width, 1);
         }
         super.paintComponent(g);
     }

@@ -4,23 +4,31 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * FileTransferHandler.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class FileTransferHandler implements DropTargetListener {
 
     private JFileChooser fileChooser;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public FileTransferHandler(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
     }
@@ -101,19 +109,19 @@ public class FileTransferHandler implements DropTargetListener {
      * shall accept or reject the drop via the
      * acceptDrop(int dropAction) or rejectDrop() methods of the
      * <code>DropTargetDropEvent</code> parameter.
-     * <P>
+     * <p>
      * Subsequent to acceptDrop(), but not before,
      * <code>DropTargetDropEvent</code>'s getTransferable()
      * method may be invoked, and data transfer may be
      * performed via the returned <code>Transferable</code>'s
      * getTransferData() method.
-     * <P>
+     * <p>
      * At the completion of a drop, an implementation
      * of this method is required to signal the success/failure
      * of the drop by passing an appropriate
      * <code>boolean</code> to the <code>DropTargetDropEvent</code>'s
      * dropComplete(boolean success) method.
-     * <P>
+     * <p>
      * Note: The data transfer should be completed before the call  to the
      * <code>DropTargetDropEvent</code>'s dropComplete(boolean success) method.
      * After that, a call to the getTransferData() method of the
@@ -123,7 +131,8 @@ public class FileTransferHandler implements DropTargetListener {
      * <code>DropTargetDropEvent.isLocalTransfer()</code> returns
      * <code>true</code>. Otherwise, the behavior of the call is
      * implementation-dependent.
-     * <P>
+     * <p>
+     *
      * @param evt the <code>DropTargetDropEvent</code>
      */
     public void drop(DropTargetDropEvent evt) {
@@ -139,7 +148,7 @@ public class FileTransferHandler implements DropTargetListener {
                         // -> Determine which directory to set as the root.
                         File dir = fileArray[0];
 
-                        if (dir.isDirectory() && fileArray.length==1 //
+                        if (dir.isDirectory() && fileArray.length == 1 //
                                 && fileChooser.getFileSelectionMode() == JFileChooser.FILES_ONLY) {
                             // The user dropped a directory on a file chooser which
                             // only selects files

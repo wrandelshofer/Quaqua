@@ -5,33 +5,27 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.AbstractFocusedPainter;
-import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.border.ImageBevelBorder;
-
-import javax.swing.JComponent;
-
 import ch.randelshofer.quaqua.border.BackgroundBorder;
-import ch.randelshofer.quaqua.border.FocusedBorder;
+import ch.randelshofer.quaqua.border.ImageBevelBorder;
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
-import ch.randelshofer.quaqua.util.CachedPainter;
 import ch.randelshofer.quaqua.util.InsetsUtil;
 
+import javax.swing.JComponent;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.text.JTextComponent;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.plaf.InsetsUIResource;
-import javax.swing.plaf.UIResource;
-import javax.swing.text.JTextComponent;
 
-import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.State;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 
 /**
  * Native Aqua border for text components.
@@ -53,10 +47,10 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
         private Border textFieldBorder;
 
         private Border getActualBorder(Component c) {
-                if (textFieldBorder == null) {
-                    textFieldBorder = new BGTextFieldBorder();
-                }
-                return textFieldBorder;
+            if (textFieldBorder == null) {
+                textFieldBorder = new BGTextFieldBorder();
+            }
+            return textFieldBorder;
         }
 
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
@@ -168,7 +162,7 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                     if (smallIbb == null) {
                         ibbImg = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
                         ibb = smallIbb = new ImageBevelBorder(ibbImg,
-                                InsetsUtil.add(slack,imageBevelInsets),
+                                InsetsUtil.add(slack, imageBevelInsets),
                                 new Insets(4 + slack, 4 + slack, 4 + slack, 4 + slack));
                     } else {
                         ibb = smallIbb;
@@ -189,7 +183,7 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                     if (regularIbb == null) {
                         ibbImg = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
                         ibb = regularIbb = new ImageBevelBorder(ibbImg,
-                                InsetsUtil.add(slack,imageBevelInsets),
+                                InsetsUtil.add(slack, imageBevelInsets),
                                 new Insets(8 + slack, 8 + slack, 8 + slack, 8 + slack));
                     } else {
                         ibb = regularIbb;
@@ -247,7 +241,7 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
     public QuaquaNativeTextFieldBorder(Insets imageInsets, Insets imageBevelInsets, boolean fill) {
         super(new Insets(0, 0, 0, 0));
         this.imageInsets = imageInsets;
-        this.imageBevelInsets=imageBevelInsets;
+        this.imageBevelInsets = imageBevelInsets;
     }
 
     private boolean isSearchField(JComponent b) {

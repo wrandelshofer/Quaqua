@@ -4,7 +4,7 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
+import javax.swing.JList;
 
 /**
  * Mouse behavior for JList. This class simulates Mavericks NSTableView behavior.

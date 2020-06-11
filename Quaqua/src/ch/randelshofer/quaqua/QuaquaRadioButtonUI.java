@@ -4,21 +4,39 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
+import ch.randelshofer.quaqua.util.Fonts;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicButtonListener;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.plaf.basic.BasicRadioButtonUI;
+import javax.swing.text.View;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import java.beans.*;
-import javax.swing.text.View;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * QuaquaRadioButtonUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyLayoutable {
@@ -54,7 +72,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     @Override
     protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-            defaults_initialized = true;
+        defaults_initialized = true;
         QuaquaUtilities.installProperty(b, "opaque", UIManager.get("RadioButton.opaque"));
         //b.setOpaque(false);
         b.setRequestFocusEnabled(UIManager.getBoolean("RadioButton.requestFocusEnabled"));
@@ -87,12 +105,12 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
 
     public Icon getDefaultIcon(JComponent c) {
         switch (QuaquaUtilities.getSizeVariant(c)) {
-            default:
-                return UIManager.getIcon("RadioButton.icon");
-            case SMALL:
-                return UIManager.getIcon("RadioButton.smallIcon");
-            case MINI:
-                return UIManager.getIcon("RadioButton.miniIcon");
+        default:
+            return UIManager.getIcon("RadioButton.icon");
+        case SMALL:
+            return UIManager.getIcon("RadioButton.smallIcon");
+        case MINI:
+            return UIManager.getIcon("RadioButton.miniIcon");
         }
     }
 
@@ -269,10 +287,11 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     /**
      * Method which renders the text of the current button.
      * <p>
-     * @param g Graphics context
-     * @param b Current button to render
+     *
+     * @param g     Graphics context
+     * @param b     Current button to render
      * @param textR Bounding rectangle to render the text.
-     * @param text String to render
+     * @param text  String to render
      * @since 1.4
      */
     @Override
@@ -398,12 +417,12 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
 
         // Determine rect rectangle
         switch (type) {
-            case VisuallyLayoutable.COMPONENT_BOUNDS:
-                rect = textR.union(iconR);
-                break;
-            case VisuallyLayoutable.TEXT_BOUNDS:
-                rect.setBounds(textR);
-                break;
+        case VisuallyLayoutable.COMPONENT_BOUNDS:
+            rect = textR.union(iconR);
+            break;
+        case VisuallyLayoutable.TEXT_BOUNDS:
+            rect.setBounds(textR);
+            break;
         }
         return rect;
     }

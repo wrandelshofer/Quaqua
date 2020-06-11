@@ -12,8 +12,12 @@ package ch.randelshofer.quaqua.util;
  * @version 1.0 September 4, 2006 Created.
  */
 public interface NavigatableTabbedPaneUI {
-    /** Tab Navigation methods. */
+    /**
+     * Tab Navigation methods.
+     */
     public void navigateSelectedTab(int direction);
+
     public boolean requestFocusForVisibleComponent();
+
     public Integer getIndexForMnemonic(int mnemonic);
 }

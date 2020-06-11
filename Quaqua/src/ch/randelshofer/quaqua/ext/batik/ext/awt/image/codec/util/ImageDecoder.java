@@ -49,10 +49,14 @@ public interface ImageDecoder {
      */
     void setParam(ImageDecodeParam param);
 
-    /** Returns the SeekableStream associated with this ImageDecoder. */
+    /**
+     * Returns the SeekableStream associated with this ImageDecoder.
+     */
     SeekableStream getInputStream();
 
-    /** Returns the number of pages present in the current stream. */
+    /**
+     * Returns the number of pages present in the current stream.
+     */
     int getNumPages() throws IOException;
 
     /**

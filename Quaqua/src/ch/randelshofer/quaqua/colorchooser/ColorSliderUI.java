@@ -5,20 +5,30 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
+import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JSlider;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicSliderUI;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 /**
  * A UI delegate for color sliders. The track of the slider visualizes how
  * changing the value of the slider affects the color.
  *
- *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ColorSliderUI extends BasicSliderUI {
@@ -32,22 +42,26 @@ public class ColorSliderUI extends BasicSliderUI {
     private static final Dimension MINIMUM_HORIZONTAL_SIZE = new Dimension(36, 16);
     private static final Dimension MINIMUM_VERTICAL_SIZE = new Dimension(26, 36);
 
-    /** Creates a new instance. */
-    public ColorSliderUI(JSlider b)   {
+    /**
+     * Creates a new instance.
+     */
+    public ColorSliderUI(JSlider b) {
         super(b);
     }
-    public static ComponentUI createUI(JComponent b)    {
-        return new ColorSliderUI((JSlider)b);
+
+    public static ComponentUI createUI(JComponent b) {
+        return new ColorSliderUI((JSlider) b);
     }
+
     @Override
-    protected void installDefaults( JSlider slider ) {
+    protected void installDefaults(JSlider slider) {
         super.installDefaults(slider);
-        focusInsets = new Insets(0,0,0,0);
+        focusInsets = new Insets(0, 0, 0, 0);
         slider.setOpaque(false);
         if (slider.getOrientation() == JSlider.HORIZONTAL) {
-            slider.setBorder(new VisualMarginBorder(0,1,-1,1));
+            slider.setBorder(new VisualMarginBorder(0, 1, -1, 1));
         } else {
-            slider.setBorder(new VisualMarginBorder(0,0,0,1));
+            slider.setBorder(new VisualMarginBorder(0, 0, 0, 1));
         }
         //slider.setRequestFocusEnabled(QuaquaManager.getBoolean("Slider.requestFocusEnabled"));
         slider.setRequestFocusEnabled(true);
@@ -58,10 +72,12 @@ public class ColorSliderUI extends BasicSliderUI {
         Icon thumb = getThumbIcon();
         return new Dimension(thumb.getIconWidth(), thumb.getIconHeight());
     }
+
     @Override
     public Dimension getPreferredHorizontalSize() {
         return PREFERRED_HORIZONTAL_SIZE;
     }
+
     @Override
     public Dimension getPreferredVerticalSize() {
         return PREFERRED_VERTICAL_SIZE;
@@ -76,16 +92,17 @@ public class ColorSliderUI extends BasicSliderUI {
     public Dimension getMinimumVerticalSize() {
         return MINIMUM_VERTICAL_SIZE;
     }
+
     @Override
     protected void calculateThumbLocation() {
         super.calculateThumbLocation();
-        if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
             thumbRect.y -= 3;
-        }
-        else {
+        } else {
             thumbRect.x -= 3;
         }
     }
+
     /*
     public void paint( Graphics g, JComponent c )   {
         g.setColor(Color.green);
@@ -100,8 +117,9 @@ public class ColorSliderUI extends BasicSliderUI {
             return UIManager.getIcon("ColorChooser.ColorSlider.westThumb.small");
         }
     }
+
     @Override
-    public void paintThumb(Graphics g)  {
+    public void paintThumb(Graphics g) {
         Rectangle knobBounds = thumbRect;
         int w = knobBounds.width;
         int h = knobBounds.height;
@@ -112,13 +130,14 @@ public class ColorSliderUI extends BasicSliderUI {
         ((Graphics2D) g).draw(knobBounds);
          */
     }
+
     @Override
-    public void paintTrack(Graphics g)  {
+    public void paintTrack(Graphics g) {
         int cx, cy, cw, ch;
         int pad;
 
         Rectangle trackBounds = trackRect;
-        if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
             pad = trackBuffer;// - thumbRect.width / 2 + 2;
             cx = trackBounds.x - pad + 1;
             cy = trackBounds.y;
@@ -138,81 +157,81 @@ public class ColorSliderUI extends BasicSliderUI {
             ch = trackBounds.height + pad * 2 - 5;
         }
         g.setColor(trackBackground);
-        g.fillRect(cx,cy,cw,ch);
+        g.fillRect(cx, cy, cw, ch);
         g.setColor(foreground);
-        g.drawRect(cx,cy,cw - 1,ch - 1);
+        g.drawRect(cx, cy, cw - 1, ch - 1);
         paintColorTrack(g, cx + 2, cy + 2, cw - 4, ch - 4, trackBuffer);
     }
+
     @Override
-    public void paintTicks(Graphics g)  {
+    public void paintTicks(Graphics g) {
         Rectangle tickBounds = tickRect;
         int centerEffect, tickHeight;
 
         g.setColor(foreground);
 
-        if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
-            g.translate( 0, tickBounds.y);
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
+            g.translate(0, tickBounds.y);
 
             int value = slider.getMinimum();
             int xPos = 0;
 
-            if ( slider.getMinorTickSpacing() > 0 ) {
-                while ( value <= slider.getMaximum() ) {
-                    xPos = xPositionForValue( value );
-                    paintMinorTickForHorizSlider( g, tickBounds, xPos );
+            if (slider.getMinorTickSpacing() > 0) {
+                while (value <= slider.getMaximum()) {
+                    xPos = xPositionForValue(value);
+                    paintMinorTickForHorizSlider(g, tickBounds, xPos);
                     value += slider.getMinorTickSpacing();
                 }
             }
 
-            if ( slider.getMajorTickSpacing() > 0 ) {
+            if (slider.getMajorTickSpacing() > 0) {
                 value = slider.getMinimum();
 
-                while ( value <= slider.getMaximum() ) {
-                    xPos = xPositionForValue( value );
-                    paintMajorTickForHorizSlider( g, tickBounds, xPos );
+                while (value <= slider.getMaximum()) {
+                    xPos = xPositionForValue(value);
+                    paintMajorTickForHorizSlider(g, tickBounds, xPos);
                     value += slider.getMajorTickSpacing();
                 }
             }
 
-            g.translate( 0, -tickBounds.y);
-        }
-        else {
+            g.translate(0, -tickBounds.y);
+        } else {
             g.translate(tickBounds.x, 0);
 
             int value = slider.getMinimum();
             int yPos = 0;
 
-            if ( slider.getMinorTickSpacing() > 0 ) {
+            if (slider.getMinorTickSpacing() > 0) {
                 int offset = 0;
-                if(!QuaquaUtilities.isLeftToRight(slider)) {
+                if (!QuaquaUtilities.isLeftToRight(slider)) {
                     offset = tickBounds.width - tickBounds.width / 2;
                     g.translate(offset, 0);
                 }
 
-                while ( value <= slider.getMaximum() ) {
-                    yPos = yPositionForValue( value );
-                    paintMinorTickForVertSlider( g, tickBounds, yPos );
+                while (value <= slider.getMaximum()) {
+                    yPos = yPositionForValue(value);
+                    paintMinorTickForVertSlider(g, tickBounds, yPos);
                     value += slider.getMinorTickSpacing();
                 }
 
-                if(!QuaquaUtilities.isLeftToRight(slider)) {
+                if (!QuaquaUtilities.isLeftToRight(slider)) {
                     g.translate(-offset, 0);
                 }
             }
 
-            if ( slider.getMajorTickSpacing() > 0 ) {
+            if (slider.getMajorTickSpacing() > 0) {
                 value = slider.getMinimum();
-                if(!QuaquaUtilities.isLeftToRight(slider)) {
+                if (!QuaquaUtilities.isLeftToRight(slider)) {
                     g.translate(2, 0);
                 }
 
-                while ( value <= slider.getMaximum() ) {
-                    yPos = yPositionForValue( value );
-                    paintMajorTickForVertSlider( g, tickBounds, yPos );
+                while (value <= slider.getMaximum()) {
+                    yPos = yPositionForValue(value);
+                    paintMajorTickForVertSlider(g, tickBounds, yPos);
                     value += slider.getMajorTickSpacing();
                 }
 
-                if(!QuaquaUtilities.isLeftToRight(slider)) {
+                if (!QuaquaUtilities.isLeftToRight(slider)) {
                     g.translate(-2, 0);
                 }
             }
@@ -223,33 +242,38 @@ public class ColorSliderUI extends BasicSliderUI {
         ((Graphics2D) g).draw(tickBounds);
          */
     }
+
     @Override
-    protected void paintMajorTickForHorizSlider( Graphics g, Rectangle tickBounds, int x) {
+    protected void paintMajorTickForHorizSlider(Graphics g, Rectangle tickBounds, int x) {
         g.drawLine(x, 0, x, tickBounds.height - 1);
-    }
-    @Override
-    protected void paintMinorTickForHorizSlider( Graphics g, Rectangle tickBounds, int x ) {
-        //g.drawLine( x, 0, x, tickBounds.height / 2 - 1 );
-        g.drawLine(x, 0, x, tickBounds.height - 1);
-    }
-    @Override
-    protected void paintMinorTickForVertSlider( Graphics g, Rectangle tickBounds, int y ) {
-        g.drawLine( tickBounds.width / 2, y, tickBounds.width / 2 - 1, y);
     }
 
     @Override
-    protected void paintMajorTickForVertSlider( Graphics g, Rectangle tickBounds, int y ) {
-        g.drawLine(0, y,  tickBounds.width - 1, y);
+    protected void paintMinorTickForHorizSlider(Graphics g, Rectangle tickBounds, int x) {
+        //g.drawLine( x, 0, x, tickBounds.height / 2 - 1 );
+        g.drawLine(x, 0, x, tickBounds.height - 1);
     }
+
     @Override
-    public void paintFocus(Graphics g)  {
+    protected void paintMinorTickForVertSlider(Graphics g, Rectangle tickBounds, int y) {
+        g.drawLine(tickBounds.width / 2, y, tickBounds.width / 2 - 1, y);
     }
+
+    @Override
+    protected void paintMajorTickForVertSlider(Graphics g, Rectangle tickBounds, int y) {
+        g.drawLine(0, y, tickBounds.width - 1, y);
+    }
+
+    @Override
+    public void paintFocus(Graphics g) {
+    }
+
     public void paintColorTrack(Graphics g, int x, int y, int width, int height, int buffer) {
         //g.setColor(Color.black);
         //g.fillRect(x, y, width, height);
-        if (colorTrackImage==null||colorTrackImageProducer == null
-        || colorTrackImageProducer.getWidth() != width
-        || colorTrackImageProducer.getHeight() != height) {
+        if (colorTrackImage == null || colorTrackImageProducer == null
+                || colorTrackImageProducer.getWidth() != width
+                || colorTrackImageProducer.getHeight() != height) {
             if (colorTrackImage != null) {
                 colorTrackImage.flush();
             }
@@ -267,20 +291,24 @@ public class ColorSliderUI extends BasicSliderUI {
         }
         g.drawImage(colorTrackImage, x, y, null);
     }
+
     @Override
     protected void calculateTrackRect() {
         int centerSpacing = 0; // used to center sliders added using BorderLayout.CENTER (bug 4275631)
-        if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
             centerSpacing = thumbRect.height;
-            if ( slider.getPaintTicks() ) centerSpacing += getTickLength();
-            if ( slider.getPaintLabels() ) centerSpacing += getHeightOfTallestLabel();
+            if (slider.getPaintTicks()) {
+                centerSpacing += getTickLength();
+            }
+            if (slider.getPaintLabels()) {
+                centerSpacing += getHeightOfTallestLabel();
+            }
             trackRect.x = contentRect.x + trackBuffer + 1;
             //trackRect.y = contentRect.y + (contentRect.height - centerSpacing - 1)/2;
             trackRect.height = 13;
             trackRect.y = contentRect.y + contentRect.height - trackRect.height;
             trackRect.width = contentRect.width - (trackBuffer * 2) - 1;
-        }
-        else {
+        } else {
             /*
             centerSpacing = thumbRect.width;
             if (! QuaquaUtilities.isLeftToRight(slider)) {
@@ -299,21 +327,21 @@ public class ColorSliderUI extends BasicSliderUI {
         }
 
     }
+
     @Override
     protected void calculateTickRect() {
-        if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
             tickRect.x = trackRect.x;
             //tickRect.y = trackRect.y + trackRect.height;
             tickRect.y = trackRect.y - getTickLength();
             tickRect.width = trackRect.width;
             tickRect.height = getTickLength();
 
-            if ( !slider.getPaintTicks() ) {
+            if (!slider.getPaintTicks()) {
                 --tickRect.y;
                 tickRect.height = 0;
             }
-        }
-        else {
+        } else {
             /*
             if(! QuaquaUtilities.isLeftToRight(slider)) {
                 tickRect.x = trackRect.x + trackRect.width;
@@ -328,12 +356,13 @@ public class ColorSliderUI extends BasicSliderUI {
             tickRect.y = trackRect.y;
             tickRect.height = trackRect.height;
 
-            if ( !slider.getPaintTicks() ) {
+            if (!slider.getPaintTicks()) {
                 --tickRect.x;
                 tickRect.width = 0;
             }
         }
     }
+
     /**
      * Gets the height of the tick area for horizontal sliders and the width of the
      * tick area for vertical sliders.  BasicSliderUI uses the returned value to
@@ -344,38 +373,40 @@ public class ColorSliderUI extends BasicSliderUI {
     protected int getTickLength() {
         return 4;
     }
+
     @Override
-    protected PropertyChangeListener createPropertyChangeListener( JSlider slider ) {
+    protected PropertyChangeListener createPropertyChangeListener(JSlider slider) {
         return new CSUIPropertyChangeHandler();
     }
+
     public class CSUIPropertyChangeHandler extends BasicSliderUI.PropertyChangeHandler {
         @Override
-        public void propertyChange( PropertyChangeEvent e ) {
+        public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
 
-            if (propertyName.equals( "Frame.active" )) {
+            if (propertyName.equals("Frame.active")) {
                 //calculateGeometry();
                 slider.repaint();
-            } else if (propertyName.equals( "ColorSliderModel" )) {
+            } else if (propertyName.equals("ColorSliderModel")) {
                 if (colorTrackImageProducer != null) {
                     colorTrackImageProducer.setColorSliderModel(((ColorSliderModel) e.getNewValue()));
                     if (colorTrackImageProducer.needsGeneration()) {
                         slider.repaint();
                     }
                 }
-            } else if (propertyName.equals( "snapToTicks" )) {
+            } else if (propertyName.equals("snapToTicks")) {
                 if (colorTrackImageProducer != null) {
                     colorTrackImageProducer.markAsDirty();
                     slider.repaint();
                 }
-            } else if (propertyName.equals( "ColorComponentIndex" )) {
+            } else if (propertyName.equals("ColorComponentIndex")) {
                 if (colorTrackImageProducer != null && e.getNewValue() != null) {
                     colorTrackImageProducer.setColorComponentIndex(((Integer) e.getNewValue()).intValue());
                     if (colorTrackImageProducer.needsGeneration()) {
                         slider.repaint();
                     }
                 }
-            } else if (propertyName.equals( "ColorComponentChange" )) {
+            } else if (propertyName.equals("ColorComponentChange")) {
                 Integer value = (Integer) e.getNewValue();
                 if (value != null && colorTrackImageProducer != null) {
                     colorTrackImageProducer.componentChanged(value.intValue());
@@ -383,7 +414,7 @@ public class ColorSliderUI extends BasicSliderUI {
                         slider.repaint();
                     }
                 }
-            } else if (propertyName.equals( "ColorComponentValue" )) {
+            } else if (propertyName.equals("ColorComponentValue")) {
                 Integer value = (Integer) slider.getClientProperty("ColorComponentChange");
                 if (value != null && colorTrackImageProducer != null) {
                     colorTrackImageProducer.componentChanged(value.intValue());
@@ -391,24 +422,26 @@ public class ColorSliderUI extends BasicSliderUI {
                         slider.repaint();
                     }
                 }
-            } else if (propertyName.equals( "Orientation" )) {
+            } else if (propertyName.equals("Orientation")) {
                 if (slider.getOrientation() == JSlider.HORIZONTAL) {
-                    slider.setBorder(new VisualMarginBorder(0,1,-1,1));
+                    slider.setBorder(new VisualMarginBorder(0, 1, -1, 1));
                 } else {
-                    slider.setBorder(new VisualMarginBorder(0,0,0,1));
+                    slider.setBorder(new VisualMarginBorder(0, 0, 0, 1));
                 }
             }
 
             super.propertyChange(e);
         }
     }
+
     @Override
-    protected TrackListener createTrackListener( JSlider slider ) {
+    protected TrackListener createTrackListener(JSlider slider) {
         return new QuaquaTrackListener();
     }
+
     /**
      * Track mouse movements.
-     *
+     * <p>
      * This inner class is marked &quot;public&quot; due to a compiler bug.
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of {@code Foo}.
@@ -423,8 +456,9 @@ public class ColorSliderUI extends BasicSliderUI {
          */
         @Override
         public void mousePressed(MouseEvent e) {
-            if ( !slider.isEnabled() )
+            if (!slider.isEnabled()) {
                 return;
+            }
 
             currentMouseX = e.getX();
             currentMouseY = e.getY();
@@ -434,16 +468,16 @@ public class ColorSliderUI extends BasicSliderUI {
             }
 
             // Clicked inside the Thumb area?
-            if (thumbRect.contains(currentMouseX, currentMouseY) ) {
+            if (thumbRect.contains(currentMouseX, currentMouseY)) {
                 super.mousePressed(e);
             } else {
-                switch ( slider.getOrientation() ) {
-                    case JSlider.VERTICAL:
-                        slider.setValue(valueForYPosition(currentMouseY));
-                        break;
-                    case JSlider.HORIZONTAL:
-                        slider.setValue(valueForXPosition(currentMouseX));
-                        break;
+                switch (slider.getOrientation()) {
+                case JSlider.VERTICAL:
+                    slider.setValue(valueForYPosition(currentMouseY));
+                    break;
+                case JSlider.HORIZONTAL:
+                    slider.setValue(valueForXPosition(currentMouseX));
+                    break;
                 }
 
                 // FIXME:

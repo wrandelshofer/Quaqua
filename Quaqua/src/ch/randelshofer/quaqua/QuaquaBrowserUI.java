@@ -6,14 +6,21 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.ViewportPainter;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
+
+import javax.swing.CellRendererPane;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.JViewport;
+import javax.swing.plaf.ComponentUI;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 
 /**
  * QuaquaBrowserUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
@@ -21,6 +28,7 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
      * This scrollbar is used to render vertical bars in the viewport.
      */
     private static JScrollBar verticalBar;
+
     private static JScrollBar getVerticalBar() {
         if (verticalBar == null) {
             verticalBar = new JScrollBar(JScrollBar.VERTICAL, 0, 1, 0, 1) {
@@ -41,7 +49,7 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
                 @Override
                 protected void paintChildren(Graphics g) {
                     Component[] c = getComponents();
-                    for (int i=0; i < c.length; i++) {
+                    for (int i = 0; i < c.length; i++) {
                         Graphics cg = g.create(c[i].getX(), c[i].getY(), c[i].getWidth(), c[i].getHeight());
                         c[i].paint(cg);
                         cg.dispose();
@@ -52,8 +60,11 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
         return verticalBar;
     }
 
-    /** Shared cell renderer pane. */
+    /**
+     * Shared cell renderer pane.
+     */
     private static CellRendererPane cellRendererPane;
+
     private static CellRendererPane getCellRendererPane() {
         if (cellRendererPane == null) {
             cellRendererPane = new CellRendererPane();

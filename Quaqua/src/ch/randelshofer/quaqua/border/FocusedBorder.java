@@ -6,11 +6,11 @@ package ch.randelshofer.quaqua.border;
 
 import ch.randelshofer.quaqua.VisualMargin;
 
+import javax.swing.JComponent;
+import javax.swing.border.Border;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
-import javax.swing.JComponent;
-import javax.swing.border.Border;
 
 /**
  * Draws a focus ring around the opaque pixels of a border.

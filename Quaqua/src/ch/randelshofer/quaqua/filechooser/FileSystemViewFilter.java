@@ -5,14 +5,18 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
-import javax.swing.*;
-import javax.swing.filechooser.*;
-import java.io.*;
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.filechooser.FileView;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * This is a filter for the FileSystemView provided by the Java VM.
  * The filter can change some of the behaviour of its target FileSystemView.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public abstract class FileSystemViewFilter extends FileSystemView {
@@ -37,7 +41,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * Examples: Windows 98 has one root, the Desktop folder. DOS has one root
      * per drive letter, <code>C:\</code>, <code>D:\</code>, etc. Unix has one root,
      * the <code>"/"</code> directory.
-     *
+     * <p>
      * The default implementation gets information from the <code>ShellFolder</code> class.
      *
      * @param f a <code>File</code> object representing a directory
@@ -60,14 +64,14 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      */
     @Override
     public Boolean isTraversable(File f) {
-	return target.isTraversable(f);
+        return target.isTraversable(f);
     }
 
     /**
      * Name of a file, directory, or folder as it would be displayed in
      * a system file browser. Example from Windows: the "M:\" directory
      * displays as "CD-ROM (M:)"
-     *
+     * <p>
      * The default implementation gets information from the ShellFolder class.
      *
      * @param f a <code>File</code> object
@@ -83,7 +87,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * Type description for a file, directory, or folder as it would be displayed in
      * a system file browser. Example from Windows: the "Desktop" folder
      * is desribed as "Desktop".
-     *
+     * <p>
      * Override for platforms with native ShellFolder implementations.
      *
      * @param f a <code>File</code> object
@@ -93,14 +97,14 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      */
     @Override
     public String getSystemTypeDescription(File f) {
-	return target.getSystemTypeDescription(f);
+        return target.getSystemTypeDescription(f);
     }
 
     /**
      * Icon for a file, directory, or folder as it would be displayed in
      * a system file browser. Example from Windows: the "M:\" directory
      * displays a CD-ROM icon.
-     *
+     * <p>
      * The default implementation gets information from the ShellFolder class.
      *
      * @param f a <code>File</code> object
@@ -118,7 +122,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * "Desktop" folder which is not the same as file.getParentFile().
      *
      * @param folder a <code>File</code> object repesenting a directory or special folder
-     * @param file a <code>File</code> object
+     * @param file   a <code>File</code> object
      * @return <code>true</code> if <code>folder</code> is a directory or special folder and contains <code>file</code>.
      */
     @Override
@@ -127,8 +131,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
     }
 
     /**
-     *
-     * @param parent a <code>File</code> object repesenting a directory or special folder
+     * @param parent   a <code>File</code> object repesenting a directory or special folder
      * @param fileName a name of a file or folder which exists in <code>parent</code>
      * @return a File object. This is normally constructed with <code>new
      * File(parent, fileName)</code> except when parent and child are both
@@ -159,7 +162,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      */
     @Override
     public boolean isHiddenFile(File f) {
-	return target.isHiddenFile(f);
+        return target.isHiddenFile(f);
     }
 
     /**
@@ -172,13 +175,13 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      */
     @Override
     public boolean isFileSystemRoot(File dir) {
-	return target.isFileSystemRoot(dir);
+        return target.isFileSystemRoot(dir);
     }
 
     /**
      * Used by UI classes to decide whether to display a special icon
      * for drives or partitions, e.g. a "hard disk" icon.
-     *
+     * <p>
      * The default implementation has no way of knowing, so always returns false.
      *
      * @param dir a directory
@@ -186,13 +189,13 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      */
     @Override
     public boolean isDrive(File dir) {
-	return target.isDrive(dir);
+        return target.isDrive(dir);
     }
 
     /**
      * Used by UI classes to decide whether to display a special icon
      * for a floppy disk. Implies isDrive(dir).
-     *
+     * <p>
      * The default implementation has no way of knowing, so always returns false.
      *
      * @param dir a directory
@@ -200,13 +203,13 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      */
     @Override
     public boolean isFloppyDrive(File dir) {
-	return target.isFloppyDrive(dir);
+        return target.isFloppyDrive(dir);
     }
 
     /**
      * Used by UI classes to decide whether to display a special icon
      * for a computer node, e.g. "My Computer" or a network server.
-     *
+     * <p>
      * The default implementation has no way of knowing, so always returns false.
      *
      * @param dir a directory
@@ -214,7 +217,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      */
     @Override
     public boolean isComputerNode(File dir) {
-	return target.isComputerNode(dir);
+        return target.isComputerNode(dir);
     }
 
 
@@ -236,14 +239,14 @@ public abstract class FileSystemViewFilter extends FileSystemView {
 
     @Override
     public File getHomeDirectory() {
-	return target.getHomeDirectory();
+        return target.getHomeDirectory();
     }
 
     /**
      * Return the user's default starting directory for the file chooser.
      *
      * @return a <code>File</code> object representing the default
-     *         starting folder
+     * starting folder
      */
     @Override
     public abstract File getDefaultDirectory();
@@ -278,12 +281,12 @@ public abstract class FileSystemViewFilter extends FileSystemView {
     }
 
 
-
     /**
      * Returns the parent directory of <code>dir</code>.
+     *
      * @param dir the <code>File</code> being queried
      * @return the parent directory of <code>dir</code>, or
-     *   <code>null</code> if <code>dir</code> is <code>null</code>
+     * <code>null</code> if <code>dir</code> is <code>null</code>
      */
     @Override
     public File getParentDirectory(File dir) {

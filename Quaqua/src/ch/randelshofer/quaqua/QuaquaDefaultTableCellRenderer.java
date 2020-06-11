@@ -5,7 +5,8 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+
 /**
  * QuaquaDefaultTableCellRenderer.
  *
@@ -14,7 +15,9 @@ import javax.swing.table.*;
  */
 public class QuaquaDefaultTableCellRenderer extends DefaultTableCellRenderer.UIResource {
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaDefaultTableCellRenderer() {
         setOpaque(false);
     }

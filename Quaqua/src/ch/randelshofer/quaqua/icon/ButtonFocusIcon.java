@@ -6,15 +6,19 @@
 package ch.randelshofer.quaqua.icon;
 
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
-import javax.swing.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Image;
 
 /**
  * A focus ring icon with different visuals reflecting the selected state of an
  * abstract button.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ButtonFocusIcon extends MultiIcon {
@@ -27,7 +31,7 @@ public class ButtonFocusIcon extends MultiIcon {
      * If an icon is null, nothing is drawn for this state.
      */
     public ButtonFocusIcon(Icon e, Icon s) {
-        super (new Icon[] {e, s});
+        super(new Icon[]{e, s});
     }
 
     /**
@@ -38,6 +42,7 @@ public class ButtonFocusIcon extends MultiIcon {
     public ButtonFocusIcon(Image[] images) {
         super(images);
     }
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -58,7 +63,7 @@ public class ButtonFocusIcon extends MultiIcon {
     protected Icon getIcon(Component c) {
         Icon icon = null;
         if (QuaquaUtilities.isFocused(c) && c.isEnabled()
-        && (! (c instanceof AbstractButton) || ((AbstractButton) c).isFocusPainted())) {
+                && (!(c instanceof AbstractButton) || ((AbstractButton) c).isFocusPainted())) {
             ButtonModel model = ((AbstractButton) c).getModel();
             if (model.isSelected()) {
                 icon = icons[S];
@@ -71,7 +76,7 @@ public class ButtonFocusIcon extends MultiIcon {
 
     protected void generateMissingIcons() {
         if (icons.length != 2) {
-       Icon[] newIcons = new Icon[2];
+            Icon[] newIcons = new Icon[2];
             System.arraycopy(icons, 0, newIcons, 0, Math.min(icons.length, 2));
             icons = newIcons;
         }

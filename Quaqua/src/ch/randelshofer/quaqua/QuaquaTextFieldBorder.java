@@ -4,20 +4,24 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+
+import javax.swing.JComponent;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.text.JTextComponent;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.io.Serializable;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
 
 /**
  * QuaquaTextFieldBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 4.2 2008-10-02 Made imageInsets a parameter, instead of using
  * hardcoded values.
  * <br>4.1 2008-01-04 Don't draw focus border when component is disabled.
@@ -38,14 +42,17 @@ import javax.swing.border.*;
  */
 public class QuaquaTextFieldBorder extends VisualMarginBorder implements BackgroundBorder {
 
-    /** Location of the border images. */
+    /**
+     * Location of the border images.
+     */
     private String imagesLocation;
     private Insets imageInsets;
     private Insets searchImageInsets;
     private Insets smallSearchImageInsets;
     private String searchImagesLocation;
     private String smallSearchImagesLocation;
-    /** Array with image bevel plainBorders.
+    /**
+     * Array with image bevel plainBorders.
      * This array is created lazily.
      **/
     private Border[] plainBorders;
@@ -95,13 +102,17 @@ public class QuaquaTextFieldBorder extends VisualMarginBorder implements Backgro
                         height - insets.top - insets.bottom - 7);
             }
         }
-    };
+    }
+
+    ;
     private BgBorder textFieldBackground = new BgBorder(this);
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaTextFieldBorder(String imagesLocation, Insets imageInsets,
-            String searchImagesLocation, Insets searchImageInsets,
-            String smallSearchImagesLocation, Insets smallSearchImageInsets) {
+                                 String searchImagesLocation, Insets searchImageInsets,
+                                 String smallSearchImagesLocation, Insets smallSearchImageInsets) {
         super(3, 3, 2, 3);
         this.imageInsets = imageInsets;
         this.searchImageInsets = searchImageInsets;
@@ -208,16 +219,16 @@ public class QuaquaTextFieldBorder extends VisualMarginBorder implements Backgro
     public static class UIResource extends QuaquaTextFieldBorder implements javax.swing.plaf.UIResource {
 
         public UIResource(String imagesLocation,
-                String searchImagesLocation,
-                String smallSearchImagesLocation) {
+                          String searchImagesLocation,
+                          String smallSearchImagesLocation) {
             this(imagesLocation, new Insets(6, 6, 5, 6),
                     searchImagesLocation, new Insets(13, 13, 13, 13),
                     smallSearchImagesLocation, new Insets(11, 13, 11, 13));
         }
 
         public UIResource(String imagesLocation, Insets imageInsets,
-                String searchImagesLocation, Insets searchImageInsets,
-                String smallSearchImagesLocation, Insets smallSearchImageInsets) {
+                          String searchImagesLocation, Insets searchImageInsets,
+                          String smallSearchImagesLocation, Insets smallSearchImageInsets) {
             super(imagesLocation, imageInsets,
                     searchImagesLocation, searchImageInsets,
                     smallSearchImagesLocation, smallSearchImageInsets);

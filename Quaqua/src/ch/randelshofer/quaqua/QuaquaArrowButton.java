@@ -5,14 +5,17 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JScrollBar;
+import javax.swing.SwingConstants;
+import java.awt.Graphics;
+
 /**
  * QuaquaArrowButton is used handle events for the arrow buttons of a
  * QuaquaScrollBarUI. Since the QuaquaScrollBarUI does all the button drawing,
  * the button is completely transparent.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaArrowButton extends JButton implements SwingConstants {

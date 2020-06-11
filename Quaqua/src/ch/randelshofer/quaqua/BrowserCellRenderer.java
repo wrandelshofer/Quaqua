@@ -5,7 +5,7 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
+import java.awt.Component;
 
 /**
  * Defines the requirements for an object that displays a tree node in a JBrowser.
@@ -25,17 +25,17 @@ public interface BrowserCellRenderer {
      * configured for.  Returns the {@code Component} that the renderer
      * uses to draw the value.
      *
-     * @param browser target
-     * @param value value to be rendered
+     * @param browser  target
+     * @param value    value to be rendered
      * @param selected whether the cell is selected
      * @param expanded whether the cell is expanded
-     * @param leaf whether the cell is a leaf
-     * @param row row index
+     * @param leaf     whether the cell is a leaf
+     * @param row      row index
      * @param hasFocus whether the cell has focus
-     * @return	the {@code Component} that the renderer uses to draw the value
+     * @return the {@code Component} that the renderer uses to draw the value
      */
     Component getBrowserCellRendererComponent(JBrowser browser, Object value,
-				   boolean selected, boolean expanded,
-				   boolean leaf, int row, boolean hasFocus);
+                                              boolean selected, boolean expanded,
+                                              boolean leaf, int row, boolean hasFocus);
 
 }

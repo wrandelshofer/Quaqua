@@ -4,13 +4,24 @@
  */
 package ch.randelshofer.quaqua.leopard;
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+import javax.swing.border.Border;
+import javax.swing.plaf.UIResource;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.UIResource;
 
 /**
  * A replacement for the AquaMenuBorder.
@@ -27,7 +38,7 @@ public class QuaquaLeopardMenuBorder implements Border, UIResource {
     private static Insets itemBorderInsets;
 
     public void paintBorder(Component component, Graphics gr, int x,
-            int y, int width, int height) {
+                            int y, int width, int height) {
         /* empty */
 
         if (component instanceof JPopupMenu) {
@@ -82,8 +93,8 @@ public class QuaquaLeopardMenuBorder implements Border, UIResource {
                     //                                   | |
                     //                                   \_/ shape
                     GeneralPath p = new GeneralPath();
-                    p.moveTo(x, y+6);
-                    p.quadTo(x, y,x+6,y);
+                    p.moveTo(x, y + 6);
+                    p.quadTo(x, y, x + 6, y);
                     p.lineTo(x + width, y);
                     p.lineTo(x + width, y + height - 6);
                     p.quadTo(x + width, y + height, x + width - 6, y + height);

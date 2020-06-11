@@ -19,12 +19,13 @@
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered;
 
 
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.GraphicsUtil;
+
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.GraphicsUtil;
 /**
  * This implements CachableRed based on a BufferedImage.
  * You can use this to wrap a BufferedImage that you want to
@@ -32,7 +33,8 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.GraphicsUtil;
  * It essentially ignores the dependency and dirty region methods.
  *
  * @author <a href="mailto:Thomas.DeWeeese@Kodak.com">Thomas DeWeese</a>
- * @version $Id: BufferedImageCachableRed.java 478276 2006-11-22 18:33:37Z dvholten $ */
+ * @version $Id: BufferedImageCachableRed.java 478276 2006-11-22 18:33:37Z dvholten $
+ */
 public class BufferedImageCachableRed extends AbstractRed {
     // The bufferedImage that we wrap...
     BufferedImage bi;
@@ -41,30 +43,30 @@ public class BufferedImageCachableRed extends AbstractRed {
      * Construct an instance of CachableRed around a BufferedImage.
      */
     public BufferedImageCachableRed(BufferedImage bi) {
-        super((CachableRed)null,
-              new Rectangle(bi.getMinX(),  bi.getMinY(),
-                            bi.getWidth(), bi.getHeight()),
-              bi.getColorModel(), bi.getSampleModel(),
-              bi.getMinX(), bi.getMinY(), null);
+        super((CachableRed) null,
+                new Rectangle(bi.getMinX(), bi.getMinY(),
+                        bi.getWidth(), bi.getHeight()),
+                bi.getColorModel(), bi.getSampleModel(),
+                bi.getMinX(), bi.getMinY(), null);
 
         this.bi = bi;
     }
 
     public BufferedImageCachableRed(BufferedImage bi,
-                                            int xloc, int yloc) {
-        super((CachableRed)null, new Rectangle(xloc,  yloc,
-                                               bi.getWidth(),
-                                               bi.getHeight()),
-              bi.getColorModel(), bi.getSampleModel(), xloc, yloc, null);
+                                    int xloc, int yloc) {
+        super((CachableRed) null, new Rectangle(xloc, yloc,
+                        bi.getWidth(),
+                        bi.getHeight()),
+                bi.getColorModel(), bi.getSampleModel(), xloc, yloc, null);
 
         this.bi = bi;
     }
 
     public Rectangle getBounds() {
         return new Rectangle(getMinX(),
-                             getMinY(),
-                             getWidth(),
-                             getHeight());
+                getMinY(),
+                getWidth(),
+                getHeight());
     }
 
     /**
@@ -78,12 +80,12 @@ public class BufferedImageCachableRed extends AbstractRed {
         return bi.getProperty(name);
     }
 
-    public String [] getPropertyNames() {
+    public String[] getPropertyNames() {
         return bi.getPropertyNames();
     }
 
     public Raster getTile(int tileX, int tileY) {
-        return bi.getTile(tileX,tileY);
+        return bi.getTile(tileX, tileY);
     }
 
     public Raster getData() {
@@ -92,22 +94,23 @@ public class BufferedImageCachableRed extends AbstractRed {
     }
 
     public Raster getData(Rectangle rect) {
-        Rectangle r = (Rectangle)rect.clone();
+        Rectangle r = (Rectangle) rect.clone();
 
-        if ( ! r.intersects(getBounds()) )
+        if (!r.intersects(getBounds())) {
             return null;
+        }
         r = r.intersection(getBounds());
-        r.translate(-getMinX(), - getMinY());
+        r.translate(-getMinX(), -getMinY());
 
         Raster ret = bi.getData(r);
-        return ret.createTranslatedChild(ret.getMinX()+getMinX(),
-                                         ret.getMinY()+getMinY());
+        return ret.createTranslatedChild(ret.getMinX() + getMinX(),
+                ret.getMinY() + getMinY());
     }
 
     public WritableRaster copyData(WritableRaster wr) {
         WritableRaster wr2 = wr.createWritableTranslatedChild
-            (wr.getMinX()-getMinX(),
-             wr.getMinY()-getMinY());
+                (wr.getMinX() - getMinX(),
+                        wr.getMinY() - getMinY());
 
         GraphicsUtil.copyData(bi.getRaster(), wr2);
 

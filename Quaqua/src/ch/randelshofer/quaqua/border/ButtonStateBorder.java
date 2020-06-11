@@ -4,16 +4,23 @@
  */
 package ch.randelshofer.quaqua.border;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import ch.randelshofer.quaqua.QuaquaBorderFactory;
+import ch.randelshofer.quaqua.QuaquaUtilities;
+import ch.randelshofer.quaqua.util.Images;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JButton;
+import javax.swing.border.Border;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
 
 /**
  * ButtonStateBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ButtonStateBorder implements Border {
@@ -33,8 +40,9 @@ public class ButtonStateBorder implements Border {
      * Borders
      */
     private Border[] borders;
-    /** Holds the icon pictures in a single image. This variable is used only
-     *until we create the icons array. Then it is set to null.
+    /**
+     * Holds the icon pictures in a single image. This variable is used only
+     * until we create the icons array. Then it is set to null.
      */
     private Image tiledImage;
     /**
@@ -47,9 +55,13 @@ public class ButtonStateBorder implements Border {
      */
     private boolean isTiledHorizontaly;
     private Insets borderInsets;
-    /** Only used for tiled image. */
+    /**
+     * Only used for tiled image.
+     */
     private boolean fill;
-    /** Only used for tiled image. */
+    /**
+     * Only used for tiled image.
+     */
     private Insets imageInsets;
 
     /**
@@ -58,7 +70,7 @@ public class ButtonStateBorder implements Border {
      * If a border is null, nothing is drawn for this state.
      */
     public ButtonStateBorder(Border e, Border ep, Border es, Border eps,
-            Border d, Border ds, Border i, Border is, Border di, Border dis) {
+                             Border d, Border ds, Border i, Border is, Border di, Border dis) {
         borders = new Border[DEFAULT + 1];
         borders[E] = e;
         borders[EP] = ep;
@@ -99,7 +111,7 @@ public class ButtonStateBorder implements Border {
      * All borders must have the same dimensions.
      */
     public ButtonStateBorder(Image tiledImage, int tileCount, boolean isTiledHorizontaly,
-            Insets imageInsets, Insets borderInsets, boolean fill) {
+                             Insets imageInsets, Insets borderInsets, boolean fill) {
         this.tiledImage = tiledImage;
         this.tileCount = tileCount;
         this.isTiledHorizontaly = isTiledHorizontaly;
@@ -234,7 +246,7 @@ public class ButtonStateBorder implements Border {
          * All borders must have the same dimensions.
          */
         public UIResource(Image tiledImage, int tileCount, boolean isTiledHorizontaly,
-                Insets imageInsets, Insets borderInsets, boolean fill) {
+                          Insets imageInsets, Insets borderInsets, boolean fill) {
             super(tiledImage, tileCount, isTiledHorizontaly, imageInsets, borderInsets, fill);
         }
     }

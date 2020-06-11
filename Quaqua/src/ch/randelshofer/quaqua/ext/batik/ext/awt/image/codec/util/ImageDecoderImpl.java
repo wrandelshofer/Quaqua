@@ -158,5 +158,5 @@ public abstract class ImageDecoderImpl implements ImageDecoder {
      * @param page The page to be decoded.
      */
     public abstract RenderedImage decodeAsRenderedImage(int page)
-        throws IOException;
+            throws IOException;
 }

@@ -4,16 +4,19 @@
  */
 package ch.randelshofer.quaqua.icon;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import javax.swing.*;
+import ch.randelshofer.quaqua.util.Images;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.awt.Component;
+import java.awt.Image;
 
 /**
  * An icon which paints one out of multiple icons depending on the state
  * of the component.
  * MultiIcon can lazily create the icons from a tiled image.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public abstract class MultiIcon implements Icon {
@@ -23,8 +26,9 @@ public abstract class MultiIcon implements Icon {
      * This variable is null, if we are using a tiled image as our base.
      */
     protected Icon[] icons;
-    /** Holds the icon pictures in a single image. This variable is used only
-     *until we create the icons array. Then it is set to null.
+    /**
+     * Holds the icon pictures in a single image. This variable is used only
+     * until we create the icons array. Then it is set to null.
      */
     private Image tiledImage;
     /**

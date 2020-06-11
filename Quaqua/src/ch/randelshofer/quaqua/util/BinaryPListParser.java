@@ -5,16 +5,22 @@
 package ch.randelshofer.quaqua.util;
 
 import ch.randelshofer.quaqua.ext.base64.Base64;
-import ch.randelshofer.quaqua.ext.nanoxml.*;
-import ch.randelshofer.quaqua.ext.base64.*;
-import java.io.*;
-import java.math.BigInteger;
-import java.util.*;
-import java.text.*;
+import ch.randelshofer.quaqua.ext.nanoxml.XMLElement;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 /**
  * Reads a binary PList file and returns it as a NanoXML XMLElement.
@@ -37,17 +43,20 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * then not property lists, and cannot be saved and restored with the various
  * property list methods.)"
  *
- * @see ch.randelshofer.quaqua.ext.nanoxml.XMLElement
- *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
+ * @see ch.randelshofer.quaqua.ext.nanoxml.XMLElement
  */
 public class BinaryPListParser {
 
     private final static boolean DEBUG = false;
-    /** Time interval based dates are measured in seconds from 2001-01-01. */
+    /**
+     * Time interval based dates are measured in seconds from 2001-01-01.
+     */
     private final static long TIMER_INTERVAL_TIMEBASE = new GregorianCalendar(2001, 0, 1, 1, 0, 0).getTimeInMillis();
-    /** Factory for generating XML data types. */
+    /**
+     * Factory for generating XML data types.
+     */
     private static DatatypeFactory datatypeFactory;
 
     /* Description of the binary plist format derived from
@@ -161,7 +170,9 @@ public class BinaryPListParser {
      */
     private ArrayList objectTable;
 
-    /** Holder for a binary PList Uid element. */
+    /**
+     * Holder for a binary PList Uid element.
+     */
     private static class BPLUid {
 
         private final int number;
@@ -314,7 +325,7 @@ public class BinaryPListParser {
         DataInputStream in = null;
         try {
             in = new DataInputStream(
-                    pos=new PosByteArrayInputStream(buf));
+                    pos = new PosByteArrayInputStream(buf));
             parseObjectTable(in);
         } finally {
             if (in != null) {
@@ -331,10 +342,11 @@ public class BinaryPListParser {
     }
 
     private long getPosition() {
-        return pos.getPos()+8;
+        return pos.getPos() + 8;
     }
 
     private PosByteArrayInputStream pos;
+
     private static class PosByteArrayInputStream extends ByteArrayInputStream {
 
         public PosByteArrayInputStream(byte[] buf) {
@@ -415,129 +427,129 @@ public class BinaryPListParser {
      * data	0100 nnnn	[int]	...	// nnnn is number of bytes unless 1111 then int count follows, followed by bytes
      * string	0101 nnnn	[int]	...	// ASCII string, nnnn is # of chars, else 1111 then int count, then bytes
      * string	0110 nnnn	[int]	...	// Unicode string, nnnn is # of chars, else 1111 then int count, then big-endian 2-byte shorts
-     *          0111 xxxx			// unused
+     * 0111 xxxx			// unused
      * uid	1000 nnnn	...		// nnnn+1 is # of bytes
-     *          1001 xxxx			// unused
+     * 1001 xxxx			// unused
      * array	1010 nnnn	[int]	objref*	// nnnn is count, unless '1111', then int count follows
-     *          1011 xxxx			// unused
-     *          1100 xxxx			// unused
+     * 1011 xxxx			// unused
+     * 1100 xxxx			// unused
      * dict	1101 nnnn	[int]	keyref* objref*	// nnnn is count, unless '1111', then int count follows
-     *          1110 xxxx			// unused
-     *          1111 xxxx			// unused
+     * 1110 xxxx			// unused
+     * 1111 xxxx			// unused
      */
     private void parseObjectTable(DataInputStream in) throws IOException {
         int marker;
         while ((marker = in.read()) != -1) {
             //System.err.println("parseObjectTable marker=" + Integer.toBinaryString(marker)+" 0x"+Integer.toHexString(marker)+" @0x"+Long.toHexString(getPosition()));
             switch ((marker & 0xf0) >> 4) {
-                case 0: {
-                    parsePrimitive(in, marker & 0xf);
+            case 0: {
+                parsePrimitive(in, marker & 0xf);
+                break;
+            }
+            case 1: {
+                int count = 1 << (marker & 0xf);
+                parseInt(in, count);
+                break;
+            }
+            case 2: {
+                int count = 1 << (marker & 0xf);
+                parseReal(in, count);
+                break;
+            }
+            case 3: {
+                switch (marker & 0xf) {
+                case 3:
+                    parseDate(in);
                     break;
-                }
-                case 1: {
-                    int count = 1 << (marker & 0xf);
-                    parseInt(in, count);
-                    break;
-                }
-                case 2: {
-                    int count = 1 << (marker & 0xf);
-                    parseReal(in, count);
-                    break;
-                }
-                case 3: {
-                    switch (marker & 0xf) {
-                        case 3:
-                            parseDate(in);
-                            break;
-                        default:
-                            throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
-                    }
-                    break;
-                }
-                case 4: {
-                    int count = marker & 0xf;
-                    if (count == 15) {
-                        count = readCount(in);
-                    }
-                    parseData(in, count);
-                    break;
-                }
-                case 5: {
-                    int count = marker & 0xf;
-                    if (count == 15) {
-                        count = readCount(in);
-                    }
-                    parseAsciiString(in, count);
-                    break;
-                }
-                case 6: {
-                    int count = marker & 0xf;
-                    if (count == 15) {
-                        count = readCount(in);
-                    }
-                    parseUnicodeString(in, count);
-                    break;
-                }
-                case 7: {
-                    if (DEBUG) {
-                        System.out.println("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
-                    }
-                    return;
-                    // throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
-                    //break;
-                }
-                case 8: {
-                    int count = (marker & 0xf) + 1;
-                    if (DEBUG) {
-                        System.out.println("uid " + count);
-                    }
-                    parseUID(in, count);
-                    break;
-                }
-                case 9: {
+                default:
                     throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
-                    //break;
                 }
-                case 10: {
-                    int count = marker & 0xf;
-                    if (count == 15) {
-                        count = readCount(in);
-                    }
-                    if (refCount > 255) {
-                        parseShortArray(in, count);
-                    } else {
-                        parseByteArray(in, count);
-                    }
-                    break;
+                break;
+            }
+            case 4: {
+                int count = marker & 0xf;
+                if (count == 15) {
+                    count = readCount(in);
                 }
-                case 11: {
-                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
-                    //break;
+                parseData(in, count);
+                break;
+            }
+            case 5: {
+                int count = marker & 0xf;
+                if (count == 15) {
+                    count = readCount(in);
                 }
-                case 12: {
-                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
-                    //break;
+                parseAsciiString(in, count);
+                break;
+            }
+            case 6: {
+                int count = marker & 0xf;
+                if (count == 15) {
+                    count = readCount(in);
                 }
-                case 13: {
-                    int count = marker & 0xf;
-                    if (count == 15) {
-                        count = readCount(in);
-                    }
-                    if (refCount > 256) {
-                        parseShortDict(in, count);
-                    } else {
-                        parseByteDict(in, count);
-                    }
-                    break;
+                parseUnicodeString(in, count);
+                break;
+            }
+            case 7: {
+                if (DEBUG) {
+                    System.out.println("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
                 }
-                case 14: {
-                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
-                    //break;
+                return;
+                // throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
+                //break;
+            }
+            case 8: {
+                int count = (marker & 0xf) + 1;
+                if (DEBUG) {
+                    System.out.println("uid " + count);
                 }
-                case 15: {
-                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
-                    //break;
+                parseUID(in, count);
+                break;
+            }
+            case 9: {
+                throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
+                //break;
+            }
+            case 10: {
+                int count = marker & 0xf;
+                if (count == 15) {
+                    count = readCount(in);
                 }
+                if (refCount > 255) {
+                    parseShortArray(in, count);
+                } else {
+                    parseByteArray(in, count);
+                }
+                break;
+            }
+            case 11: {
+                throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
+                //break;
+            }
+            case 12: {
+                throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
+                //break;
+            }
+            case 13: {
+                int count = marker & 0xf;
+                if (count == 15) {
+                    count = readCount(in);
+                }
+                if (refCount > 256) {
+                    parseShortDict(in, count);
+                } else {
+                    parseByteDict(in, count);
+                }
+                break;
+            }
+            case 14: {
+                throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
+                //break;
+            }
+            case 15: {
+                throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
+                //break;
+            }
             }
         }
     }
@@ -545,7 +557,7 @@ public class BinaryPListParser {
     /**
      * Reads a count value from the object table. Count values are encoded
      * using the following scheme:
-     *
+     * <p>
      * int	0001 nnnn   ...     // # of bytes is 2^nnnn, big-endian bytes
      */
     private int readCount(DataInputStream in) throws IOException {
@@ -576,20 +588,20 @@ public class BinaryPListParser {
      */
     private void parsePrimitive(DataInputStream in, int primitive) throws IOException {
         switch (primitive) {
-            case 0:
-                objectTable.add(null);
-                break;
-            case 8:
-                objectTable.add(Boolean.FALSE);
-                break;
-            case 9:
-                objectTable.add(Boolean.TRUE);
-                break;
-            case 15:
-                // fill byte: don't add to object table
-                break;
-            default:
-                throw new IOException("parsePrimitive: illegal primitive " + Integer.toBinaryString(primitive));
+        case 0:
+            objectTable.add(null);
+            break;
+        case 8:
+            objectTable.add(Boolean.FALSE);
+            break;
+        case 9:
+            objectTable.add(Boolean.TRUE);
+            break;
+        case 15:
+            // fill byte: don't add to object table
+            break;
+        default:
+            throw new IOException("parsePrimitive: illegal primitive " + Integer.toBinaryString(primitive));
         }
     }
 
@@ -716,26 +728,27 @@ public class BinaryPListParser {
      */
     private void parseReal(DataInputStream in, int count) throws IOException {
         switch (count) {
-            case 4:
-                objectTable.add(new Float(in.readFloat()));
-                break;
-            case 8:
-                objectTable.add(new Double(in.readDouble()));
-                break;
-            default:
-                throw new IOException("parseReal: unsupported byte count:" + count);
+        case 4:
+            objectTable.add(new Float(in.readFloat()));
+            break;
+        case 8:
+            objectTable.add(new Double(in.readDouble()));
+            break;
+        default:
+            throw new IOException("parseReal: unsupported byte count:" + count);
         }
     }
 
     /**
-     *  unknown	0011 0000	...		// 8 byte float follows, big-endian bytes
+     * unknown	0011 0000	...		// 8 byte float follows, big-endian bytes
      */
     private void parseUnknown(DataInputStream in) throws IOException {
         in.skipBytes(1);
         objectTable.add("unknown");
     }
+
     /**
-     *  date	0011 0011	...		// 8 byte float follows, big-endian bytes
+     * date	0011 0011	...		// 8 byte float follows, big-endian bytes
      */
     private void parseDate(DataInputStream in) throws IOException {
         objectTable.add(fromTimerInterval(in.readDouble()));
@@ -754,7 +767,9 @@ public class BinaryPListParser {
     }
 
     //
-    /** Timer interval based dates are measured in seconds from 1/1/2001.
+
+    /**
+     * Timer interval based dates are measured in seconds from 1/1/2001.
      * Timer intervals have no time zone.
      */
     private static XMLGregorianCalendar fromTimerInterval(double timerInterval) {
@@ -766,7 +781,9 @@ public class BinaryPListParser {
         return xmlgc;
     }
 
-    /** Gets the factory for XML data types. */
+    /**
+     * Gets the factory for XML data types.
+     */
     private static DatatypeFactory getDatatypeFactory() {
         if (datatypeFactory == null) {
             try {

@@ -5,19 +5,26 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import ch.randelshofer.quaqua.*;
-import java.awt.*;
-import java.text.*;
-import javax.swing.*;
-import javax.swing.colorchooser.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
-import java.util.*;
+import ch.randelshofer.quaqua.QuaquaManager;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.UIResource;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.text.MessageFormat;
+import java.util.Vector;
 
 /**
  * ColorPalettesChooser.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ColorPalettesChooser extends AbstractColorChooserPanel implements UIResource {
@@ -47,45 +54,45 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
 
         colors = DefaultPalettes.APPLE_COLORS;
         entries = new PaletteEntry[colors.length];
-        for (int i=0; i < colors.length; i++) {
+        for (int i = 0; i < colors.length; i++) {
             entries[i] = new PaletteEntry(
-            UIManager.getString("ColorChooser.apple."+Integer.toHexString(0xff000000|colors[i].getRGB()).substring(2)),
-            colors[i]
+                    UIManager.getString("ColorChooser.apple." + Integer.toHexString(0xff000000 | colors[i].getRGB()).substring(2)),
+                    colors[i]
             );
         }
         palettes.add(new PaletteListModel(
-        UIManager.getString("ColorChooser.appleColors"),
-        MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[] {UIManager.getString("ColorChooser.appleColors"), entries.length}),
-        entries)
+                UIManager.getString("ColorChooser.appleColors"),
+                MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[]{UIManager.getString("ColorChooser.appleColors"), entries.length}),
+                entries)
         );
 
         colors = DefaultPalettes.CRAYONS;
         entries = new PaletteEntry[colors.length];
-        for (int i=0; i < colors.length; i++) {
+        for (int i = 0; i < colors.length; i++) {
             entries[i % 8 + colors.length - (i / 8) * 8 - 8] = new PaletteEntry(
-            UIManager.getString("ColorChooser.crayon."+Integer.toHexString(0xff000000|colors[i].getRGB()).substring(2)),
-            colors[i]
+                    UIManager.getString("ColorChooser.crayon." + Integer.toHexString(0xff000000 | colors[i].getRGB()).substring(2)),
+                    colors[i]
             );
         }
         palettes.add(new PaletteListModel(
-        UIManager.getString("ColorChooser.crayons"),
-        MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[] {UIManager.getString("ColorChooser.crayons"), entries.length}),
-        entries)
+                UIManager.getString("ColorChooser.crayons"),
+                MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[]{UIManager.getString("ColorChooser.crayons"), entries.length}),
+                entries)
         );
 
         colors = DefaultPalettes.WEB_SAFE_COLORS;
         entries = new PaletteEntry[colors.length];
-        for (int i=0; i < colors.length; i++) {
+        for (int i = 0; i < colors.length; i++) {
             entries[i] = new PaletteEntry(
-            Integer.toHexString(0xff000000|colors[i].getRGB()).substring(2).toUpperCase(),
-            colors[i]
+                    Integer.toHexString(0xff000000 | colors[i].getRGB()).substring(2).toUpperCase(),
+                    colors[i]
             );
         }
         palettes.add(new PaletteListModel(
-        UIManager.getString("ColorChooser.webSafeColors"),
-        MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"),//
-                new Object[] {UIManager.getString("ColorChooser.webSafeColors"), entries.length}),
-        entries)
+                UIManager.getString("ColorChooser.webSafeColors"),
+                MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"),//
+                        new Object[]{UIManager.getString("ColorChooser.webSafeColors"), entries.length}),
+                entries)
         );
 
         return palettes;
@@ -178,7 +185,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         // Search for entry and select it
         PaletteListModel lm = (PaletteListModel) paletteList.getModel();
         int i, n;
-        for (i=0, n = lm.getSize(); i < n; i++) {
+        for (i = 0, n = lm.getSize(); i < n; i++) {
             entry = (PaletteEntry) lm.getElementAt(i);
             if ((entry.getColor().getRGB() & 0xffffff) == rgb) {
                 break;
@@ -188,14 +195,14 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
             // Matching color found? Select it and scroll it to visible.
             lm.setClosestIndex(-1);
             paletteList.setSelectedIndex(i);
-            paletteList.scrollRectToVisible(paletteList.getCellBounds(i,i));
+            paletteList.scrollRectToVisible(paletteList.getCellBounds(i, i));
         } else {
             // No matching color found? Clear selection,
             paletteList.clearSelection();
             int closest = lm.computeClosestIndex(color);
             lm.setClosestIndex(closest);
             if (closest != -1) {
-                paletteList.scrollRectToVisible(paletteList.getCellBounds(closest,closest));
+                paletteList.scrollRectToVisible(paletteList.getCellBounds(closest, closest));
             }
         }
     }
@@ -205,7 +212,8 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
     }
 
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -259,7 +267,6 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         updatePaletteList();
         lastSelectedPalette = paletteCombo.getSelectedIndex();
     }//GEN-LAST:event_paletteChanged
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

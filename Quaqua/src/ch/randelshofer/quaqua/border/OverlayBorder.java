@@ -5,20 +5,25 @@
 
 package ch.randelshofer.quaqua.border;
 
-import java.awt.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 /**
  * OverlayBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class OverlayBorder implements Border {
     private Border[] borders;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public OverlayBorder(Border first, Border second) {
-        borders = new Border[] { first, second };
+        borders = new Border[]{first, second};
     }
 
     public Insets getBorderInsets(Component c) {
@@ -30,7 +35,7 @@ public class OverlayBorder implements Border {
     }
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        for (int i=0; i < borders.length; i++) {
+        for (int i = 0; i < borders.length; i++) {
             borders[i].paintBorder(c, g, x, y, width, height);
         }
     }

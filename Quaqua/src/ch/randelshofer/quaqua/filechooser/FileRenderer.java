@@ -6,8 +6,17 @@ package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
-import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.icon.EmptyIcon;
+import ch.randelshofer.quaqua.osx.OSXFile;
+
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,20 +27,12 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import javax.swing.Icon;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
  * Quaqua FileChooserUI's.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class FileRenderer extends JPanel implements ListCellRenderer {
@@ -53,9 +54,9 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
     private boolean isGrayed;
 
     public FileRenderer(JFileChooser fileChooser,
-            Icon expandingIcon, Icon expandedIcon,
-            Icon selectedExpandingIcon, Icon selectedExpandedIcon,
-            Icon focusedSelectedExpandingIcon, Icon focusedSelectedExpandedIcon) {
+                        Icon expandingIcon, Icon expandedIcon,
+                        Icon selectedExpandingIcon, Icon selectedExpandedIcon,
+                        Icon focusedSelectedExpandingIcon, Icon focusedSelectedExpandedIcon) {
         this.fileChooser = fileChooser;
         this.expandingIcon = expandingIcon;
         this.expandedIcon = expandedIcon;
@@ -117,8 +118,8 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
-            int index, boolean isSelected,
-            boolean cellHasFocus) {
+                                                  int index, boolean isSelected,
+                                                  boolean cellHasFocus) {
 
         FileInfo info = (FileInfo) value;
 
@@ -144,9 +145,9 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
 
         if (this.isSelected && labelColor == null) {
             if (QuaquaUtilities.isFocused(list)) {
-            arrowIcon = (info.isValidating()) ? focusedSelectedExpandingIcon : focusedSelectedExpandedIcon;
+                arrowIcon = (info.isValidating()) ? focusedSelectedExpandingIcon : focusedSelectedExpandedIcon;
             } else {
-            arrowIcon = (info.isValidating()) ? selectedExpandingIcon : selectedExpandedIcon;
+                arrowIcon = (info.isValidating()) ? selectedExpandingIcon : selectedExpandedIcon;
             }
         } else {
             arrowIcon = (info.isValidating()) ? expandingIcon : expandedIcon;
@@ -223,7 +224,6 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
         }
 
 
-
         if (clippedText != null && !clippedText.equals("")) {
             g.setColor(getForeground());
             g.drawString(clippedText, textRect.x, textRect.y + textFM.getAscent());
@@ -235,6 +235,7 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
 
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
     }
+
     /**
      * The following variables are used for layouting the renderer.
      * This variables are static, because FileRenderer is always called
@@ -247,7 +248,8 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
     private static Rectangle textRect = new Rectangle();
     private static Rectangle arrowIconRect = new Rectangle();
     private static Rectangle viewRect = new Rectangle();
-    /** r is used in getPreferredSize and in paintComponent. It must not be
+    /**
+     * r is used in getPreferredSize and in paintComponent. It must not be
      * used in any method called by one of these.
      */
     private static Rectangle r = new Rectangle();

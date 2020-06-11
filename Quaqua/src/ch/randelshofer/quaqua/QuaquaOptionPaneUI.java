@@ -4,22 +4,59 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.plaf.basic.BasicOptionPaneUI;
+import javax.swing.text.Document;
+import javax.swing.text.View;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.IllegalComponentStateException;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Locale;
 
 /**
  * QuaquaOptionPaneUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
@@ -42,6 +79,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                     }
                 });
     }
+
     private Handler handler;
 
     /**
@@ -107,6 +145,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                 optionPane, "applyComponentOrientation", ComponentOrientation.class,
                 optionPane.getComponentOrientation());
     }
+
     @Override
     protected void uninstallListeners() {
         super.uninstallListeners();
@@ -193,7 +232,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
      */
     @Override
     protected void addButtonComponents(Container container, Object[] buttons,
-            int initialIndex) {
+                                       int initialIndex) {
         if (!(container.getLayout() instanceof QuaquaButtonAreaLayout)) {
             return;
         }
@@ -325,9 +364,9 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
      */
     @Override
     protected void addMessageComponents(Container container,
-            GridBagConstraints cons,
-            Object msg, int maxll,
-            boolean internallyCreated) {
+                                        GridBagConstraints cons,
+                                        Object msg, int maxll,
+                                        boolean internallyCreated) {
         if (msg == null) {
             return;
         }
@@ -422,7 +461,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
     private void configureMessageLabel(JLabel label) {
         label.setForeground(UIManager.getColor(
                 "OptionPane.messageForeground"));
-// We use a plain font for HTML messages to make the examples in the
+        // We use a plain font for HTML messages to make the examples in the
         // Java Look and Feel Guidelines work.
         boolean isHTML = BasicHTML.isHTMLString(label.getText());
         Font messageFont = (isHTML)
@@ -475,48 +514,48 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                             UIManager.getString("OptionPane.yesButtonText"),
                             getMnemonic("OptionPane.yesButtonMnemonic", l),
                             (Icon) UIManager.get(
-                            "OptionPane.yesIcon"));
+                                    "OptionPane.yesIcon"));
                     defaultOptions[1] = new ButtonFactory(
                             UIManager.getString("OptionPane.noButtonText"),
                             getMnemonic("OptionPane.noButtonMnemonic", l),
                             (Icon) UIManager.get(
-                            "OptionPane.noIcon"));
+                                    "OptionPane.noIcon"));
                 } else if (type == JOptionPane.YES_NO_CANCEL_OPTION) {
                     defaultOptions = new ButtonFactory[3];
                     defaultOptions[0] = new ButtonFactory(
                             UIManager.getString("OptionPane.yesButtonText"),
                             getMnemonic("OptionPane.yesButtonMnemonic", l),
                             (Icon) UIManager.get(
-                            "OptionPane.yesIcon"));
+                                    "OptionPane.yesIcon"));
                     defaultOptions[1] = new ButtonFactory(
                             UIManager.getString("OptionPane.noButtonText"),
                             getMnemonic("OptionPane.noButtonMnemonic", l),
                             (Icon) UIManager.get(
-                            "OptionPane.noIcon"));
+                                    "OptionPane.noIcon"));
                     defaultOptions[2] = new ButtonFactory(
                             UIManager.getString("OptionPane.cancelButtonText"),
                             getMnemonic("OptionPane.cancelButtonMnemonic", l),
                             (Icon) UIManager.get(
-                            "OptionPane.cancelIcon"));
+                                    "OptionPane.cancelIcon"));
                 } else if (type == JOptionPane.OK_CANCEL_OPTION) {
                     defaultOptions = new ButtonFactory[2];
                     defaultOptions[0] = new ButtonFactory(
                             UIManager.getString("OptionPane.okButtonText"),
                             getMnemonic("OptionPane.okButtonMnemonic", l),
                             (Icon) UIManager.get(
-                            "OptionPane.okIcon"));
+                                    "OptionPane.okIcon"));
                     defaultOptions[1] = new ButtonFactory(
                             UIManager.getString("OptionPane.cancelButtonText"),
                             getMnemonic("OptionPane.cancelButtonMnemonic", l),
                             (Icon) UIManager.get(
-                            "OptionPane.cancelIcon"));
+                                    "OptionPane.cancelIcon"));
                 } else {
                     defaultOptions = new ButtonFactory[1];
                     defaultOptions[0] = new ButtonFactory(
                             UIManager.getString("OptionPane.okButtonText"),
                             getMnemonic("OptionPane.okButtonMnemonic", l),
                             (Icon) UIManager.get(
-                            "OptionPane.okIcon"));
+                                    "OptionPane.okIcon"));
                 }
                 return defaultOptions;
 
@@ -550,7 +589,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
 
                         cBox.setName("OptionPane.comboBox");
                         for (int counter = 0, maxCounter = sValues.length;
-                                counter < maxCounter; counter++) {
+                             counter < maxCounter; counter++) {
                             cBox.addItem(sValues[counter]);
                         }
                         if (inputValue != null) {
@@ -580,10 +619,10 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
 
                     tf.setName("OptionPane.textField");
                     tf.setKeyStrokes(new KeyStroke[]{
-                                KeyStroke.getKeyStroke("ENTER")});
+                            KeyStroke.getKeyStroke("ENTER")});
 
                     if (optionPane.getClientProperty("PrivateQuaqua.OptionPane.InputFieldDocument") instanceof Document) {
-                        tf.setDocument((Document)optionPane.getClientProperty("PrivateQuaqua.OptionPane.InputFieldDocument"));
+                        tf.setDocument((Document) optionPane.getClientProperty("PrivateQuaqua.OptionPane.InputFieldDocument"));
                     }
 
                     if (inputValue != null) {
@@ -669,7 +708,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
      * <code>FlowLayout</code>. It lays out all components from left to
      * right. If <code>syncAllWidths</code> is true, the widths of each
      * component will be set to the largest preferred size width.
-     *
+     * <p>
      * This inner class is marked &quot;public&quot; due to a compiler bug.
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicOptionPaneUI.
@@ -895,7 +934,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                         totalWidth += ((numChildren - 1) * padding);
                         return new Dimension(
                                 extraWidth + totalWidth
-                                + ((destructiveOption != -1) ? 14 : 0),
+                                        + ((destructiveOption != -1) ? 14 : 0),
                                 extraHeight + height);
                     }
                 }
@@ -1068,8 +1107,8 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                     if (buttonAreaLayout != null) {
                         buttonAreaLayout.setDestructiveOption(
                                 (value == null)
-                                ? -1
-                                : value.intValue());
+                                        ? -1
+                                        : value.intValue());
                     }
                 }
             }
@@ -1098,13 +1137,13 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
 
         @Override
         protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
-                int condition, boolean pressed) {
+                                            int condition, boolean pressed) {
             boolean processed = super.processKeyBinding(ks, e, condition,
                     pressed);
 
             if (processed && condition != JComponent.WHEN_IN_FOCUSED_WINDOW) {
                 for (int counter = strokes.length - 1; counter >= 0;
-                        counter--) {
+                     counter--) {
                     if (strokes[counter].equals(ks)) {
                         // Returning false will allow further processing
                         // of the bindings, eg our parent Containers will get a

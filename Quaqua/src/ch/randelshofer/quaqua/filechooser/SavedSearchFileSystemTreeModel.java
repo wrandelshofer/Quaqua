@@ -6,7 +6,7 @@ package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
 import javax.swing.tree.TreePath;
 import java.io.File;
 
@@ -57,9 +57,9 @@ public class SavedSearchFileSystemTreeModel extends FileSystemTreeModel {
     }
 
     /**
-      * A node representing a saved search. A saved search is represented as a file. However, to the user it appears
-      * on the sidebar and acts like a root directory.
-    */
+     * A node representing a saved search. A saved search is represented as a file. However, to the user it appears
+     * on the sidebar and acts like a root directory.
+     */
     public class SavedSearchNode extends DirectoryNode {
 
         public SavedSearchNode(File savedSearchFile, boolean isHidden) {

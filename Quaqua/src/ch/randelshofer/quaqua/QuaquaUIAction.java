@@ -5,11 +5,11 @@
 
 package ch.randelshofer.quaqua;
 
+import javax.swing.Action;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.Action;
 /**
-* QuaquaUIAction is the basis of all of basic's action classes that are used in
+ * QuaquaUIAction is the basis of all of basic's action classes that are used in
  * an ActionMap. Subclasses need to override <code>actionPerformed</code>.
  * <p>
  * A typical subclass will look like:

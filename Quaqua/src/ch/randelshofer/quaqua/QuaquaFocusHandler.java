@@ -5,12 +5,14 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.JComponent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 /**
  * QuaquaFocusHandler.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaFocusHandler implements FocusListener {
@@ -31,11 +33,11 @@ public class QuaquaFocusHandler implements FocusListener {
     }
 
     public void focusGained(FocusEvent event) {
-            QuaquaUtilities.repaintBorder((JComponent) event.getComponent());
+        QuaquaUtilities.repaintBorder((JComponent) event.getComponent());
     }
 
     public void focusLost(FocusEvent event) {
-            QuaquaUtilities.repaintBorder((JComponent) event.getComponent());
+        QuaquaUtilities.repaintBorder((JComponent) event.getComponent());
     }
 }
 

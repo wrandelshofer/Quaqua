@@ -9,10 +9,16 @@ import ch.randelshofer.quaqua.TreeTableModel;
 import ch.randelshofer.quaqua.util.ViewportPainter;
 import de.sciss.treetable.j.TreeTable;
 
-import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.JViewport;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.TreePath;
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.io.File;
 

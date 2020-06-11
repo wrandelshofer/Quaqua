@@ -4,16 +4,34 @@
  */
 package ch.randelshofer.quaqua.subset;
 
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.LookAndFeelProxy;
+import ch.randelshofer.quaqua.QuaquaLookAndFeel;
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
-import ch.randelshofer.quaqua.util.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import java.awt.*;
-import java.awt.image.*;
-import java.util.*;
-import java.net.*;
-import java.security.*;
+import ch.randelshofer.quaqua.util.Images;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.LookAndFeel;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.IconUIResource;
+import javax.swing.plaf.InsetsUIResource;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * The QuaquaPantherFileChooserLAF is an extension for Apple's Aqua Look and Feel
@@ -58,11 +76,10 @@ import java.security.*;
  * are designed to automatically detect the appropriate Quaqua Look and Feel
  * implementation for current Java VM.
  *
+ * @author Werner Randelshofer
+ * @version $Id$
  * @see QuaquaManager
  * @see QuaquaLookAndFeel
- *
- * @author Werner Randelshofer
- * @version  $Id$
  */
 public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
@@ -71,6 +88,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
     /**
      * Holds a bug fixed version of the UIDefaults provided by the target
      * LookAndFeel.
+     *
      * @see #initialize
      * @see #getDefaults
      */
@@ -83,7 +101,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
      * windows, such as the QuickTime pane in System Preferences.
      */
     protected static final FontUIResource SMALL_SYSTEM_FONT =
-    new FontUIResource("Lucida Grande", Font.PLAIN, 11);
+            new FontUIResource("Lucida Grande", Font.PLAIN, 11);
 
     /**
      * Creates a new instance.
@@ -94,9 +112,9 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
             setTarget((LookAndFeel) Class.forName(targetClassName).newInstance());
         } catch (Exception e) {
             throw new InternalError(
-            "Unable to instanciate target Look and Feel \""
-            +targetClassName
-            +"\". "+e.getMessage()
+                    "Unable to instanciate target Look and Feel \""
+                            + targetClassName
+                            + "\". " + e.getMessage()
             );
         }
     }
@@ -155,6 +173,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
             }
         });
     }
+
     /**
      * This method is called once by UIManager.setLookAndFeel to create
      * the look and feel specific defaults table.  Other applications,
@@ -168,6 +187,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
     public UIDefaults getDefaults() {
         return myDefaults;
     }
+
     protected void initResourceBundle(UIDefaults table) {
         // The following line of code does not work, when Quaqua has been loaded with
         // a custom class loader. That's why, we have to inject the labels
@@ -177,12 +197,13 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
                 "ch.randelshofer.quaqua.Labels",
                 Locale.getDefault(),
                 getClass().getClassLoader()
-                );
+        );
         for (Enumeration i = bundle.getKeys(); i.hasMoreElements(); ) {
             String key = (String) i.nextElement();
             table.put(key, bundle.getObject(key));
         }
     }
+
     /**
      * Initialize the uiClassID to BasicComponentUI mapping.
      * The JComponent classes define their own uiClassID constants
@@ -201,18 +222,20 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
         // NOTE: Uncomment parts of the code below, to override additional
         // UI classes of the target look and feel.
         Object[] uiDefaults = {
-            "BrowserUI", quaquaPrefix + "BrowserUI",
-            "FileChooserUI", quaquaPantherPrefix + "FileChooserUI",
+                "BrowserUI", quaquaPrefix + "BrowserUI",
+                "FileChooserUI", quaquaPantherPrefix + "FileChooserUI",
         };
         table.putDefaults(uiDefaults);
     }
+
     protected void initGeneralDefaults(UIDefaults table) {
         Object[] uiDefaults;
         uiDefaults = new Object[]{
-            "ClassLoader", getClass().getClassLoader(),
+                "ClassLoader", getClass().getClassLoader(),
         };
         table.putDefaults(uiDefaults);
     }
+
     @Override
     protected void initComponentDefaults(UIDefaults table) {
         String prefValue;
@@ -223,72 +246,73 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
                 OSXPreferences.FINDER_PREFERENCES, "AppleShowAllFiles", "false")//
                 .toLowerCase();
         boolean isFileHidingEnabled = prefValue.equals("false") || prefValue.equals("no");
-        boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled","true"));
+        boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled", "true"));
 
         Font smallSystemFont = SMALL_SYSTEM_FONT;
         Color grayedFocusCellBorderColor = (Color) table.get("listHighlight");
 
         Object[] uiDefaults = {
-            "Browser.expandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 0}),
-            "Browser.expandingIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 1}),
-            "Browser.focusedSelectedExpandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 2}),
-            "Browser.focusedSelectedExpandingIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 3}),
-            "Browser.selectedExpandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 4}),
-            "Browser.selectedExpandingIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 5}),
-            //
-            "Browser.selectionBackground", new ColorUIResource(56,117,215),
-            "Browser.selectionForeground", new ColorUIResource(255,255,255),
-            "Browser.inactiveSelectionBackground", new ColorUIResource(208,208,208),
-            "Browser.inactiveSelectionForeground", new ColorUIResource(0,0,0),
-            "Browser.sizeHandleIcon", makeIcon(getClass(), commonDir + "Browser.sizeHandleIcon.png"),
+                "Browser.expandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
+                new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 0}),
+                "Browser.expandingIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
+                new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 1}),
+                "Browser.focusedSelectedExpandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
+                new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 2}),
+                "Browser.focusedSelectedExpandingIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
+                new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 3}),
+                "Browser.selectedExpandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
+                new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 4}),
+                "Browser.selectedExpandingIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
+                new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 5}),
+                //
+                "Browser.selectionBackground", new ColorUIResource(56, 117, 215),
+                "Browser.selectionForeground", new ColorUIResource(255, 255, 255),
+                "Browser.inactiveSelectionBackground", new ColorUIResource(208, 208, 208),
+                "Browser.inactiveSelectionForeground", new ColorUIResource(0, 0, 0),
+                "Browser.sizeHandleIcon", makeIcon(getClass(), commonDir + "Browser.sizeHandleIcon.png"),
 
-            "FileChooser.homeFolderIcon", LookAndFeel.makeIcon(getClass(), commonDir+"FileChooser.homeFolderIcon.png"),
-            //
-            "FileView.computerIcon", LookAndFeel.makeIcon(getClass(), commonDir+"FileView.computerIcon.png"),
-            //
-            "FileChooser.fileHidingEnabled", isFileHidingEnabled,
-            "FileChooser.quickLookEnabled", isQuickLookEnabled,
-            "FileChooser.orderByType", isOrderFilesByType,
-            "FileChooser.previewLabelForeground", new ColorUIResource(0x000000),
-            "FileChooser.previewValueForeground", new ColorUIResource(0x000000),
-            "FileChooser.previewLabelFont", smallSystemFont,
-            "FileChooser.previewValueFont", smallSystemFont,
-            "FileChooser.splitPaneDividerSize", 6,
-            "FileChooser.previewLabelInsets",new InsetsUIResource(0,0,0,4),
-            "FileChooser.cellTipOrigin", new Point(18, 1),
-            "FileChooser.autovalidate", Boolean.TRUE,
-            "FileChooser.browserFocusCellHighlightBorder",
-            new UIDefaults.ProxyLazyValue(
-                    "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
-                    new Object[] { new Insets(1,1,1,1) }
-            ),
-            "FileChooser.browserFocusCellHighlightBorderGrayed",
-            new UIDefaults.ProxyLazyValue(
-                    "javax.swing.plaf.BorderUIResource$MatteBorderUIResource",
-                   new Object[] { 1,1,1,1, grayedFocusCellBorderColor }
-            ),
-            "FileChooser.browserCellBorder",
-            new UIDefaults.ProxyLazyValue(
-                    "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
-                    new Object[] { new Insets(1,1,1,1) }
-            ),
-            "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
+                "FileChooser.homeFolderIcon", LookAndFeel.makeIcon(getClass(), commonDir + "FileChooser.homeFolderIcon.png"),
+                //
+                "FileView.computerIcon", LookAndFeel.makeIcon(getClass(), commonDir + "FileView.computerIcon.png"),
+                //
+                "FileChooser.fileHidingEnabled", isFileHidingEnabled,
+                "FileChooser.quickLookEnabled", isQuickLookEnabled,
+                "FileChooser.orderByType", isOrderFilesByType,
+                "FileChooser.previewLabelForeground", new ColorUIResource(0x000000),
+                "FileChooser.previewValueForeground", new ColorUIResource(0x000000),
+                "FileChooser.previewLabelFont", smallSystemFont,
+                "FileChooser.previewValueFont", smallSystemFont,
+                "FileChooser.splitPaneDividerSize", 6,
+                "FileChooser.previewLabelInsets", new InsetsUIResource(0, 0, 0, 4),
+                "FileChooser.cellTipOrigin", new Point(18, 1),
+                "FileChooser.autovalidate", Boolean.TRUE,
+                "FileChooser.browserFocusCellHighlightBorder",
+                new UIDefaults.ProxyLazyValue(
+                        "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
+                        new Object[]{new Insets(1, 1, 1, 1)}
+                ),
+                "FileChooser.browserFocusCellHighlightBorderGrayed",
+                new UIDefaults.ProxyLazyValue(
+                        "javax.swing.plaf.BorderUIResource$MatteBorderUIResource",
+                        new Object[]{1, 1, 1, 1, grayedFocusCellBorderColor}
+                ),
+                "FileChooser.browserCellBorder",
+                new UIDefaults.ProxyLazyValue(
+                        "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
+                        new Object[]{new Insets(1, 1, 1, 1)}
+                ),
+                "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
 
-            "Sheet.showAsSheet", Boolean.TRUE,
+                "Sheet.showAsSheet", Boolean.TRUE,
 
         };
         table.putDefaults(uiDefaults);
     }
+
     protected URL getResource(String location) {
         URL url = getClass().getResource(location);
         if (url == null) {
-            throw new InternalError("image resource missing: "+location);
+            throw new InternalError("image resource missing: " + location);
         }
         return url;
     }
@@ -296,15 +320,16 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
     protected Image createImage(String location) {
         return Toolkit.getDefaultToolkit().createImage(getResource(location));
     }
+
     protected Icon[] makeIcons(String location, int count, boolean horizontal) {
         Icon[] icons = new Icon[count];
 
         BufferedImage[] images = Images.split(
-        createImage(location),
-        count, horizontal
+                createImage(location),
+                count, horizontal
         );
 
-        for (int i=0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             icons[i] = new IconUIResource(new ImageIcon(images[i]));
         }
         return icons;

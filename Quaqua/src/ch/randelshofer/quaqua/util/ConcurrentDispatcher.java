@@ -4,8 +4,7 @@
  */
 package ch.randelshofer.quaqua.util;
 
-import java.util.*;
-import javax.swing.*;
+import java.util.LinkedList;
 
 /**
  * Processes Runnable objects concurrently on a pool of processor threads.
@@ -34,7 +33,7 @@ import javax.swing.*;
  * dispatcher.dispatch(runner);
  * </pre>
  *
- * @author  Werner Randelshofer, Switzerland
+ * @author Werner Randelshofer, Switzerland
  * @version 2.1 2009-06-01 Added dispose method.
  * <br>2.0 2002-04-07 dispatchLIFO added.
  * <br>1.0 2002-05-18 Created.
@@ -90,10 +89,10 @@ public class ConcurrentDispatcher {
     /**
      * Creates a new ConcurrentDispatcher.
      *
-     * @param priority The priority of the processor
-     * thread.
+     * @param priority       The priority of the processor
+     *                       thread.
      * @param maxThreadCount The maximal number of concurrent
-     * threads in the thread pool.
+     *                       threads in the thread pool.
      */
     public ConcurrentDispatcher(int priority, int maxThreadCount) {
         this.priority = priority;
@@ -102,9 +101,10 @@ public class ConcurrentDispatcher {
 
     /**
      * Sets the maximum number of concurrent threads.
+     *
      * @param maxThreadCount Maximal number of concurrent threads.
-     *   A value of zero or below zero stops the dispatcher
-     *   when the queue is empty.
+     *                       A value of zero or below zero stops the dispatcher
+     *                       when the queue is empty.
      */
     public void setMaxThreadCount(int maxThreadCount) {
         this.maxThreadCount = maxThreadCount;

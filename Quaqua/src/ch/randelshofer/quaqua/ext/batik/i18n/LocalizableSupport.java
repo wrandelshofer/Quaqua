@@ -20,10 +20,10 @@ package ch.randelshofer.quaqua.ext.batik.i18n;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * This class provides a default implementation of the Localizable interface.
@@ -136,13 +136,14 @@ public class LocalizableSupport implements Localizable {
      * Same as LocalizableSupport(s, null).
      */
     public LocalizableSupport(String s) {
-        this(s, (ClassLoader)null);
+        this(s, (ClassLoader) null);
     }
 
     /**
      * Creates a new Localizable object.
      * The resource bundle class name is required allows the use of custom
      * classes of resource bundles.
+     *
      * @param s  must be the name of the class to use to get the appropriate
      *           resource bundle given the current locale.
      * @param cl is the classloader used to create the resource bundle,
@@ -190,16 +191,20 @@ public class LocalizableSupport implements Localizable {
 
     /**
      * Implements {@link
-     * ch.randelshofer.quaqua.ext.batik.i18n.Localizable#formatMessage(String,Object[])}.
+     * ch.randelshofer.quaqua.ext.batik.i18n.Localizable#formatMessage(String, Object[])}.
      */
     public String formatMessage(String key, Object[] args) {
         return MessageFormat.format(getString(key), args);
     }
 
     protected Locale getCurrentLocale() {
-        if (locale != null) return locale;
+        if (locale != null) {
+            return locale;
+        }
         Locale l = localeGroup.getLocale();
-        if (l != null) return l;
+        if (l != null) {
+            return l;
+        }
         return Locale.getDefault();
     }
 
@@ -209,7 +214,9 @@ public class LocalizableSupport implements Localizable {
      */
     protected boolean setUsedLocale() {
         Locale l = getCurrentLocale();
-        if (usedLocale == l) return false;
+        if (usedLocale == l) {
+            return false;
+        }
         usedLocale = l;
         resourceBundles.clear();
         lastResourceClass = null;
@@ -220,29 +227,38 @@ public class LocalizableSupport implements Localizable {
      * Here for backwards compatability
      */
     public ResourceBundle getResourceBundle() {
-        return (ResourceBundle)getResourceBundle(0);
+        return (ResourceBundle) getResourceBundle(0);
     }
 
     protected boolean hasNextResourceBundle(int i) {
-        if (i == 0) return true;
-        if (i < resourceBundles.size()) return true;
+        if (i == 0) {
+            return true;
+        }
+        if (i < resourceBundles.size()) {
+            return true;
+        }
 
-        if (lastResourceClass == null) return false;
-        if (lastResourceClass == Object.class) return false;
+        if (lastResourceClass == null) {
+            return false;
+        }
+        if (lastResourceClass == Object.class) {
+            return false;
+        }
         return true;
     }
 
     protected ResourceBundle lookupResourceBundle(String bundle,
-                                                  Class theClass){
+                                                  Class theClass) {
         ClassLoader cl = classLoader;
-        ResourceBundle rb=null;
+        ResourceBundle rb = null;
         if (cl != null) {
             try {
                 rb = ResourceBundle.getBundle(bundle, usedLocale, cl);
             } catch (MissingResourceException mre) {
             }
-            if (rb != null)
+            if (rb != null) {
                 return rb;
+            }
         }
 
         if (theClass != null) {
@@ -251,8 +267,9 @@ public class LocalizableSupport implements Localizable {
             } catch (SecurityException se) {
             }
         }
-        if (cl == null)
+        if (cl == null) {
             cl = getClass().getClassLoader();
+        }
         try {
             rb = ResourceBundle.getBundle(bundle, usedLocale, cl);
         } catch (MissingResourceException mre) {
@@ -262,72 +279,80 @@ public class LocalizableSupport implements Localizable {
 
     protected ResourceBundle getResourceBundle(int i) {
         setUsedLocale();
-        ResourceBundle rb=null;
+        ResourceBundle rb = null;
         if (cls == null) {
             // Old behavour
             if (resourceBundles.size() == 0) {
                 rb = lookupResourceBundle(bundleName, null);
                 resourceBundles.add(rb);
             }
-            return (ResourceBundle)resourceBundles.get(0);
+            return (ResourceBundle) resourceBundles.get(0);
         }
 
         while (i >= resourceBundles.size()) {
-            if (lastResourceClass == Object.class)
+            if (lastResourceClass == Object.class) {
                 return null;
-            if (lastResourceClass == null)
+            }
+            if (lastResourceClass == null) {
                 lastResourceClass = cls;
-            else
+            } else {
                 lastResourceClass = lastResourceClass.getSuperclass();
+            }
             Class cl = lastResourceClass;
             String bundle = (cl.getPackage().getName() + "." + bundleName);
             resourceBundles.add(lookupResourceBundle(bundle, cl));
         }
-        return (ResourceBundle)resourceBundles.get(i);
+        return (ResourceBundle) resourceBundles.get(i);
     }
 
     /**
+     *
      */
     public String getString(String key) throws MissingResourceException {
         setUsedLocale();
-        for (int i=0; hasNextResourceBundle(i); i++) {
+        for (int i = 0; hasNextResourceBundle(i); i++) {
             ResourceBundle rb = getResourceBundle(i);
-            if (rb == null) continue;
+            if (rb == null) {
+                continue;
+            }
             try {
                 String ret = rb.getString(key);
-                if (ret != null) return ret;
+                if (ret != null) {
+                    return ret;
+                }
             } catch (MissingResourceException mre) {
             }
         }
-        String classStr = (cls != null)?cls.toString():bundleName;
+        String classStr = (cls != null) ? cls.toString() : bundleName;
         throw new MissingResourceException("Unable to find resource: " + key,
-                                           classStr, key);
+                classStr, key);
     }
 
     /**
      * Returns the integer mapped with the given string
+     *
      * @param key a key of the resource bundle
      * @throws MissingResourceException if key is not the name of a resource
      */
     public int getInteger(String key)
-        throws MissingResourceException {
+            throws MissingResourceException {
         String i = getString(key);
 
         try {
             return Integer.parseInt(i);
         } catch (NumberFormatException e) {
             throw new MissingResourceException
-                ("Malformed integer", bundleName, key);
+                    ("Malformed integer", bundleName, key);
         }
     }
 
     public int getCharacter(String key)
-        throws MissingResourceException {
+            throws MissingResourceException {
         String s = getString(key);
 
-        if(s == null || s.length() == 0){
+        if (s == null || s.length() == 0) {
             throw new MissingResourceException
-                ("Malformed character", bundleName, key);
+                    ("Malformed character", bundleName, key);
         }
 
         return s.charAt(0);

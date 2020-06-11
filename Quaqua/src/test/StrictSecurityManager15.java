@@ -8,9 +8,13 @@ package test;
 import java.awt.AWTPermission;
 import java.io.FilePermission;
 import java.lang.reflect.ReflectPermission;
-import java.net.*;
-import java.security.*;
-import java.util.*;
+import java.net.SocketPermission;
+import java.security.AccessControlException;
+import java.security.Permission;
+import java.security.SecurityPermission;
+import java.util.Arrays;
+import java.util.List;
+import java.util.PropertyPermission;
 import java.util.logging.LoggingPermission;
 
 /**
@@ -22,36 +26,38 @@ import java.util.logging.LoggingPermission;
  */
 public class StrictSecurityManager15 extends SecurityManager {
     private static final List<String> ALLOWED_HOSTNAMES = Arrays.asList(new String[]{
-        "localhost", "127.0.0.1",
+            "localhost", "127.0.0.1",
     });
-    private static final List<Permission> ALLOWED_PERMISSIONS = Arrays.asList(new Permission[] {
-        new AWTPermission("accessClipboard"),
-        new AWTPermission("showWindowWithoutWarningBanner"),
-        //new AWTPermission("listenToAllAWTEvents"),
-        //new AWTPermission("accessEventQueue"),
-        new FilePermission("/-","read"),
-        new LoggingPermission("control",null),
-        new PropertyPermission("*","read"),
-        new PropertyPermission("apple.laf.useScreenMenuBar","write"),
-        new PropertyPermission("com.apple.macos.useScreenMenuBar","write"),
-        new PropertyPermission("swing.aatext","write"),
-        new PropertyPermission("sun.awt.exception.handler","write"),
-        new PropertyPermission("user.timezone","write"),
-        new ReflectPermission("suppressAccessChecks"),
-        new RuntimePermission("accessClassInPackage.*"),
-        new RuntimePermission("accessDeclaredMembers"),
-        new RuntimePermission("createClassLoader"),
-        new RuntimePermission("exitVM"),
-        new RuntimePermission("loadLibrary.*"),
-        new RuntimePermission("modifyThread"),
-        new RuntimePermission("modifyThreadGroup"),
-        new RuntimePermission("setContextClassLoader"),
-        new RuntimePermission("canProcessApplicationEvents"),
-        new RuntimePermission("setFactory"),
-        new SecurityPermission("getProperty.networkaddress.cache.*"),
+    private static final List<Permission> ALLOWED_PERMISSIONS = Arrays.asList(new Permission[]{
+            new AWTPermission("accessClipboard"),
+            new AWTPermission("showWindowWithoutWarningBanner"),
+            //new AWTPermission("listenToAllAWTEvents"),
+            //new AWTPermission("accessEventQueue"),
+            new FilePermission("/-", "read"),
+            new LoggingPermission("control", null),
+            new PropertyPermission("*", "read"),
+            new PropertyPermission("apple.laf.useScreenMenuBar", "write"),
+            new PropertyPermission("com.apple.macos.useScreenMenuBar", "write"),
+            new PropertyPermission("swing.aatext", "write"),
+            new PropertyPermission("sun.awt.exception.handler", "write"),
+            new PropertyPermission("user.timezone", "write"),
+            new ReflectPermission("suppressAccessChecks"),
+            new RuntimePermission("accessClassInPackage.*"),
+            new RuntimePermission("accessDeclaredMembers"),
+            new RuntimePermission("createClassLoader"),
+            new RuntimePermission("exitVM"),
+            new RuntimePermission("loadLibrary.*"),
+            new RuntimePermission("modifyThread"),
+            new RuntimePermission("modifyThreadGroup"),
+            new RuntimePermission("setContextClassLoader"),
+            new RuntimePermission("canProcessApplicationEvents"),
+            new RuntimePermission("setFactory"),
+            new SecurityPermission("getProperty.networkaddress.cache.*"),
     });
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public StrictSecurityManager15() {
     }
 
@@ -89,37 +95,37 @@ public class StrictSecurityManager15 extends SecurityManager {
     }
 
     public void checkPermission(Permission perm) {
-           StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-           boolean needsRestriction = false;
-           String restrictor = "";
-           for (int i=3; i < stack.length; i++) {
-               String clazz = stack[i].getClassName();
-               String method = stack[i].getMethodName();
-               if (clazz.equals("java.security.AccessController") &&
-                       method.equals("doPrivileged")) {
-                   break;
-               }
-               if (clazz.startsWith("java.") ||
-                       clazz.startsWith("apple.") ||
-                       clazz.startsWith("javax.") ||
-                       clazz.startsWith("sun.")) {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        boolean needsRestriction = false;
+        String restrictor = "";
+        for (int i = 3; i < stack.length; i++) {
+            String clazz = stack[i].getClassName();
+            String method = stack[i].getMethodName();
+            if (clazz.equals("java.security.AccessController") &&
+                    method.equals("doPrivileged")) {
+                break;
+            }
+            if (clazz.startsWith("java.") ||
+                    clazz.startsWith("apple.") ||
+                    clazz.startsWith("javax.") ||
+                    clazz.startsWith("sun.")) {
 
-               } else {
-                   needsRestriction = true;
-                   restrictor = stack[i].toString();
-                   break;
-               }
-           }
+            } else {
+                needsRestriction = true;
+                restrictor = stack[i].toString();
+                break;
+            }
+        }
            /*
            if (! needsRestriction) {
            System.out.println("NO RESTRICTION  "+Arrays.asList(cc));
            }*/
         // Allow all other actions
-        if (needsRestriction && ! isImplied(perm)) {
-        System.err.println("StrictSecurityManager.checkPermision("+perm+")");
-        System.err.println("  "+Arrays.asList(stack));
-        System.err.println("  "+restrictor);
-            throw new AccessControlException("Not allowed "+perm, perm);
+        if (needsRestriction && !isImplied(perm)) {
+            System.err.println("StrictSecurityManager.checkPermision(" + perm + ")");
+            System.err.println("  " + Arrays.asList(stack));
+            System.err.println("  " + restrictor);
+            throw new AccessControlException("Not allowed " + perm, perm);
         }
     }
 

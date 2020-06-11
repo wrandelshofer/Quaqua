@@ -7,6 +7,10 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.util.CachedPainter;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -16,82 +20,83 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Paint;
 import java.awt.Transparency;
-import java.awt.image.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.image.BufferedImage;
+
 /**
  * QuaquaPlacardButtonBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaPlacardButtonBorder extends CachedPainter implements Border {
     private final static Color[] defaultColors = {
-        new Color(0xd8d8d8), // border top 1
-        new Color(0x7d7d7d), // border top 2
-        new Color(0x979797), // border left and right
-        new Color(0x979797), // border bottom 1
-        new Color(0xf5f5f5), // border bottom 2
-        /*
-        new Color(0xcacaca), // border gradient top
-        new Color(0xb8b8b8), // border gradient bottom
-         */
-        new Color(0xfefefe), // inner border line top
-        new Color(0xf3f3f3), // inner border line bottom
-        new Color(0xfdfdfd), // shine box top
-        new Color(0xf3f3f3), // shine box bottom
-        new Color(0xe6e6e6), // shadow box
+            new Color(0xd8d8d8), // border top 1
+            new Color(0x7d7d7d), // border top 2
+            new Color(0x979797), // border left and right
+            new Color(0x979797), // border bottom 1
+            new Color(0xf5f5f5), // border bottom 2
+            /*
+            new Color(0xcacaca), // border gradient top
+            new Color(0xb8b8b8), // border gradient bottom
+             */
+            new Color(0xfefefe), // inner border line top
+            new Color(0xf3f3f3), // inner border line bottom
+            new Color(0xfdfdfd), // shine box top
+            new Color(0xf3f3f3), // shine box bottom
+            new Color(0xe6e6e6), // shadow box
     };
     private final static Color[] selectedColors = {
-        new Color(0xd8d8d8), // border top 1
-        new Color(0x424242), // border top 2
-        new Color(0x565656), // border left and right
-        new Color(0x515151), // border bottom 1
-        new Color(0xb9b9b9), // border bottom 2
-        /*
-        new Color(0x838383), // border gradient top
-        new Color(0x737373), // border gradient bottom
-         */
-        new Color(0xa5a5a5), // inner border line top
-        new Color(0x969696), // inner border line bottom
-        new Color(0xa5a5a5), // shine box top
-        new Color(0x9e9e9e), // shine box bottom
-        new Color(0x969696), // shadow box
+            new Color(0xd8d8d8), // border top 1
+            new Color(0x424242), // border top 2
+            new Color(0x565656), // border left and right
+            new Color(0x515151), // border bottom 1
+            new Color(0xb9b9b9), // border bottom 2
+            /*
+            new Color(0x838383), // border gradient top
+            new Color(0x737373), // border gradient bottom
+             */
+            new Color(0xa5a5a5), // inner border line top
+            new Color(0x969696), // inner border line bottom
+            new Color(0xa5a5a5), // shine box top
+            new Color(0x9e9e9e), // shine box bottom
+            new Color(0x969696), // shadow box
     };
     private final static Color[] disabledColors = {
-        new Color(0xd8d8d8), // border top 1
-        new Color(0x7d7d7d), // border top 2
-        new Color(0x979797), // border left and right
-        new Color(0x979797), // border bottom 1
-        new Color(0xf5f5f5), // border bottom 2
-        /*
-        new Color(0xcacaca), // border gradient top
-        new Color(0xb8b8b8), // border gradient bottom
-         */
-        new Color(0xfefefe), // inner border line top
-        new Color(0xf3f3f3), // inner border line bottom
-        new Color(0xfdfdfd), // shine box top
-        new Color(0xf3f3f3), // shine box bottom
-        new Color(0xe6e6e6), // shadow box
+            new Color(0xd8d8d8), // border top 1
+            new Color(0x7d7d7d), // border top 2
+            new Color(0x979797), // border left and right
+            new Color(0x979797), // border bottom 1
+            new Color(0xf5f5f5), // border bottom 2
+            /*
+            new Color(0xcacaca), // border gradient top
+            new Color(0xb8b8b8), // border gradient bottom
+             */
+            new Color(0xfefefe), // inner border line top
+            new Color(0xf3f3f3), // inner border line bottom
+            new Color(0xfdfdfd), // shine box top
+            new Color(0xf3f3f3), // shine box bottom
+            new Color(0xe6e6e6), // shadow box
     };
     private final static Color[] disabledSelectedColors = {
-        new Color(0xd8d8d8), // border top 1
-        new Color(0x424242), // border top 2
-        new Color(0x565656), // border left and right
-        new Color(0x515151), // border bottom 1
-        new Color(0xb9b9b9), // border bottom 2
-        /*
-        new Color(0x838383), // border gradient top
-        new Color(0x737373), // border gradient bottom
-         */
-        new Color(0xa5a5a5), // inner border line top
-        new Color(0x969696), // inner border line bottom
-        new Color(0xa5a5a5), // shine box top
-        new Color(0x9e9e9e), // shine box bottom
-        new Color(0x969696), // shadow box
+            new Color(0xd8d8d8), // border top 1
+            new Color(0x424242), // border top 2
+            new Color(0x565656), // border left and right
+            new Color(0x515151), // border bottom 1
+            new Color(0xb9b9b9), // border bottom 2
+            /*
+            new Color(0x838383), // border gradient top
+            new Color(0x737373), // border gradient bottom
+             */
+            new Color(0xa5a5a5), // inner border line top
+            new Color(0x969696), // inner border line bottom
+            new Color(0xa5a5a5), // shine box top
+            new Color(0x9e9e9e), // shine box bottom
+            new Color(0x969696), // shadow box
     };
 
-    /** Creates a new instance of QuaquaSquareButtonBorder */
+    /**
+     * Creates a new instance of QuaquaSquareButtonBorder
+     */
     public QuaquaPlacardButtonBorder() {
         super(8);
     }
@@ -107,15 +112,15 @@ public class QuaquaPlacardButtonBorder extends CachedPainter implements Border {
     /**
      * Creates the image to cache.  This returns a translucent image.
      *
-     * @param c Component painting to
-     * @param w Width of image to create
-     * @param h Height to image to create
+     * @param c      Component painting to
+     * @param w      Width of image to create
+     * @param h      Height to image to create
      * @param config GraphicsConfiguration that will be
-     *        rendered to, this may be null.
+     *               rendered to, this may be null.
      */
     @Override
     protected Image createImage(Component c, int w, int h,
-    GraphicsConfiguration config) {
+                                GraphicsConfiguration config) {
         if (config == null) {
             return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
         }
@@ -123,7 +128,7 @@ public class QuaquaPlacardButtonBorder extends CachedPainter implements Border {
     }
 
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
-        if ( height <= 0 || width <= 0 ) {
+        if (height <= 0 || width <= 0) {
             return;
         }
 

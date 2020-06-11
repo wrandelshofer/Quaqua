@@ -5,17 +5,24 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 /**
  * SmallColorWellBorder.
  *
- * @author  werni
+ * @author werni
  */
 public class SmallColorWellBorder implements Border {
     private static Color inner = Color.white;
     private static Color outer = new Color(0x949494);
-    /** Creates a new instance of QuaquaSquareButtonBorder */
+
+    /**
+     * Creates a new instance of QuaquaSquareButtonBorder
+     */
     public SmallColorWellBorder() {
     }
 

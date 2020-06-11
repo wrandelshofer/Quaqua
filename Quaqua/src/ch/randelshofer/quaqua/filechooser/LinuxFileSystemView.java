@@ -6,6 +6,7 @@
 package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
+
 import java.io.File;
 
 /**
@@ -15,16 +16,24 @@ import java.io.File;
  * @version $Id$
  */
 public class LinuxFileSystemView extends QuaquaFileSystemView {
-    /** XXX - The computer mount does only exist in Gnome */
+    /**
+     * XXX - The computer mount does only exist in Gnome
+     */
     private File computer = new File("computer:///");
 
-    /** XXX - There is no volumes folder, only root. */
+    /**
+     * XXX - There is no volumes folder, only root.
+     */
     private File volumesFolder = new File("/");
 
-    /** XXX - This works on Gnome and KDE */
-    private File desktop = new File(System.getProperty("user.home")+"/Desktop");
+    /**
+     * XXX - This works on Gnome and KDE
+     */
+    private File desktop = new File(System.getProperty("user.home") + "/Desktop");
 
-    /** The system volume is "/" for all Linux distributions. */
+    /**
+     * The system volume is "/" for all Linux distributions.
+     */
     private File systemVolume = new File("/");
 
     private final static boolean DEBUG = false;
@@ -48,16 +57,13 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
     }
 
 
-
     /**
      * Returns all root partitions on this system.
      * XXX - This needs more work.
      */
     public File[] getRoots() {
-        return new File[] {volumesFolder};
+        return new File[]{volumesFolder};
     }
-
-
 
 
     /**
@@ -70,7 +76,7 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
             String name = f.getName();
             if (name.length() == 0) {
                 return false;
-             } else if (name.charAt(0) == '.') {
+            } else if (name.charAt(0) == '.') {
                 // File names starting with '.' are considered as
                 // hidden
                 return true;
@@ -84,21 +90,21 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
      * Determines if the given file is a root partition or drive.
      */
     public boolean isRoot(File f) {
-	if (f == null || !f.isAbsolute()) {
-	    return false;
-	}
+        if (f == null || !f.isAbsolute()) {
+            return false;
+        }
 
         if (f.equals(computer)) {
             return true;
         }
 
-	File[] roots = getRoots();
-	for (int i = 0; i < roots.length; i++) {
-	    if (roots[i].equals(f)) {
-		return true;
-	    }
-	}
-	return false;
+        File[] roots = getRoots();
+        for (int i = 0; i < roots.length; i++) {
+            if (roots[i].equals(f)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -108,7 +114,7 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
      * "Desktop" folder which is not the same as file.getParentFile().
      *
      * @param folder a <code>File</code> object repesenting a directory or special folder
-     * @param file a <code>File</code> object
+     * @param file   a <code>File</code> object
      * @return <code>true</code> if <code>folder</code> is a directory or special folder and contains <code>file</code>.
      */
     public boolean isParent(File folder, File file) {
@@ -120,8 +126,7 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
     }
 
     /**
-     *
-     * @param parent a <code>File</code> object repesenting a directory or special folder
+     * @param parent   a <code>File</code> object repesenting a directory or special folder
      * @param fileName a name of a file or folder which exists in <code>parent</code>
      * @return a File object. This is normally constructed with <code>new
      * File(parent, fileName)</code> except when parent and child are both
@@ -158,11 +163,12 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
      * Return the user's default starting directory for the file chooser.
      *
      * @return a <code>File</code> object representing the default
-     *         starting folder
+     * starting folder
      */
     public File getDefaultDirectory() {
         return getHomeDirectory();
     }
+
     public String getSystemDisplayName(File f) {
         // FIXME - Determine display name
         if (f.equals(systemVolume)) {

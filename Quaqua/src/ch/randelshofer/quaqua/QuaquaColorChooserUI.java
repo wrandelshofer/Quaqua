@@ -4,22 +4,38 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.colorchooser.*;
+import ch.randelshofer.quaqua.colorchooser.ColorChooserMainPanel;
+import ch.randelshofer.quaqua.colorchooser.QuaquaColorPreviewPanel;
 import ch.randelshofer.quaqua.util.Methods;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.colorchooser.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
-import java.security.*;
-import java.util.*;
+
+import javax.swing.JColorChooser;
+import javax.swing.JComponent;
+import javax.swing.LookAndFeel;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.colorchooser.ColorSelectionModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ColorChooserUI;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.security.AccessControlException;
+import java.util.ArrayList;
 
 /**
  * QuaquaColorChooserUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaColorChooserUI extends ColorChooserUI {
@@ -171,7 +187,7 @@ public class QuaquaColorChooserUI extends ColorChooserUI {
         if (previewPanel != null) {
             layoutSize = new BorderLayout().minimumLayoutSize(previewPanel);
             if (layoutSize.getWidth() + layoutSize.getHeight() == 0) {
-              return;
+                return;
             }
         }
 

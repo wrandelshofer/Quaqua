@@ -5,10 +5,14 @@
 
 package ch.randelshofer.quaqua.color;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
 import javax.swing.plaf.UIResource;
+import java.awt.Color;
+import java.awt.PaintContext;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ColorModel;
 
 /**
  * A ColorUIResource which can change its color.
@@ -19,10 +23,13 @@ import javax.swing.plaf.UIResource;
 public class MutableColorUIResource extends Color implements UIResource {
     private int argb;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public MutableColorUIResource(int rgb) {
         this(rgb, false);
     }
+
     public MutableColorUIResource(int argb, boolean hasAlpha) {
         super((hasAlpha) ? argb : 0xff000000 | argb, true);
         this.argb = argb;

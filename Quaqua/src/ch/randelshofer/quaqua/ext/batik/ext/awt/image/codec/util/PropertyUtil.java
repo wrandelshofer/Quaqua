@@ -18,28 +18,27 @@
  */
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util;
 
-import java.util.MissingResourceException;
-
 import ch.randelshofer.quaqua.ext.batik.i18n.LocalizableSupport;
 
+import java.util.MissingResourceException;
+
 /**
- *
  * @version $Id: PropertyUtil.java 498740 2007-01-22 18:35:57Z dvholten $
  */
 public class PropertyUtil {
     protected static final String RESOURCES =
-        "ch.randelshofer.quaqua.ext.batik.bridge.resources.properties";
+            "ch.randelshofer.quaqua.ext.batik.bridge.resources.properties";
 
 
     protected static final LocalizableSupport localizableSupport =
-        new LocalizableSupport
-        (RESOURCES, PropertyUtil.class.getClassLoader());
+            new LocalizableSupport
+                    (RESOURCES, PropertyUtil.class.getClassLoader());
 
     public static String getString(String key) {
-        try{
+        try {
             return localizableSupport.formatMessage(key, null);
-        }catch(MissingResourceException e){
+        } catch (MissingResourceException e) {
             return key;
         }
-   }
+    }
 }

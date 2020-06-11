@@ -4,25 +4,65 @@
  */
 package ch.randelshofer.quaqua.panther;
 
-import ch.randelshofer.quaqua.color.PaintableColor;
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
+import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
-import ch.randelshofer.quaqua.util.Debug;
-import ch.randelshofer.quaqua.util.NavigatableTabbedPaneUI;
+import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.color.TextureColor;
+import ch.randelshofer.quaqua.util.Debug;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+import ch.randelshofer.quaqua.util.NavigatableTabbedPaneUI;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import java.util.*;
+import javax.swing.AbstractAction;
+import javax.swing.AbstractListModel;
+import javax.swing.ActionMap;
+import javax.swing.ComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ActionMapUIResource;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.InputMapUIResource;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
+import javax.swing.text.View;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * A replacement for Apple's AquaTabbedPaneUI for Mac OS X 10.3 Panther.
@@ -50,8 +90,7 @@ import java.util.*;
  * to be used to lay out the child component inside the JTabbedPane.</li>
  * </ul>
  *
- *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
@@ -85,6 +124,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             return tabPane.isFocusOwner();
         }
     }
+
     private TabsComboBox tabsCombo;
     private ItemListener itemListener;
     private ContainerListener containerListener;
@@ -108,6 +148,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     public Integer getIndexForMnemonic(int mnemonic) {
         return (Integer) mnemonicToIndexMap.get(mnemonic);
     }
+
     /**
      * InputMap used for mnemonics. Only non-null if the JTabbedPane has
      * mnemonics associated with it. Lazily created in initMnemonics.
@@ -126,6 +167,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     public void setPropertyPrefix(String newValue) {
         propertyPrefix = newValue;
     }
+
     private TabsComboBoxModel tabsComboModel = new TabsComboBoxModel();
 
     /**
@@ -329,7 +371,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     @Override
     protected Insets getTabInsets(int tabPlacement, int tabIndex) {
-        boolean isSmall=QuaquaUtilities.getSizeVariant(tabPane)==QuaquaUtilities.SizeVariant.SMALL;
+        boolean isSmall = QuaquaUtilities.getSizeVariant(tabPane) == QuaquaUtilities.SizeVariant.SMALL;
 
 
         int tCount = tabPane.getTabCount();
@@ -368,19 +410,19 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         currentContentBorderInsets.right = insets.right;
 
         switch (tabPlacement) {
-            case LEFT:
-                currentContentBorderInsets.left -= 3;
-                break;
-            case RIGHT:
-                currentContentBorderInsets.right -= 3;
-                break;
-            case BOTTOM:
-                currentContentBorderInsets.bottom -= 2;
-                break;
-            case TOP:
-            default:
-                currentContentBorderInsets.top -= 3;
-                break;
+        case LEFT:
+            currentContentBorderInsets.left -= 3;
+            break;
+        case RIGHT:
+            currentContentBorderInsets.right -= 3;
+            break;
+        case BOTTOM:
+            currentContentBorderInsets.bottom -= 2;
+            break;
+        case TOP:
+        default:
+            currentContentBorderInsets.top -= 3;
+            break;
         }
         return currentContentBorderInsets;
     }
@@ -442,28 +484,28 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         int h = height - insets.top - insets.bottom;
 
         switch (tabPlacement) {
-            case LEFT:
-                // Note: we subtract 3, because this is the visual right margin of
-                // the content border
-                x += calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth) / 2;
-                w -= (x - insets.left);
-                break;
-            case RIGHT:
-                // Note: we subtract 3, because this is the visual right margin of
-                // the content border
-                w -= calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth) / 2;
-                break;
-            case BOTTOM:
-                // Note: we subtract 3, because this is the visual bottom margin of
-                // the content border
-                h -= calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight) / 2;
-                break;
-            case TOP:
-            default:
-                // Note: we subtract 3, because this is the visual top margin of
-                // the content border
-                y += calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight) / 2;
-                h -= (y - insets.top);
+        case LEFT:
+            // Note: we subtract 3, because this is the visual right margin of
+            // the content border
+            x += calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth) / 2;
+            w -= (x - insets.left);
+            break;
+        case RIGHT:
+            // Note: we subtract 3, because this is the visual right margin of
+            // the content border
+            w -= calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth) / 2;
+            break;
+        case BOTTOM:
+            // Note: we subtract 3, because this is the visual bottom margin of
+            // the content border
+            h -= calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight) / 2;
+            break;
+        case TOP:
+        default:
+            // Note: we subtract 3, because this is the visual top margin of
+            // the content border
+            y += calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight) / 2;
+            h -= (y - insets.top);
         }
 
         Color contentBackground = null;
@@ -488,10 +530,10 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     protected String layoutTabLabel(int tabPlacement,
-            FontMetrics metrics, int tabIndex,
-            String title, Icon icon,
-            Rectangle tabRect, Rectangle iconRect,
-            Rectangle textRect, boolean isSelected) {
+                                    FontMetrics metrics, int tabIndex,
+                                    String title, Icon icon,
+                                    Rectangle tabRect, Rectangle iconRect,
+                                    Rectangle textRect, boolean isSelected) {
         textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
 
         View v = getTextViewForTab(tabIndex);
@@ -514,7 +556,6 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         if (textRect.width == 0) {
             textRect.x = tabRect.x;
         }
-
 
 
         tabPane.putClientProperty("html", null);
@@ -565,8 +606,8 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     @Override
     protected void paintTab(Graphics gr, int tabPlacement,
-            Rectangle[] rects, int tabIndex,
-            Rectangle iconRect, Rectangle textRect) {
+                            Rectangle[] rects, int tabIndex,
+                            Rectangle iconRect, Rectangle textRect) {
         Graphics2D g = (Graphics2D) gr;
 
         Rectangle tabRect = rects[tabIndex];
@@ -596,7 +637,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 tabRect.y,// + insets.top,
                 tabRect.width - insets.left - insets.right,
                 tabRect.height// - insets.top - insets.bottom
-                );
+        );
 
         title = layoutTabLabel(tabPlacement, metrics, tabIndex, title, icon,
                 innerTabRect, iconRect, textRect, isSelected);
@@ -620,15 +661,15 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     @Override
     protected void paintTabBackground(Graphics g, int tabPlacement,
-            int tabIndex,
-            int x, int y, int w, int h,
-            boolean isSelected) {
+                                      int tabIndex,
+                                      int x, int y, int w, int h,
+                                      boolean isSelected) {
 
         String prefix = getPropertyPrefix();
 
         // Native tab pane border
-        Border tb=UIManager.getBorder(prefix+"tabBorder");
-        if (tb!=null) {
+        Border tb = UIManager.getBorder(prefix + "tabBorder");
+        if (tb != null) {
 
 
             return;
@@ -682,16 +723,16 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      */
     @Override
     protected void paintTabBorder(Graphics g, int tabPlacement,
-            int tabIndex,
-            int x, int y, int w, int h,
-            boolean isSelected) {
+                                  int tabIndex,
+                                  int x, int y, int w, int h,
+                                  boolean isSelected) {
     }
 
     @Override
     protected void paintText(Graphics g, int tabPlacement,
-            Font font, FontMetrics metrics, int tabIndex,
-            String title, Rectangle textRect,
-            boolean isSelected) {
+                             Font font, FontMetrics metrics, int tabIndex,
+                             String title, Rectangle textRect,
+                             boolean isSelected) {
         g.setFont(font);
 
         View v = getTextViewForTab(tabIndex);
@@ -723,9 +764,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     @Override
     protected void paintFocusIndicator(Graphics g, int tabPlacement,
-            Rectangle[] rects, int tabIndex,
-            Rectangle iconRect, Rectangle textRect,
-            boolean isSelected) {
+                                       Rectangle[] rects, int tabIndex,
+                                       Rectangle iconRect, Rectangle textRect,
+                                       boolean isSelected) {
         String prefix = getPropertyPrefix();
 
 
@@ -818,9 +859,8 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      * The handling of invalid parameters is unspecified.
      *
      * @param tabIndex the index of the tab
-     * @param dest the rectangle where the result should be placed
+     * @param dest     the rectangle where the result should be placed
      * @return the resulting rectangle
-     *
      * @since 1.4
      */
     @Override
@@ -912,7 +952,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     private void updateMnemonics() {
         resetMnemonics();
         for (int counter = tabPane.getTabCount() - 1; counter >= 0;
-                counter--) {
+             counter--) {
             int mnemonic = tabPane.getMnemonicAt(counter);
 
             if (mnemonic > 0) {
@@ -963,8 +1003,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      *
      * @param tabIndex the index of the tab
      * @return the text view to render the tab's text or null if no
-     *         specialized rendering is required
-     *
+     * specialized rendering is required
      * @since 1.4
      */
     @Override
@@ -1032,36 +1071,36 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         Dimension size = tabPane.getSize();
 
         switch (tabPlacement) {
-            case LEFT:
-                clipRect.setBounds(
-                        insets.left,
-                        insets.top,
-                        calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth) + 6,
-                        size.height - insets.bottom - insets.top);
-                break;
-            case BOTTOM:
-                int totalTabHeight = calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
-                clipRect.setBounds(
-                        insets.left,
-                        size.height - insets.bottom - totalTabHeight - 6,
-                        size.width - insets.left - insets.right,
-                        totalTabHeight + 6);
-                break;
-            case RIGHT:
-                int totalTabWidth = calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
-                clipRect.setBounds(
-                        size.width - insets.right - totalTabWidth - 6,
-                        insets.top,
-                        totalTabWidth + 6,
-                        size.height - insets.top - insets.bottom);
-                break;
-            case TOP:
-            default:
-                clipRect.setBounds(
-                        insets.left,
-                        insets.top,
-                        size.width - insets.right - insets.left,
-                        calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight) + 6);
+        case LEFT:
+            clipRect.setBounds(
+                    insets.left,
+                    insets.top,
+                    calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth) + 6,
+                    size.height - insets.bottom - insets.top);
+            break;
+        case BOTTOM:
+            int totalTabHeight = calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
+            clipRect.setBounds(
+                    insets.left,
+                    size.height - insets.bottom - totalTabHeight - 6,
+                    size.width - insets.left - insets.right,
+                    totalTabHeight + 6);
+            break;
+        case RIGHT:
+            int totalTabWidth = calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
+            clipRect.setBounds(
+                    size.width - insets.right - totalTabWidth - 6,
+                    insets.top,
+                    totalTabWidth + 6,
+                    size.height - insets.top - insets.bottom);
+            break;
+        case TOP:
+        default:
+            clipRect.setBounds(
+                    insets.left,
+                    insets.top,
+                    size.width - insets.right - insets.left,
+                    calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight) + 6);
         }
 
         tabPane.repaint(clipRect);
@@ -1234,122 +1273,122 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
         int offset;
         switch (tabPlacement) {
-            case LEFT:
-                switch (direction) {
-                    case NEXT:
-                        selectNextTab(current);
-                        break;
-                    case PREVIOUS:
-                        selectPreviousTab(current);
-                        break;
-                    case NORTH:
-                        selectNextTab(current);
-                        break;
-                    case SOUTH:
-                        selectPreviousTab(current);
-                        break;
-                    case WEST:
-                        offset = getTabRunOffset(tabPlacement, tCount, current, false);
-                        selectAdjacentRunTab(tabPlacement, current, offset);
-                        break;
-                    case EAST:
-                        offset = getTabRunOffset(tabPlacement, tCount, current, true);
-                        selectAdjacentRunTab(tabPlacement, current, offset);
-                        break;
-                    default:
-                }
+        case LEFT:
+            switch (direction) {
+            case NEXT:
+                selectNextTab(current);
                 break;
-            case RIGHT:
-                switch (direction) {
-                    case NEXT:
-                        selectNextTab(current);
-                        break;
-                    case PREVIOUS:
-                        selectPreviousTab(current);
-                        break;
-                    case NORTH:
-                        selectPreviousTabInRun(current);
-                        break;
-                    case SOUTH:
-                        selectNextTabInRun(current);
-                        break;
-                    case WEST:
-                        offset = getTabRunOffset(tabPlacement, tCount, current, false);
-                        selectAdjacentRunTab(tabPlacement, current, offset);
-                        break;
-                    case EAST:
-                        offset = getTabRunOffset(tabPlacement, tCount, current, true);
-                        selectAdjacentRunTab(tabPlacement, current, offset);
-                        break;
-                    default:
-                }
+            case PREVIOUS:
+                selectPreviousTab(current);
                 break;
-            case BOTTOM:
-            case TOP:
-                switch (direction) {
-                    case NEXT:
-                        selectNextTab(current);
-                        break;
-                    case PREVIOUS:
-                        selectPreviousTab(current);
-                        break;
-                    case NORTH:
+            case NORTH:
+                selectNextTab(current);
+                break;
+            case SOUTH:
+                selectPreviousTab(current);
+                break;
+            case WEST:
+                offset = getTabRunOffset(tabPlacement, tCount, current, false);
+                selectAdjacentRunTab(tabPlacement, current, offset);
+                break;
+            case EAST:
+                offset = getTabRunOffset(tabPlacement, tCount, current, true);
+                selectAdjacentRunTab(tabPlacement, current, offset);
+                break;
+            default:
+            }
+            break;
+        case RIGHT:
+            switch (direction) {
+            case NEXT:
+                selectNextTab(current);
+                break;
+            case PREVIOUS:
+                selectPreviousTab(current);
+                break;
+            case NORTH:
+                selectPreviousTabInRun(current);
+                break;
+            case SOUTH:
+                selectNextTabInRun(current);
+                break;
+            case WEST:
+                offset = getTabRunOffset(tabPlacement, tCount, current, false);
+                selectAdjacentRunTab(tabPlacement, current, offset);
+                break;
+            case EAST:
+                offset = getTabRunOffset(tabPlacement, tCount, current, true);
+                selectAdjacentRunTab(tabPlacement, current, offset);
+                break;
+            default:
+            }
+            break;
+        case BOTTOM:
+        case TOP:
+            switch (direction) {
+            case NEXT:
+                selectNextTab(current);
+                break;
+            case PREVIOUS:
+                selectPreviousTab(current);
+                break;
+            case NORTH:
                     /*
                     offset = getTabRunOffset(tabPlacement, tabCount, current, false);
                     selectAdjacentRunTab(tabPlacement, current, offset);
                     break;*/
-                    case SOUTH:
+            case SOUTH:
                         /*
                         offset = getTabRunOffset(tabPlacement, tabCount, current, true);
                         selectAdjacentRunTab(tabPlacement, current, offset);*/
-                        break;
-                    case EAST:
-                        if (leftToRight) {
-                            selectNextTabInRun(current);
-                        } else {
-                            selectPreviousTabInRun(current);
-                        }
-                        break;
-                    case WEST:
-                        if (leftToRight) {
-                            selectPreviousTabInRun(current);
-                        } else {
-                            selectNextTabInRun(current);
-                        }
-                        break;
-                    default:
+                break;
+            case EAST:
+                if (leftToRight) {
+                    selectNextTabInRun(current);
+                } else {
+                    selectPreviousTabInRun(current);
+                }
+                break;
+            case WEST:
+                if (leftToRight) {
+                    selectPreviousTabInRun(current);
+                } else {
+                    selectNextTabInRun(current);
                 }
                 break;
             default:
-                switch (direction) {
-                    case NEXT:
-                        selectNextTab(current);
-                        break;
-                    case PREVIOUS:
-                        selectPreviousTab(current);
-                        break;
-                    case NORTH:
-                        selectPreviousTab(current);
-                        break;
-                    case SOUTH:
-                        selectNextTab(current);
-                        break;
-                    case EAST:
-                        if (leftToRight) {
-                            selectNextTabInRun(current);
-                        } else {
-                            selectPreviousTabInRun(current);
-                        }
-                        break;
-                    case WEST:
-                        if (leftToRight) {
-                            selectPreviousTabInRun(current);
-                        } else {
-                            selectNextTabInRun(current);
-                        }
-                        break;
-                    default:
+            }
+            break;
+        default:
+            switch (direction) {
+            case NEXT:
+                selectNextTab(current);
+                break;
+            case PREVIOUS:
+                selectPreviousTab(current);
+                break;
+            case NORTH:
+                selectPreviousTab(current);
+                break;
+            case SOUTH:
+                selectNextTab(current);
+                break;
+            case EAST:
+                if (leftToRight) {
+                    selectNextTabInRun(current);
+                } else {
+                    selectPreviousTabInRun(current);
                 }
+                break;
+            case WEST:
+                if (leftToRight) {
+                    selectPreviousTabInRun(current);
+                } else {
+                    selectNextTabInRun(current);
+                }
+                break;
+            default:
+            }
         }
     }
 
@@ -1360,7 +1399,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             NavigatableTabbedPaneUI ui = (NavigatableTabbedPaneUI) pane.getUI();
             ui.navigateSelectedTab(EAST);
         }
-    };
+    }
+
+    ;
 
     private static class LeftAction extends AbstractAction {
 
@@ -1369,7 +1410,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             NavigatableTabbedPaneUI ui = (NavigatableTabbedPaneUI) pane.getUI();
             ui.navigateSelectedTab(WEST);
         }
-    };
+    }
+
+    ;
 
     private static class UpAction extends AbstractAction {
 
@@ -1378,7 +1421,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             NavigatableTabbedPaneUI ui = (NavigatableTabbedPaneUI) pane.getUI();
             ui.navigateSelectedTab(NORTH);
         }
-    };
+    }
+
+    ;
 
     private static class DownAction extends AbstractAction {
 
@@ -1387,7 +1432,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             NavigatableTabbedPaneUI ui = (NavigatableTabbedPaneUI) pane.getUI();
             ui.navigateSelectedTab(SOUTH);
         }
-    };
+    }
+
+    ;
 
     private static class NextAction extends AbstractAction {
 
@@ -1396,7 +1443,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             NavigatableTabbedPaneUI ui = (NavigatableTabbedPaneUI) pane.getUI();
             ui.navigateSelectedTab(NEXT);
         }
-    };
+    }
+
+    ;
 
     private static class PreviousAction extends AbstractAction {
 
@@ -1405,7 +1454,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             NavigatableTabbedPaneUI ui = (NavigatableTabbedPaneUI) pane.getUI();
             ui.navigateSelectedTab(PREVIOUS);
         }
-    };
+    }
+
+    ;
 
     private static class PageUpAction extends AbstractAction {
 
@@ -1419,7 +1470,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 ui.navigateSelectedTab(NORTH);
             }
         }
-    };
+    }
+
+    ;
 
     private static class PageDownAction extends AbstractAction {
 
@@ -1433,7 +1486,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 ui.navigateSelectedTab(SOUTH);
             }
         }
-    };
+    }
+
+    ;
 
     private static class RequestFocusAction extends AbstractAction {
 
@@ -1441,7 +1496,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             JTabbedPane pane = (JTabbedPane) e.getSource();
             pane.requestFocus();
         }
-    };
+    }
+
+    ;
 
     private static class RequestFocusForVisibleAction extends AbstractAction {
 
@@ -1450,7 +1507,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             NavigatableTabbedPaneUI ui = (NavigatableTabbedPaneUI) pane.getUI();
             ui.requestFocusForVisibleComponent();
         }
-    };
+    }
+
+    ;
 
     /**
      * Selects a tab in the JTabbedPane based on the String of the
@@ -1478,11 +1537,13 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 }
             }
         }
-    };
+    }
+
+    ;
 
     /**
      * Handles item changes in the tabsCombo JComboBox.
-     *
+     * <p>
      * FIXME - Actually, this listener is not needed. The combo box model
      * already does the job for us.
      */
@@ -1556,20 +1617,20 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             // minimum size required to display largest child + content border
             //
             switch (tabPlacement) {
-                case LEFT:
-                case RIGHT:
-                    height = Math.max(height, calculateMaxTabHeight(tabPlacement)
-                            + tabAreaInsets.top + tabAreaInsets.bottom);
-                    tabExtent = preferredTabAreaWidth(tabPlacement, height);
-                    width += tabExtent;
-                    break;
-                case TOP:
-                case BOTTOM:
-                default:
-                    width = Math.max(width, calculateMaxTabWidth(tabPlacement)
-                            + tabAreaInsets.left + tabAreaInsets.right);
-                    tabExtent = preferredTabAreaHeight(tabPlacement, width);
-                    height += tabExtent;
+            case LEFT:
+            case RIGHT:
+                height = Math.max(height, calculateMaxTabHeight(tabPlacement)
+                        + tabAreaInsets.top + tabAreaInsets.bottom);
+                tabExtent = preferredTabAreaWidth(tabPlacement, height);
+                width += tabExtent;
+                break;
+            case TOP:
+            case BOTTOM:
+            default:
+                width = Math.max(width, calculateMaxTabWidth(tabPlacement)
+                        + tabAreaInsets.left + tabAreaInsets.right);
+                tabExtent = preferredTabAreaHeight(tabPlacement, width);
+                height += tabExtent;
             }
             return new Dimension(width + insets.left + insets.right,
                     height + insets.bottom + insets.top);
@@ -1677,66 +1738,66 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 if (numChildren > 0) {
 
                     switch (tabPlacement) {
-                        case LEFT:
-                            // calculate tab area bounds
-                            tw = calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
-                            th = bounds.height - insets.top - insets.bottom;
-                            tx = insets.left;
-                            ty = insets.top;
+                    case LEFT:
+                        // calculate tab area bounds
+                        tw = calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
+                        th = bounds.height - insets.top - insets.bottom;
+                        tx = insets.left;
+                        ty = insets.top;
 
-                            // calculate content area bounds
-                            cx = insets.left + tw + contentInsets.left;
-                            cy = insets.top + contentInsets.top;
-                            cw = bounds.width - insets.left - insets.right - tw
-                                    - contentInsets.left - contentInsets.right;
-                            ch = bounds.height - insets.top - insets.bottom
-                                    - contentInsets.top - contentInsets.bottom;
-                            break;
-                        case RIGHT:
-                            // calculate tab area bounds
-                            tw = calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
-                            th = bounds.height - insets.top - insets.bottom;
-                            tx = bounds.width - insets.right - tw;
-                            ty = insets.top;
+                        // calculate content area bounds
+                        cx = insets.left + tw + contentInsets.left;
+                        cy = insets.top + contentInsets.top;
+                        cw = bounds.width - insets.left - insets.right - tw
+                                - contentInsets.left - contentInsets.right;
+                        ch = bounds.height - insets.top - insets.bottom
+                                - contentInsets.top - contentInsets.bottom;
+                        break;
+                    case RIGHT:
+                        // calculate tab area bounds
+                        tw = calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
+                        th = bounds.height - insets.top - insets.bottom;
+                        tx = bounds.width - insets.right - tw;
+                        ty = insets.top;
 
-                            // calculate content area bounds
-                            cx = insets.left + contentInsets.left;
-                            cy = insets.top + contentInsets.top;
-                            cw = bounds.width - insets.left - insets.right - tw
-                                    - contentInsets.left - contentInsets.right;
-                            ch = bounds.height - insets.top - insets.bottom
-                                    - contentInsets.top - contentInsets.bottom;
-                            break;
-                        case BOTTOM:
-                            // calculate tab area bounds
-                            tw = bounds.width - insets.left - insets.right;
-                            th = calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
-                            tx = insets.left;
-                            ty = bounds.height - insets.bottom - th;
+                        // calculate content area bounds
+                        cx = insets.left + contentInsets.left;
+                        cy = insets.top + contentInsets.top;
+                        cw = bounds.width - insets.left - insets.right - tw
+                                - contentInsets.left - contentInsets.right;
+                        ch = bounds.height - insets.top - insets.bottom
+                                - contentInsets.top - contentInsets.bottom;
+                        break;
+                    case BOTTOM:
+                        // calculate tab area bounds
+                        tw = bounds.width - insets.left - insets.right;
+                        th = calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
+                        tx = insets.left;
+                        ty = bounds.height - insets.bottom - th;
 
-                            // calculate content area bounds
-                            cx = insets.left + contentInsets.left;
-                            cy = insets.top + contentInsets.top;
-                            cw = bounds.width - insets.left - insets.right
-                                    - contentInsets.left - contentInsets.right;
-                            ch = bounds.height - insets.top - insets.bottom - th
-                                    - contentInsets.top - contentInsets.bottom;
-                            break;
-                        case TOP:
-                        default:
-                            // calculate tab area bounds
-                            tw = bounds.width - insets.left - insets.right;
-                            th = calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
-                            tx = insets.left;
-                            ty = insets.top;
+                        // calculate content area bounds
+                        cx = insets.left + contentInsets.left;
+                        cy = insets.top + contentInsets.top;
+                        cw = bounds.width - insets.left - insets.right
+                                - contentInsets.left - contentInsets.right;
+                        ch = bounds.height - insets.top - insets.bottom - th
+                                - contentInsets.top - contentInsets.bottom;
+                        break;
+                    case TOP:
+                    default:
+                        // calculate tab area bounds
+                        tw = bounds.width - insets.left - insets.right;
+                        th = calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
+                        tx = insets.left;
+                        ty = insets.top;
 
-                            // calculate content area bounds
-                            cx = insets.left + contentInsets.left;
-                            cy = insets.top + th + contentInsets.top;
-                            cw = bounds.width - insets.left - insets.right
-                                    - contentInsets.left - contentInsets.right;
-                            ch = bounds.height - insets.top - insets.bottom - th
-                                    - contentInsets.top - contentInsets.bottom;
+                        // calculate content area bounds
+                        cx = insets.left + contentInsets.left;
+                        cy = insets.top + th + contentInsets.top;
+                        cw = bounds.width - insets.left - insets.right
+                                - contentInsets.left - contentInsets.right;
+                        ch = bounds.height - insets.top - insets.bottom - th
+                                - contentInsets.top - contentInsets.bottom;
                     }
 
                     for (int i = 0; i < numChildren; i++) {
@@ -1802,33 +1863,33 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             // Calculate bounds within which a tab run must fit
             //
             switch (tabPlacement) {
-                case LEFT:
-                    //maxTabWidth = calculateMaxTabWidth(tabPlacement);
-                    maxTabWidth = calculateMaxTabHeight(tabPlacement);
-                    x = insets.left + tabAreaInsets.left;
-                    y = insets.top + tabAreaInsets.top;
-                    returnAt = size.height - (insets.bottom + tabAreaInsets.bottom);
-                    break;
-                case RIGHT:
-                    //maxTabWidth = calculateMaxTabWidth(tabPlacement);
-                    maxTabWidth = calculateMaxTabHeight(tabPlacement);
-                    x = size.width - insets.right - tabAreaInsets.right - maxTabWidth;
-                    y = insets.top + tabAreaInsets.top;
-                    returnAt = size.height - (insets.bottom + tabAreaInsets.bottom);
-                    break;
-                case BOTTOM:
-                    maxTabHeight = calculateMaxTabHeight(tabPlacement);
-                    x = insets.left + tabAreaInsets.left;
-                    y = size.height - insets.bottom - tabAreaInsets.bottom - maxTabHeight;
-                    returnAt = size.width - (insets.right + tabAreaInsets.right);
-                    break;
-                case TOP:
-                default:
-                    maxTabHeight = calculateMaxTabHeight(tabPlacement);
-                    x = insets.left + tabAreaInsets.left;
-                    y = insets.top + tabAreaInsets.top;
-                    returnAt = size.width - (insets.right + tabAreaInsets.right);
-                    break;
+            case LEFT:
+                //maxTabWidth = calculateMaxTabWidth(tabPlacement);
+                maxTabWidth = calculateMaxTabHeight(tabPlacement);
+                x = insets.left + tabAreaInsets.left;
+                y = insets.top + tabAreaInsets.top;
+                returnAt = size.height - (insets.bottom + tabAreaInsets.bottom);
+                break;
+            case RIGHT:
+                //maxTabWidth = calculateMaxTabWidth(tabPlacement);
+                maxTabWidth = calculateMaxTabHeight(tabPlacement);
+                x = size.width - insets.right - tabAreaInsets.right - maxTabWidth;
+                y = insets.top + tabAreaInsets.top;
+                returnAt = size.height - (insets.bottom + tabAreaInsets.bottom);
+                break;
+            case BOTTOM:
+                maxTabHeight = calculateMaxTabHeight(tabPlacement);
+                x = insets.left + tabAreaInsets.left;
+                y = size.height - insets.bottom - tabAreaInsets.bottom - maxTabHeight;
+                returnAt = size.width - (insets.right + tabAreaInsets.right);
+                break;
+            case TOP:
+            default:
+                maxTabHeight = calculateMaxTabHeight(tabPlacement);
+                x = insets.left + tabAreaInsets.left;
+                y = insets.top + tabAreaInsets.top;
+                returnAt = size.width - (insets.right + tabAreaInsets.right);
+                break;
             }
 
             tabRunOverlay = getTabRunOverlay(tabPlacement);
@@ -2012,49 +2073,49 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             int tabAlignment = (propertyValue != null && propertyValue.intValue() == SwingConstants.LEADING) ? SwingConstants.LEADING : SwingConstants.CENTER;
             if (tabAlignment == SwingConstants.CENTER) {
                 switch (tabPlacement) {
-                    case LEFT:
-                    case RIGHT: {
-                        int availableTabAreaHeight = size.height - insets.top - insets.bottom - tabAreaInsets.top - tabAreaInsets.bottom;
-                        int usedTabAreaHeight = 0;
-                        int pad = 0;
-                        for (int run = 0; run < runCount; run++) {
-                            int firstIndex = tabRuns[run];
-                            int lastIndex = lastTabInRun(tabCount, run);
-                            if (run == 0) {
-                                usedTabAreaHeight = 0;
-                                for (i = firstIndex; i <= lastIndex; i++) {
-                                    usedTabAreaHeight += rects[i].height;
-                                }
-                                pad = (availableTabAreaHeight - usedTabAreaHeight) / 2;
-                            }
-                            if (tabPlacement == LEFT) {
-                                pad = -pad;
-                            }
+                case LEFT:
+                case RIGHT: {
+                    int availableTabAreaHeight = size.height - insets.top - insets.bottom - tabAreaInsets.top - tabAreaInsets.bottom;
+                    int usedTabAreaHeight = 0;
+                    int pad = 0;
+                    for (int run = 0; run < runCount; run++) {
+                        int firstIndex = tabRuns[run];
+                        int lastIndex = lastTabInRun(tabCount, run);
+                        if (run == 0) {
+                            usedTabAreaHeight = 0;
                             for (i = firstIndex; i <= lastIndex; i++) {
-                                rects[i].y += pad;
+                                usedTabAreaHeight += rects[i].height;
                             }
+                            pad = (availableTabAreaHeight - usedTabAreaHeight) / 2;
                         }
-                        break;
+                        if (tabPlacement == LEFT) {
+                            pad = -pad;
+                        }
+                        for (i = firstIndex; i <= lastIndex; i++) {
+                            rects[i].y += pad;
+                        }
                     }
-                    case BOTTOM:
-                    case TOP:
-                    default: {
-                        int availableTabAreaWidth = size.width - insets.left - insets.right - tabAreaInsets.left - tabAreaInsets.right;
-                        for (int run = 0; run < runCount; run++) {
-                            int firstIndex = tabRuns[run];
-                            int lastIndex = lastTabInRun(tabCount, run);
-                            int usedTabAreaWidth = 0;
-                            for (i = firstIndex; i <= lastIndex; i++) {
-                                usedTabAreaWidth += rects[i].width;
-                            }
-                            int pad = (availableTabAreaWidth - usedTabAreaWidth) / 2;
-                            for (i = firstIndex; i <= lastIndex; i++) {
-                                rects[i].x += pad;
-                            }
+                    break;
+                }
+                case BOTTOM:
+                case TOP:
+                default: {
+                    int availableTabAreaWidth = size.width - insets.left - insets.right - tabAreaInsets.left - tabAreaInsets.right;
+                    for (int run = 0; run < runCount; run++) {
+                        int firstIndex = tabRuns[run];
+                        int lastIndex = lastTabInRun(tabCount, run);
+                        int usedTabAreaWidth = 0;
+                        for (i = firstIndex; i <= lastIndex; i++) {
+                            usedTabAreaWidth += rects[i].width;
                         }
+                        int pad = (availableTabAreaWidth - usedTabAreaWidth) / 2;
+                        for (i = firstIndex; i <= lastIndex; i++) {
+                            rects[i].x += pad;
+                        }
+                    }
 
-                        break;
-                    }
+                    break;
+                }
                 }
             }
         }
@@ -2075,7 +2136,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
         @Override
         protected void normalizeTabRuns(int tabPlacement, int tabCount,
-                int start, int max) {
+                                        int start, int max) {
             boolean verticalTabRuns = (tabPlacement == LEFT || tabPlacement == RIGHT);
             int run = runCount - 1;
             boolean keepAdjusting = true;
@@ -2256,7 +2317,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 }                                // else nada!
             }
             updateMnemonics();
-            ((TabsComboBoxModel)tabsCombo.getModel()).stateChanged(null);
+            ((TabsComboBoxModel) tabsCombo.getModel()).stateChanged(null);
         }
     }
 
@@ -2293,7 +2354,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 if (model.getTabCount() > 0) {
                     fireIntervalAdded(this, 0, model.getTabCount() - 1);
                 }
-                fireContentsChanged(this, 0, model.getTabCount()-1);
+                fireContentsChanged(this, 0, model.getTabCount() - 1);
             }
         }
 
@@ -2347,7 +2408,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
 
         public void stateChanged(ChangeEvent e) {
-                fireContentsChanged(this, 0, model.getTabCount()-1);
+            fireContentsChanged(this, 0, model.getTabCount() - 1);
         }
     }
 

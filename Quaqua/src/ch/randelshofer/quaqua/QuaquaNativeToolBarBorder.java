@@ -12,6 +12,13 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 import ch.randelshofer.quaqua.util.InsetsUtil;
 
+import javax.swing.JComponent;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicToolBarUI;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -21,14 +28,10 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-
 /**
  * QuaquaNativeToolBarBorder.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaNativeToolBarBorder
@@ -83,7 +86,6 @@ public class QuaquaNativeToolBarBorder
         h -= vm.top + vm.bottom;
 
 
-
         Color bright = UIManager.getColor("ToolBar.borderBright");
         Color dark = UIManager.getColor("ToolBar.borderDark");
         Color divider = UIManager.getColor(QuaquaUtilities.isOnActiveWindow(component) ?//
@@ -134,20 +136,20 @@ public class QuaquaNativeToolBarBorder
             if (isDividerDrawn) {
                 g.setColor(divider);
                 switch (dividerLocation) {
-                    case NORTH:
-                        g.fillRect(x, y, w, 1);
-                        break;
-                    case EAST:
-                        g.fillRect(x + w - 1, y, 1, h);
-                        break;
-                    case SOUTH:
-                        g.fillRect(x, y + h - 1, w, 1);
-                        break;
-                    case WEST:
-                        g.fillRect(x, y, 1, h);
-                        break;
-                    default:
-                        break;
+                case NORTH:
+                    g.fillRect(x, y, w, 1);
+                    break;
+                case EAST:
+                    g.fillRect(x + w - 1, y, 1, h);
+                    break;
+                case SOUTH:
+                    g.fillRect(x, y + h - 1, w, 1);
+                    break;
+                case WEST:
+                    g.fillRect(x, y, 1, h);
+                    break;
+                default:
+                    break;
                 }
             }
         }
@@ -251,20 +253,20 @@ public class QuaquaNativeToolBarBorder
                     //newInsets.left++;
                 } else {
                     switch (getDividerLocation(c)) {
-                        case SOUTH:
-                            newInsets.bottom++;
-                            break;
-                        case EAST:
-                            newInsets.right++;
-                            break;
-                        case NORTH:
-                            newInsets.top++;
-                            break;
-                        case WEST:
-                            newInsets.left++;
-                            break;
-                        default:
-                            break;
+                    case SOUTH:
+                        newInsets.bottom++;
+                        break;
+                    case EAST:
+                        newInsets.right++;
+                        break;
+                    case NORTH:
+                        newInsets.top++;
+                        break;
+                    case WEST:
+                        newInsets.left++;
+                        break;
+                    default:
+                        break;
                     }
                 }
             }
@@ -335,18 +337,18 @@ public class QuaquaNativeToolBarBorder
                     } else if (gradient.length == 2) {
                         g.setPaint(
                                 new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
-                                new float[]{0f, 1f},
-                                gradient));
+                                        new float[]{0f, 1f},
+                                        gradient));
                     } else if (gradient.length == 3) {
                         g.setPaint(
                                 new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
-                                new float[]{0f, 0.25f, 1f},
-                                gradient));
+                                        new float[]{0f, 0.25f, 1f},
+                                        gradient));
                     } else if (gradient.length == 4) {
                         g.setPaint(
                                 new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
-                                new float[]{0f, 0.25f, 0.5f, 1f},
-                                gradient));
+                                        new float[]{0f, 0.25f, 0.5f, 1f},
+                                        gradient));
                     }
                     g.fillRect(x, y + 1, width, height - 1);
                 }
@@ -372,9 +374,9 @@ public class QuaquaNativeToolBarBorder
                     Graphics2D g = (Graphics2D) gr;
                     Color color = UIManager.getColor("ToolBar.title.background");
                     if (color instanceof ActivatableUIResource) {
-                    	((ActivatableUIResource)color).setActive(isActive);
+                        ((ActivatableUIResource) color).setActive(isActive);
                     }
-					g.setPaint(PaintableColor.getPaint(color, c));
+                    g.setPaint(PaintableColor.getPaint(color, c));
                     g.fillRect(x, y, width, height);
                 }
 

@@ -5,7 +5,9 @@
 package ch.randelshofer.quaqua.leopard.filechooser;
 
 import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
-import java.io.*;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -33,40 +35,43 @@ public class DarwinLeopardFileSystemView extends QuaquaFileSystemView {
 
     static {
         String[] names = {
-            "AppleShare PDS",
-            "automount",
-            "bin",
-            "Cleanup At Startup",
-            "cores",
-            "Desktop DB",
-            "Desktop DF",
-            "dev",
-            "etc",
-            "home",
-            "mach",
-            "mach_kernel",
-            "mach_kernel.ctfsys",
-            "mach.sym",
-            "net",
-            "opt",
-            "private",
-            "sbin",
-            "Temporary Items",
-            "TheVolumeSettingsFolder",
-            "TheFindByContentFolder",
-            "tmp",
-            "Trash",
-            "usr",
-            "var",
-            "Volumes",
-            "\u0003\u0002\u0001Move&Rename",
+                "AppleShare PDS",
+                "automount",
+                "bin",
+                "Cleanup At Startup",
+                "cores",
+                "Desktop DB",
+                "Desktop DF",
+                "dev",
+                "etc",
+                "home",
+                "mach",
+                "mach_kernel",
+                "mach_kernel.ctfsys",
+                "mach.sym",
+                "net",
+                "opt",
+                "private",
+                "sbin",
+                "Temporary Items",
+                "TheVolumeSettingsFolder",
+                "TheFindByContentFolder",
+                "tmp",
+                "Trash",
+                "usr",
+                "var",
+                "Volumes",
+                "\u0003\u0002\u0001Move&Rename",
         };
 
         hiddenTopLevelNames.addAll(Arrays.asList(names));
     }
+
     ;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public DarwinLeopardFileSystemView() {
     }
 
@@ -111,7 +116,7 @@ public class DarwinLeopardFileSystemView extends QuaquaFileSystemView {
         return systemVolume;
     }
 
-   public boolean isParent(File folder, File file) {
+    public boolean isParent(File folder, File file) {
         if (folder == null || file == null) {
             return false;
         } else {

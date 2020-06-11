@@ -4,31 +4,47 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.icon.QuaquaNativeButtonStateIcon;
-import ch.randelshofer.quaqua.icon.ShiftedIcon;
-import ch.randelshofer.quaqua.osx.OSXApplication;
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.icon.ButtonFocusIcon;
 import ch.randelshofer.quaqua.icon.ButtonStateIcon;
 import ch.randelshofer.quaqua.icon.FocusedIcon;
 import ch.randelshofer.quaqua.icon.FrameButtonStateIcon;
 import ch.randelshofer.quaqua.icon.ListStateIcon;
 import ch.randelshofer.quaqua.icon.OverlayIcon;
+import ch.randelshofer.quaqua.icon.QuaquaNativeButtonStateIcon;
+import ch.randelshofer.quaqua.icon.ShiftedIcon;
 import ch.randelshofer.quaqua.icon.SliderThumbIcon;
+import ch.randelshofer.quaqua.osx.OSXApplication;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
-import java.net.*;
-import java.awt.*;
-import java.awt.image.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import java.io.*;
 import ch.randelshofer.quaqua.osx.OSXImageIO;
-import java.util.*;
+import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.Worker;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.IconUIResource;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * QuaquaIconFactory.
  *
- * @author  Werner Randelshofer, Christopher Atlan
+ * @author Werner Randelshofer, Christopher Atlan
  * @version $Id$
  */
 public class QuaquaIconFactory {
@@ -53,12 +69,12 @@ public class QuaquaIconFactory {
 
                 public ImageIcon construct() {
                     switch (messageType) {
-                        case JOptionPane.WARNING_MESSAGE:
-                            return createWarningIcon();
-                        case JOptionPane.ERROR_MESSAGE:
-                            return createErrorIcon();
-                        default:
-                            return createApplicationIcon();
+                    case JOptionPane.WARNING_MESSAGE:
+                        return createWarningIcon();
+                    case JOptionPane.ERROR_MESSAGE:
+                        return createErrorIcon();
+                    default:
+                        return createApplicationIcon();
                     }
                 }
 
@@ -68,7 +84,7 @@ public class QuaquaIconFactory {
 
                     // Repaint all components that tried to display the icon
                     // while it was being constructed.
-                    for (Iterator i = repaintMe.iterator(); i.hasNext();) {
+                    for (Iterator i = repaintMe.iterator(); i.hasNext(); ) {
                         Component c = (Component) i.next();
                         c.repaint();
                     }
@@ -126,8 +142,9 @@ public class QuaquaIconFactory {
     public static BufferedImage createBufferedImage(String location) {
         return Images.toBufferedImage(createImage(location));
     }
+
     public static BufferedImage createBufferedImage(String location, Rectangle subimage) {
-        BufferedImage  img=Images.toBufferedImage(createImage(location));
+        BufferedImage img = Images.toBufferedImage(createImage(location));
         return img.getSubimage(subimage.x, subimage.y, subimage.width, subimage.height);
     }
 
@@ -143,9 +160,10 @@ public class QuaquaIconFactory {
         }
         return icons;
     }
+
     public static Icon[] createIcons(String location, Rectangle subimage, int count, boolean horizontal) {
         Icon[] icons = new Icon[count];
-        BufferedImage img=createBufferedImage(location,subimage);
+        BufferedImage img = createBufferedImage(location, subimage);
 
         BufferedImage[] images = Images.split(
                 img,
@@ -170,16 +188,16 @@ public class QuaquaIconFactory {
     public static Icon createButtonStateIcon(String location, int states, Point shift) {
         return new ShiftedIcon(
                 new ButtonStateIcon(
-                (Image) createImage(location),
-                states, true),
+                        (Image) createImage(location),
+                        states, true),
                 shift);
     }
 
     public static Icon createButtonStateIcon(String location, int states, Rectangle shift) {
         return new ShiftedIcon(
                 new ButtonStateIcon(
-                (Image) createImage(location),
-                states, true),
+                        (Image) createImage(location),
+                        states, true),
                 shift);
     }
 
@@ -198,9 +216,9 @@ public class QuaquaIconFactory {
             Rectangle layoutRect) {
         return new IconUIResource(
                 new VisuallyLayoutableIcon(
-                new OverlayIcon(
-                createButtonStateIcon(location1, states1),
-                createButtonFocusIcon(location2, states2)), layoutRect));
+                        new OverlayIcon(
+                                createButtonStateIcon(location1, states1),
+                                createButtonFocusIcon(location2, states2)), layoutRect));
     }
 
     public static Icon createButtonFocusIcon(String location, int states) {
@@ -258,7 +276,7 @@ public class QuaquaIconFactory {
     public static Icon createNativeSidebarIcon(String path, int width, int height, Color color, Color selectedColor) {
         try {
             BufferedImage img;
-            img = Images.toBufferedImage((Image)OSXImageIO.read(new File(path), width, height));
+            img = Images.toBufferedImage((Image) OSXImageIO.read(new File(path), width, height));
             if (img == null) {
                 return null;
             }
@@ -266,8 +284,8 @@ public class QuaquaIconFactory {
             BufferedImage iconImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
             Graphics2D g = iconImg.createGraphics();
             g.setComposite(AlphaComposite.Src);
-            RescaleOp rop=new RescaleOp(new float[]{1f,1f,1f,0.9f},new float[]{0f,0f,0f,0f},null);
-            g.drawImage(img, rop,0, 0);
+            RescaleOp rop = new RescaleOp(new float[]{1f, 1f, 1f, 0.9f}, new float[]{0f, 0f, 0f, 0f}, null);
+            g.drawImage(img, rop, 0, 0);
             g.setComposite(AlphaComposite.SrcIn);
             g.setColor(color);
             g.fillRect(0, 0, width, height);
@@ -278,19 +296,19 @@ public class QuaquaIconFactory {
             g.setComposite(AlphaComposite.Src);
             //rop=new RescaleOp(new float[]{1f,1f,1f,0.9f},new float[]{0f,0f,0f,0f},null);
             //BandCombineOp bop=new BandCombineOp(new float[][]{{1f,0f,0f,0f,0f},{0f,1f,0f,0f,0f},{0f,0f,1f,0f,0f},{1f,0f,0f,0f,0f}},null);
-            g.drawImage(img, rop,0, 0);
+            g.drawImage(img, rop, 0, 0);
             g.setComposite(AlphaComposite.SrcIn);
             g.setColor(selectedColor);
             g.fillRect(0, 0, width, height);
             g.dispose();
-            BufferedImage selectedImg = new BufferedImage(width, height+1, BufferedImage.TYPE_INT_ARGB_PRE);
+            BufferedImage selectedImg = new BufferedImage(width, height + 1, BufferedImage.TYPE_INT_ARGB_PRE);
             g = selectedImg.createGraphics();
-            g.drawImage(iconImg,0,1,null);
-            g.drawImage(whiteImg,0,0,null);
+            g.drawImage(iconImg, 0, 1, null);
+            g.drawImage(whiteImg, 0, 0, null);
             g.dispose();
             whiteImg.flush();
 
-            return new ListStateIcon(new ImageIcon(iconImg),new ImageIcon(selectedImg));
+            return new ListStateIcon(new ImageIcon(iconImg), new ImageIcon(selectedImg));
         } catch (IOException ex) {
             return null;
         }
@@ -344,7 +362,7 @@ public class QuaquaIconFactory {
 
         BufferedImage warningImage = Images.toBufferedImage(
                 Images.createImage(
-                QuaquaIconFactory.class.getResource(resource)));
+                        QuaquaIconFactory.class.getResource(resource)));
         g.drawImage(warningImage, 0, 0, 58, 58, null);
 
         BufferedImage appImage = OSXApplication.getIconImage(32);

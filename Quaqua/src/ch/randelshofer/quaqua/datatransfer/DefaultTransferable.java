@@ -5,12 +5,16 @@
 
 package ch.randelshofer.quaqua.datatransfer;
 
-import java.io.*;
-import java.awt.datatransfer.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
 /**
  * A Transferable which uses a char array or a byte array as its data source.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class DefaultTransferable implements Transferable {
@@ -27,6 +31,7 @@ public class DefaultTransferable implements Transferable {
     public DefaultTransferable(String data, String mimetype, String description) {
         this(data.toCharArray(), mimetype, description);
     }
+
     /**
      * Creates a new instance using a char array as the data source.
      * The charset parameter of the mimetype is used to convert the chars
@@ -59,8 +64,8 @@ public class DefaultTransferable implements Transferable {
      * invoking this method.
      */
     public DefaultTransferable(byte[] data, String mimetype, String description) {
-            this.data = data;
-            this.flavor = new DataFlavor(mimetype, description);
+        this.data = data;
+        this.flavor = new DataFlavor(mimetype, description);
     }
 
 
@@ -69,11 +74,11 @@ public class DefaultTransferable implements Transferable {
      * of the object returned is defined by the representation class of the flavor.
      *
      * @param flavor the requested flavor for the data
+     * @throws IOException                if the data is no longer available
+     *                                    in the requested flavor.
+     * @throws UnsupportedFlavorException if the requested data flavor is
+     *                                    not supported.
      * @see DataFlavor#getRepresentationClass
-     * @exception IOException                if the data is no longer available
-     *             in the requested flavor.
-     * @exception UnsupportedFlavorException if the requested data flavor is
-     *             not supported.
      */
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         if (flavor.equals(this.flavor)) {
@@ -88,15 +93,17 @@ public class DefaultTransferable implements Transferable {
      * Returns an array of DataFlavor objects indicating the flavors the data
      * can be provided in.  The array should be ordered according to preference
      * for providing the data (from most richly descriptive to least descriptive).
+     *
      * @return an array of data flavors in which this data can be transferred
      */
     public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] {flavor};
+        return new DataFlavor[]{flavor};
     }
 
     /**
      * Returns whether or not the specified data flavor is supported for
      * this object.
+     *
      * @param flavor the requested flavor for the data
      * @return boolean indicating wjether or not the data flavor is supported
      */

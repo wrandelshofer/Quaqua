@@ -4,24 +4,35 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.color.ActivatableUIResource;
 import ch.randelshofer.quaqua.color.FocusableUIResource;
-import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.border.BackgroundBorder;
-import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import java.beans.*;
+import ch.randelshofer.quaqua.util.Debug;
+import ch.randelshofer.quaqua.util.Fonts;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicLabelUI;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
 
 /**
  * QuaquaLabelUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
@@ -110,7 +121,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
                 s = s.toUpperCase();
                 font = UIManager.getFont("Tree.sideBarCategory.font");
-                style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") :UIManager.getString("Tree.sideBarCategory.style");
+                style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") : UIManager.getString("Tree.sideBarCategory.style");
                 foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
 
             } else if (style.startsWith("row")) {
@@ -125,7 +136,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                     font = font.deriveFont(l.getFont().getStyle());
                 }
 
-                style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") :UIManager.getString("Tree.sideBar.style");
+                style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") : UIManager.getString("Tree.sideBar.style");
             }
 
             if (style != null && style.equals("emboss")) {
@@ -156,8 +167,8 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
         String style = (String) l.getClientProperty("Quaqua.Label.style");
         if (style != null) {
-            boolean focused = style.indexOf("Focused")!=-1;
-            boolean selected = style.indexOf("Selected")!=-1;
+            boolean focused = style.indexOf("Focused") != -1;
+            boolean selected = style.indexOf("Selected") != -1;
             boolean active = style.indexOf("Inactive") == -1;
 
             if (style.startsWith("category")) {
@@ -170,7 +181,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 if (foreground instanceof FocusableUIResource) {
                     ((FocusableUIResource) foreground).setFocused(focused);
                 }
-                style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") :UIManager.getString("Tree.sideBarCategory.style");
+                style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") : UIManager.getString("Tree.sideBarCategory.style");
 
             } else if (style.startsWith("row")) {
                 font = selected ? UIManager.getFont("Tree.sideBar.selectionFont") : UIManager.getFont("Tree.sideBar.font");
@@ -193,7 +204,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 if (foreground instanceof FocusableUIResource) {
                     ((FocusableUIResource) foreground).setFocused(focused);
                 }
-                style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") :UIManager.getString("Tree.sideBar.style");
+                style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") : UIManager.getString("Tree.sideBar.style");
             }
             if (style != null && style.equals("emboss")) {
                 g.setFont(font);
@@ -289,19 +300,19 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
         // Determine text rectangle
         switch (type) {
-            case VisuallyLayoutable.COMPONENT_BOUNDS:
-                if (icon != null) {
-                    rect = textR.union(iconR);
-                } else {
-                    rect.setBounds(textR);
-                }
-                break;
-            case VisuallyLayoutable.TEXT_BOUNDS:
-                if (text == null) {
-                    return rect;
-                }
+        case VisuallyLayoutable.COMPONENT_BOUNDS:
+            if (icon != null) {
+                rect = textR.union(iconR);
+            } else {
                 rect.setBounds(textR);
-                break;
+            }
+            break;
+        case VisuallyLayoutable.TEXT_BOUNDS:
+            if (text == null) {
+                return rect;
+            }
+            rect.setBounds(textR);
+            break;
         }
 
         return rect;

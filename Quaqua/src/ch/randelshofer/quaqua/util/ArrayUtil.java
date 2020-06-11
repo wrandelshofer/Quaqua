@@ -5,16 +5,20 @@
 
 //package ch.randelshofer.util;
 package ch.randelshofer.quaqua.util;
-import java.util.*;
+
+import java.util.ArrayList;
+
 /**
  * ArrayUtil.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ArrayUtil {
 
-    /** Prevent instance creation. */
+    /**
+     * Prevent instance creation.
+     */
     private ArrayUtil() {
     }
 
@@ -31,7 +35,7 @@ public class ArrayUtil {
     }*/
     public static ArrayList asList(int[] a) {
         ArrayList list = new ArrayList(a.length);
-        for (int i=0; i < a.length; i++) {
+        for (int i = 0; i < a.length; i++) {
             list.add(a[i]);
         }
         return list;
@@ -45,8 +49,9 @@ public class ArrayUtil {
         return list;
     }
     */
+
     private final static char[] hexChars = {
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
     };
 
     public static String toHexString(byte[] b, int off, int len) {

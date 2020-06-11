@@ -9,6 +9,7 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFDecodeParam
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFImageDecoder;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.MemoryCacheSeekableStream;
 import ch.randelshofer.quaqua.util.Images;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
@@ -30,7 +31,9 @@ public class OSXImageIO {
 
     private static int EXPECTED_NATIVE_CODE_VERSION = 1;
 
-    /** Prevent instance creation. */
+    /**
+     * Prevent instance creation.
+     */
     private OSXImageIO() {
     }
 
@@ -55,12 +58,9 @@ public class OSXImageIO {
      * Reads a <code>BufferedImage</code> scaled to the specified size
      * from the supplied <code>File</code> using the Cocoa NSImage API.
      *
-     * @param file
-     *            The file containing the image.
-     * @param width
-     *            The preferred width.
-     * @param height
-     *            The preferred height.
+     * @param file   The file containing the image.
+     * @param width  The preferred width.
+     * @param height The preferred height.
      */
     public static BufferedImage read(File file, int width, int height) throws IOException {
         if (!isNativeCodeAvailable()) {
@@ -106,7 +106,9 @@ public class OSXImageIO {
         return decodeTIFF(tiffData);
     }
 
-    /** Decodes a byte array with a TIFF encoded image. */
+    /**
+     * Decodes a byte array with a TIFF encoded image.
+     */
     private static BufferedImage decodeTIFF(byte[] tiffData) throws IOException {
 
         TIFFImageDecoder decoder = new TIFFImageDecoder(
@@ -135,14 +137,11 @@ public class OSXImageIO {
      * If JNI fails to load the image (e.g. the native code could not be
      * loaded), <code>null</code> is returned.
      *
-     * @param path
-     *            The file containing the image.
-     * @param width
-     *            The preferred width.
-     * @param height
-     *            The preferred height.
+     * @param path   The file containing the image.
+     * @param width  The preferred width.
+     * @param height The preferred height.
      * @return The image loaded. <code>null</code>, if no image could be loaded
-     *         by JNI.
+     * by JNI.
      */
     private native static byte[] nativeRead(String path, int width, int height);
 
@@ -150,10 +149,9 @@ public class OSXImageIO {
      * Reads an image from the specified byte array, and returns it in a TIFF
      * encoded byte array.
      *
-     * @param data
-     *            The file containing the image data.
+     * @param data The file containing the image data.
      * @return The image loaded. <code>null</code>, if no image could be loaded
-     *         by JNI.
+     * by JNI.
      */
     private native static byte[] nativeRead(byte[] data);
 
@@ -161,19 +159,22 @@ public class OSXImageIO {
      * Attempts to read an image from the system clipboard.
      *
      * @return The image loaded. <code>null</code>, if no image could be loaded
-     *         from the system clipboard.
+     * from the system clipboard.
      */
     private native static byte[] nativeReadSystemClipboard();
 
 
     //---
+
     /**
      * Returns the version of the native code library. If the version
      * does not match with the version that we expect, we can not use
      * it.
+     *
      * @return The version number of the native code.
      */
     private static native int nativeGetNativeCodeVersion();
+
     /**
      * This variable is set to true, if native code is available.
      */
@@ -205,8 +206,8 @@ public class OSXImageIO {
                             } else {
                                 libraryNames = new String[]{"quaqua64", "quaqua"};
                             }
-                            for (int i=0;i<libraryNames.length;i++) {
-                                libraryName=libraryNames[i];
+                            for (int i = 0; i < libraryNames.length; i++) {
+                                libraryName = libraryNames[i];
                                 try {
                                     JNILoader.loadLibrary(libraryName);
                                     success = true;

@@ -13,6 +13,12 @@ import ch.randelshofer.quaqua.osx.OSXAquaPainter.State;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.util.InsetsUtil;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.UIResource;
+import javax.swing.text.JTextComponent;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -20,11 +26,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-import javax.swing.UIManager;
-import javax.swing.plaf.UIResource;
-import javax.swing.text.JTextComponent;
 
 /**
  * {@code QuaquaNativeScrollPaneBorder}.
@@ -51,7 +52,7 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
         if (imageInsets == null) {
             imageInsets = new Insets(0, 0, 0, 0);
         }
-        borderInsets = new Insets(1,1,1,1);
+        borderInsets = new Insets(1, 1, 1, 1);
     }
 
     @Override
@@ -63,7 +64,9 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
         if (c instanceof JScrollPane) {
             JScrollPane sp = (JScrollPane) c;
             c = sp.getViewport().getView();
-            if (c==null)c=sp;
+            if (c == null) {
+                c = sp;
+            }
         }
         JTextComponent b = (c instanceof JTextComponent) ? (JTextComponent) c : null;
         boolean editable = b == null || b.isEditable();
@@ -86,7 +89,6 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
             //widget = Widget.frameListBox;
 
 
-
             painter.setWidget(widget);
 
             if (!cc.isEnabled() || !editable) {
@@ -101,18 +103,18 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
 
             Size size;
             switch (QuaquaUtilities.getSizeVariant(c)) {
-                case REGULAR:
-                default:
-                    size = Size.regular;
-                    break;
-                case SMALL:
-                    size = Size.small;
-                    args |= ARG_SMALL_SIZE;
-                    break;
-                case MINI:
-                    size = Size.small; // paint mini with small artwork
-                    args |= ARG_SMALL_SIZE;
-                    break;
+            case REGULAR:
+            default:
+                size = Size.regular;
+                break;
+            case SMALL:
+                size = Size.small;
+                args |= ARG_SMALL_SIZE;
+                break;
+            case MINI:
+                size = Size.small; // paint mini with small artwork
+                args |= ARG_SMALL_SIZE;
+                break;
 
             }
             painter.setSize(size);
@@ -198,15 +200,16 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
             ibbg.dispose();
 
             ibb.paintBorder(c, g,//
-                    x+imageInsets.left - slack + vm.left, //
-                    y+imageInsets.top - slack + vm.top,//
-                    width - imageInsets.left - imageInsets.right  + 2 * slack - vm.left - vm.right, //
-                    height - imageInsets.top - imageInsets.bottom  + 2 * slack - vm.top - vm.bottom);
+                    x + imageInsets.left - slack + vm.left, //
+                    y + imageInsets.top - slack + vm.top,//
+                    width - imageInsets.left - imageInsets.right + 2 * slack - vm.left - vm.right, //
+                    height - imageInsets.top - imageInsets.bottom + 2 * slack - vm.top - vm.bottom);
             ibbg.dispose();
 
         }
-        if (c instanceof JComponent)
-        Debug.paint(g, (JComponent)c, null);
+        if (c instanceof JComponent) {
+            Debug.paint(g, (JComponent) c, null);
+        }
     }
 
     @Override

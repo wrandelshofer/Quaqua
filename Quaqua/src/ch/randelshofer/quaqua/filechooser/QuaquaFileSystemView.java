@@ -5,15 +5,14 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
-import java.io.File;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.osx.OSXFile;
 
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileView;
-
-import ch.randelshofer.quaqua.QuaquaManager;
-import ch.randelshofer.quaqua.osx.OSXFile;
+import java.io.File;
 
 /**
  * QuaquaFileSystemView is an enhanced FileSystemView, which provides additional
@@ -21,7 +20,7 @@ import ch.randelshofer.quaqua.osx.OSXFile;
  * QuaquaFileSystemView acts as a wrapper on platform specific file system views.
  * The resulting view is an Aqua-style view on the file system.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
@@ -66,42 +65,42 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
         if (fileSystemView == null) {
             String className;
             int os = QuaquaManager.getOS();
-                switch (os) {
-                    case QuaquaManager.JAGUAR :
-                        className = "ch.randelshofer.quaqua.jaguar.filechooser.OSXJaguarFileSystemView";
-                        break;
-                    case QuaquaManager.PANTHER :
-                        className = "ch.randelshofer.quaqua.panther.filechooser.OSXPantherFileSystemView";
-                        break;
-                    case QuaquaManager.DARWIN :
-                        className = "ch.randelshofer.quaqua.leopard.filechooser.DarwinLeopardFileSystemView";
-                        break;
-                    case QuaquaManager.LEOPARD :
-                        className = "ch.randelshofer.quaqua.leopard.filechooser.OSXLeopardFileSystemView";
-                        break;
-                    case QuaquaManager.SNOW_LEOPARD :
-                        className = "ch.randelshofer.quaqua.snowleopard.filechooser.OSX16SnowLeopardFileSystemView";
-                        break;
-                    case QuaquaManager.LION :
-                    case QuaquaManager.MOUNTAIN_LION:
-                    case QuaquaManager.MAVERICKS:
-                    case QuaquaManager.YOSEMITE:
-                    case QuaquaManager.EL_CAPITAN:
-                    case QuaquaManager.SIERRA:
-                    case QuaquaManager.X :
-                    default:
-                        className = "ch.randelshofer.quaqua.lion.filechooser.OSXLionFileSystemView";
-                        break;
-                    case QuaquaManager.TIGER :
-                        className = "ch.randelshofer.quaqua.tiger.filechooser.OSXTigerFileSystemView";
-                        break;
-                    case QuaquaManager.WINDOWS :
-                    	className = "ch.randelshofer.quaqua.filechooser.WindowsFileSystemView";
-                    	break;
-                    case QuaquaManager.LINUX :
-                    	className = "ch.randelshofer.quaqua.filechooser.LinuxFileSystemView";
-                    	break;
-                }
+            switch (os) {
+            case QuaquaManager.JAGUAR:
+                className = "ch.randelshofer.quaqua.jaguar.filechooser.OSXJaguarFileSystemView";
+                break;
+            case QuaquaManager.PANTHER:
+                className = "ch.randelshofer.quaqua.panther.filechooser.OSXPantherFileSystemView";
+                break;
+            case QuaquaManager.DARWIN:
+                className = "ch.randelshofer.quaqua.leopard.filechooser.DarwinLeopardFileSystemView";
+                break;
+            case QuaquaManager.LEOPARD:
+                className = "ch.randelshofer.quaqua.leopard.filechooser.OSXLeopardFileSystemView";
+                break;
+            case QuaquaManager.SNOW_LEOPARD:
+                className = "ch.randelshofer.quaqua.snowleopard.filechooser.OSX16SnowLeopardFileSystemView";
+                break;
+            case QuaquaManager.LION:
+            case QuaquaManager.MOUNTAIN_LION:
+            case QuaquaManager.MAVERICKS:
+            case QuaquaManager.YOSEMITE:
+            case QuaquaManager.EL_CAPITAN:
+            case QuaquaManager.SIERRA:
+            case QuaquaManager.X:
+            default:
+                className = "ch.randelshofer.quaqua.lion.filechooser.OSXLionFileSystemView";
+                break;
+            case QuaquaManager.TIGER:
+                className = "ch.randelshofer.quaqua.tiger.filechooser.OSXTigerFileSystemView";
+                break;
+            case QuaquaManager.WINDOWS:
+                className = "ch.randelshofer.quaqua.filechooser.WindowsFileSystemView";
+                break;
+            case QuaquaManager.LINUX:
+                className = "ch.randelshofer.quaqua.filechooser.LinuxFileSystemView";
+                break;
+            }
             try {
                 fileSystemView = (QuaquaFileSystemView) Class.forName(className).newInstance();
             } catch (Exception e) {
@@ -121,12 +120,11 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
     }
 
 
-
     /**
      * Icon for a file, directory, or folder as it would be displayed in
      * a system file browser. Example from Windows: the "M:\" directory
      * displays a CD-ROM icon.
-     *
+     * <p>
      * The default implementation gets information from the ShellFolder class.
      *
      * @param f a <code>File</code> object
@@ -144,11 +142,12 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
             }
         }
     }
+
     /**
      * Type description for a file, directory, or folder as it would be displayed in
      * a system file browser. Example from Windows: the "Desktop" folder
      * is desribed as "Desktop".
-     *
+     * <p>
      * Override for platforms with native ShellFolder implementations.
      *
      * @param f a <code>File</code> object
@@ -160,7 +159,7 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
         if (OSXFile.canWorkWithAliases()) {
             return OSXFile.getKindString(f);
         } else {
-        return target.getSystemTypeDescription(f);
+            return target.getSystemTypeDescription(f);
         }
     }
 
@@ -196,7 +195,7 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
      * Name of a file, directory, or folder as it would be displayed in
      * a system file browser. Example from Windows: the "M:\" directory
      * displays as "CD-ROM (M:)"
-     *
+     * <p>
      * The default implementation gets information from the ShellFolder class.
      *
      * @param f a <code>File</code> object

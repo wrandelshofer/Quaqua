@@ -5,22 +5,25 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
-
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 /**
  * The default editor for Quaqua editable combo boxes.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaComboBoxEditor extends BasicComboBoxEditor {
     public QuaquaComboBoxEditor() {
         super();
         //editor.removeFocusListener(this);
-        editor = new JTextField("",0) {
+        editor = new JTextField("", 0) {
             // workaround for 4530952
             public void setText(String s) {
                 if (getText().equals(s)) {
@@ -30,26 +33,26 @@ public class QuaquaComboBoxEditor extends BasicComboBoxEditor {
             }
         };
 
-       installKeyboardActions();
+        installKeyboardActions();
     }
 
     protected void installKeyboardActions() {
         InputMap km = getInputMap();
-	if (km != null) {
-	    SwingUtilities.replaceUIInputMap(editor, JComponent.WHEN_FOCUSED, km);
-	}
+        if (km != null) {
+            SwingUtilities.replaceUIInputMap(editor, JComponent.WHEN_FOCUSED, km);
+        }
     }
 
     /**
      * Get the InputMap to use for the UI.
      */
     InputMap getInputMap() {
-	InputMap map = new InputMapUIResource();
-	InputMap shared = (InputMap)UIManager.get("ComboBox.editorInputMap");
-	if (shared != null) {
-	    map.setParent(shared);
-	}
-	return map;
+        InputMap map = new InputMapUIResource();
+        InputMap shared = (InputMap) UIManager.get("ComboBox.editorInputMap");
+        if (shared != null) {
+            map.setParent(shared);
+        }
+        return map;
     }
 
     /**
@@ -68,7 +71,7 @@ public class QuaquaComboBoxEditor extends BasicComboBoxEditor {
      * Please see {@link java.beans.XMLEncoder}.
      */
     public static class UIResource extends QuaquaComboBoxEditor
-    implements javax.swing.plaf.UIResource {
+            implements javax.swing.plaf.UIResource {
     }
 }
 

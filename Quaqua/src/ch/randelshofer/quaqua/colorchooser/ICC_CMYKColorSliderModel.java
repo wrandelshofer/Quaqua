@@ -4,10 +4,12 @@
  */
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import java.awt.color.*;
-import java.io.*;
-import javax.swing.*;
+import javax.swing.DefaultBoundedRangeModel;
+import java.awt.Color;
+import java.awt.color.ICC_ColorSpace;
+import java.awt.color.ICC_Profile;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * A ColorSliderModel for CMYK color models (cyan, magenta, yellow, black) in
@@ -18,8 +20,7 @@ import javax.swing.*;
  * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4760025
  * but maybe I am doing something in the wrong way.
  *
- *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class ICC_CMYKColorSliderModel extends ColorSliderModel {
@@ -33,11 +34,11 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
      */
     public ICC_CMYKColorSliderModel() {
         super(new DefaultBoundedRangeModel[]{
-                    new DefaultBoundedRangeModel(0, 0, 0, 100),
-                    new DefaultBoundedRangeModel(0, 0, 0, 100),
-                    new DefaultBoundedRangeModel(0, 0, 0, 100),
-                    new DefaultBoundedRangeModel(0, 0, 0, 100)
-                });
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100)
+        });
         InputStream in = ICC_CMYKColorSliderModel.class.getResourceAsStream("Generic CMYK Profile.icc");
         try {
 
@@ -63,11 +64,11 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
      */
     public ICC_CMYKColorSliderModel(InputStream iccProfile) throws IOException {
         super(new DefaultBoundedRangeModel[]{
-                    new DefaultBoundedRangeModel(0, 0, 0, 100),
-                    new DefaultBoundedRangeModel(0, 0, 0, 100),
-                    new DefaultBoundedRangeModel(0, 0, 0, 100),
-                    new DefaultBoundedRangeModel(0, 0, 0, 100)
-                });
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100),
+                new DefaultBoundedRangeModel(0, 0, 0, 100)
+        });
         read(iccProfile);
     }
 

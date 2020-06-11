@@ -5,12 +5,13 @@
 
 package ch.randelshofer.quaqua.border;
 
-import javax.swing.border.*;
+import javax.swing.border.Border;
+
 /**
  * BackgroundBorder is used by the Quaqua Look And Feel to tag a
  * border which partially needs to be drawn on to the background of a JComponent.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public interface BackgroundBorder extends Border {

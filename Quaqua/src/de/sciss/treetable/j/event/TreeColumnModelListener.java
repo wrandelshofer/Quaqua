@@ -18,6 +18,6 @@ import java.util.EventListener;
 
 public interface TreeColumnModelListener extends EventListener {
 
-	void treeColumnChanged(TreeColumnModelEvent e);
+    void treeColumnChanged(TreeColumnModelEvent e);
 
 }

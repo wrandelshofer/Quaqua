@@ -33,18 +33,16 @@ package ch.randelshofer.quaqua.ext.nanoxml;
 /**
  * An XMLParseException is thrown when an error occures while parsing an XML
  * string.
- * <P>
+ * <p>
  * $Revision: 1.4 $<BR>
  * $Date: 2002/03/24 10:27:59 $<P>
  *
- * @see XMLElement
- *
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.4 $
+ * @see XMLElement
  */
 public class XMLParseException
-    extends RuntimeException
-{
+        extends RuntimeException {
 
     /**
      * Indicates that no line number has been associated with this exception.
@@ -69,21 +67,20 @@ public class XMLParseException
      * @param name    The name of the element where the error is located.
      * @param message A message describing what went wrong.
      *
-     * <dl><dt><b>Preconditions:</b></dt><dd>
-     * <ul><li>{@code message != null}
-     * </ul></dd></dl>
+     *                <dl><dt><b>Preconditions:</b></dt><dd>
+     *                <ul><li>{@code message != null}
+     *                </ul></dd></dl>
      *
-     * <dl><dt><b>Postconditions:</b></dt><dd>
-     * <ul><li>getLineNr() =&amp; NO_LINE
-     * </ul></dd></dl>
+     *                <dl><dt><b>Postconditions:</b></dt><dd>
+     *                <ul><li>getLineNr() =&amp; NO_LINE
+     *                </ul></dd></dl>
      */
     public XMLParseException(String name,
-                             String message)
-    {
+                             String message) {
         super("XML Parse Exception during parsing of "
-              + ((name == null) ? "the XML definition"
-                                : ("a " + name + " element"))
-              + ": " + message);
+                + ((name == null) ? "the XML definition"
+                : ("a " + name + " element"))
+                + ": " + message);
         this.lineNr = XMLParseException.NO_LINE;
     }
 
@@ -95,23 +92,22 @@ public class XMLParseException
      * @param lineNr  The number of the line in the input.
      * @param message A message describing what went wrong.
      *
-     * <dl><dt><b>Preconditions:</b></dt><dd>
-     * <ul><li>{@code message != null}
-     *     <li>{@code lineNr &gt; 0}
-     * </ul></dd></dl>
+     *                <dl><dt><b>Preconditions:</b></dt><dd>
+     *                <ul><li>{@code message != null}
+     *                    <li>{@code lineNr &gt; 0}
+     *                </ul></dd></dl>
      *
-     * <dl><dt><b>Postconditions:</b></dt><dd>
-     * <ul><li>getLineNr() =&amp; lineNr
-     * </ul></dd></dl>
+     *                <dl><dt><b>Postconditions:</b></dt><dd>
+     *                <ul><li>getLineNr() =&amp; lineNr
+     *                </ul></dd></dl>
      */
     public XMLParseException(String name,
-                             int    lineNr,
-                             String message)
-    {
+                             int lineNr,
+                             String message) {
         super("XML Parse Exception during parsing of "
-              + ((name == null) ? "the XML definition"
-                                : ("a " + name + " element"))
-              + " at line " + lineNr + ": " + message);
+                + ((name == null) ? "the XML definition"
+                : ("a " + name + " element"))
+                + " at line " + lineNr + ": " + message);
         this.lineNr = lineNr;
     }
 
@@ -122,8 +118,7 @@ public class XMLParseException
      *
      * @see XMLParseException#NO_LINE
      */
-    public int getLineNr()
-    {
+    public int getLineNr() {
         return this.lineNr;
     }
 

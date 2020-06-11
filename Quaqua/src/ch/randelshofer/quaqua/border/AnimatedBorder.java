@@ -5,15 +5,18 @@
 
 package ch.randelshofer.quaqua.border;
 
-import java.awt.*;
-import javax.swing.border.*;
-import java.util.*;
+import javax.swing.border.Border;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.util.HashSet;
+
 /**
  * AnimatedBorder takes an array of borders and a delay value, to draw an
  * animated border.
  * The border to be drawn is selected based on the current time.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class AnimatedBorder implements Border {
@@ -31,7 +34,8 @@ public class AnimatedBorder implements Border {
      */
     private long delay;
 
-    /** Creates a new instance.
+    /**
+     * Creates a new instance.
      * <p>
      * Note: For efficiency reasons this method stores the passed in array
      * internally without copying it. Do not modify the array after

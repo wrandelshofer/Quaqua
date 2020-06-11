@@ -4,14 +4,17 @@
  */
 package ch.randelshofer.quaqua;
 
+import javax.swing.plaf.UIResource;
+import javax.swing.text.JTextComponent;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.MemoryImageSource;
-import javax.swing.plaf.UIResource;
-import javax.swing.text.JTextComponent;
 
 /**
  * QuaquaTextCursorHandler hides the cursor when a key is pressed in
@@ -22,10 +25,14 @@ import javax.swing.text.JTextComponent;
  */
 public class QuaquaTextCursorHandler implements MouseMotionListener, KeyListener {
 
-    /** Holds the shared instance of the handler. */
+    /**
+     * Holds the shared instance of the handler.
+     */
     private static QuaquaTextCursorHandler instance;
 
-    /** CursorUIResource. */
+    /**
+     * CursorUIResource.
+     */
     static class QuaquaCursor extends Cursor implements UIResource {
 
         QuaquaCursor(int type) {
@@ -36,16 +43,21 @@ public class QuaquaTextCursorHandler implements MouseMotionListener, KeyListener
             super(name);
         }
     }
+
     private static QuaquaCursor textCursor = new QuaquaCursor(Cursor.TEXT_CURSOR);
     /**
      * Holds the hidden cursor.
      */
     private static Cursor invisibleCursor;
-    /** Holds the JTextComponent on which we hid the cursor because a key was
-     * typed. */
+    /**
+     * Holds the JTextComponent on which we hid the cursor because a key was
+     * typed.
+     */
     private JTextComponent activeComponent;
 
-    /** Returns the shared instance of the handler. */
+    /**
+     * Returns the shared instance of the handler.
+     */
     public static QuaquaTextCursorHandler getInstance() {
         if (instance == null) {
             instance = new QuaquaTextCursorHandler();
@@ -101,14 +113,18 @@ public class QuaquaTextCursorHandler implements MouseMotionListener, KeyListener
     public void keyReleased(KeyEvent e) {
     }
 
-    /** Hides the cursor. */
+    /**
+     * Hides the cursor.
+     */
     private void hideCursor(JTextComponent c) {
         if (c.isEditable()) {
             c.setCursor(invisibleCursor);
         }
     }
 
-    /** Shows the cursor. */
+    /**
+     * Shows the cursor.
+     */
     private void showCursor(JTextComponent c) {
         c.setCursor(c.isEditable() ? textCursor : null);
     }

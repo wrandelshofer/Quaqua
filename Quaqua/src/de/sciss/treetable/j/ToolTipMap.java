@@ -14,12 +14,11 @@
  */
 package de.sciss.treetable.j;
 
-import java.awt.event.MouseEvent;
-
 import javax.swing.JComponent;
+import java.awt.event.MouseEvent;
 
 public interface ToolTipMap<C extends JComponent> {
 
-	String getToolTipText(C c, MouseEvent e);
+    String getToolTipText(C c, MouseEvent e);
 
 }

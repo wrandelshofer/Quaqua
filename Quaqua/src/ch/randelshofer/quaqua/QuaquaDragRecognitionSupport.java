@@ -5,11 +5,15 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 import java.awt.Toolkit;
 import java.awt.dnd.DnDConstants;
-import java.awt.event.*;
 import java.awt.dnd.DragSource;
-import javax.swing.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 //import sun.awt.dnd.SunDragSourceContextPeer;
 
 /**
@@ -52,7 +56,7 @@ class QuaquaDragRecognitionSupport {
      * Returns whether or not the event is potentially part of a drag sequence.
      */
     public static boolean mousePressed(MouseEvent me) {
-        return ((QuaquaDragRecognitionSupport)getDragRecognitionSupport()).
+        return ((QuaquaDragRecognitionSupport) getDragRecognitionSupport()).
                 mousePressedImpl(me);
     }
 
@@ -61,7 +65,7 @@ class QuaquaDragRecognitionSupport {
      * that started the recognition. Otherwise, return null.
      */
     public static MouseEvent mouseReleased(MouseEvent me) {
-        return ((QuaquaDragRecognitionSupport)getDragRecognitionSupport()).
+        return ((QuaquaDragRecognitionSupport) getDragRecognitionSupport()).
                 mouseReleasedImpl(me);
     }
 
@@ -69,7 +73,7 @@ class QuaquaDragRecognitionSupport {
      * Returns whether or not a drag gesture recognition is ongoing.
      */
     public static boolean mouseDragged(MouseEvent me, BeforeDrag bd) {
-        return ((QuaquaDragRecognitionSupport)getDragRecognitionSupport()).
+        return ((QuaquaDragRecognitionSupport) getDragRecognitionSupport()).
                 mouseDraggedImpl(me, bd);
     }
 
@@ -79,7 +83,7 @@ class QuaquaDragRecognitionSupport {
     }
 
     private int mapDragOperationFromModifiers(MouseEvent me,
-            TransferHandler th) {
+                                              TransferHandler th) {
 
         if (th == null || !SwingUtilities.isLeftMouseButton(me)) {
             return TransferHandler.NONE;
@@ -94,15 +98,15 @@ class QuaquaDragRecognitionSupport {
      * Returns whether or not the event is potentially part of a drag sequence.
      */
     private boolean mousePressedImpl(MouseEvent me) {
-        component = (JComponent)me.getSource();
+        component = (JComponent) me.getSource();
 
         if (mapDragOperationFromModifiers(me, component.getTransferHandler())
-        != TransferHandler.NONE) {
+                != TransferHandler.NONE) {
             try {
                 //motionThreshold = DragSource.getDragThreshold();
-                motionThreshold = ((Integer) Methods.invokeStatic(DragSource.class,"getDragThreshold")).intValue();
+                motionThreshold = ((Integer) Methods.invokeStatic(DragSource.class, "getDragThreshold")).intValue();
             } catch (NoSuchMethodException ex) {
-                Integer td = (Integer)Toolkit.getDefaultToolkit().
+                Integer td = (Integer) Toolkit.getDefaultToolkit().
                         getDesktopProperty("DnD.gestureMotionThreshold");
                 if (td != null) {
                     motionThreshold = td.intValue();
@@ -153,7 +157,7 @@ class QuaquaDragRecognitionSupport {
 
         int dx = Math.abs(me.getX() - dndArmedEvent.getX());
         int dy = Math.abs(me.getY() - dndArmedEvent.getY());
-        if (Math.sqrt(dx*dx+dy*dy) > motionThreshold) {
+        if (Math.sqrt(dx * dx + dy * dy) > motionThreshold) {
             TransferHandler th = component.getTransferHandler();
             int action = mapDragOperationFromModifiers(me, th);
             if (action != TransferHandler.NONE) {
@@ -171,13 +175,13 @@ class QuaquaDragRecognitionSupport {
 
     private int convertModifiersToDropAction(int modifiersEx, int sourceActions) {
         int dropAction = DnDConstants.ACTION_NONE;
-        if ( 0 != (modifiersEx & (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_GRAPH_DOWN_MASK)))  {
+        if (0 != (modifiersEx & (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_GRAPH_DOWN_MASK))) {
             dropAction = DnDConstants.ACTION_COPY & sourceActions;
             if (dropAction == DnDConstants.ACTION_NONE) {
                 dropAction = DnDConstants.ACTION_MOVE & sourceActions;
             }
-        } else if ( 0 != (modifiersEx & (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_GRAPH_DOWN_MASK)) &&
-                0 != (modifiersEx & (InputEvent.META_DOWN_MASK)))  {
+        } else if (0 != (modifiersEx & (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_GRAPH_DOWN_MASK)) &&
+                0 != (modifiersEx & (InputEvent.META_DOWN_MASK))) {
             dropAction = DnDConstants.ACTION_LINK & sourceActions;
             if (dropAction == DnDConstants.ACTION_NONE) {
                 dropAction = DnDConstants.ACTION_MOVE & sourceActions;
@@ -185,7 +189,7 @@ class QuaquaDragRecognitionSupport {
         } else {
             dropAction = DnDConstants.ACTION_MOVE & sourceActions;
             if (dropAction == DnDConstants.ACTION_NONE) {
-            dropAction = DnDConstants.ACTION_COPY & sourceActions;
+                dropAction = DnDConstants.ACTION_COPY & sourceActions;
             }
         }
         return dropAction;

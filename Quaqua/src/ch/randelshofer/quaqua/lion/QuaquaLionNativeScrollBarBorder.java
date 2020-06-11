@@ -4,14 +4,20 @@
  */
 package ch.randelshofer.quaqua.lion;
 
-import javax.swing.JScrollBar;
-import java.awt.Graphics;
-import java.awt.Component;
 import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.border.QuaquaNativeBorder;
-import java.awt.Insets;
+
+import javax.swing.JScrollBar;
 import javax.swing.SwingConstants;
-import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Orientation;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.State;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 
 /**
  * {@code QuaquaLionNativeScrollBarBorder}.
@@ -22,11 +28,11 @@ import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
 public class QuaquaLionNativeScrollBarBorder extends QuaquaNativeBorder {
 
     public QuaquaLionNativeScrollBarBorder(Widget widget, Insets imageInsets, Insets borderInsets) {
-        super(0,widget, imageInsets, borderInsets);
+        super(0, widget, imageInsets, borderInsets);
     }
 
     public QuaquaLionNativeScrollBarBorder(Widget widget) {
-        super(0,widget);
+        super(0, widget);
     }
 
     @Override
@@ -60,16 +66,16 @@ public class QuaquaLionNativeScrollBarBorder extends QuaquaNativeBorder {
         Size size;
 
         switch (QuaquaUtilities.getSizeVariant(c)) {
-            case REGULAR:
-            default:
-                size = Size.regular;
-                break;
-            case SMALL:
-                size = Size.small;
-                break;
-            case MINI:
-                size = Size.mini;
-                break;
+        case REGULAR:
+        default:
+            size = Size.regular;
+            break;
+        case SMALL:
+            size = Size.small;
+            break;
+        case MINI:
+            size = Size.mini;
+            break;
 
         }
         painter.setSize(size);
@@ -86,7 +92,7 @@ public class QuaquaLionNativeScrollBarBorder extends QuaquaNativeBorder {
         if (sb.getMaximum() != sb.getMinimum()) {
             double totalSize = (double) (sb.getMaximum() - sb.getMinimum());
             painter.setValueByKey(Key.thumbProportion, sb.getVisibleAmount() / totalSize);
-            painter.setValueByKey(Key.value, (sb.getValue()- sb.getMinimum())/(totalSize));
+            painter.setValueByKey(Key.value, (sb.getValue() - sb.getMinimum()) / (totalSize));
         } else {
             painter.setValueByKey(Key.thumbProportion, 0);
         }

@@ -7,20 +7,50 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.color.ActivatableUIResource;
 import ch.randelshofer.quaqua.util.ViewportPainter;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
-import javax.swing.event.*;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.CellEditor;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.MouseInputListener;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicTableUI;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * QuaquaTableUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaTableUI extends BasicTableUI
@@ -32,7 +62,9 @@ public class QuaquaTableUI extends BasicTableUI
     private Handler handler;
     private boolean isStriped = false;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public QuaquaTableUI() {
     }
 
@@ -121,7 +153,8 @@ public class QuaquaTableUI extends BasicTableUI
         }*/
     }
 
-    /** Paint a representation of the <code>table</code> instance
+    /**
+     * Paint a representation of the <code>table</code> instance
      * that was set in installUI().
      */
     public void paint(Graphics g, JComponent c) {
@@ -145,7 +178,7 @@ public class QuaquaTableUI extends BasicTableUI
 
         Point upperLeft = clip.getLocation();
         Point lowerRight = new Point(clip.x + clip.width - 1,
-                                     clip.y + clip.height - 1);
+                clip.y + clip.height - 1);
 
         int rMin = table.rowAtPoint(upperLeft);
         int rMax = table.rowAtPoint(lowerRight);
@@ -159,7 +192,7 @@ public class QuaquaTableUI extends BasicTableUI
         // which is why we bail above if that is the case).
         // Replace this with the index of the last row.
         if (rMax == -1) {
-            rMax = table.getRowCount()-1;
+            rMax = table.getRowCount() - 1;
         }
 
         int cMin = table.columnAtPoint(ltr ? upperLeft : lowerRight);
@@ -171,7 +204,7 @@ public class QuaquaTableUI extends BasicTableUI
         // If the table does not have enough columns to fill the view we'll get -1.
         // Replace this with the index of the last column.
         if (cMax == -1) {
-            cMax = table.getColumnCount()-1;
+            cMax = table.getColumnCount() - 1;
         }
 
         // Paint the grid.
@@ -720,8 +753,8 @@ public class QuaquaTableUI extends BasicTableUI
     }
 
     private static int getAdjustedLead(JTable table,
-            boolean row,
-            ListSelectionModel model) {
+                                       boolean row,
+                                       ListSelectionModel model) {
 
         int index = model.getLeadSelectionIndex();
         int compare = row ? table.getRowCount() : table.getColumnCount();
@@ -757,9 +790,13 @@ public class QuaquaTableUI extends BasicTableUI
         private final static int MOUSE_DRAG_TOGGLES_SELECTION = 2;
         private final static int MOUSE_DRAG_STARTS_DND = 3;
         private int mouseDragAction;
-        /** index of previously toggled row. */
+        /**
+         * index of previously toggled row.
+         */
         private int toggledRow = -1;
-        /** index of previously toggled column. */
+        /**
+         * index of previously toggled column.
+         */
         private int toggledColumn = -1;
 
         public void propertyChange(PropertyChangeEvent event) {

@@ -5,23 +5,56 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import java.awt.event.*;
+import ch.randelshofer.quaqua.util.Methods;
+
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JRootPane;
+import javax.swing.JSeparator;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+import javax.swing.JWindow;
+import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.event.MouseInputListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicToolBarUI;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.IllegalComponentStateException;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.Window;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import java.util.*;
-import javax.swing.event.MouseInputListener;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 /**
  * QuaquaToolBarUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaToolBarUI extends BasicToolBarUI {
@@ -159,6 +192,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
     /**
      * Creates a window which contains the toolbar after it has been
      * dragged out from its container
+     *
      * @return a <code>RootPaneContainer</code> object, containing the toolbar.
      */
     @Override
@@ -275,7 +309,9 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         if (toolBar != null) {
             Container p;
             for (p = toolBar.getParent(); p != null && !(p instanceof Window);
-                    p = p.getParent());
+                 p = p.getParent()) {
+                ;
+            }
             if (p != null) {
                 frame = (Window) p;
             }
@@ -624,7 +660,8 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         return (constraint != null) ? constraint : constraintBeforeFloating;
     }
 
-    /** Returns true, if the parent window shall be moved, when the mouse
+    /**
+     * Returns true, if the parent window shall be moved, when the mouse
      * is dragged over the toolbar.
      */
     private boolean isDragMovesWindow() {
@@ -688,6 +725,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
 
         public void focusLost(FocusEvent evt) {
         }
+
         //
         // MouseInputListener (DockingListener)
         //

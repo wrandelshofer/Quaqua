@@ -4,10 +4,17 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 /**
  * DefaultBrowserCellRenderer.
@@ -17,15 +24,25 @@ import java.awt.*;
  */
 public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRenderer {
 
-    /** Last browser the renderer was painted in. */
+    /**
+     * Last browser the renderer was painted in.
+     */
     private JBrowser browser;
-    /** Is the value currently selected. */
+    /**
+     * Is the value currently selected.
+     */
     protected boolean selected;
-    /** True if has focus. */
+    /**
+     * True if has focus.
+     */
     protected boolean hasFocus;
-    /** True if draws focus border around icon as well. */
+    /**
+     * True if draws focus border around icon as well.
+     */
     private boolean drawsFocusBorderAroundIcon;
-    /** If true, a dashed line is drawn as the focus indicator. */
+    /**
+     * If true, a dashed line is drawn as the focus indicator.
+     */
     private boolean drawDashedFocusIndicator;
     // If drawDashedFocusIndicator is true, the following are used.
     /**
@@ -38,22 +55,38 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      */
     private Color focusBGColor;
     // Icons
-    /** Icon used to show non-leaf nodes that aren't expanded. */
+    /**
+     * Icon used to show non-leaf nodes that aren't expanded.
+     */
     transient protected Icon closedIcon;
-    /** Icon used to show leaf nodes. */
+    /**
+     * Icon used to show leaf nodes.
+     */
     transient protected Icon leafIcon;
-    /** Icon used to show non-leaf nodes that are expanded. */
+    /**
+     * Icon used to show non-leaf nodes that are expanded.
+     */
     transient protected Icon openIcon;
     // Colors
-    /** Color to use for the foreground for selected nodes. */
+    /**
+     * Color to use for the foreground for selected nodes.
+     */
     protected Color textSelectionColor;
-    /** Color to use for the foreground for non-selected nodes. */
+    /**
+     * Color to use for the foreground for non-selected nodes.
+     */
     protected Color textNonSelectionColor;
-    /** Color to use for the background when a node is selected. */
+    /**
+     * Color to use for the background when a node is selected.
+     */
     protected Color backgroundSelectionColor;
-    /** Color to use for the background when the node isn't selected. */
+    /**
+     * Color to use for the background when the node isn't selected.
+     */
     protected Color backgroundNonSelectionColor;
-    /** Color to use for the focus indicator when the node has focus. */
+    /**
+     * Color to use for the focus indicator when the node has focus.
+     */
     protected Color borderSelectionColor;
 
     /**
@@ -92,7 +125,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * @return Returns the default icon, for the current laf, that is used to
      * represent non-leaf nodes that are not expanded.
      */
-     public Icon getDefaultClosedIcon() {
+    public Icon getDefaultClosedIcon() {
         return UIManager.getIcon("Tree.closedIcon");
     }
 
@@ -106,6 +139,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the icon used to represent non-leaf nodes that are expanded.
+     *
      * @param newIcon the value. 
      */
     public void setOpenIcon(Icon newIcon) {
@@ -114,6 +148,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the icon used to represent non-leaf nodes that are expanded.
+     *
      * @return the icon.
      */
     public Icon getOpenIcon() {
@@ -122,6 +157,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the icon used to represent non-leaf nodes that are not expanded.
+     *
      * @param newIcon the value
      */
     public void setClosedIcon(Icon newIcon) {
@@ -131,6 +167,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
     /**
      * Returns the icon used to represent non-leaf nodes that are not
      * expanded.
+     *
      * @return the value
      */
     public Icon getClosedIcon() {
@@ -139,6 +176,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the icon used to represent leaf nodes.
+     *
      * @param newIcon the value
      */
     public void setLeafIcon(Icon newIcon) {
@@ -156,6 +194,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the color the text is drawn with when the node is selected.
+     *
      * @param newColor the value
      */
     public void setTextSelectionColor(Color newColor) {
@@ -164,6 +203,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the color the text is drawn with when the node is selected.
+     *
      * @return the value
      */
     public Color getTextSelectionColor() {
@@ -172,6 +212,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the color the text is drawn with when the node isn't selected.
+     *
      * @param newColor the value
      */
     public void setTextNonSelectionColor(Color newColor) {
@@ -180,6 +221,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the color the text is drawn with when the node isn't selected.
+     *
      * @return the value
      */
     public Color getTextNonSelectionColor() {
@@ -188,6 +230,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the color to use for the background if node is selected.
+     *
      * @param newColor the value
      */
     public void setBackgroundSelectionColor(Color newColor) {
@@ -196,6 +239,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the color to use for the background if node is selected.
+     *
      * @return the value
      */
     public Color getBackgroundSelectionColor() {
@@ -204,6 +248,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the background color to be used for non selected nodes.
+     *
      * @param newColor the value
      */
     public void setBackgroundNonSelectionColor(Color newColor) {
@@ -212,6 +257,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the background color to be used for non selected nodes.
+     *
      * @return the value
      */
     public Color getBackgroundNonSelectionColor() {
@@ -220,6 +266,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the color to use for the border.
+     *
      * @param newColor the value
      */
     public void setBorderSelectionColor(Color newColor) {
@@ -228,6 +275,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the color the border is drawn.
+     *
      * @return the valule
      */
     public Color getBorderSelectionColor() {
@@ -236,10 +284,12 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Gets the font of this component.
+     *
      * @return this component's font; if a font has not been set
      * for this component, the font of its parent is returned
      */
-    @Override public Font getFont() {
+    @Override
+    public Font getFont() {
         Font font = super.getFont();
 
         if (font == null && browser != null) {
@@ -258,7 +308,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * a <code>ColorUIResource</code>, the background becomes
      * <code>color</code>.
      */
-    @Override public void setBackground(Color color) {
+    @Override
+    public void setBackground(Color color) {
         if (color instanceof ColorUIResource) {
             color = null;
         }
@@ -273,11 +324,12 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * The foreground color is set based on the selection and the icon
      * is set based on on leaf and expanded.
      */
-    @Override public Component getBrowserCellRendererComponent(JBrowser browser, Object value,
-            boolean sel,
-            boolean expanded,
-            boolean leaf, int row,
-            boolean hasFocus) {
+    @Override
+    public Component getBrowserCellRendererComponent(JBrowser browser, Object value,
+                                                     boolean sel,
+                                                     boolean expanded,
+                                                     boolean leaf, int row,
+                                                     boolean hasFocus) {
         String stringValue = browser.convertValueToText(value, sel,
                 expanded, leaf, row, hasFocus);
 
@@ -320,7 +372,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
     /**
      * Paints the value.  The background is filled based on selected.
      */
-    @Override public void paintComponent(Graphics g) {
+    @Override
+    public void paintComponent(Graphics g) {
         Color bColor;
 
         if (selected) {
@@ -353,7 +406,9 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
     }
 
     private void paintFocus(Graphics g, int x, int y, int w, int h) {
-        if (true) return;
+        if (true) {
+            return;
+        }
         Color bsColor = getBorderSelectionColor();
 
         if (bsColor != null && (selected || !drawDashedFocusIndicator)) {
@@ -392,7 +447,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * Overrides <code>JComponent.getPreferredSize</code> to
      * return slightly wider preferred size value.
      */
-    @Override public Dimension getPreferredSize() {
+    @Override
+    public Dimension getPreferredSize() {
         Dimension retDimension = super.getPreferredSize();
 
         if (retDimension != null) {
@@ -407,7 +463,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void validate() {
+    @Override
+    public void validate() {
     }
 
     /**
@@ -417,7 +474,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      *
      * @since 1.5
      */
-    @Override public void invalidate() {
+    @Override
+    public void invalidate() {
     }
 
     /**
@@ -425,7 +483,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void revalidate() {
+    @Override
+    public void revalidate() {
     }
 
     /**
@@ -433,7 +492,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void repaint(long tm, int x, int y, int width, int height) {
+    @Override
+    public void repaint(long tm, int x, int y, int width, int height) {
     }
 
     /**
@@ -441,7 +501,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void repaint(Rectangle r) {
+    @Override
+    public void repaint(Rectangle r) {
     }
 
     /**
@@ -451,7 +512,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      *
      * @since 1.5
      */
-    @Override public void repaint() {
+    @Override
+    public void repaint() {
     }
 
     /**
@@ -471,7 +533,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void firePropertyChange(String propertyName, byte oldValue, byte newValue) {
+    @Override
+    public void firePropertyChange(String propertyName, byte oldValue, byte newValue) {
     }
 
     /**
@@ -479,7 +542,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void firePropertyChange(String propertyName, char oldValue, char newValue) {
+    @Override
+    public void firePropertyChange(String propertyName, char oldValue, char newValue) {
     }
 
     /**
@@ -487,7 +551,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void firePropertyChange(String propertyName, short oldValue, short newValue) {
+    @Override
+    public void firePropertyChange(String propertyName, short oldValue, short newValue) {
     }
 
     /**
@@ -495,7 +560,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void firePropertyChange(String propertyName, int oldValue, int newValue) {
+    @Override
+    public void firePropertyChange(String propertyName, int oldValue, int newValue) {
     }
 
     /**
@@ -503,7 +569,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void firePropertyChange(String propertyName, long oldValue, long newValue) {
+    @Override
+    public void firePropertyChange(String propertyName, long oldValue, long newValue) {
     }
 
     /**
@@ -511,7 +578,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void firePropertyChange(String propertyName, float oldValue, float newValue) {
+    @Override
+    public void firePropertyChange(String propertyName, float oldValue, float newValue) {
     }
 
     /**
@@ -519,7 +587,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void firePropertyChange(String propertyName, double oldValue, double newValue) {
+    @Override
+    public void firePropertyChange(String propertyName, double oldValue, double newValue) {
     }
 
     /**
@@ -527,6 +596,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+    @Override
+    public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
     }
 }

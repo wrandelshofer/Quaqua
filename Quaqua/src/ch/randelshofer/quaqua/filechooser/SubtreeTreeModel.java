@@ -4,10 +4,16 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import java.beans.*;
-import java.util.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * SubtreeTreeModel.
@@ -17,14 +23,18 @@ import javax.swing.tree.*;
  */
 public class SubtreeTreeModel implements TreeModel, TreeModelListener {
 
-    /** We store all our listeners here. */
+    /**
+     * We store all our listeners here.
+     */
     protected EventListenerList listenerList = new EventListenerList();
     protected PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private TreeModel target;
     private Object subtreeRoot;
     private Object[] rootPath;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public SubtreeTreeModel(TreeModel target) {
         this.target = target;
         this.subtreeRoot = target.getRoot();
@@ -76,7 +86,7 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     }
 
     public boolean isLeaf(Object node) {
-        return node!=getRoot()&&target.isLeaf(node);
+        return node != getRoot() && target.isLeaf(node);
     }
 
     public TreePath toFullPath(TreePath subtreePath) {
@@ -109,11 +119,12 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     //
     //  Events
     //
+
     /**
      * Adds a listener for the TreeModelEvent posted after the tree changes.
      *
-     * @see     #removeTreeModelListener
-     * @param   l       the listener to add
+     * @param l the listener to add
+     * @see #removeTreeModelListener
      */
     public void addTreeModelListener(TreeModelListener l) {
         listenerList.add(TreeModelListener.class, l);
@@ -122,8 +133,8 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     /**
      * Removes a listener previously added with <B>addTreeModelListener()</B>.
      *
-     * @see     #addTreeModelListener
-     * @param   l       the listener to remove
+     * @param l the listener to remove
+     * @see #addTreeModelListener
      */
     public void removeTreeModelListener(TreeModelListener l) {
         listenerList.remove(TreeModelListener.class, l);
@@ -149,15 +160,15 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
      * is lazily created using the parameters passed into
      * the fire method.
      *
-     * @param source the node being changed
-     * @param path the path to the root node
+     * @param source       the node being changed
+     * @param path         the path to the root node
      * @param childIndices the indices of the changed elements
-     * @param children the changed elements
+     * @param children     the changed elements
      * @see EventListenerList
      */
     protected void fireTreeNodesChanged(Object source, Object[] path,
-            int[] childIndices,
-            Object[] children) {
+                                        int[] childIndices,
+                                        Object[] children) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -181,15 +192,15 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
      * is lazily created using the parameters passed into
      * the fire method.
      *
-     * @param source the node where new elements are being inserted
-     * @param path the path to the root node
+     * @param source       the node where new elements are being inserted
+     * @param path         the path to the root node
      * @param childIndices the indices of the new elements
-     * @param children the new elements
+     * @param children     the new elements
      * @see EventListenerList
      */
     protected void fireTreeNodesInserted(Object source, Object[] path,
-            int[] childIndices,
-            Object[] children) {
+                                         int[] childIndices,
+                                         Object[] children) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -213,15 +224,15 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
      * is lazily created using the parameters passed into
      * the fire method.
      *
-     * @param source the node where elements are being removed
-     * @param path the path to the root node
+     * @param source       the node where elements are being removed
+     * @param path         the path to the root node
      * @param childIndices the indices of the removed elements
-     * @param children the removed elements
+     * @param children     the removed elements
      * @see EventListenerList
      */
     protected void fireTreeNodesRemoved(Object source, Object[] path,
-            int[] childIndices,
-            Object[] children) {
+                                        int[] childIndices,
+                                        Object[] children) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -246,7 +257,7 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
      * the fire method.
      *
      * @param source the node where the tree model has changed
-     * @param path the path to the root node
+     * @param path   the path to the root node
      * @see EventListenerList
      */
     protected void fireTreeStructureChanged(Object source, Object[] path) {

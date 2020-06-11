@@ -14,162 +14,159 @@
  */
 package de.sciss.treetable.j.ui;
 
-import java.awt.Rectangle;
-import java.beans.PropertyChangeListener;
-import java.util.Enumeration;
-
 import javax.swing.Scrollable;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeListener;
+import java.util.Enumeration;
 
 public interface TreeInterface extends Scrollable {
 
-	public void setModel(TreeModel model);
+    public void setModel(TreeModel model);
 
 
+    public Enumeration<TreePath> getExpandedDescendants(TreePath parent);
 
-	public Enumeration<TreePath> getExpandedDescendants(TreePath parent);
+    public void collapsePath(TreePath path);
 
-	public void collapsePath(TreePath path);
+    public void expandPath(TreePath path);
 
-	public void expandPath(TreePath path);
+    public void makeVisible(TreePath path);
 
-	public void makeVisible(TreePath path);
+    public void scrollPathToVisible(TreePath path);
 
-	public void scrollPathToVisible(TreePath path);
 
+    public Rectangle getPathBounds(TreePath path);
 
+    public TreePath getClosestPathForLocation(int x, int y);
 
-	public Rectangle getPathBounds(TreePath path);
+    public TreePath getPathForLocation(int x, int y);
 
-	public TreePath getClosestPathForLocation(int x, int y);
+    public TreePath getPathForRow(int row);
 
-	public TreePath getPathForLocation(int x, int y);
+    public int getRowCount();
 
-	public TreePath getPathForRow(int row);
+    public int getClosestRowForLocation(int x, int y);
 
-	public int getRowCount();
+    public int getRowForLocation(int x, int y);
 
-	public int getClosestRowForLocation(int x, int y);
+    public int getRowForPath(TreePath path);
 
-	public int getRowForLocation(int x, int y);
+    public boolean isCollapsed(TreePath path);
 
-	public int getRowForPath(TreePath path);
+    public boolean isExpanded(TreePath path);
 
-	public boolean isCollapsed(TreePath path);
+    public boolean hasBeenExpanded(TreePath path);
 
-	public boolean isExpanded(TreePath path);
+    public boolean isFixedRowHeight();
 
-	public boolean hasBeenExpanded(TreePath path);
+    public boolean isLargeModel();
 
-	public boolean isFixedRowHeight();
+    public void setLargeModel(boolean largeModel);
 
-	public boolean isLargeModel();
+    public boolean isRootVisible();
 
-	public void setLargeModel(boolean largeModel);
+    public void setRootVisible(boolean rootVisible);
 
-	public boolean isRootVisible();
+    public boolean getScrollsOnExpand();
 
-	public void setRootVisible(boolean rootVisible);
+    public void setScrollsOnExpand(boolean scrollsOnExpand);
 
-	public boolean getScrollsOnExpand();
+    public boolean getShowsRootHandles();
 
-	public void setScrollsOnExpand(boolean scrollsOnExpand);
+    public void setShowsRootHandles(boolean newValue);
 
-	public boolean getShowsRootHandles();
+    public void setToggleClickCount(int clickCount);
 
-	public void setShowsRootHandles(boolean newValue);
+    public int getToggleClickCount();
 
-	public void setToggleClickCount(int clickCount);
+    public int getVisibleRowCount();
 
-	public int getToggleClickCount();
+    public void setVisibleRowCount(int newCount);
 
-	public int getVisibleRowCount();
+    public int getRowHeight();
 
-	public void setVisibleRowCount(int newCount);
+    public void setRowHeight(int rowHeight);
 
-	public int getRowHeight();
 
-	public void setRowHeight(int rowHeight);
+    public TreeSelectionModel getSelectionModel();
 
+    public void setSelectionModel(TreeSelectionModel selectionModel);
 
-	public TreeSelectionModel getSelectionModel();
+    public void clearSelection();
 
-	public void setSelectionModel(TreeSelectionModel selectionModel);
+    public boolean isSelectionEmpty();
 
-	public void clearSelection();
+    public int getSelectionCount();
 
-	public boolean isSelectionEmpty();
+    public int getMaxSelectionRow();
 
-	public int getSelectionCount();
+    public int getMinSelectionRow();
 
-	public int getMaxSelectionRow();
+    public boolean isPathSelected(TreePath path);
 
-	public int getMinSelectionRow();
+    public TreePath getAnchorSelectionPath();
 
-	public boolean isPathSelected(TreePath path);
+    public void setAnchorSelectionPath(TreePath newPath);
 
-	public TreePath getAnchorSelectionPath();
+    public TreePath getLeadSelectionPath();
 
-	public void setAnchorSelectionPath(TreePath newPath);
+    public void setLeadSelectionPath(TreePath newPath);
 
-	public TreePath getLeadSelectionPath();
+    public int getLeadSelectionRow();
 
-	public void setLeadSelectionPath(TreePath newPath);
+    public boolean getExpandsSelectedPaths();
 
-	public int getLeadSelectionRow();
+    public void setExpandsSelectedPaths(boolean newValue);
 
-	public boolean getExpandsSelectedPaths();
+    public TreePath getSelectionPath();
 
-	public void setExpandsSelectedPaths(boolean newValue);
+    public void addSelectionInterval(int index0, int index1);
 
-	public TreePath getSelectionPath();
+    public void addSelectionPath(TreePath path);
 
-	public void addSelectionInterval(int index0, int index1);
+    public void addSelectionPaths(TreePath[] paths);
 
-	public void addSelectionPath(TreePath path);
+    public void addSelectionRows(int[] rows);
 
-	public void addSelectionPaths(TreePath[] paths);
+    public void removeSelectionInterval(int index0, int index1);
 
-	public void addSelectionRows(int[] rows);
+    public void removeSelectionPath(TreePath path);
 
-	public void removeSelectionInterval(int index0, int index1);
+    public void removeSelectionPaths(TreePath[] paths);
 
-	public void removeSelectionPath(TreePath path);
+    public void removeSelectionRows(int[] rows);
 
-	public void removeSelectionPaths(TreePath[] paths);
+    public void setSelectionPath(TreePath path);
 
-	public void removeSelectionRows(int[] rows);
+    public TreePath[] getSelectionPaths();
 
-	public void setSelectionPath(TreePath path);
+    public void setSelectionPaths(TreePath[] paths);
 
-	public TreePath[] getSelectionPaths();
+    public int[] getSelectionRows();
 
-	public void setSelectionPaths(TreePath[] paths);
+    public void setSelectionRows(int[] rows);
 
-	public int[] getSelectionRows();
+    public void setSelectionInterval(int index0, int index1);
 
-	public void setSelectionRows(int[] rows);
 
-	public void setSelectionInterval(int index0, int index1);
+    public void addPropertyChangeListener(PropertyChangeListener l);
 
+    public void removePropertyChangeListener(PropertyChangeListener l);
 
-	public void addPropertyChangeListener(PropertyChangeListener l);
+    public void addTreeExpansionListener(TreeExpansionListener l);
 
-	public void removePropertyChangeListener(PropertyChangeListener l);
+    public void removeTreeExpansionListener(TreeExpansionListener l);
 
-	public void addTreeExpansionListener(TreeExpansionListener l);
+    public void addTreeWillExpandListener(TreeWillExpandListener l);
 
-	public void removeTreeExpansionListener(TreeExpansionListener l);
+    public void removeTreeWillExpandListener(TreeWillExpandListener l);
 
-	public void addTreeWillExpandListener(TreeWillExpandListener l);
 
-	public void removeTreeWillExpandListener(TreeWillExpandListener l);
-
-
-	public void doLayout();
+    public void doLayout();
 
 }

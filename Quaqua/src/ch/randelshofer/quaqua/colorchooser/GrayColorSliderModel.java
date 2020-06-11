@@ -4,14 +4,14 @@
  */
 package ch.randelshofer.quaqua.colorchooser;
 
+import javax.swing.DefaultBoundedRangeModel;
 import java.awt.Color;
 import java.awt.color.ColorSpace;
-import javax.swing.*;
 
 /**
  * A ColorSliderModel for a gray color model (brightness).
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class GrayColorSliderModel extends ColorSliderModel {
@@ -25,8 +25,8 @@ public class GrayColorSliderModel extends ColorSliderModel {
      */
     public GrayColorSliderModel() {
         super(new DefaultBoundedRangeModel[]{
-                    new DefaultBoundedRangeModel(0, 0, 0, 100)
-                });
+                new DefaultBoundedRangeModel(0, 0, 0, 100)
+        });
         colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
     }
 

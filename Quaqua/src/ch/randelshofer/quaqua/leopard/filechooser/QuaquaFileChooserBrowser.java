@@ -9,7 +9,9 @@ import ch.randelshofer.quaqua.QuaquaScrollPaneUI;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileChooserBrowserListUI;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileChooserListMouseBehavior;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
 import javax.swing.plaf.ListUI;
 import java.io.File;
 

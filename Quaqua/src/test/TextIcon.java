@@ -5,16 +5,20 @@
 
 package test;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import java.awt.Component;
+import java.awt.Graphics;
+
 /**
  * TextIcon.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 June 6, 2005 Created.
  */
 public class TextIcon implements Icon {
     private JLabel label;
+
     /**
      * Creates a new instance.
      */

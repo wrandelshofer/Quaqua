@@ -7,6 +7,10 @@ package ch.randelshofer.quaqua.icon;
 import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -15,16 +19,17 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
+
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.State;
+import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 
 /**
  * Native Aqua icon for an {@code AbstractButton}.
  * This icon draws everything except the focus ring. To draw the focus
  * wring, wrap this border into a {@link ch.randelshofer.quaqua.icon.FocusedIcon}.
-
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -46,15 +51,16 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
     private final static int ARG_TRAILING_SEPARATOR = 18;
 
     public QuaquaNativeButtonStateIcon(Widget widget, int width, int height) {
-        this(widget,0,0,width,height);
+        this(widget, 0, 0, width, height);
 
     }
+
     public QuaquaNativeButtonStateIcon(Widget widget, int xoffset, int yoffset, int width, int height) {
         super(12);
         painter = new OSXAquaPainter();
         painter.setWidget(widget);
-        this.xoffset=xoffset;
-        this.yoffset=yoffset;
+        this.xoffset = xoffset;
+        this.yoffset = yoffset;
         this.width = width;
         this.height = height;
     }
@@ -72,22 +78,22 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
         State state;
         if (QuaquaUtilities.isOnActiveWindow(c)) {
             state = State.active;
-            args |= 1<<ARG_ACTIVE;
+            args |= 1 << ARG_ACTIVE;
         } else {
             state = State.inactive;
         }
         if (bm != null) {
             if (bm.isArmed() && bm.isPressed()) {
                 state = State.pressed;
-                args |= 1<<ARG_PRESSED;
+                args |= 1 << ARG_PRESSED;
             }
             if (!bm.isEnabled()) {
                 state = State.disabled;
-                args |= 1<<ARG_DISABLED;
+                args |= 1 << ARG_DISABLED;
             }
             if (bm.isRollover()) {
                 state = State.rollover;
-                args |= 1<<ARG_ROLLOVER;
+                args |= 1 << ARG_ROLLOVER;
             }
         }
         painter.setState(state);
@@ -97,32 +103,33 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
         args |= value << ARG_SELECTED;
 
         boolean isFocused = QuaquaUtilities.isFocused(c);
-        args |= (isFocused) ? 1<<ARG_FOCUSED : 0;
+        args |= (isFocused) ? 1 << ARG_FOCUSED : 0;
         painter.setValueByKey(Key.focused, isFocused ? 1 : 0);
 
         Size size;
-       switch (QuaquaUtilities.getSizeVariant(c)) {
-            case REGULAR:default:
+        switch (QuaquaUtilities.getSizeVariant(c)) {
+        case REGULAR:
+        default:
             size = OSXAquaPainter.Size.regular;
-                break;
-            case SMALL:
+            break;
+        case SMALL:
             size = OSXAquaPainter.Size.small;
-                break;
-            case MINI:
+            break;
+        case MINI:
             size = OSXAquaPainter.Size.mini;
-                break;
+            break;
         }
         painter.setSize(size);
         args |= size.getId() << ARG_SIZE_VARIANT;
 
-        args |= painter.getWidget().getId()<<ARG_WIDGET;
+        args |= painter.getWidget().getId() << ARG_WIDGET;
 
         paint(c, g, x, y, width, height, args);
     }
 
     @Override
     protected Image createImage(Component c, int w, int h,
-            GraphicsConfiguration config) {
+                                GraphicsConfiguration config) {
 
         return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
 
@@ -136,18 +143,18 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
         ig.fillRect(0, 0, img.getWidth(null), img.getHeight(null));
         ig.dispose();
         painter.paint((BufferedImage) img,//
-                xoffset,yoffset,//
+                xoffset, yoffset,//
                 width, //
                 height);
     }
 
-       @Override
+    @Override
     protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
         // round up image size to reduce memory thrashing
-       BufferedImage img=(BufferedImage)createImage(c,(w/32+1)*32,(h/32+1)*32,null);
-       paintToImage(c,img,w,h,args);
-       g.drawImage(img, 0, 0, null);
-       img.flush();
+        BufferedImage img = (BufferedImage) createImage(c, (w / 32 + 1) * 32, (h / 32 + 1) * 32, null);
+        paintToImage(c, img, w, h, args);
+        g.drawImage(img, 0, 0, null);
+        img.flush();
     }
 
 
@@ -172,7 +179,6 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
         public UIResource(Widget widget, int width, int height) {
             super(widget, width, height);
         }
-
 
 
     }

@@ -62,7 +62,7 @@ public class OSXConfiguration {
             try {
                 intValue = Integer.valueOf(prefValue);
             } catch (NumberFormatException e) {
-                intValue = 0;	// default: Full Keyboard Access is OFF
+                intValue = 0;    // default: Full Keyboard Access is OFF
             }
             isFullKeyboardAccess = isRequestFocusEnabled || ((intValue & 2) == 2);
         }

@@ -7,11 +7,12 @@ package ch.randelshofer.quaqua.border;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 import ch.randelshofer.quaqua.util.InsetsUtil;
+
+import javax.swing.plaf.UIResource;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import javax.swing.plaf.UIResource;
 
 /**
  * {@code QuaquaNativeImageBevelBorder}.
@@ -38,7 +39,7 @@ public class QuaquaNativeImageBevelBorder extends VisualMarginBorder implements 
         this.imageBevelInsets = imageBevelInsets;
         this.borderInsets = borderInsets;
         this.visualMargin = new Insets(3, 3, 3, 3);
-        this.fill=fill;
+        this.fill = fill;
     }
 
     @Override

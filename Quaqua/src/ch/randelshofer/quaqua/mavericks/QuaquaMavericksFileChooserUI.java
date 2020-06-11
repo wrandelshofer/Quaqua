@@ -10,9 +10,10 @@ import ch.randelshofer.quaqua.lion.QuaquaLionFileChooserUI;
 import ch.randelshofer.quaqua.mavericks.filechooser.MavericksColumnView;
 import ch.randelshofer.quaqua.mavericks.filechooser.MavericksFileRenderer;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
-import java.awt.*;
 
 /**
  * A replacement for the AquaFileChooserUI. Emulates the list and column views of the native Aqua user interface on Mac

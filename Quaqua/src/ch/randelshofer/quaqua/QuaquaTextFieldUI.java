@@ -4,23 +4,43 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.util.Debug;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
+import ch.randelshofer.quaqua.util.Fonts;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+import ch.randelshofer.quaqua.util.Methods;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.TextUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicTextFieldUI;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.Caret;
+import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Keymap;
+import javax.swing.text.View;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
 
 /**
  * QuaquaTextFieldUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayoutable {
@@ -126,7 +146,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         if (margin == null) {
             Border border = tc.getBorder();
             if (border instanceof VisualMargin) {
-                margin = ((VisualMargin)border).getVisualMargin(tc);
+                margin = ((VisualMargin) border).getVisualMargin(tc);
             }
             if (margin == null) {
                 margin = UIManager.getInsets("Component.visualMargin");
@@ -142,8 +162,8 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
 
         // paint the background
         if (editor.isOpaque()) {
-        g.setColor(editor.getBackground());
-        g.fillRect(0, 0, editor.getWidth(), editor.getHeight());
+            g.setColor(editor.getBackground());
+            g.fillRect(0, 0, editor.getWidth(), editor.getHeight());
         }
 
         // Paint the background with the background border
@@ -153,12 +173,13 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
             bb.paintBorder(editor, g, 0, 0, editor.getWidth(), editor.getHeight());
         }
 
-        Graphics g2=g.create();
+        Graphics g2 = g.create();
         super.paintSafely(g2);
         g2.dispose();
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
         Debug.paint(g, editor, this);
     }
+
     /**
      * Paints a background for the view.  This method is empty, because
      * we already paint the background in method paintSafely.

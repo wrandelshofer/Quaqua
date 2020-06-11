@@ -4,25 +4,87 @@
  */
 package ch.randelshofer.quaqua.leopard;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.filechooser.*;
-import ch.randelshofer.quaqua.leopard.filechooser.*;
-import ch.randelshofer.quaqua.panther.filechooser.*;
+import ch.randelshofer.quaqua.BrowserPreviewRenderer;
+import ch.randelshofer.quaqua.JBrowser;
+import ch.randelshofer.quaqua.QuaquaLabelUI;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.QuaquaTreeUI;
+import ch.randelshofer.quaqua.filechooser.FileInfo;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.FileTransferHandler;
+import ch.randelshofer.quaqua.filechooser.FilenameDocument;
+import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
+import ch.randelshofer.quaqua.filechooser.SubtreeFileChooserUI;
+import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
+import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
+import ch.randelshofer.quaqua.leopard.filechooser.SidebarTreeModel;
+import ch.randelshofer.quaqua.panther.filechooser.FilePreview;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.filechooser.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.tree.*;
-import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.beans.*;
+import javax.swing.AbstractAction;
+import javax.swing.AbstractListModel;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JSeparator;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.filechooser.FileView;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.LabelUI;
+import javax.swing.plaf.TreeUI;
+import javax.swing.plaf.basic.BasicFileChooserUI;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.IllegalComponentStateException;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Locale;
 
 /**
  * A replacement for the AquaFileChooserUI. Provides a column view similar
@@ -77,21 +139,22 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
      * while processing a PropertyChangeEvent fired from the FileChooser.
      */
     private int isAdjusting = 0;
-    /** XXX - These keystrokes should go into an InputMap created by the
+    /**
+     * XXX - These keystrokes should go into an InputMap created by the
      * BasicQuaquaLookAndFeel class.
      */
     private KeyStroke[] KEYSTROKES = {
-        KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
-        KeyStroke.getKeyStroke(KeyEvent.VK_BACK_QUOTE, 0),
-        KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0)
+            KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_BACK_QUOTE, 0),
+            KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0)
     };
     private AbstractAction keyListenerAction = new AbstractAction() {
         // XXX - This should be rewritten using an ActionMap
@@ -100,38 +163,38 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         public void actionPerformed(ActionEvent ae) {
             File file = null;
             switch (ae.getActionCommand().charAt(0)) {
-                case 'd':
-                    file = new File(System.getProperty("user.home") + "/Desktop");
-                    break;
-                case 'c':
-                    file = new File("/Volumes");
-                    break;
-                case 'h':
-                    file = new File(System.getProperty("user.home"));
-                    break;
-                case 'k':
-                    file = new File("/Network");
-                    break;
-                case 'i':
-                    //not doing iDisk for now
-                    file = null;
-                    return;
-                case 'a':
-                    file = new File("/Applications");
-                    break;
+            case 'd':
+                file = new File(System.getProperty("user.home") + "/Desktop");
+                break;
+            case 'c':
+                file = new File("/Volumes");
+                break;
+            case 'h':
+                file = new File(System.getProperty("user.home"));
+                break;
+            case 'k':
+                file = new File("/Network");
+                break;
+            case 'i':
+                //not doing iDisk for now
+                file = null;
+                return;
+            case 'a':
+                file = new File("/Applications");
+                break;
                 /*
                 case 'u':
                 dir = new File( "/Applications/Utilities" );
                 break;*/
-                case 'g':
+            case 'g':
                 /* case '`':*/
-                case '/':
-                    //need to pop up window for user to type dir. need tab completion!
-                    file = null;
-                    return;
-                default:
-                    //Unknown Key Command in: + ae );
-                    break;
+            case '/':
+                //need to pop up window for user to type dir. need tab completion!
+                file = null;
+                return;
+            default:
+                //Unknown Key Command in: + ae );
+                break;
             }
             //set the dir if non-null:
             if (file != null) {
@@ -596,40 +659,40 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         // Drag and drop assignment
         fileTransferHandler = new FileTransferHandler(fc);
         Component[] dropComponents = {
-            fc,
-            accessoryPanel,
-            approveButton,
-            browser,
-            browserScrollPane,
-            //browserToggleButton,
-            buttonsPanel,
-            cancelButton,
-            controlsPanel,
-            directoryComboBox,
-            fileNameLabel,
-            fileNamePanel,
-            fileNameSpringPanel,
-            fileNameTextField,
-            filesOfTypeLabel,
-            filterComboBox,
-            formatPanel,
-            formatSpringPanel,
-            mainPanel,
-            navigationButtonsPanel,
-            navigationPanel,
-            navigationSpringPanel,
-            newFolderButton,
-            //nextButton,
-            //previousButton,
-            separator,
-            splitPane,
-            //table,
-            //tableScrollPane,
-            //tableToggleButton,
+                fc,
+                accessoryPanel,
+                approveButton,
+                browser,
+                browserScrollPane,
+                //browserToggleButton,
+                buttonsPanel,
+                cancelButton,
+                controlsPanel,
+                directoryComboBox,
+                fileNameLabel,
+                fileNamePanel,
+                fileNameSpringPanel,
+                fileNameTextField,
+                filesOfTypeLabel,
+                filterComboBox,
+                formatPanel,
+                formatSpringPanel,
+                mainPanel,
+                navigationButtonsPanel,
+                navigationPanel,
+                navigationSpringPanel,
+                newFolderButton,
+                //nextButton,
+                //previousButton,
+                separator,
+                splitPane,
+                //table,
+                //tableScrollPane,
+                //tableToggleButton,
 
-            viewsPanel,
-            sidebarTree,
-            sidebarScrollPane
+                viewsPanel,
+                sidebarTree,
+                sidebarScrollPane
         };
         for (int i = 0; i < dropComponents.length; i++) {
             new DropTarget(dropComponents[i], DnDConstants.ACTION_COPY, fileTransferHandler);
@@ -997,8 +1060,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         return true;
     }
 
-    private boolean isAcceptable(File f)
-    {
+    private boolean isAcceptable(File f) {
         if (f == null) {
             return false;
         }
@@ -1109,7 +1171,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         if (!subtreeModel.getPathToRoot().isDescendant(dirPath)) {
             File sidebarResolvedFile = null;
             TreePath sidebarSelectionPath = null;
-            for (Enumeration i = ((DefaultMutableTreeNode) sidebarTree.getModel().getRoot()).preorderEnumeration(); i.hasMoreElements();) {
+            for (Enumeration i = ((DefaultMutableTreeNode) sidebarTree.getModel().getRoot()).preorderEnumeration(); i.hasMoreElements(); ) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) i.nextElement();
                 if (node instanceof SidebarTreeFileNode) {
                     SidebarTreeFileNode info = (SidebarTreeFileNode) node;
@@ -1142,7 +1204,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         clearIconCache();
 
         model.invalidateAll();
-//->the update did not occur from the browser        updateFileChooserFromBrowser();
+        //->the update did not occur from the browser        updateFileChooserFromBrowser();
         /*
         updateSelection();
         updateApproveButtonState();*/
@@ -1185,7 +1247,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         /*
         updateSelection();
         updateApproveButtonState();*/
-//->the update did not occur from the browser        updateFileChooserFromBrowser();
+        //->the update did not occur from the browser        updateFileChooserFromBrowser();
         updateApproveButtonState();
         if (fc.isShowing()) {
             model.validatePath(subtreeModel.toFullPath(browser.getSelectionPath()));
@@ -1380,7 +1442,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         setRootDirectory(file);
     }
 
-    /** Sets the root directory of the subtree. */
+    /**
+     * Sets the root directory of the subtree.
+     */
     public void setRootDirectory(File file) {
         if (file != null) {
             JFileChooser fc = getFileChooser();
@@ -1435,8 +1499,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value,
-                int index, boolean isSelected,
-                boolean cellHasFocus) {
+                                                      int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
 
 
             // String objects are used to denote delimiters.
@@ -1487,8 +1551,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value,
-                boolean isSelected, boolean isExpanded, boolean isLeaf,
-                int row, boolean cellHasFocus) {
+                                                      boolean isSelected, boolean isExpanded, boolean isLeaf,
+                                                      int row, boolean cellHasFocus) {
             super.getTreeCellRendererComponent(tree, value, isSelected,
                     isExpanded, isLeaf, row, false);
 
@@ -1572,6 +1636,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             return false;
         }
     }
+
     final static int space = 10;
 
     private static class IndentIcon implements Icon {
@@ -1678,8 +1743,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
         @Override
         public Component getListCellRendererComponent(JList list,
-                Object value, int index, boolean isSelected,
-                boolean cellHasFocus) {
+                                                      Object value, int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
 
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
@@ -1844,7 +1909,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
      * when she clicks at the approve button.
      *
      * @param allowDirectories true to allow selection of directories when
-     * isMultiSelectionEnabled == true
+     *                         isMultiSelectionEnabled == true
      */
     private void maybeApproveSelection(boolean allowDirectories) {
         JFileChooser fc = getFileChooser();
@@ -1949,9 +2014,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
             // Setup Options
             optionPane.setOptions(new Object[]{
-                        UIManager.getString("FileChooser.createFolderButtonText"),
-                        UIManager.getString("FileChooser.cancelButtonText")
-                    });
+                    UIManager.getString("FileChooser.createFolderButtonText"),
+                    UIManager.getString("FileChooser.cancelButtonText")
+            });
             optionPane.setInitialValue(UIManager.getString("FileChooser.createFolderButtonText"));
 
             // Show the dialog

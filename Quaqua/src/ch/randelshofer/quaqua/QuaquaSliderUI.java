@@ -6,19 +6,37 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.util.InsetsUtil;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+
+import javax.swing.BoundedRangeModel;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicSliderUI;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * QuaquaSliderUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaSliderUI extends BasicSliderUI
@@ -101,7 +119,7 @@ public class QuaquaSliderUI extends BasicSliderUI
     }
 
     protected boolean isSmall() {
-            return QuaquaUtilities.getSizeVariant(slider)==QuaquaUtilities.SizeVariant.SMALL;
+        return QuaquaUtilities.getSizeVariant(slider) == QuaquaUtilities.SizeVariant.SMALL;
     }
 
     protected Icon getThumbIcon() {
@@ -150,7 +168,7 @@ public class QuaquaSliderUI extends BasicSliderUI
 
     @Override
     public void paintFocus(Graphics g) {
-    // empty
+        // empty
     }
 
     @Override
@@ -158,6 +176,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         focusInsets = getVisualMargin(slider);
         super.calculateGeometry();
     }
+
     @Override
     protected void calculateContentRect() {
         contentRect.x = focusRect.x + focusInsets.left;
@@ -494,7 +513,7 @@ public class QuaquaSliderUI extends BasicSliderUI
 
             if (slider.getComponentOrientation().isLeftToRight() ||
                     ((rtlKeyMap = (InputMap) UIManager.get(
-                    "Slider.focusInputMap.RightToLeft")) == null)) {
+                            "Slider.focusInputMap.RightToLeft")) == null)) {
                 return keyMap;
             } else {
                 rtlKeyMap.setParent(keyMap);
@@ -590,15 +609,15 @@ public class QuaquaSliderUI extends BasicSliderUI
                 slider.repaint();
             } else if (name == "Frame.active") {
                 slider.repaint(thumbRect);
-       } else if (name.equals("JComponent.sizeVariant")) {
-            QuaquaUtilities.applySizeVariant(slider);
+            } else if (name.equals("JComponent.sizeVariant")) {
+                QuaquaUtilities.applySizeVariant(slider);
             }
         }
     }
 
     /**
      * Track mouse movements.
-     *
+     * <p>
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of {@code Foo}.
      */
@@ -653,12 +672,12 @@ public class QuaquaSliderUI extends BasicSliderUI
             // Clicked in the Thumb area?
             if (thumbRect.contains(currentMouseX, currentMouseY)) {
                 switch (slider.getOrientation()) {
-                    case JSlider.VERTICAL:
-                        offset = currentMouseY - thumbRect.y;
-                        break;
-                    case JSlider.HORIZONTAL:
-                        offset = currentMouseX - thumbRect.x;
-                        break;
+                case JSlider.VERTICAL:
+                    offset = currentMouseY - thumbRect.y;
+                    break;
+                case JSlider.HORIZONTAL:
+                    offset = currentMouseX - thumbRect.x;
+                    break;
                 }
                 isDragging = true;
                 return;
@@ -670,40 +689,40 @@ public class QuaquaSliderUI extends BasicSliderUI
             int direction = POSITIVE_SCROLL;
 
             switch (slider.getOrientation()) {
-                case JSlider.VERTICAL:
-                    if (thumbRect.isEmpty()) {
-                        int scrollbarCenter = sbSize.height / 2;
-                        if (!drawInverted()) {
-                            direction = (currentMouseY < scrollbarCenter) ? POSITIVE_SCROLL : NEGATIVE_SCROLL;
-                        } else {
-                            direction = (currentMouseY < scrollbarCenter) ? NEGATIVE_SCROLL : POSITIVE_SCROLL;
-                        }
+            case JSlider.VERTICAL:
+                if (thumbRect.isEmpty()) {
+                    int scrollbarCenter = sbSize.height / 2;
+                    if (!drawInverted()) {
+                        direction = (currentMouseY < scrollbarCenter) ? POSITIVE_SCROLL : NEGATIVE_SCROLL;
                     } else {
-                        int thumbY = thumbRect.y;
-                        if (!drawInverted()) {
-                            direction = (currentMouseY < thumbY) ? POSITIVE_SCROLL : NEGATIVE_SCROLL;
-                        } else {
-                            direction = (currentMouseY < thumbY) ? NEGATIVE_SCROLL : POSITIVE_SCROLL;
-                        }
+                        direction = (currentMouseY < scrollbarCenter) ? NEGATIVE_SCROLL : POSITIVE_SCROLL;
                     }
-                    break;
-                case JSlider.HORIZONTAL:
-                    if (thumbRect.isEmpty()) {
-                        int scrollbarCenter = sbSize.width / 2;
-                        if (!drawInverted()) {
-                            direction = (currentMouseX < scrollbarCenter) ? NEGATIVE_SCROLL : POSITIVE_SCROLL;
-                        } else {
-                            direction = (currentMouseX < scrollbarCenter) ? POSITIVE_SCROLL : NEGATIVE_SCROLL;
-                        }
+                } else {
+                    int thumbY = thumbRect.y;
+                    if (!drawInverted()) {
+                        direction = (currentMouseY < thumbY) ? POSITIVE_SCROLL : NEGATIVE_SCROLL;
                     } else {
-                        int thumbX = thumbRect.x;
-                        if (!drawInverted()) {
-                            direction = (currentMouseX < thumbX) ? NEGATIVE_SCROLL : POSITIVE_SCROLL;
-                        } else {
-                            direction = (currentMouseX < thumbX) ? POSITIVE_SCROLL : NEGATIVE_SCROLL;
-                        }
+                        direction = (currentMouseY < thumbY) ? NEGATIVE_SCROLL : POSITIVE_SCROLL;
                     }
-                    break;
+                }
+                break;
+            case JSlider.HORIZONTAL:
+                if (thumbRect.isEmpty()) {
+                    int scrollbarCenter = sbSize.width / 2;
+                    if (!drawInverted()) {
+                        direction = (currentMouseX < scrollbarCenter) ? NEGATIVE_SCROLL : POSITIVE_SCROLL;
+                    } else {
+                        direction = (currentMouseX < scrollbarCenter) ? POSITIVE_SCROLL : NEGATIVE_SCROLL;
+                    }
+                } else {
+                    int thumbX = thumbRect.x;
+                    if (!drawInverted()) {
+                        direction = (currentMouseX < thumbX) ? NEGATIVE_SCROLL : POSITIVE_SCROLL;
+                    } else {
+                        direction = (currentMouseX < thumbX) ? POSITIVE_SCROLL : NEGATIVE_SCROLL;
+                    }
+                }
+                break;
             }
             scrollDueToClickInTrack(direction);
             Rectangle r = thumbRect;
@@ -770,50 +789,50 @@ public class QuaquaSliderUI extends BasicSliderUI
             slider.setValueIsAdjusting(true);
 
             switch (slider.getOrientation()) {
-                case JSlider.VERTICAL:
-                    int halfThumbHeight = thumbRect.height / 2;
-                    int thumbTop = e.getY() - offset;
-                    int trackTop = trackRect.y;
-                    int trackBottom = trackRect.y + (trackRect.height - 1);
-                    int vMax = yPositionForValue(slider.getMaximum() -
-                            slider.getExtent());
+            case JSlider.VERTICAL:
+                int halfThumbHeight = thumbRect.height / 2;
+                int thumbTop = e.getY() - offset;
+                int trackTop = trackRect.y;
+                int trackBottom = trackRect.y + (trackRect.height - 1);
+                int vMax = yPositionForValue(slider.getMaximum() -
+                        slider.getExtent());
 
-                    if (drawInverted()) {
-                        trackBottom = vMax;
-                    } else {
-                        trackTop = vMax;
-                    }
-                    thumbTop = Math.max(thumbTop, trackTop - halfThumbHeight);
-                    thumbTop = Math.min(thumbTop, trackBottom - halfThumbHeight);
+                if (drawInverted()) {
+                    trackBottom = vMax;
+                } else {
+                    trackTop = vMax;
+                }
+                thumbTop = Math.max(thumbTop, trackTop - halfThumbHeight);
+                thumbTop = Math.min(thumbTop, trackBottom - halfThumbHeight);
 
-                    setThumbLocation(thumbRect.x, thumbTop);
+                setThumbLocation(thumbRect.x, thumbTop);
 
-                    thumbMiddle = thumbTop + halfThumbHeight;
-                    slider.setValue(valueForYPosition(thumbMiddle));
-                    break;
-                case JSlider.HORIZONTAL:
-                    int halfThumbWidth = thumbRect.width / 2;
-                    int thumbLeft = e.getX() - offset;
-                    int trackLeft = trackRect.x;
-                    int trackRight = trackRect.x + (trackRect.width - 1);
-                    int hMax = xPositionForValue(slider.getMaximum() -
-                            slider.getExtent());
+                thumbMiddle = thumbTop + halfThumbHeight;
+                slider.setValue(valueForYPosition(thumbMiddle));
+                break;
+            case JSlider.HORIZONTAL:
+                int halfThumbWidth = thumbRect.width / 2;
+                int thumbLeft = e.getX() - offset;
+                int trackLeft = trackRect.x;
+                int trackRight = trackRect.x + (trackRect.width - 1);
+                int hMax = xPositionForValue(slider.getMaximum() -
+                        slider.getExtent());
 
-                    if (drawInverted()) {
-                        trackLeft = hMax;
-                    } else {
-                        trackRight = hMax;
-                    }
-                    thumbLeft = Math.max(thumbLeft, trackLeft - halfThumbWidth);
-                    thumbLeft = Math.min(thumbLeft, trackRight - halfThumbWidth);
+                if (drawInverted()) {
+                    trackLeft = hMax;
+                } else {
+                    trackRight = hMax;
+                }
+                thumbLeft = Math.max(thumbLeft, trackLeft - halfThumbWidth);
+                thumbLeft = Math.min(thumbLeft, trackRight - halfThumbWidth);
 
-                    setThumbLocation(thumbLeft, thumbRect.y);
+                setThumbLocation(thumbLeft, thumbRect.y);
 
-                    thumbMiddle = thumbLeft + halfThumbWidth;
-                    slider.setValue(valueForXPosition(thumbMiddle));
-                    break;
-                default:
-                    return;
+                thumbMiddle = thumbLeft + halfThumbWidth;
+                slider.setValue(valueForXPosition(thumbMiddle));
+                break;
+            default:
+                return;
             }
         }
 

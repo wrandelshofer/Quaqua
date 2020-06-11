@@ -5,10 +5,10 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
-import java.io.*;
+import java.io.File;
+
 /**
  * WindowsFileSystemView provides a Aqua-style view on the windows file system.
- *
  *
  * @author Werner Randelshofer
  * @version $Id$
@@ -25,7 +25,7 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
      */
     public WindowsFileSystemView() {
         volumesFolder = getParentDirectory(systemVolume);
-        desktop = new File(systemVolume,"WINDOWS\\Desktop");
+        desktop = new File(systemVolume, "WINDOWS\\Desktop");
     }
 
     public File getComputer() {
@@ -62,7 +62,7 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
      * "Desktop" folder which is not the same as file.getParentFile().
      *
      * @param folder a <code>File</code> object repesenting a directory or special folder
-     * @param file a <code>File</code> object
+     * @param file   a <code>File</code> object
      * @return <code>true</code> if <code>folder</code> is a directory or special folder and contains <code>file</code>.
      */
     public boolean isParent(File folder, File file) {
@@ -70,8 +70,7 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
     }
 
     /**
-     *
-     * @param parent a <code>File</code> object repesenting a directory or special folder
+     * @param parent   a <code>File</code> object repesenting a directory or special folder
      * @param fileName a name of a file or folder which exists in <code>parent</code>
      * @return a File object. This is normally constructed with <code>new
      * File(parent, fileName)</code> except when parent and child are both
@@ -108,26 +107,27 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
      * Return the user's default starting directory for the file chooser.
      *
      * @return a <code>File</code> object representing the default
-     *         starting folder
+     * starting folder
      */
     public File getDefaultDirectory() {
         return target.getDefaultDirectory();
     }
+
     public boolean isRoot(File f) {
-	if (f == null || !f.isAbsolute()) {
-	    return false;
-	}
+        if (f == null || !f.isAbsolute()) {
+            return false;
+        }
 
         if (f.equals(computer)) {
             return true;
         }
 
-	File[] roots = getRoots();
-	for (int i = 0; i < roots.length; i++) {
-	    if (roots[i].equals(f)) {
-		return true;
-	    }
-	}
-	return false;
+        File[] roots = getRoots();
+        for (int i = 0; i < roots.length; i++) {
+            if (roots[i].equals(f)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

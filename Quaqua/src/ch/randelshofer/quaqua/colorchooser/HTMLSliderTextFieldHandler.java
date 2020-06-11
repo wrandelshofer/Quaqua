@@ -5,13 +5,18 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.BoundedRangeModel;
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  * This handler adjusts the value of a component in the HTML color slider model,
  * when the user enters text into the text field.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 1.0 November 22, 2005 Created.
  */
 public class HTMLSliderTextFieldHandler implements DocumentListener, ChangeListener {
@@ -31,17 +36,20 @@ public class HTMLSliderTextFieldHandler implements DocumentListener, ChangeListe
     public void changedUpdate(DocumentEvent evt) {
         docChanged();
     }
+
     public void removeUpdate(DocumentEvent evt) {
         docChanged();
     }
+
     public void insertUpdate(DocumentEvent evt) {
         docChanged();
     }
+
     private void docChanged() {
         if (textField.hasFocus()) {
             BoundedRangeModel brm = ccModel.getBoundedRangeModel(component);
             try {
-                int value = Integer.decode("#"+textField.getText()).intValue();
+                int value = Integer.decode("#" + textField.getText()).intValue();
                 if (brm.getMinimum() <= value && value <= brm.getMaximum()) {
                     brm.setValue(value);
                 }
@@ -49,14 +57,15 @@ public class HTMLSliderTextFieldHandler implements DocumentListener, ChangeListe
             }
         }
     }
+
     public void stateChanged(ChangeEvent e) {
-        if (! textField.hasFocus()) {
+        if (!textField.hasFocus()) {
             int value = ccModel.getBoundedRangeModel(2).getValue();
             if (ccModel.isWebSaveOnly()) {
                 value = Math.round(value / 51f) * 51;
             }
             String hex = Integer.toHexString(value).toUpperCase();
-            textField.setText((hex.length() == 1) ? "0"+hex : hex);
+            textField.setText((hex.length() == 1) ? "0" + hex : hex);
         }
     }
 }

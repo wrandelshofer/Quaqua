@@ -18,6 +18,14 @@ limitations under the License.
  */
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image;
 
+import ch.randelshofer.quaqua.ext.batik.ext.awt.RenderingHintsKeyExt;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.renderable.PaintRable;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.Any2LsRGBRed;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.Any2sRGBRed;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.BufferedImageCachableRed;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.CachableRed;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.RenderedImageCachableRed;
+
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
@@ -46,14 +54,6 @@ import java.awt.image.renderable.RenderableImage;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
-import ch.randelshofer.quaqua.ext.batik.ext.awt.RenderingHintsKeyExt;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.renderable.PaintRable;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.Any2LsRGBRed;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.Any2sRGBRed;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.BufferedImageCachableRed;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.CachableRed;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.RenderedImageCachableRed;
-
 /**
  * Set of utility methods for Graphics.
  * These generally bypass broken methods in Java2D or provide tweaked
@@ -71,11 +71,12 @@ public class GraphicsUtil {
      * requesting tiles from <tt>ri</tt> and drawing them individually
      * in <tt>g2d</tt> it also takes care of some colorspace and alpha
      * issues.
+     *
      * @param g2d The Graphics2D to draw into.
      * @param ri  The image to be drawn.
      */
     public static void drawImage(Graphics2D g2d,
-            RenderedImage ri) {
+                                 RenderedImage ri) {
         drawImage(g2d, (RenderableImage) wrap(ri));
     }
 
@@ -83,7 +84,7 @@ public class GraphicsUtil {
      * Draws a <tt>Filter</tt> (<tt>RenderableImage</tt>) into a
      * Graphics 2D after taking into account a particular
      * <tt>RenderContext</tt>.<p>
-     *
+     * <p>
      * This method also attempts to unwind the rendering chain a bit.
      * So it knows about certain operations (like affine, pad,
      * composite), rather than applying each of these operations in
@@ -92,11 +93,11 @@ public class GraphicsUtil {
      *
      * @param g2d    The Graphics to draw into.
      * @param filter The filter to draw
-     * @param rc The render context that controls the drawing operation.
+     * @param rc     The render context that controls the drawing operation.
      */
     public static void drawImage(Graphics2D g2d,
-            RenderableImage filter,
-            RenderContext rc) {
+                                 RenderableImage filter,
+                                 RenderContext rc) {
 
         AffineTransform origDev = g2d.getTransform();
         Shape origClip = g2d.getClip();
@@ -119,7 +120,7 @@ public class GraphicsUtil {
     /**
      * Draws a <tt>Filter</tt> (<tt>RenderableImage</tt>) into a
      * Graphics 2D.<p>
-     *
+     * <p>
      * This method also attempts to unwind the rendering chain a bit.
      * So it knows about certain operations (like affine, pad,
      * composite), rather than applying each of these operations in
@@ -130,7 +131,7 @@ public class GraphicsUtil {
      * @param filter The filter to draw
      */
     public static void drawImage(Graphics2D g2d,
-            RenderableImage filter) {
+                                 RenderableImage filter) {
         if (filter instanceof PaintRable) {
             PaintRable pr = (PaintRable) filter;
             if (pr.paintRable(g2d)) // paintRable succeeded so we are done...
@@ -159,13 +160,14 @@ public class GraphicsUtil {
      * in a Rendering hint in the returned Graphics2D.
      * This allows for accurate determination of the 'devices' size,
      * and colorspace.
+     *
      * @param bi The BufferedImage that the returned Graphics should
      *           draw into.
      * @return A Graphics2D that draws into BufferedImage with <tt>bi</tt>
-     *         stored in a rendering hint.
+     * stored in a rendering hint.
      */
     public static Graphics2D createGraphics(BufferedImage bi,
-            RenderingHints hints) {
+                                            RenderingHints hints) {
         Graphics2D g2d = bi.createGraphics();
         if (hints != null) {
             g2d.addRenderingHints(hints);
@@ -183,6 +185,7 @@ public class GraphicsUtil {
         g2d.clip(new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
         return g2d;
     }
+
     public static final boolean WARN_DESTINATION;
 
     static {
@@ -209,7 +212,7 @@ public class GraphicsUtil {
         if (WARN_DESTINATION &&
                 (gd.getType() == GraphicsDevice.TYPE_IMAGE_BUFFER) &&
                 (g2d.getRenderingHint(RenderingHintsKeyExt.KEY_TRANSCODING) !=
-                RenderingHintsKeyExt.VALUE_TRANSCODING_PRINTING)) // throw new IllegalArgumentException
+                        RenderingHintsKeyExt.VALUE_TRANSCODING_PRINTING)) // throw new IllegalArgumentException
         {
             System.err.println("Graphics2D from BufferedImage lacks BUFFERED_IMAGE hint");
         }
@@ -270,61 +273,64 @@ public class GraphicsUtil {
         // return gc.getBounds();
         return null;
     }
+
     /**
-     * Standard prebuilt Linear_sRGB color model with no alpha */
+     * Standard prebuilt Linear_sRGB color model with no alpha
+     */
     public static final ColorModel Linear_sRGB =
             new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB), 24,
-            0x00FF0000, 0x0000FF00,
-            0x000000FF, 0x0, false,
-            DataBuffer.TYPE_INT);
+                    0x00FF0000, 0x0000FF00,
+                    0x000000FF, 0x0, false,
+                    DataBuffer.TYPE_INT);
     /**
      * Standard prebuilt Linear_sRGB color model with premultiplied alpha.
      */
     public static final ColorModel Linear_sRGB_Pre =
             new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB), 32,
-            0x00FF0000, 0x0000FF00,
-            0x000000FF, 0xFF000000, true,
-            DataBuffer.TYPE_INT);
+                    0x00FF0000, 0x0000FF00,
+                    0x000000FF, 0xFF000000, true,
+                    DataBuffer.TYPE_INT);
     /**
      * Standard prebuilt Linear_sRGB color model with unpremultiplied alpha.
      */
     public static final ColorModel Linear_sRGB_Unpre =
             new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB), 32,
-            0x00FF0000, 0x0000FF00,
-            0x000000FF, 0xFF000000, false,
-            DataBuffer.TYPE_INT);
+                    0x00FF0000, 0x0000FF00,
+                    0x000000FF, 0xFF000000, false,
+                    DataBuffer.TYPE_INT);
     /**
      * Standard prebuilt sRGB color model with no alpha.
      */
     public static final ColorModel sRGB =
             new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), 24,
-            0x00FF0000, 0x0000FF00,
-            0x000000FF, 0x0, false,
-            DataBuffer.TYPE_INT);
+                    0x00FF0000, 0x0000FF00,
+                    0x000000FF, 0x0, false,
+                    DataBuffer.TYPE_INT);
     /**
      * Standard prebuilt sRGB color model with premultiplied alpha.
      */
     public static final ColorModel sRGB_Pre =
             new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), 32,
-            0x00FF0000, 0x0000FF00,
-            0x000000FF, 0xFF000000, true,
-            DataBuffer.TYPE_INT);
+                    0x00FF0000, 0x0000FF00,
+                    0x000000FF, 0xFF000000, true,
+                    DataBuffer.TYPE_INT);
     /**
      * Standard prebuilt sRGB color model with unpremultiplied alpha.
      */
     public static final ColorModel sRGB_Unpre =
             new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), 32,
-            0x00FF0000, 0x0000FF00,
-            0x000000FF, 0xFF000000, false,
-            DataBuffer.TYPE_INT);
+                    0x00FF0000, 0x0000FF00,
+                    0x000000FF, 0xFF000000, false,
+                    DataBuffer.TYPE_INT);
 
     /**
      * Method that returns either Linear_sRGB_Pre or Linear_sRGB_UnPre
      * based on premult flag.
+     *
      * @param premult True if the ColorModel should have premultiplied alpha.
-     * @return        a ColorMdoel with Linear sRGB colorSpace and
-     *                the alpha channel set in accordance with
-     *                <tt>premult</tt>
+     * @return a ColorMdoel with Linear sRGB colorSpace and
+     * the alpha channel set in accordance with
+     * <tt>premult</tt>
      */
     public static ColorModel makeLinear_sRGBCM(boolean premult) {
 
@@ -333,14 +339,15 @@ public class GraphicsUtil {
 
     /**
      * Constructs a BufferedImage with a linear sRGB colorModel, and alpha.
+     *
      * @param width   The desired width of the BufferedImage
      * @param height  The desired height of the BufferedImage
      * @param premult The desired state of alpha premultiplied
-     * @return        The requested BufferedImage.
+     * @return The requested BufferedImage.
      */
     public static BufferedImage makeLinearBufferedImage(int width,
-            int height,
-            boolean premult) {
+                                                        int height,
+                                                        boolean premult) {
         ColorModel cm = makeLinear_sRGBCM(premult);
         WritableRaster wr = cm.createCompatibleWritableRaster(width, height);
         return new BufferedImage(cm, wr, premult, null);
@@ -354,8 +361,8 @@ public class GraphicsUtil {
      * <tt>src</tt>'s output to linear sRGB and returns that CacheableRed.
      *
      * @param src The image to convert to linear sRGB.
-     * @return    An equivilant image to <tt>src</tt> who's data is in
-     *            linear sRGB.
+     * @return An equivilant image to <tt>src</tt> who's data is in
+     * linear sRGB.
      */
     public static CachableRed convertToLsRGB(CachableRed src) {
         ColorModel cm = src.getColorModel();
@@ -375,7 +382,7 @@ public class GraphicsUtil {
      * <tt>src</tt>'s output to sRGB and returns that CacheableRed.
      *
      * @param src The image to convert to sRGB.
-     * @return    An equivilant image to <tt>src</tt> who's data is in sRGB.
+     * @return An equivilant image to <tt>src</tt> who's data is in sRGB.
      */
     public static CachableRed convertTosRGB(CachableRed src) {
         ColorModel cm = src.getColorModel();
@@ -391,14 +398,15 @@ public class GraphicsUtil {
      * Convertes any RenderedImage to a CacheableRed.  <p>
      * If <tt>ri</tt> is already a CacheableRed it casts it down and
      * returns it.<p>
-     *
+     * <p>
      * In cases where <tt>ri</tt> is not already a CacheableRed it
      * wraps <tt>ri</tt> with a helper class.  The wrapped
      * CacheableRed "Pretends" that it has no sources since it has no
      * way of inteligently handling the dependency/dirty region calls
      * if it exposed the source.
+     *
      * @param ri The RenderedImage to convert.
-     * @return   a CacheableRed that contains the same data as ri.
+     * @return a CacheableRed that contains the same data as ri.
      */
     public static CachableRed wrap(RenderedImage ri) {
         if (ri instanceof CachableRed) {
@@ -414,7 +422,7 @@ public class GraphicsUtil {
      * An internal optimized version of copyData designed to work on
      * Integer packed data with a SinglePixelPackedSampleModel.  Only
      * the region of overlap between src and dst is copied.
-     *
+     * <p>
      * Calls to this should be preflighted with is_INT_PACK_Data
      * on both src and dest (requireAlpha can be false).
      *
@@ -454,8 +462,8 @@ public class GraphicsUtil {
         final int[] srcPixels = srcDB.getBankData()[0];
         final int srcBase =
                 (srcDB.getOffset() +
-                srcSPPSM.getOffset(x0 - src.getSampleModelTranslateX(),
-                y0 - src.getSampleModelTranslateY()));
+                        srcSPPSM.getOffset(x0 - src.getSampleModelTranslateX(),
+                                y0 - src.getSampleModelTranslateY()));
 
 
         SinglePixelPackedSampleModel dstSPPSM;
@@ -466,8 +474,8 @@ public class GraphicsUtil {
         final int[] dstPixels = dstDB.getBankData()[0];
         final int dstBase =
                 (dstDB.getOffset() +
-                dstSPPSM.getOffset(x0 - dst.getSampleModelTranslateX(),
-                y0 - dst.getSampleModelTranslateY()));
+                        dstSPPSM.getOffset(x0 - dst.getSampleModelTranslateX(),
+                                y0 - dst.getSampleModelTranslateY()));
 
         if ((srcScanStride == dstScanStride) &&
                 (srcScanStride == width)) {
@@ -493,7 +501,7 @@ public class GraphicsUtil {
             }
         }
     }
-// BEGIN PATCH W. Randelshofer Performance
+    // BEGIN PATCH W. Randelshofer Performance
 
     public static void copyData_BYTE_RGBA_INTERLEAVED(Raster src, WritableRaster dst) {
         DataBufferByte dstDB = (DataBufferByte) dst.getDataBuffer();
@@ -523,7 +531,7 @@ public class GraphicsUtil {
 
         System.arraycopy(srcPixels, 0, dstPixels, y0 * width * 4, Math.min(srcPixels.length, dstPixels.length));
     }
-// END PATCH W. Randelshofer Performance
+    // END PATCH W. Randelshofer Performance
 
     public static void copyData_FALLBACK(Raster src, WritableRaster dst) {
         // System.out.println("Fallback copyData");
@@ -579,12 +587,13 @@ public class GraphicsUtil {
      * Creates a new raster that has a <b>copy</b> of the data in
      * <tt>ras</tt>.  This is highly optimized for speed.  There is
      * no provision for changing any aspect of the SampleModel.
-     *
+     * <p>
      * This method should be used when you need to change the contents
      * of a Raster that you do not "own" (ie the result of a
      * <tt>getData</tt> call).
+     *
      * @param ras The Raster to copy.
-     * @return    A writable copy of <tt>ras</tt>
+     * @return A writable copy of <tt>ras</tt>
      */
     public static WritableRaster copyRaster(Raster ras) {
         return copyRaster(ras, ras.getMinX(), ras.getMinY());
@@ -595,20 +604,17 @@ public class GraphicsUtil {
      * <tt>ras</tt>.  This is highly optimized for speed.  There is
      * no provision for changing any aspect of the SampleModel.
      * However you can specify a new location for the returned raster.
-     *
+     * <p>
      * This method should be used when you need to change the contents
      * of a Raster that you do not "own" (ie the result of a
      * <tt>getData</tt> call).
      *
-     * @param ras The Raster to copy.
-     *
+     * @param ras  The Raster to copy.
      * @param minX The x location for the upper left corner of the
      *             returned WritableRaster.
-     *
      * @param minY The y location for the upper left corner of the
      *             returned WritableRaster.
-     *
-     * @return    A writable copy of <tt>ras</tt>
+     * @return A writable copy of <tt>ras</tt>
      */
     public static WritableRaster copyRaster(Raster ras, int minX, int minY) {
         WritableRaster ret = Raster.createWritableRaster(ras.getSampleModel(),
@@ -629,34 +635,34 @@ public class GraphicsUtil {
         int[] offsets = srcDB.getOffsets();
         for (int b = 0; b < banks; b++) {
             switch (srcDB.getDataType()) {
-                case DataBuffer.TYPE_BYTE: {
-                    DataBufferByte srcDBT = (DataBufferByte) srcDB;
-                    DataBufferByte retDBT = (DataBufferByte) retDB;
-                    System.arraycopy(srcDBT.getData(b), offsets[b],
-                            retDBT.getData(b), offsets[b], len);
-                    break;
-                }
-                case DataBuffer.TYPE_INT: {
-                    DataBufferInt srcDBT = (DataBufferInt) srcDB;
-                    DataBufferInt retDBT = (DataBufferInt) retDB;
-                    System.arraycopy(srcDBT.getData(b), offsets[b],
-                            retDBT.getData(b), offsets[b], len);
-                    break;
-                }
-                case DataBuffer.TYPE_SHORT: {
-                    DataBufferShort srcDBT = (DataBufferShort) srcDB;
-                    DataBufferShort retDBT = (DataBufferShort) retDB;
-                    System.arraycopy(srcDBT.getData(b), offsets[b],
-                            retDBT.getData(b), offsets[b], len);
-                    break;
-                }
-                case DataBuffer.TYPE_USHORT: {
-                    DataBufferUShort srcDBT = (DataBufferUShort) srcDB;
-                    DataBufferUShort retDBT = (DataBufferUShort) retDB;
-                    System.arraycopy(srcDBT.getData(b), offsets[b],
-                            retDBT.getData(b), offsets[b], len);
-                    break;
-                }
+            case DataBuffer.TYPE_BYTE: {
+                DataBufferByte srcDBT = (DataBufferByte) srcDB;
+                DataBufferByte retDBT = (DataBufferByte) retDB;
+                System.arraycopy(srcDBT.getData(b), offsets[b],
+                        retDBT.getData(b), offsets[b], len);
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                DataBufferInt srcDBT = (DataBufferInt) srcDB;
+                DataBufferInt retDBT = (DataBufferInt) retDB;
+                System.arraycopy(srcDBT.getData(b), offsets[b],
+                        retDBT.getData(b), offsets[b], len);
+                break;
+            }
+            case DataBuffer.TYPE_SHORT: {
+                DataBufferShort srcDBT = (DataBufferShort) srcDB;
+                DataBufferShort retDBT = (DataBufferShort) retDB;
+                System.arraycopy(srcDBT.getData(b), offsets[b],
+                        retDBT.getData(b), offsets[b], len);
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                DataBufferUShort srcDBT = (DataBufferUShort) srcDB;
+                DataBufferUShort retDBT = (DataBufferUShort) retDB;
+                System.arraycopy(srcDBT.getData(b), offsets[b],
+                        retDBT.getData(b), offsets[b], len);
+                break;
+            }
             }
         }
 
@@ -667,15 +673,16 @@ public class GraphicsUtil {
      * Coerces <tt>ras</tt> to be writable.  The returned Raster continues to
      * reference the DataBuffer from ras, so modifications to the returned
      * WritableRaster will be seen in ras.<p>
-     *
+     * <p>
      * This method should only be used if you need a WritableRaster due to
      * an interface (such as to construct a BufferedImage), but have no
      * intention of modifying the contents of the returned Raster.  If
      * you have any doubt about other users of the data in <tt>ras</tt>,
      * use copyRaster (above).
+     *
      * @param ras The raster to make writable.
-     * @return    A Writable version of ras (shares DataBuffer with
-     *            <tt>ras</tt>).
+     * @return A Writable version of ras (shares DataBuffer with
+     * <tt>ras</tt>).
      */
     public static WritableRaster makeRasterWritable(Raster ras) {
         return makeRasterWritable(ras, ras.getMinX(), ras.getMinY());
@@ -685,31 +692,28 @@ public class GraphicsUtil {
      * Coerces <tt>ras</tt> to be writable.  The returned Raster continues to
      * reference the DataBuffer from ras, so modifications to the returned
      * WritableRaster will be seen in ras.<p>
-     *
+     * <p>
      * You can specify a new location for the returned WritableRaster, this
      * is especially useful for constructing BufferedImages which require
      * the Raster to be at (0,0).
-     *
+     * <p>
      * This method should only be used if you need a WritableRaster due to
      * an interface (such as to construct a BufferedImage), but have no
      * intention of modifying the contents of the returned Raster.  If
      * you have any doubt about other users of the data in <tt>ras</tt>,
      * use copyRaster (above).
      *
-     * @param ras The raster to make writable.
-     *
+     * @param ras  The raster to make writable.
      * @param minX The x location for the upper left corner of the
      *             returned WritableRaster.
-     *
      * @param minY The y location for the upper left corner of the
      *             returned WritableRaster.
-     *
      * @return A Writable version of <tT>ras</tt> with it's upper left
-     *         hand coordinate set to minX, minY (shares it's DataBuffer
-     *         with <tt>ras</tt>).
+     * hand coordinate set to minX, minY (shares it's DataBuffer
+     * with <tt>ras</tt>).
      */
     public static WritableRaster makeRasterWritable(Raster ras,
-            int minX, int minY) {
+                                                    int minX, int minY) {
         WritableRaster ret = Raster.createWritableRaster(ras.getSampleModel(),
                 ras.getDataBuffer(),
                 new Point(0, 0));
@@ -723,10 +727,11 @@ public class GraphicsUtil {
     /**
      * Create a new ColorModel with it's alpha premultiplied state matching
      * newAlphaPreMult.
-     * @param cm The ColorModel to change the alpha premult state of.
+     *
+     * @param cm              The ColorModel to change the alpha premult state of.
      * @param newAlphaPreMult The new state of alpha premult.
-     * @return   A new colorModel that has isAlphaPremultiplied()
-     *           equal to newAlphaPreMult.
+     * @return A new colorModel that has isAlphaPremultiplied()
+     * equal to newAlphaPreMult.
      */
     public static ColorModel coerceColorModel(ColorModel cm, boolean newAlphaPreMult) {
         if (cm.isAlphaPremultiplied() == newAlphaPreMult) {
@@ -744,8 +749,8 @@ public class GraphicsUtil {
      * Coerces data within a bufferedImage to match newAlphaPreMult,
      * Note that this can not change the colormodel of bi so you
      *
-     * @param wr The raster to change the state of.
-     * @param cm The colormodel currently associated with data in wr.
+     * @param wr              The raster to change the state of.
+     * @param cm              The colormodel currently associated with data in wr.
      * @param newAlphaPreMult The desired state of alpha Premult for raster.
      * @return A new colormodel that matches newAlphaPreMult.
      */
@@ -853,13 +858,13 @@ public class GraphicsUtil {
      * Copies data from one bufferedImage to another paying attention
      * to the state of AlphaPreMultiplied.
      *
-     * @param src The source
+     * @param src     The source
      * @param srcRect The Rectangle of source data to be copied
-     * @param dst The destination
-     * @param destP The Place for the upper left corner of srcRect in dst.
+     * @param dst     The destination
+     * @param destP   The Place for the upper left corner of srcRect in dst.
      */
     public static void copyData(BufferedImage src, Rectangle srcRect,
-            BufferedImage dst, Point destP) {
+                                BufferedImage dst, Point destP) {
 
         /*
         if (srcCS != dstCS)
@@ -917,21 +922,21 @@ public class GraphicsUtil {
                 in = w * (bands - 1) - 1;
                 out = (w * bands) - 2; // The 2 skips alpha channel on last pix
                 switch (bands) {
-                    case 4:
-                        while (in >= 0) {
+                case 4:
+                    while (in >= 0) {
+                        oPix[out--] = pixel[in--];
+                        oPix[out--] = pixel[in--];
+                        oPix[out--] = pixel[in--];
+                        out--;
+                    }
+                    break;
+                default:
+                    while (in >= 0) {
+                        for (b = 0; b < bands - 1; b++) {
                             oPix[out--] = pixel[in--];
-                            oPix[out--] = pixel[in--];
-                            oPix[out--] = pixel[in--];
-                            out--;
                         }
-                        break;
-                    default:
-                        while (in >= 0) {
-                            for (b = 0; b < bands - 1; b++) {
-                                oPix[out--] = pixel[in--];
-                            }
-                            out--;
-                        }
+                        out--;
+                    }
                 }
                 dstR.setPixels(x0 + dx, y + dy, w, 1, oPix);
             }
@@ -943,37 +948,37 @@ public class GraphicsUtil {
                 pixel = srcR.getPixels(x0, y, w, 1, pixel);
                 in = bands * w - 1;
                 switch (bands) {
-                    case 4:
-                        while (in >= 0) {
-                            a = pixel[in];
-                            if (a == 255) {
-                                in -= 4;
-                            } else {
-                                in--;
-                                alpha = fpNorm * a;
-                                pixel[in] = (pixel[in] * alpha + pt5) >>> 24;
-                                in--;
-                                pixel[in] = (pixel[in] * alpha + pt5) >>> 24;
-                                in--;
+                case 4:
+                    while (in >= 0) {
+                        a = pixel[in];
+                        if (a == 255) {
+                            in -= 4;
+                        } else {
+                            in--;
+                            alpha = fpNorm * a;
+                            pixel[in] = (pixel[in] * alpha + pt5) >>> 24;
+                            in--;
+                            pixel[in] = (pixel[in] * alpha + pt5) >>> 24;
+                            in--;
+                            pixel[in] = (pixel[in] * alpha + pt5) >>> 24;
+                            in--;
+                        }
+                    }
+                    break;
+                default:
+                    while (in >= 0) {
+                        a = pixel[in];
+                        if (a == 255) {
+                            in -= bands;
+                        } else {
+                            in--;
+                            alpha = fpNorm * a;
+                            for (b = 0; b < bands - 1; b++) {
                                 pixel[in] = (pixel[in] * alpha + pt5) >>> 24;
                                 in--;
                             }
                         }
-                        break;
-                    default:
-                        while (in >= 0) {
-                            a = pixel[in];
-                            if (a == 255) {
-                                in -= bands;
-                            } else {
-                                in--;
-                                alpha = fpNorm * a;
-                                for (b = 0; b < bands - 1; b++) {
-                                    pixel[in] = (pixel[in] * alpha + pt5) >>> 24;
-                                    in--;
-                                }
-                            }
-                        }
+                    }
                 }
                 dstR.setPixels(x0 + dx, y + dy, w, 1, pixel);
             }
@@ -985,37 +990,37 @@ public class GraphicsUtil {
                 pixel = srcR.getPixels(x0, y, w, 1, pixel);
                 in = (bands * w) - 1;
                 switch (bands) {
-                    case 4:
-                        while (in >= 0) {
-                            a = pixel[in];
-                            if ((a <= 0) || (a >= 255)) {
-                                in -= 4;
-                            } else {
-                                in--;
-                                ialpha = fpNorm / a;
-                                pixel[in] = (pixel[in] * ialpha + pt5) >>> 16;
-                                in--;
-                                pixel[in] = (pixel[in] * ialpha + pt5) >>> 16;
-                                in--;
+                case 4:
+                    while (in >= 0) {
+                        a = pixel[in];
+                        if ((a <= 0) || (a >= 255)) {
+                            in -= 4;
+                        } else {
+                            in--;
+                            ialpha = fpNorm / a;
+                            pixel[in] = (pixel[in] * ialpha + pt5) >>> 16;
+                            in--;
+                            pixel[in] = (pixel[in] * ialpha + pt5) >>> 16;
+                            in--;
+                            pixel[in] = (pixel[in] * ialpha + pt5) >>> 16;
+                            in--;
+                        }
+                    }
+                    break;
+                default:
+                    while (in >= 0) {
+                        a = pixel[in];
+                        if ((a <= 0) || (a >= 255)) {
+                            in -= bands;
+                        } else {
+                            in--;
+                            ialpha = fpNorm / a;
+                            for (b = 0; b < bands - 1; b++) {
                                 pixel[in] = (pixel[in] * ialpha + pt5) >>> 16;
                                 in--;
                             }
                         }
-                        break;
-                    default:
-                        while (in >= 0) {
-                            a = pixel[in];
-                            if ((a <= 0) || (a >= 255)) {
-                                in -= bands;
-                            } else {
-                                in--;
-                                ialpha = fpNorm / a;
-                                for (b = 0; b < bands - 1; b++) {
-                                    pixel[in] = (pixel[in] * ialpha + pt5) >>> 16;
-                                    in--;
-                                }
-                            }
-                        }
+                    }
                 }
                 dstR.setPixels(x0 + dx, y + dy, w, 1, pixel);
             }
@@ -1064,7 +1069,7 @@ public class GraphicsUtil {
     }
 
     public static void copyBand(Raster src, int srcBand,
-            WritableRaster dst, int dstBand) {
+                                WritableRaster dst, int dstBand) {
 
         Rectangle sR = src.getBounds();
         Rectangle dR = dst.getBounds();
@@ -1074,7 +1079,7 @@ public class GraphicsUtil {
     }
 
     public static void copyBand(Raster src, Rectangle sR, int sBand,
-            WritableRaster dst, Rectangle dR, int dBand) {
+                                WritableRaster dst, Rectangle dR, int dBand) {
         int dy = dR.y - sR.y;
         int dx = dR.x - sR.x;
         sR = sR.intersection(src.getBounds());
@@ -1100,7 +1105,7 @@ public class GraphicsUtil {
     }
 
     public static boolean is_INT_PACK_Data(SampleModel sm,
-            boolean requireAlpha) {
+                                           boolean requireAlpha) {
         // Check ColorModel is of type DirectColorModel
         if (!(sm instanceof SinglePixelPackedSampleModel)) {
             return false;
@@ -1166,7 +1171,7 @@ public class GraphicsUtil {
         DataBufferInt db = (DataBufferInt) wr.getDataBuffer();
         final int base = (db.getOffset() +
                 sppsm.getOffset(wr.getMinX() - wr.getSampleModelTranslateX(),
-                wr.getMinY() - wr.getSampleModelTranslateY()));
+                        wr.getMinY() - wr.getSampleModelTranslateY()));
 
         // Access the pixel data array
         final int[] pixels = db.getBankData()[0];
@@ -1182,9 +1187,9 @@ public class GraphicsUtil {
                     int aFP = (0x00FF0000 / a);
                     pixels[sp] =
                             ((a << 24) |
-                            (((((pixel & 0xFF0000) >> 16) * aFP) & 0xFF0000)) |
-                            (((((pixel & 0x00FF00) >> 8) * aFP) & 0xFF0000) >> 8) |
-                            (((((pixel & 0x0000FF)) * aFP) & 0xFF0000) >> 16));
+                                    (((((pixel & 0xFF0000) >> 16) * aFP) & 0xFF0000)) |
+                                    (((((pixel & 0x00FF00) >> 8) * aFP) & 0xFF0000) >> 8) |
+                                    (((((pixel & 0x0000FF)) * aFP) & 0xFF0000) >> 16));
                 }
                 sp++;
             }
@@ -1203,7 +1208,7 @@ public class GraphicsUtil {
         DataBufferInt db = (DataBufferInt) wr.getDataBuffer();
         final int base = (db.getOffset() +
                 sppsm.getOffset(wr.getMinX() - wr.getSampleModelTranslateX(),
-                wr.getMinY() - wr.getSampleModelTranslateY()));
+                        wr.getMinY() - wr.getSampleModelTranslateY()));
         // Access the pixel data array
         final int[] pixels = db.getBankData()[0];
         for (int y = 0; y < wr.getHeight(); y++) {
@@ -1238,7 +1243,7 @@ public class GraphicsUtil {
         DataBufferByte db = (DataBufferByte) wr.getDataBuffer();
         final int base = (db.getOffset() +
                 csm.getOffset(wr.getMinX() - wr.getSampleModelTranslateX(),
-                wr.getMinY() - wr.getSampleModelTranslateY()));
+                        wr.getMinY() - wr.getSampleModelTranslateY()));
 
         int aOff = bandOff[bandOff.length - 1];
         int bands = bandOff.length - 1;
@@ -1281,7 +1286,7 @@ public class GraphicsUtil {
         DataBufferByte db = (DataBufferByte) wr.getDataBuffer();
         final int base = (db.getOffset() +
                 csm.getOffset(wr.getMinX() - wr.getSampleModelTranslateX(),
-                wr.getMinY() - wr.getSampleModelTranslateY()));
+                        wr.getMinY() - wr.getSampleModelTranslateY()));
 
 
         int aOff = bandOff[bandOff.length - 1];

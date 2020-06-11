@@ -6,21 +6,24 @@ package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.QuaquaListUI;
 
-import javax.swing.*;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
-import java.io.File;
 
 /**
-    A UI for the lists in a file chooser browser.
-
-    The primary difference from an ordinary JList is that selection is restricted to items that are acceptable
-    selections to the file chooser. There are two exceptions: (1) A traversable directory may be selected in order to
-    display the contents of that directory. (2) In a Save dialog, an item that is not a traversable directory may be
-    clicked to transfer the item name into the file name text field.
-
-    An obscure difference is that unacceptable items participate in defining the contiguous regions that are deselected
-    by a Shift-click.
-*/
+ * A UI for the lists in a file chooser browser.
+ * <p>
+ * The primary difference from an ordinary JList is that selection is restricted to items that are acceptable
+ * selections to the file chooser. There are two exceptions: (1) A traversable directory may be selected in order to
+ * display the contents of that directory. (2) In a Save dialog, an item that is not a traversable directory may be
+ * clicked to transfer the item name into the file name text field.
+ * <p>
+ * An obscure difference is that unacceptable items participate in defining the contiguous regions that are deselected
+ * by a Shift-click.
+ */
 
 public class QuaquaFileChooserBrowserListUI extends QuaquaListUI {
 

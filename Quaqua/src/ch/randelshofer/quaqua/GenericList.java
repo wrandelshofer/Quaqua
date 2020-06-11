@@ -4,8 +4,9 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.TransferHandler;
+import java.awt.Point;
 
 /**
  * A generic interface for a component that has list-like behavior (e.g. JList, JTable, JTree).

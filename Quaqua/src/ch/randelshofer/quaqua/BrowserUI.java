@@ -5,12 +5,13 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.Icon;
+import javax.swing.plaf.ComponentUI;
+
 /**
  * BrowserUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class BrowserUI extends ComponentUI {

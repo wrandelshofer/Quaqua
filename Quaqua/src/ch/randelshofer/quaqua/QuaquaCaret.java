@@ -4,17 +4,20 @@
  */
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.UIManager;
-
-import javax.swing.plaf.*;
-import javax.swing.text.*;
+import javax.swing.plaf.UIResource;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+import java.awt.Window;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
 
 /**
  * QuaquaCaret.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaCaret extends DefaultCaret
@@ -32,10 +35,10 @@ public class QuaquaCaret extends DefaultCaret
 
     @Override
     public void setVisible(boolean bool) {
-            if (bool == true) {
+        if (bool == true) {
             // Don't display the caret if text is selected.
-                bool = getDot() == getMark();
-            }
+            bool = getDot() == getMark();
+        }
         super.setVisible(bool);
     }
 
@@ -44,9 +47,9 @@ public class QuaquaCaret extends DefaultCaret
         boolean bool = super.isVisible();
         // Display non-blinking caret when component is non-editable.
         if (UIManager.getBoolean("TextComponent.showNonEditableCaret")) {
-        bool|= !getComponent().isEditable() && getComponent().isFocusOwner();
-        }else{
-        bool&= getComponent().isEditable() && getComponent().isFocusOwner();
+            bool |= !getComponent().isEditable() && getComponent().isFocusOwner();
+        } else {
+            bool &= getComponent().isEditable() && getComponent().isFocusOwner();
         }
         return bool;
     }

@@ -5,18 +5,51 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.TextureColor;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import java.awt.geom.*;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.UIResource;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.geom.AffineTransform;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * QuaquaTitlePane.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaTitlePane extends JComponent {
@@ -452,7 +485,7 @@ public class QuaquaTitlePane extends JComponent {
         if (frame != null && !isPalette) {
             if (((state & Frame.MAXIMIZED_BOTH) != 0) &&
                     (rootPane.getBorder() == null ||
-                    (rootPane.getBorder() instanceof UIResource)) &&
+                            (rootPane.getBorder() instanceof UIResource)) &&
                     frame.isShowing()) {
                 rootPane.setBorder(null);
             } else if ((state & Frame.MAXIMIZED_BOTH) == 0) {
@@ -522,7 +555,7 @@ public class QuaquaTitlePane extends JComponent {
         toggleButton.setText(null);
         toggleButton.setEnabled(
                 Toolkit.getDefaultToolkit().isFrameStateSupported(
-                Frame.MAXIMIZED_BOTH));
+                        Frame.MAXIMIZED_BOTH));
     }
 
     /**
@@ -736,7 +769,7 @@ public class QuaquaTitlePane extends JComponent {
      * size.
      */
     private String clippedText(String text, FontMetrics fm,
-            int availTextWidth) {
+                               int availTextWidth) {
         if ((text == null) || (text.equals(""))) {
             return "";
         }

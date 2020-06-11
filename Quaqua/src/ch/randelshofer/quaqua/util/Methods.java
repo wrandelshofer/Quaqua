@@ -5,15 +5,17 @@
 
 package ch.randelshofer.quaqua.util;
 
-import java.awt.AWTEvent;
-import java.lang.reflect.*;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import java.awt.AWTEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * Methods contains convenience methods for method invocations using
  * java.lang.reflect.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class Methods {
@@ -27,42 +29,41 @@ public class Methods {
     /**
      * Invokes the specified accessible parameterless method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
-     * @return The return value of the method.
      * @return NoSuchMethodException if the method does not exist or is not
      * accessible.
      */
     public static Object invoke(Object obj, String methodName)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[0]);
+            Method method = obj.getClass().getMethod(methodName, new Class[0]);
             Object result = method.invoke(obj, new Object[0]);
             return result;
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
         }
     }
+
     /**
      * Invokes the specified accessible method with a string parameter if it exists.
      *
-     * @param obj The object on which to invoke the method.
-     * @param methodName The name of the method.
+     * @param obj             The object on which to invoke the method.
+     * @param methodName      The name of the method.
      * @param stringParameter The String parameter
-     * @return The return value of the method or METHOD_NOT_FOUND.
      * @return NoSuchMethodException if the method does not exist or is not accessible.
      */
     public static Object invoke(Object obj, String methodName, String stringParameter)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[] { String.class });
-            Object result = method.invoke(obj, new Object[] { stringParameter });
+            Method method = obj.getClass().getMethod(methodName, new Class[]{String.class});
+            Object result = method.invoke(obj, new Object[]{stringParameter});
             return result;
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
@@ -72,138 +73,138 @@ public class Methods {
     /**
      * Invokes the specified method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
-     * @param types The parameter types.
-     * @param values The parameter values.
-     * @return The return value of the method.
+     * @param types      The parameter types.
+     * @param values     The parameter values.
      * @return NoSuchMethodException if the method does not exist or is not accessible.
      */
     public static Object invoke(Object obj, String methodName, Class[] types, Object[] values)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  types);
+            Method method = obj.getClass().getMethod(methodName, types);
             Object result = method.invoke(obj, values);
             return result;
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
         }
     }
+
     /**
      * Invokes the specified accessible parameterless method if it exists.
      *
-     * @param clazz The class on which to invoke the method.
+     * @param clazz      The class on which to invoke the method.
      * @param methodName The name of the method.
-     * @return The return value of the method or METHOD_NOT_FOUND.
      * @return NoSuchMethodException if the method does not exist or is not accessible.
      */
     public static Object invokeStatic(Class clazz, String methodName)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
-            Method method =  clazz.getMethod(methodName,  new Class[0]);
+            Method method = clazz.getMethod(methodName, new Class[0]);
             Object result = method.invoke(null, new Object[0]);
             return result;
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
         }
     }
+
     /**
      * Invokes the specified static parameterless method if it exists.
      *
-     * @param clazz The class on which to invoke the method.
+     * @param clazz      The class on which to invoke the method.
      * @param methodName The name of the method.
-     * @return The return value of the method.
      * @return NoSuchMethodException if the method does not exist or is not accessible.
      */
     public static Object invokeStatic(String clazz, String methodName)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
             return invokeStatic(Class.forName(clazz), methodName);
         } catch (ClassNotFoundException e) {
-            throw new NoSuchMethodException("class "+clazz+" not found");
+            throw new NoSuchMethodException("class " + clazz + " not found");
         }
     }
+
     /**
      * Invokes the specified static method if it exists.
      *
-     * @param clazz The class on which to invoke the method.
+     * @param clazz      The class on which to invoke the method.
      * @param methodName The name of the method.
-     * @param types The parameter types.
-     * @param values The parameter values.
-     * @return The return value of the method.
+     * @param types      The parameter types.
+     * @param values     The parameter values.
      * @return NoSuchMethodException if the method does not exist or is not accessible.
      */
     public static Object invokeStatic(Class clazz, String methodName,
-            Class[] types, Object[] values)
+                                      Class[] types, Object[] values)
             throws NoSuchMethodException {
         try {
-            Method method =  clazz.getMethod(methodName,  types);
+            Method method = clazz.getMethod(methodName, types);
             Object result = method.invoke(null, values);
             return result;
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
         }
     }
+
     /**
      * Invokes the specified static method if it exists.
      *
-     * @param clazz The class on which to invoke the method.
+     * @param clazz      The class on which to invoke the method.
      * @param methodName The name of the method.
-     * @param types The parameter types.
-     * @param values The parameter values.
-     * @return The return value of the method.
+     * @param types      The parameter types.
+     * @param values     The parameter values.
      * @return NoSuchMethodException if the method does not exist or is not accessible.
      */
     public static Object invokeStatic(String clazz, String methodName,
-            Class[] types, Object[] values)
+                                      Class[] types, Object[] values)
             throws NoSuchMethodException {
         try {
             return invokeStatic(Class.forName(clazz), methodName, types, values);
         } catch (ClassNotFoundException e) {
-            throw new NoSuchMethodException("class "+clazz+" not found");
+            throw new NoSuchMethodException("class " + clazz + " not found");
         }
     }
+
     /**
      * Invokes the specified static method if it exists.
      *
-     * @param clazz The class on which to invoke the method.
+     * @param clazz      The class on which to invoke the method.
      * @param methodName The name of the method.
-     * @param type The parameter types.
-     * @param value The parameter values.
-     * @return The return value of the method.
+     * @param type       The parameter types.
+     * @param value      The parameter values.
      * @return NoSuchMethodException if the method does not exist or is not accessible.
      */
     public static Object invokeStatic(String clazz, String methodName,
-            Class type, Object value)
+                                      Class type, Object value)
             throws NoSuchMethodException {
         try {
-            return invokeStatic(Class.forName(clazz), methodName, new Class[] {type}, new Object[] {value});
+            return invokeStatic(Class.forName(clazz), methodName, new Class[]{type}, new Object[]{value});
         } catch (ClassNotFoundException e) {
-            throw new NoSuchMethodException("class "+clazz+" not found");
+            throw new NoSuchMethodException("class " + clazz + " not found");
         }
     }
+
     /**
      * Invokes the specified static method if it exists.
      *
-     * @param clazz The class on which to invoke the method.
-     * @param methodName The name of the method.
-     * @param types The parameter types.
-     * @param values The parameter values.
+     * @param clazz        The class on which to invoke the method.
+     * @param methodName   The name of the method.
+     * @param types        The parameter types.
+     * @param values       The parameter values.
      * @param defaultValue The default value.
      * @return The return value of the method or the default value if the method
      * does not exist or is not accessible.
      */
     public static Object invokeStatic(String clazz, String methodName,
-            Class[] types, Object[] values, Object defaultValue) {
+                                      Class[] types, Object[] values, Object defaultValue) {
         try {
             return invokeStatic(Class.forName(clazz), methodName, types, values);
         } catch (ClassNotFoundException e) {
@@ -212,32 +213,33 @@ public class Methods {
             return defaultValue;
         }
     }
+
     /**
      * Invokes the specified static method if it exists.
      *
-     * @param clazz The class on which to invoke the method.
+     * @param clazz      The class on which to invoke the method.
      * @param methodName The name of the method.
-     * @param type The parameter type.
-     * @param value The parameter value.
+     * @param type       The parameter type.
+     * @param value      The parameter value.
      * @return The return value of the method or the default value if the method
      * does not exist or is not accessible.
      */
     public static Object invokeStatic(Class clazz, String methodName,
-            Class type, Object value) throws NoSuchMethodException {
-        return invokeStatic(clazz, methodName, new Class[] {type}, new Object[] {value});
+                                      Class type, Object value) throws NoSuchMethodException {
+        return invokeStatic(clazz, methodName, new Class[]{type}, new Object[]{value});
     }
 
     /**
      * Invokes the specified getter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
-     * @param methodName The name of the method.
+     * @param obj          The object on which to invoke the method.
+     * @param methodName   The name of the method.
      * @param defaultValue This value is returned, if the method does not exist.
-     * @return  The value returned by the getter method or the default value.
+     * @return The value returned by the getter method or the default value.
      */
     public static int invokeGetter(Object obj, String methodName, int defaultValue) {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[0]);
+            Method method = obj.getClass().getMethod(methodName, new Class[0]);
             Object result = method.invoke(obj, new Object[0]);
             return ((Integer) result).intValue();
         } catch (NoSuchMethodException e) {
@@ -248,17 +250,18 @@ public class Methods {
             return defaultValue;
         }
     }
+
     /**
      * Invokes the specified getter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
-     * @param methodName The name of the method.
+     * @param obj          The object on which to invoke the method.
+     * @param methodName   The name of the method.
      * @param defaultValue This value is returned, if the method does not exist.
-     * @return  The value returned by the getter method or the default value.
+     * @return The value returned by the getter method or the default value.
      */
     public static long invokeGetter(Object obj, String methodName, long defaultValue) {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[0]);
+            Method method = obj.getClass().getMethod(methodName, new Class[0]);
             Object result = method.invoke(obj, new Object[0]);
             return ((Long) result).longValue();
         } catch (NoSuchMethodException e) {
@@ -269,17 +272,18 @@ public class Methods {
             return defaultValue;
         }
     }
+
     /**
      * Invokes the specified getter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
-     * @param methodName The name of the method.
+     * @param obj          The object on which to invoke the method.
+     * @param methodName   The name of the method.
      * @param defaultValue This value is returned, if the method does not exist.
      * @return The value returned by the getter method or the default value.
      */
     public static boolean invokeGetter(Object obj, String methodName, boolean defaultValue) {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[0]);
+            Method method = obj.getClass().getMethod(methodName, new Class[0]);
             Object result = method.invoke(obj, new Object[0]);
             return ((Boolean) result).booleanValue();
         } catch (NoSuchMethodException e) {
@@ -290,17 +294,18 @@ public class Methods {
             return defaultValue;
         }
     }
+
     /**
      * Invokes the specified getter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
-     * @param methodName The name of the method.
+     * @param obj          The object on which to invoke the method.
+     * @param methodName   The name of the method.
      * @param defaultValue This value is returned, if the method does not exist.
      * @return The value returned by the getter method or the default value.
      */
     public static Object invokeGetter(Object obj, String methodName, Object defaultValue) {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[0]);
+            Method method = obj.getClass().getMethod(methodName, new Class[0]);
             Object result = method.invoke(obj, new Object[0]);
             return result;
         } catch (NoSuchMethodException e) {
@@ -311,17 +316,18 @@ public class Methods {
             return defaultValue;
         }
     }
+
     /**
      * Invokes the specified getter method if it exists.
      *
-     * @param clazz The class on which to invoke the method.
-     * @param methodName The name of the method.
+     * @param clazz        The class on which to invoke the method.
+     * @param methodName   The name of the method.
      * @param defaultValue This value is returned, if the method does not exist.
      * @return The value returned by the getter method or the default value.
      */
     public static boolean invokeStaticGetter(Class clazz, String methodName, boolean defaultValue) {
         try {
-            Method method =  clazz.getMethod(methodName,  new Class[0]);
+            Method method = clazz.getMethod(methodName, new Class[0]);
             Object result = method.invoke(null, new Object[0]);
             return ((Boolean) result).booleanValue();
         } catch (NoSuchMethodException e) {
@@ -332,82 +338,87 @@ public class Methods {
             return defaultValue;
         }
     }
+
     /**
      * Invokes the specified setter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static Object invoke(Object obj, String methodName, boolean newValue)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[] { Boolean.TYPE} );
-            return method.invoke(obj, new Object[] { newValue});
+            Method method = obj.getClass().getMethod(methodName, new Class[]{Boolean.TYPE});
+            return method.invoke(obj, new Object[]{newValue});
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
         }
     }
+
     /**
      * Invokes the specified method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static Object invoke(Object obj, String methodName, int newValue)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[] { Integer.TYPE} );
-            return method.invoke(obj, new Object[] { newValue});
+            Method method = obj.getClass().getMethod(methodName, new Class[]{Integer.TYPE});
+            return method.invoke(obj, new Object[]{newValue});
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
         }
     }
+
     /**
      * Invokes the specified setter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static Object invoke(Object obj, String methodName, float newValue)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[] { Float.TYPE} );
-            return method.invoke(obj, new Object[] { newValue});
+            Method method = obj.getClass().getMethod(methodName, new Class[]{Float.TYPE});
+            return method.invoke(obj, new Object[]{newValue});
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
         }
     }
+
     /**
      * Invokes the specified setter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static Object invoke(Object obj, String methodName, Class clazz, Object newValue)
-    throws NoSuchMethodException {
+            throws NoSuchMethodException {
         try {
-            Method method =  obj.getClass().getMethod(methodName,  new Class[] { clazz } );
-            return method.invoke(obj, new Object[] { newValue});
+            Method method = obj.getClass().getMethod(methodName, new Class[]{clazz});
+            return method.invoke(obj, new Object[]{newValue});
         } catch (IllegalAccessException e) {
-            throw new NoSuchMethodException(methodName+" is not accessible");
+            throw new NoSuchMethodException(methodName + " is not accessible");
         } catch (InvocationTargetException e) {
             // The method is not supposed to throw exceptions
             throw new InternalError(e.getMessage());
         }
     }
+
     /**
      * Invokes the specified setter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static void invokeIfExists(Object obj, String methodName) {
@@ -417,10 +428,11 @@ public class Methods {
             // ignore
         }
     }
+
     /**
      * Invokes the specified setter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static void invokeIfExists(Object obj, String methodName, int newValue) {
@@ -430,10 +442,11 @@ public class Methods {
             // ignore
         }
     }
+
     /**
      * Invokes the specified setter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static void invokeIfExists(Object obj, String methodName, float newValue) {
@@ -443,10 +456,11 @@ public class Methods {
             // ignore
         }
     }
+
     /**
      * Invokes the specified method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static void invokeIfExists(Object obj, String methodName, boolean newValue) {
@@ -456,10 +470,11 @@ public class Methods {
             // ignore
         }
     }
+
     /**
      * Invokes the specified method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static void invokeIfExists(Object obj, String methodName, Class parameterClass, Object newValue) {
@@ -469,10 +484,11 @@ public class Methods {
             // ignore
         }
     }
+
     /**
      * Invokes the specified method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static void invokeIfExists(Object obj, String methodName, Class[] parameterClass, Object[] newValue) {
@@ -482,17 +498,18 @@ public class Methods {
             // ignore
         }
     }
+
     /**
      * Invokes the specified setter method if it exists.
      *
-     * @param obj The object on which to invoke the method.
+     * @param obj        The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static void invokeIfExistsWithEnum(Object obj, String methodName, String enumClassName, String enumValueName) {
         try {
             Class enumClass = Class.forName(enumClassName);
-            Object enumValue = invokeStatic("java.lang.Enum", "valueOf", new Class[] {Class.class, String.class},
-                    new Object[] {enumClass, enumValueName}
+            Object enumValue = invokeStatic("java.lang.Enum", "valueOf", new Class[]{Class.class, String.class},
+                    new Object[]{enumClass, enumValueName}
             );
             invoke(obj, methodName, enumClass, enumValue);
         } catch (ClassNotFoundException e) {
@@ -507,47 +524,58 @@ public class Methods {
     /**
      * Invokes the specified constructor if it exists.
      *
-     * @param clazz The Class on which to invoke the constructor.
-     * @param types The parameter types of the constructor.
+     * @param clazz  The Class on which to invoke the constructor.
+     * @param types  The parameter types of the constructor.
      * @param values The parameter values of the constructor.
      */
     public static Object newInstance(Class clazz, Class[] types, Object[] values)
-    throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         return clazz.getConstructor(types).newInstance(values);
-    };
+    }
+
+    ;
+
     /**
      * Invokes the default constructor if it exists.
      *
      * @param clazz The Class on which to invoke the constructor.
      */
     public static Object newInstance(String clazz)
-    throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-// Use UIDefaults.ProxyLazyValue to create the new instance, as
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        // Use UIDefaults.ProxyLazyValue to create the new instance, as
         // we are not allowd to create a new instances on our own
         // when we run as an unsigned Java WebStart application.
 
         //return clazz.getConstructor(null).newInstance(null);
         return new UIDefaults.ProxyLazyValue(clazz).
                 createValue(UIManager.getDefaults());
-    };
+    }
+
+    ;
+
     /**
      * Invokes the specified constructor if it exists.
      *
      * @param clazzName The Class on which to invoke the constructor.
-     * @param types The parameter types of the constructor.
-     * @param values The parameter values of the constructor.
+     * @param types     The parameter types of the constructor.
+     * @param values    The parameter values of the constructor.
      */
     public static Object newInstance(String clazzName, Class[] types, Object[] values)
-    throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
-        Class clazz=Class.forName(clazzName);
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        Class clazz = Class.forName(clazzName);
         return clazz.getConstructor(types).newInstance(values);
-    };
+    }
+
+    ;
+
     public static boolean instanceOf(AWTEvent ev, String clazz) {
-        if (ev==null) return false;
-            Class aClass;
+        if (ev == null) {
+            return false;
+        }
+        Class aClass;
         try {
             aClass = Class.forName(clazz);
-    return        aClass.isAssignableFrom(ev.getClass());
+            return aClass.isAssignableFrom(ev.getClass());
         } catch (ClassNotFoundException ex) {
             return false;
         }

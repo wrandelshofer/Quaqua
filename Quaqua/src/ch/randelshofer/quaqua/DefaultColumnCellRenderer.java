@@ -4,11 +4,24 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import java.awt.image.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import ch.randelshofer.quaqua.util.Images;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 
 /**
  * DefaultColumnCellRenderer.
@@ -38,7 +51,7 @@ public class DefaultColumnCellRenderer extends JPanel implements ListCellRendere
         if (expandedIcon == null) {
             BufferedImage iconImages[] = Images.split(
                     Toolkit.getDefaultToolkit().createImage(
-                    DefaultColumnCellRenderer.class.getResource("snowleopard/images/Browser.disclosureIcons.png")),
+                            DefaultColumnCellRenderer.class.getResource("snowleopard/images/Browser.disclosureIcons.png")),
                     6, true);
 
             expandedIcon = new ImageIcon(iconImages[0]);
@@ -63,8 +76,8 @@ public class DefaultColumnCellRenderer extends JPanel implements ListCellRendere
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
-            int index, boolean isSelected,
-            boolean cellHasFocus) {
+                                                  int index, boolean isSelected,
+                                                  boolean cellHasFocus) {
         //setComponentOrientation(list.getComponentOrientation());
         boolean isFocused = QuaquaUtilities.isFocused(list);
 
@@ -203,6 +216,8 @@ public class DefaultColumnCellRenderer extends JPanel implements ListCellRendere
         @Override
         public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
         }
-    };
+    }
+
+    ;
 }
 

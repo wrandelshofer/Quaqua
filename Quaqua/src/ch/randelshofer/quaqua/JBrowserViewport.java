@@ -5,8 +5,13 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.CellRendererPane;
+import javax.swing.JScrollBar;
+import javax.swing.JViewport;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * JBrowserViewport is a viewport for use with a JBrowser. The viewport fills
  * a JScrollPane with empty columns, so that the JBrowser always appears to fill
@@ -24,13 +29,13 @@ import javax.swing.*;
  * the Quaqua Look and Feel. The Quaqua Look and Feel automatically fills
  * the viewport with empty columns.
  *
- * @see JBrowserViewport
- *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
+ * @see JBrowserViewport
  */
 public class JBrowserViewport extends JViewport {
-    /** This scrollbar is used as a cell renderere 'rubber stamp' to render fake JBrowser columns
+    /**
+     * This scrollbar is used as a cell renderere 'rubber stamp' to render fake JBrowser columns
      * in the viewport.
      */
     private static JScrollBar scrollBarRenderer = new JScrollBar(JScrollBar.VERTICAL, 0, 1, 0, 1) {
@@ -45,7 +50,7 @@ public class JBrowserViewport extends JViewport {
          */
         protected void paintChildren(Graphics g) {
             Component[] c = getComponents();
-            for (int i=0; i < c.length; i++) {
+            for (int i = 0; i < c.length; i++) {
                 Graphics cg = g.create(c[i].getX(), c[i].getY(), c[i].getWidth(), c[i].getHeight());
                 c[i].paint(cg);
                 cg.dispose();
@@ -53,7 +58,9 @@ public class JBrowserViewport extends JViewport {
         }
     };
 
-    /** Shared cell renderer pane. */
+    /**
+     * Shared cell renderer pane.
+     */
     private static CellRendererPane cellRendererPane = new CellRendererPane();
 
     @Override
@@ -73,7 +80,7 @@ public class JBrowserViewport extends JViewport {
                     g.setColor(browser.getBackground());
                     g.fillRect(bs.width, 0, vs.width - bs.width, vs.height);
 
-                    scrollBarRenderer.setSize(ss.width,vs.height);
+                    scrollBarRenderer.setSize(ss.width, vs.height);
                     scrollBarRenderer.doLayout();
 
                     for (int x = browser.getWidth() + fixedCellWidth; x < vs.width; x += fixedCellWidth + ss.width) {

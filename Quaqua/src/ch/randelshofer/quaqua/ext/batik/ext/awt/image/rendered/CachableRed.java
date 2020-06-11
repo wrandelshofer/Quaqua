@@ -28,7 +28,7 @@ import java.awt.image.RenderedImage;
  *
  * @author <a href="mailto:Thomas.DeWeeese@Kodak.com">Thomas DeWeese</a>
  * @version $Id: CachableRed.java 478276 2006-11-22 18:33:37Z dvholten $
-*/
+ */
 public interface CachableRed extends RenderedImage {
 
     /**
@@ -40,10 +40,11 @@ public interface CachableRed extends RenderedImage {
     /**
      * Returns the region of input data is is required to generate
      * outputRgn.
+     *
      * @param srcIndex  The source to do the dependency calculation for.
      * @param outputRgn The region of output you are interested in
-     * generating dependencies for.  The is given in the output pixel
-     * coordiate system for this node.
+     *                  generating dependencies for.  The is given in the output pixel
+     *                  coordiate system for this node.
      * @return The region of input required.  This is in the output pixel
      * coordinate system for the source indicated by srcIndex.
      */
@@ -52,13 +53,14 @@ public interface CachableRed extends RenderedImage {
     /**
      * This calculates the region of output that is affected by a change
      * in a region of input.
+     *
      * @param srcIndex The input that inputRgn reflects changes in.
      * @param inputRgn the region of input that has changed, used to
-     *  calculate the returned shape.  This is given in the pixel
-     *  coordinate system of the source indicated by srcIndex.
+     *                 calculate the returned shape.  This is given in the pixel
+     *                 coordinate system of the source indicated by srcIndex.
      * @return The region of output that would be invalid given
-     *  a change to inputRgn of the source selected by srcIndex.
-     *  this is in the output pixel coordinate system of this node.
+     * a change to inputRgn of the source selected by srcIndex.
+     * this is in the output pixel coordinate system of this node.
      */
     Shape getDirtyRegion(int srcIndex, Rectangle inputRgn);
 }
