@@ -4,7 +4,7 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.ActivatableUIResource;
 import ch.randelshofer.quaqua.util.ViewportPainter;
 
 import java.awt.*;
@@ -588,14 +588,14 @@ public class QuaquaTableUI extends BasicTableUI
         // Ugly dirty hack to get correct painting of inactive tables
         Color background = UIManager.getColor("Table.selectionBackground");
         Color foreground = UIManager.getColor("Table.selectionForeground");
-        if (background instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) background).setActive(isFocused
+        if (background instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) background).setActive(isFocused
                     && (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()));
         }
-        if (foreground instanceof InactivatableColorUIResource) {
+        if (foreground instanceof ActivatableUIResource) {
             // Note: We must draw with inactive color if the current cell is not selected.
             //       Otherwise, we get white text on white background.
-            ((InactivatableColorUIResource) foreground).setActive(isFocused
+            ((ActivatableUIResource) foreground).setActive(isFocused
                     && (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed())
                     && table.isCellSelected(row, column));
         }
@@ -659,11 +659,11 @@ public class QuaquaTableUI extends BasicTableUI
         // Here we clean up the values of the "active" property of the selection
         // colors.
         if (!isFocused) {
-            if (background instanceof InactivatableColorUIResource) {
-                ((InactivatableColorUIResource) background).setActive(true);
+            if (background instanceof ActivatableUIResource) {
+                ((ActivatableUIResource) background).setActive(true);
             }
-            if (foreground instanceof InactivatableColorUIResource) {
-                ((InactivatableColorUIResource) foreground).setActive(true);
+            if (foreground instanceof ActivatableUIResource) {
+                ((ActivatableUIResource) foreground).setActive(true);
             }
         }
     }

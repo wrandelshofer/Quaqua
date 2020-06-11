@@ -36,9 +36,16 @@
             <arg value="1.8"/>
         </exec>
         <property name="java1.8Home" value="UNKNOWN"/>
-
         <echo message="Java 1.8: ${java1.8Home}"/>
         <property name="java1.8jvm" value="${java1.8Home}/bin/java"/>
+
+        <exec executable="/usr/libexec/java_home" outputproperty="java14Home">
+            <arg value="-F"/>
+            <arg value="-v"/>
+            <arg value="14"/>
+        </exec>
+        <property name="java1.8Home" value="UNKNOWN"/>
+        <property name="java14jvm" value="${java14Home}/bin/java"/>
 
         <!-- Properties for jar signing -->
         <!-- ========================== -->
@@ -775,6 +782,17 @@
         <java classname="test.Main" classpath="${distdir}/quaqua-pure-test.jar"
               fork="true"
               jvm="${java1.8jvm}"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
+            <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>
+            <arg value="-laf"/>
+            <arg value="default"/>
+        </java>
+    </target>
+    <target depends="init" name="run Default 14 pure">
+        <java classname="test.Main" classpath="${distdir}/quaqua-pure-test.jar"
+              fork="true"
+              jvm="${java14jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>

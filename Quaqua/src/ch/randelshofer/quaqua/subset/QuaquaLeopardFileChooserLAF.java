@@ -6,7 +6,7 @@ package ch.randelshofer.quaqua.subset;
 
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.ActivatableColorUIResource;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.util.*;
 import javax.swing.*;
@@ -419,23 +419,23 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
             "Tree.leafIcon", makeIcon(getClass(), leopardDir + "Tree.leafIcon.png"),
             "Tree.openIcon", makeIcon(getClass(), leopardDir + "Tree.openIcon.png"),
             "Tree.closedIcon", makeIcon(getClass(), leopardDir + "Tree.closedIcon.png"),
-            "Tree.sideBar.background", new InactivatableColorUIResource(0xd5dde5, 0xe8e8e8),
+            "Tree.sideBar.background", new ActivatableColorUIResource(0xd5dde5, 0xe8e8e8),
             "Tree.sideBar.selectionBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.leopard.QuaquaLeopardSideBarSelectionBorder"),
             "Tree.leftChildIndent", 8, // 7
             "Tree.rightChildIndent", 12, // 13
             "Tree.icons", makeIcons(leopardDir + "Tree.icons.png", 15, true),
             "Tree.sideBar.icons", makeIcons(leopardDir + "Tree.sideBar.icons.png", 15, true),
             // CHANGE The new properties for the "sideBar" Tree style
-            "Tree.sideBarCategory.foreground", new InactivatableColorUIResource(0x728194, 0x5f5f5f),
-            "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
+            "Tree.sideBarCategory.foreground", new ActivatableColorUIResource(0x728194, 0x5f5f5f),
+            "Tree.sideBarCategory.selectionForeground", new ActivatableColorUIResource(0xffffff, 0xffffff),
             "Tree.sideBarCategory.font", new FontUIResource("Lucida Grande", Font.BOLD, 11),
             "Tree.sideBarCategory.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 11),
-            "Tree.sideBar.foreground", new InactivatableColorUIResource(0x000000, 0x000000),
-            "Tree.sideBar.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
+            "Tree.sideBar.foreground", new ActivatableColorUIResource(0x000000, 0x000000),
+            "Tree.sideBar.selectionForeground", new ActivatableColorUIResource(0xffffff, 0xffffff),
             "Tree.sideBar.font", new FontUIResource("Lucida Grande", Font.PLAIN, 11),
             "Tree.sideBar.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 11),
             "Tree.sideBarCategory.selectionForeground",
-            new InactivatableColorUIResource(0xffffff, 0xffffff),
+            new ActivatableColorUIResource(0xffffff, 0xffffff),
             "Tree.sideBarCategory.style",  "emboss",
             "Tree.sideBarCategory.selectionStyle",  "shadow",
             "Tree.sideBar.style",  "plain",

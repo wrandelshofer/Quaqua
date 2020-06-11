@@ -5,9 +5,12 @@
 package ch.randelshofer.quaqua;
 
 import javax.swing.JButton;
+
 import ch.randelshofer.quaqua.border.PressedCueBorder;
+
 import javax.swing.JToolBar;
 import java.util.HashMap;
+
 import ch.randelshofer.quaqua.border.CompositeVisualMarginBorder;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.util.Images;
@@ -15,9 +18,12 @@ import ch.randelshofer.quaqua.border.ButtonStateBorder;
 import ch.randelshofer.quaqua.util.InsetsUtil;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.border.FocusedBorder;
+
 import javax.swing.JComponent;
+
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -30,6 +36,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.border.Border;
+
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
 
 /**
@@ -40,27 +47,36 @@ import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
  */
 public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Border, PressedCueBorder, BackgroundBorder {
 
-    /** Each border type needs to be tweaked in a different way.
+    /**
+     * Each border type needs to be tweaked in a different way.
      * We collect all the tweaks here.
      */
     private static class WidgetConfig {
 
-        /** The type name used in JButton.buttonType and Quaqua.Button.style. */
+        /**
+         * The type name used in JButton.buttonType and Quaqua.Button.style.
+         */
         String[] type;
-        /** The native widget id. */
+        /**
+         * The native widget id.
+         */
         Widget widget;
-        /** Whether the button needs the trailing separator hack. */
+        /**
+         * Whether the button needs the trailing separator hack.
+         */
         boolean needsTrailingSeparatorHack;
         Insets[] margin = new Insets[3];
-        /** Border insets.
+        /**
+         * Border insets.
          * regular,small,mini
          */
         Insets[] borderInsets = new Insets[3];
-        /** Image insets are used when rendering the native widget onto an image,
+        /**
+         * Image insets are used when rendering the native widget onto an image,
          * so that native widget's visual bounds are rendered with a fixed
          * inset of 3,3,3,3 into the image. The fixed inset allows for cast
          * shadows in the image.
-         *
+         * <p>
          * only regular,small,mini,
          * first regular,small,mini,
          * middle regular,small,mini,
@@ -68,77 +84,85 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
          */
         Insets[][] imageInsets = new Insets[4][3];
     }
+
     private final static HashMap<String, WidgetConfig> wcs;
 
     static {
+        int os = QuaquaManager.getOS();
         Object[][] a = {//
-            // name, hasVisualMargin,widget,border insets, margin insets, image insets
-            {"push", false, Widget.buttonPush, //
-                new Insets[]{new Insets(1, 3, 2, 3), new Insets(1, 3, 1, 3), new Insets(1, 2, 1, 2)},//
-                new Insets[]{new Insets(1, 14, 1, 14), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)},//
-                new Insets[]{new Insets(2, -3, 0, -3), new Insets(2, -2, 0, -2), new Insets(1, 2, 0, 2)}},
-            {"square", false, Widget.buttonBevel, //
-                new Insets[]{new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1)},//
-                new Insets[]{new Insets(2, 8, 2, 8), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)},//
-                new Insets[]{
-                    new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3),//only
-                    new Insets(3, 3, 3, 2), new Insets(3, 3, 3, 2), new Insets(3, 3, 3, 2),// first
-                    new Insets(3, 3, 3, 2), new Insets(3, 3, 3, 2), new Insets(3, 3, 3, 2),// middle
-                    new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3)}},// last
-            {"bevel", false, Widget.buttonBevelRound, //
-                new Insets[]{new Insets(1, 1, 2, 1), new Insets(1, 1, 2, 1), new Insets(1, 1, 2, 1)},//
-                new Insets[]{new Insets(3, 13, 4, 13), new Insets(3, 9, 1, 9), new Insets(3, 7, 3, 7)},//
-                new Insets[]{new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1)}},
-            {"gradient", "placard", false, Widget.buttonBevelInset, //
-                new Insets[]{new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1)},//
-                new Insets[]{new Insets(2, 8, 2, 8), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)},//
-                new Insets[]{
-                    new Insets(2, 3, 2, 3), new Insets(2, 3, 2, 3), new Insets(2, 3, 2, 3),// only
-                    new Insets(2, 3, 2, 2), new Insets(2, 3, 2, 2), new Insets(2, 3, 2, 2),// first
-                    new Insets(2, 3, 2, 2), new Insets(2, 3, 2, 2), new Insets(2, 3, 2, 2),// middle
-                    new Insets(2, 3, 2, 3), new Insets(2, 3, 2, 3), new Insets(2, 3, 2, 3)}},// last
-            {"tableHeader", false, Widget.buttonListHeader, //
-                new Insets[]{new Insets(2, 4, 2, 4), new Insets(2, 4, 2, 4), new Insets(2, 4, 2, 4)},//
-                new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
-                new Insets[]{new Insets(0, 2, 0, 3), new Insets(0, 2, 0, 3), new Insets(0, 2, 0, 3)}},
-            {"textured", false, Widget.buttonPushTextured, //
-                new Insets[]{new Insets(1, 3, 2, 3), new Insets(1, 3, 1, 3), new Insets(1, 2, 1, 2)},//
-                new Insets[]{new Insets(1, 14, 1, 14), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)},//
-                new Insets[]{new Insets(3, 3, 2, 3), new Insets(3, 3, 2, 3), new Insets(1, 3, 0, 3)}},
-            {"roundRect", false, Widget.buttonPushInset, //
-                new Insets[]{new Insets(1, 5, 1, 5), new Insets(1, 3, 1, 3), new Insets(1, 3, 1, 3)},//
-                new Insets[]{new Insets(0, 6, 0, 6), new Insets(0, 5, 0, 5), new Insets(0, 4, 0, 4)},//
-                new Insets[]{new Insets(0, 2, 0, 2), new Insets(0, 2, 0, 2), new Insets(1, 2, 0, 2)}},
-            {"recessed", false, Widget.buttonPushScope, //
-                new Insets[]{new Insets(1, 7, 1, 7), new Insets(1, 5, 1, 5), new Insets(1, 5, 1, 5)},//
-                new Insets[]{new Insets(0, 6, 0, 6), new Insets(0, 5, 0, 5), new Insets(0, 4, 0, 4)},//
-                new Insets[]{new Insets(0, 2, 0, 2), new Insets(0, 2, 0, 2), new Insets(1, 2, 0, 2)}},
-            {"colorWell", false, null, //
-                new Insets[]{new Insets(7, 6, 7, 6), new Insets(7, 6, 7, 6), new Insets(7, 6, 7, 6)},//
-                new Insets[]{new Insets(1, 10, 1, 10), new Insets(1, 8, 1, 8), new Insets(1, 8, 1, 8)},//
-                null},
-            {"help", false, Widget.buttonRoundHelp, //
-                new Insets[]{new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0)},//
-                new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
-                new Insets[]{new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0)}},
-            {"toolBar", false, null, //
-                new Insets[]{new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3)},//
-                new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
-                new Insets[]{new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0)}},
-            {"segmented", "toggle", "toggleEast", "toggleCenter", "toggleWest", true, Widget.buttonSegmented,//
-                new Insets[]{new Insets(2, 13, 3, 13), new Insets(2, 8, 2, 8), new Insets(2, 7, 2, 7)},//
-                new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
-                new Insets[]{new Insets(0, 1, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 2, 0, 2),//only regular,small,mini
-                    new Insets(0, 1, 0, 0), new Insets(1, 1, 0, 0), new Insets(0, 2, 0, 0),//first
-                    new Insets(0, 0, 0, 0), new Insets(1, 0, 0, 1), new Insets(0, 0, 0, 0),//middle
-                    new Insets(0, 0, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 0, 0, 2)}},//last
-            {"segmentedRoundRect", "segmentedCapsule", "segmentedTextured", true, Widget.buttonSegmentedInset,//
-                new Insets[]{new Insets(2, 13, 3, 13), new Insets(2, 8, 2, 8), new Insets(2, 7, 2, 7)},//
-                new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
-                new Insets[]{new Insets(0, 1, 0, 1), new Insets(0, 1, 0, 1), new Insets(0, 2, 0, 2),//only regular,small,mini
-                    new Insets(0, 1, 0, 0), new Insets(1, 1, 0, 0), new Insets(0, 2, 0, 0),//first
-                    new Insets(0, 0, 0, 0), new Insets(1, 0, 0, 1), new Insets(0, 0, 0, 0),//middle
-                    new Insets(0, 0, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 0, 0, 2)}},//last
+                // name, hasVisualMargin,widget,border insets, margin insets, image insets
+                {"push", false, Widget.buttonPush, //
+                        new Insets[]{new Insets(1, 3, 2, 3), new Insets(1, 3, 1, 3), new Insets(1, 2, 1, 2)},//
+                        os == QuaquaManager.CATALINA
+                                ? new Insets[]{new Insets(1, 11, 1, 11), new Insets(1, 6, 1, 6), new Insets(1, 6, 1, 6)}//
+                                : new Insets[]{new Insets(1, 14, 1, 14), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)},//
+                        new Insets[]{new Insets(2, -3, 0, -3), new Insets(2, -2, 0, -2), new Insets(1, 2, 0, 2)}},
+                {"square", false, Widget.buttonBevel, //
+                        new Insets[]{new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1)},//
+                        new Insets[]{new Insets(2, 8, 2, 8), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)},//
+                        new Insets[]{
+                                new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3),//only
+                                new Insets(3, 3, 3, 2), new Insets(3, 3, 3, 2), new Insets(3, 3, 3, 2),// first
+                                new Insets(3, 3, 3, 2), new Insets(3, 3, 3, 2), new Insets(3, 3, 3, 2),// middle
+                                new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3)}},// last
+                {"bevel", false, Widget.buttonBevelRound, //
+                        new Insets[]{new Insets(1, 1, 2, 1), new Insets(1, 1, 2, 1), new Insets(1, 1, 2, 1)},//
+                        new Insets[]{new Insets(3, 13, 4, 13), new Insets(3, 9, 1, 9), new Insets(3, 7, 3, 7)},//
+                        new Insets[]{new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1)}},
+                {"gradient", "placard", false, Widget.buttonBevelInset, //
+                        new Insets[]{new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1), new Insets(1, 1, 1, 1)},//
+                        new Insets[]{new Insets(2, 8, 2, 8), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)},//
+                        new Insets[]{
+                                new Insets(2, 3, 2, 3), new Insets(2, 3, 2, 3), new Insets(2, 3, 2, 3),// only
+                                new Insets(2, 3, 2, 2), new Insets(2, 3, 2, 2), new Insets(2, 3, 2, 2),// first
+                                new Insets(2, 3, 2, 2), new Insets(2, 3, 2, 2), new Insets(2, 3, 2, 2),// middle
+                                new Insets(2, 3, 2, 3), new Insets(2, 3, 2, 3), new Insets(2, 3, 2, 3)}},// last
+                {"tableHeader", false, Widget.buttonListHeader, //
+                        new Insets[]{new Insets(2, 4, 2, 4), new Insets(2, 4, 2, 4), new Insets(2, 4, 2, 4)},//
+                        new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
+                        new Insets[]{new Insets(0, 2, 0, 3), new Insets(0, 2, 0, 3), new Insets(0, 2, 0, 3)}},
+                {"textured", false, Widget.buttonPushTextured, //
+                        new Insets[]{new Insets(1, 3, 2, 3), new Insets(1, 3, 1, 3), new Insets(1, 2, 1, 2)},//
+                        os == QuaquaManager.CATALINA
+                                ? new Insets[]{new Insets(3, 10, 3, 10), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)}//
+                                : new Insets[]{new Insets(1, 14, 1, 14), new Insets(1, 5, 1, 5), new Insets(1, 4, 1, 4)},//
+                        new Insets[]{new Insets(3, 3, 2, 3), new Insets(3, 3, 2, 3), new Insets(1, 3, 0, 3)}},
+                {"roundRect", false, Widget.buttonPushInset, //
+                        new Insets[]{new Insets(1, 5, 1, 5), new Insets(1, 3, 1, 3), new Insets(1, 3, 1, 3)},//
+                        os == QuaquaManager.CATALINA
+                                ? new Insets[]{new Insets(1, 6, 1, 6), new Insets(0, 5, 0, 5), new Insets(0, 4, 0, 4)}//
+                                : new Insets[]{new Insets(0, 6, 0, 6), new Insets(0, 5, 0, 5), new Insets(0, 4, 0, 4)},//
+                        new Insets[]{new Insets(0, 2, 0, 2), new Insets(0, 2, 0, 2), new Insets(1, 2, 0, 2)}},
+                {"recessed", false, Widget.buttonPushScope, //
+                        new Insets[]{new Insets(1, 7, 1, 7), new Insets(1, 5, 1, 5), new Insets(1, 5, 1, 5)},//
+                        new Insets[]{new Insets(0, 6, 0, 6), new Insets(0, 5, 0, 5), new Insets(0, 4, 0, 4)},//
+                        new Insets[]{new Insets(0, 2, 0, 2), new Insets(0, 2, 0, 2), new Insets(1, 2, 0, 2)}},
+                {"colorWell", false, null, //
+                        new Insets[]{new Insets(7, 6, 7, 6), new Insets(7, 6, 7, 6), new Insets(7, 6, 7, 6)},//
+                        new Insets[]{new Insets(1, 10, 1, 10), new Insets(1, 8, 1, 8), new Insets(1, 8, 1, 8)},//
+                        null},
+                {"help", false, Widget.buttonRoundHelp, //
+                        new Insets[]{new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0)},//
+                        new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
+                        new Insets[]{new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0)}},
+                {"toolBar", false, null, //
+                        new Insets[]{new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3), new Insets(3, 3, 3, 3)},//
+                        new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
+                        new Insets[]{new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0)}},
+                {"segmented", "toggle", "toggleEast", "toggleCenter", "toggleWest", true, Widget.buttonSegmented,//
+                        new Insets[]{new Insets(2, 13, 3, 13), new Insets(2, 8, 2, 8), new Insets(2, 7, 2, 7)},//
+                        new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
+                        new Insets[]{new Insets(0, 1, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 2, 0, 2),//only regular,small,mini
+                                new Insets(0, 1, 0, 0), new Insets(1, 1, 0, 0), new Insets(0, 2, 0, 0),//first
+                                new Insets(0, 0, 0, 0), new Insets(1, 0, 0, 1), new Insets(0, 0, 0, 0),//middle
+                                new Insets(0, 0, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 0, 0, 2)}},//last
+                {"segmentedRoundRect", "segmentedCapsule", "segmentedTextured", true, Widget.buttonSegmentedInset,//
+                        new Insets[]{new Insets(2, 13, 3, 13), new Insets(2, 8, 2, 8), new Insets(2, 7, 2, 7)},//
+                        new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
+                        new Insets[]{new Insets(0, 1, 0, 1), new Insets(0, 1, 0, 1), new Insets(0, 2, 0, 2),//only regular,small,mini
+                                new Insets(0, 1, 0, 0), new Insets(1, 1, 0, 0), new Insets(0, 2, 0, 0),//first
+                                new Insets(0, 0, 0, 0), new Insets(1, 0, 0, 1), new Insets(0, 0, 0, 0),//middle
+                                new Insets(0, 0, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 0, 0, 2)}},//last
         };
         wcs = new HashMap<String, WidgetConfig>();
         for (int i = 0; i < a.length; i++) {
@@ -182,11 +206,13 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             }
         }
     }
+
     private OSXAquaPainter painter;
     private Insets imageInsets;
     private Border backgroundBorder;
 
-    /** The background border.
+    /**
+     * The background border.
      * This border delegates the actual painting to different borders, because
      * {@link OSXAquaPainter} can not render all borders that we need.
      */
@@ -207,14 +233,19 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
             PressedCueBorder b;
             if (wp == null || wp.widget == null) {
-                if ("colorWell".equals(s)) {
+                switch (s) {
+                case "colorWell":
                     b = getColorWellBorder();
-                } else if ("toolBar".equals(s)) {
+                    break;
+                case "toolBar":
                     b = getToolBarBorder();
-                } else if ("toolBarTab".equals(s)) {
+                    break;
+                case "toolBarTab":
                     b = getToolBarTabBorder();
-                } else {
+                    break;
+                default:
                     b = getBevelBorder();
+                    break;
                 }
             } else {
                 b = getNativeBorder();
@@ -227,10 +258,11 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             if (bevelBorder == null) {
                 bevelBorder = new FocusedBorder(
                         new CompositeVisualMarginBorder(
-                        new ButtonStateBorder(
-                        Images.createImage(QuaquaButtonBorder.class.getResource("images/RoundedBevel.borders.png")), 10, true,
-                        new Insets(10, 9, 10, 8), new Insets(0, 0, 0, 0), true),
-                        3, 2, 2, 2));
+                                new ButtonStateBorder(
+                                        Images.createImage(
+                                                QuaquaButtonBorder.class.getResource("images/RoundedBevel.borders.png")), 10, true,
+                                        new Insets(10, 9, 10, 8), new Insets(0, 0, 0, 0), true),
+                                3, 2, 2, 2));
             }
             return bevelBorder;
         }
@@ -248,8 +280,8 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
                 // The placarBorder does not have a dynamic visual margin.
                 placardBorder = new FocusedBorder(
                         new CompositeVisualMarginBorder(
-                        new QuaquaPlacardButtonBorder(),
-                        1, 0, 1, 0));
+                                new QuaquaPlacardButtonBorder(),
+                                1, 0, 1, 0));
 
             }
             return placardBorder;
@@ -275,8 +307,8 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             if (colorWellBorder == null) {
                 colorWellBorder = new FocusedBorder(
                         new CompositeVisualMarginBorder(
-                        new QuaquaColorWellBorder(),
-                        0, 0, 0, 0));
+                                new QuaquaColorWellBorder(),
+                                0, 0, 0, 0));
 
             }
             return colorWellBorder;
@@ -303,13 +335,16 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         }
 
         private PressedCueBorder getToolBarTabBorder() {
-            if (toolBarTabBorder==null)
-            toolBarTabBorder = new QuaquaToolBarTabButtonBorder();
+            if (toolBarTabBorder == null) {
+                toolBarTabBorder = new QuaquaToolBarTabButtonBorder();
+            }
             return toolBarTabBorder;
         }
     }
 
-    /** This is the actual native button border. */
+    /**
+     * This is the actual native button border.
+     */
     private class NativeBGBorder extends CachedPainter implements PressedCueBorder, VisualMargin {
 
         private final static int ARG_ACTIVE = 0;
@@ -387,29 +422,25 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             painter.setValueByKey(Key.focused, isFocused ? 1 : 0);
             args |= (isFocused) ? 1 << ARG_FOCUSED : 0;
 
-
-
-
-
             Size size;
             switch (QuaquaUtilities.getSizeVariant(c)) {
-                case REGULAR:
-                default:
-                    size = Size.regular;
-                    args |= 0 << ARG_SIZE_VARIANT;
-                    break;
-                case SMALL:
-                    size = Size.small;
-                    args |= 1 << ARG_SIZE_VARIANT;
-                    break;
-                case LARGE:
-                    size = Size.large;
-                    args |= 2 << ARG_SIZE_VARIANT;
-                    break;
-                case MINI:
-                    size = Size.mini;
-                    args |= 3 << ARG_SIZE_VARIANT;
-                    break;
+            case REGULAR:
+            default:
+                size = Size.regular;
+                args |= 0 << ARG_SIZE_VARIANT;
+                break;
+            case SMALL:
+                size = Size.small;
+                args |= 1 << ARG_SIZE_VARIANT;
+                break;
+            case LARGE:
+                size = Size.large;
+                args |= 2 << ARG_SIZE_VARIANT;
+                break;
+            case MINI:
+                size = Size.mini;
+                args |= 3 << ARG_SIZE_VARIANT;
+                break;
 
             }
             painter.setSize(size);
@@ -418,51 +449,49 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             painter.setSegmentPosition(segpos);
             args |= segpos.getId() << ARG_SEGPOS;
             switch (segpos) {
-                case first:
-                case middle:
-                    painter.setValueByKey(Key.segmentTrailingSeparator, 1);
-                    args |= 1 << ARG_TRAILING_SEPARATOR;
-                    if (wc.needsTrailingSeparatorHack) {
-                        args |= 1 << ARG_TRAILING_SEPARATOR_HACK;
-                    }
-                    break;
-                default:
-                    painter.setValueByKey(Key.segmentTrailingSeparator, 0);
+            case first:
+            case middle:
+                painter.setValueByKey(Key.segmentTrailingSeparator, 1);
+                args |= 1 << ARG_TRAILING_SEPARATOR;
+                if (wc.needsTrailingSeparatorHack) {
+                    args |= 1 << ARG_TRAILING_SEPARATOR_HACK;
+                }
+                break;
+            default:
+                painter.setValueByKey(Key.segmentTrailingSeparator, 0);
             }
-
-
 
             args |= widget.getId() << ARG_WIDGET;
             painter.setWidget(widget);
 
             int sizeIndex;
             switch (size) {
-                case regular:
-                default:
-                    sizeIndex = 0;
-                    break;
-                case small:
-                    sizeIndex = 1;
-                    break;
-                case mini:
-                    sizeIndex = 2;
-                    break;
+            case regular:
+            default:
+                sizeIndex = 0;
+                break;
+            case small:
+                sizeIndex = 1;
+                break;
+            case mini:
+                sizeIndex = 2;
+                break;
             }
             int segIndex;
             switch (segpos) {
-                case first:
-                    segIndex = 1;
-                    break;
-                case middle:
-                    segIndex = 2;
-                    break;
-                case last:
-                    segIndex = 3;
-                    break;
-                case only:
-                default:
-                    segIndex = 0;
-                    break;
+            case first:
+                segIndex = 1;
+                break;
+            case middle:
+                segIndex = 2;
+                break;
+            case last:
+                segIndex = 3;
+                break;
+            case only:
+            default:
+                segIndex = 0;
+                break;
             }
             imageInsets = wc.imageInsets[segIndex][sizeIndex];
             paint(c, g, x, y, width, height, args);
@@ -470,7 +499,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
         @Override
         protected Image createImage(Component c, int w, int h,
-                GraphicsConfiguration config) {
+                                    GraphicsConfiguration config) {
 
             return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
 
@@ -515,7 +544,8 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             img.flush();
         }
 
-        /** Returns fake insets since this is just a background border.
+        /**
+         * Returns fake insets since this is just a background border.
          * The real insets are returned by {@link QuaquaNativeButtonBorder#getBorderInsets}.
          */
         public Insets getBorderInsets(Component c) {
@@ -582,7 +612,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             // must call super here, because visualmargin is based on style
             Insets vm = super.getVisualMargin(c, new Insets(0, 0, 0, 0));
 
-            // push buttons can only have an inner size of 26 pixels or less
+            // push buttons can only have an inner height of 26 pixels or less
             if (c.getHeight() - vm.top - vm.bottom > 26
                     || QuaquaUtilities.getSizeVariant(c) == QuaquaUtilities.SizeVariant.LARGE) {
                 s = "bevel";
@@ -649,15 +679,15 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         WidgetConfig wc = wcs.get(s);
         if (insets instanceof javax.swing.plaf.UIResource) {
             switch (getSegmentPosition(c)) {
-                case first:
-                    insets.right = 0;
-                    break;
-                case middle:
-                    insets.left = insets.right = 0;
-                    break;
-                case last:
-                    insets.left = 0;
-                    break;
+            case first:
+                insets.right = 0;
+                break;
+            case middle:
+                insets.left = insets.right = 0;
+                break;
+            case last:
+                insets.left = 0;
+                break;
             }
         }
         return insets;
@@ -682,16 +712,16 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
         int sizeIndex;
         switch (size) {
-            case REGULAR:
-            default:
-                sizeIndex = 0;
-                break;
-            case SMALL:
-                sizeIndex = 1;
-                break;
-            case MINI:
-                sizeIndex = 2;
-                break;
+        case REGULAR:
+        default:
+            sizeIndex = 0;
+            break;
+        case SMALL:
+            sizeIndex = 1;
+            break;
+        case MINI:
+            sizeIndex = 2;
+            break;
         }
         if (wc != null) {
             Insets borderInsets = wc.borderInsets[sizeIndex];
@@ -704,7 +734,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
             if (margin == null || (margin instanceof javax.swing.plaf.UIResource)) {
                 if (b.isBorderPainted()) {
-                    margin = wc==null||wc.margin.length<=sizeIndex?null:wc.margin[sizeIndex];
+                    margin = wc == null || wc.margin.length <= sizeIndex ? null : wc.margin[sizeIndex];
                 }
             }
             if (margin != null) {

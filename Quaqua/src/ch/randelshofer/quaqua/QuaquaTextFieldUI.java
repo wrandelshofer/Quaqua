@@ -124,7 +124,13 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
     public Insets getVisualMargin(JTextComponent tc) {
         Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
         if (margin == null) {
-            margin = UIManager.getInsets("Component.visualMargin");
+            Border border = tc.getBorder();
+            if (border instanceof VisualMargin) {
+                margin = ((VisualMargin)border).getVisualMargin(tc);
+            }
+            if (margin == null) {
+                margin = UIManager.getInsets("Component.visualMargin");
+            }
         }
         return (margin == null) ? new Insets(0, 0, 0, 0) : (Insets) margin.clone();
     }

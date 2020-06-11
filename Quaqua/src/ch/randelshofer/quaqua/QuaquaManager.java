@@ -232,46 +232,65 @@ public class QuaquaManager {
             if (p != -1) {
                 osVersion = osVersion.substring(0, p);
             }
-            if (osVersion.equals("10.0")) {
+            switch (osVersion) {
+            case"10.0":
                 OS = CHEETAH;
-            } else if (osVersion.equals("10.1")) {
+                break;
+             case "10.1":
                 OS = PUMA;
-            } else if (osVersion.equals("10.2")) {
+                 break;
+             case "10.2":
                 OS = JAGUAR;
-            } else if (osVersion.equals("10.3")) {
+                 break;
+             case "10.3":
                 OS = PANTHER;
-            } else if (osVersion.equals("10.4")) {
+                 break;
+             case "10.4":
                 OS = TIGER;
-            } else if (osVersion.equals("10.5")) {
+                 break;
+             case "10.5":
                 OS = LEOPARD;
-            } else if (osVersion.equals("10.6")) {
+                 break;
+             case "10.6":
                 OS = SNOW_LEOPARD;
-            } else if (osVersion.equals("10.7")) {
+                 break;
+             case "10.7":
                 OS = LION;
-            } else if (osVersion.equals("10.8")) {
+                 break;
+             case "10.8":
             	OS = MOUNTAIN_LION;
-            } else if (osVersion.equals("10.9")) {
+                 break;
+             case "10.9":
             	OS = MAVERICKS;
-            } else if (osVersion.equals("10.10")) {
+                 break;
+             case "10.10":
             	OS = YOSEMITE;
-            } else if (osVersion.equals("10.11")) {
+                 break;
+             case "10.11":
             	OS = EL_CAPITAN;
-            } else if (osVersion.equals("10.12")) {
+                 break;
+             case "10.12":
                 OS = SIERRA;
-            } else if (osVersion.equals("10.13")) {
+                 break;
+             case "10.13":
                 OS = HIGH_SIERRA;
-            } else if (osVersion.equals("10.14")) {
+                 break;
+             case "10.14":
                 OS = MOJAVE;
-            } else if (osVersion.equals("10.15")) {
+                 break;
+             case "10.15":
                 OS = CATALINA;
-            } else if (osVersion.startsWith("10.")) {
-                OS = X;
-            } else {
-                // Note: We must fall back to Snow Leopard here, because this
-                //       is the last OS X version for which we provide our own artwork.
-                //       For later OS X versions, we retrieve the artwork from
-                //       the system using native API's.
-                OS = SNOW_LEOPARD;
+                break;
+            default:
+                if (osVersion.startsWith("10.")) {
+                    OS = X;
+                }else{
+                        // Note: We must fall back to Snow Leopard here, because this
+                        //       is the last OS X version for which we provide our own artwork.
+                        //       For later OS X versions, we retrieve the artwork from
+                        //       the system using native API's.
+                        OS = SNOW_LEOPARD;
+                    }
             }
         } else if (osName.startsWith("Darwin")) {
             OS = DARWIN;
@@ -284,64 +303,81 @@ public class QuaquaManager {
         }
 
         String osDesign = getProperty("Quaqua.design", "auto").toLowerCase();
-        if (osDesign.equals("cheetah")) {
+        switch (osDesign) {
+        case "cheetah":
             design = JAGUAR;
-        } else if (osDesign.equals("puma")) {
+            break;
+        case "puma":
             design = JAGUAR;
-        } else if (osDesign.equals("jaguar")) {
+            break;
+        case "jaguar":
             design = JAGUAR;
-        } else if (osDesign.equals("panther")) {
+            break;
+        case "panther":
             design = PANTHER;
-        } else if (osDesign.equals("tiger")) {
+            break;
+        case "tiger":
             design = TIGER;
-        } else if (osDesign.equals("leopard")) {
+            break;
+        case "leopard":
             design = LEOPARD;
-        } else if (osDesign.equals("snowleopard")) {
+            break;
+        case "snowleopard":
             design = SNOW_LEOPARD;
-        } else if (osDesign.equals("lion")) {
+            break;
+        case "lion":
             design = LION;
-        } else if (osDesign.equals("mountainlion")) {
-        	design = MOUNTAIN_LION;
-        } else if (osDesign.equals("mavericks")) {
-        	design = MAVERICKS;
-        } else if (osDesign.equals("yosemite")) {
-        	design = YOSEMITE;
-        } else if (osDesign.equals("elcapitan")) {
-        	design = EL_CAPITAN;
-        } else if (osDesign.equals("sierra")) {
+            break;
+        case "mountainlion":
+            design = MOUNTAIN_LION;
+            break;
+        case "mavericks":
+            design = MAVERICKS;
+            break;
+        case "yosemite":
+            design = YOSEMITE;
+            break;
+        case "elcapitan":
+            design = EL_CAPITAN;
+            break;
+        case "sierra":
             design = SIERRA;
-        } else {
+            break;
+        case "catalina":
+            design = CATALINA;
+            break;
+        default:
             switch (OS) {
-                case CHEETAH:
-                    design = JAGUAR;
-                    break;
-                case PUMA:
-                    design = JAGUAR;
-                    break;
-                case JAGUAR:
-                    design = JAGUAR;
-                    break;
-                case PANTHER:
-                    design = PANTHER;
-                    break;
-                case TIGER:
-                    design = TIGER;
-                    break;
-                case LEOPARD:
-                    design = LEOPARD;
-                    break;
-                case SNOW_LEOPARD:
-                    design = SNOW_LEOPARD;
-                    break;
-                case LION:
-                    design = LION;
-                    break;
-                case MOUNTAIN_LION:
-                	design = MOUNTAIN_LION;
-                	break;
-                case MAVERICKS:
-                	design = MAVERICKS;
-                	break;
+            case CHEETAH:
+                design = JAGUAR;
+                break;
+            case PUMA:
+                design = JAGUAR;
+                break;
+            case JAGUAR:
+                design = JAGUAR;
+                break;
+            case PANTHER:
+                design = PANTHER;
+                break;
+            case TIGER:
+                design = TIGER;
+                break;
+            case LEOPARD:
+                design = LEOPARD;
+                break;
+            case SNOW_LEOPARD:
+                design = SNOW_LEOPARD;
+                break;
+            case LION:
+                design = LION;
+                break;
+            case MOUNTAIN_LION:
+                design = MOUNTAIN_LION;
+                break;
+            case MAVERICKS:
+                design = MAVERICKS;
+                break;
             case YOSEMITE:
                 design = YOSEMITE;
                 break;
@@ -349,8 +385,10 @@ public class QuaquaManager {
                 design = EL_CAPITAN;
                 break;
             case SIERRA:
-            case CATALINA:
                 design = SIERRA;
+                break;
+            case CATALINA:
+                design = CATALINA;
                 break;
             case X:
                 design = X;
@@ -363,6 +401,7 @@ public class QuaquaManager {
                 design = SNOW_LEOPARD;
                 break;
             }
+            break;
         }
     }
     /**
@@ -445,6 +484,7 @@ public class QuaquaManager {
             lafs.put("Yosemite.16", "ch.randelshofer.quaqua.yosemite.Quaqua16YosemiteLookAndFeel");
             lafs.put("ElCapitan.16", "ch.randelshofer.quaqua.elcapitan.Quaqua16ElCapitanLookAndFeel");
             lafs.put("Sierra.16", "ch.randelshofer.quaqua.sierra.Quaqua16SierraLookAndFeel");
+            lafs.put("Catalina.16", "ch.randelshofer.quaqua.catalina.Quaqua16CatalinaLookAndFeel");
             lafs.put("MavericksFileChooserOnly.16", "ch.randelshofer.quaqua.subset.QuaquaMavericksFileChooserLAF");
         }
     }
@@ -542,9 +582,12 @@ public class QuaquaManager {
                         lafKey = "ElCapitan.16";
                         break;
                     case SIERRA:
-                    case X:
-                    	lafKey = "Sierra.16";
+                        lafKey = "Sierra.16";
+                        break;
+                    case CATALINA:
+                    	lafKey = "Catalina.16";
                     	break;
+                    case X:
                     default:
                         lafKey = "SnowLeopard.16";
                         break;
@@ -583,6 +626,9 @@ public class QuaquaManager {
                     break;
                 case SIERRA:
                     lafKey = "Sierra.16";
+                    break;
+                case CATALINA:
+                    lafKey = "Catalina.16";
                     break;
                 case X:
                     lafKey = "MavericksFileChooserOnly.16";

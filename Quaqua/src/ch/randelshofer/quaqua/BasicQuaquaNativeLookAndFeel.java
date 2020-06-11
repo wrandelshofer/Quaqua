@@ -263,10 +263,10 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         Object listBackground = table.get("list");
         Object listForeground = table.get("listText");
 
-        Object listSelectionBackground = new InactivatableColorUIResource(
+        Object listSelectionBackground = new ActivatableColorUIResource(
                 ((Color) table.get("listHighlight")).getRGB(),
                 inactiveSelectionBackground.getRGB());
-        Object listSelectionForeground = new InactivatableColorUIResource(
+        Object listSelectionForeground = new ActivatableColorUIResource(
                 ((Color) table.get("listHighlightText")).getRGB(),
                 ((Color) inactiveSelectionForeground).getRGB());
 

@@ -5,7 +5,7 @@
 package ch.randelshofer.quaqua.lion;
 
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.ActivatableColorUIResource;
 import ch.randelshofer.quaqua.color.GradientColor;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import ch.randelshofer.quaqua.*;
@@ -544,7 +544,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "Tree.alternateBackground.0", listAlternateBackground,
             "Tree.openIcon", makeIcon(getClass(), leopardDir + "Tree.openIcon.png"),
             "Tree.closedIcon", makeIcon(getClass(), leopardDir + "Tree.closedIcon.png"),
-            "Tree.sideBar.background", new InactivatableColorUIResource(//
+            "Tree.sideBar.background", new ActivatableColorUIResource(//
             new GradientColor(0xe8ecf1, 0xe8ecf1, 0xdadfe6),//
             new GradientColor(0xf7f7f7, 0xf7f7f7, 0xeeeeee)),
             "Tree.sideBar.selectionBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.lion.QuaquaLionSideBarSelectionBorder"),
@@ -552,12 +552,12 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "Tree.rightChildIndent", 12, // 13
             "Tree.icons", makeIcons(lionDir + "Tree.icons.png", 15, true),
             "Tree.sideBar.icons", makeIcons(lionDir + "Tree.sideBar.icons.png", 15, true),
-            "Tree.sideBarCategory.foreground", new InactivatableColorUIResource(0x707e8b, 0x868b92),
-            "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
+            "Tree.sideBarCategory.foreground", new ActivatableColorUIResource(0x707e8b, 0x868b92),
+            "Tree.sideBarCategory.selectionForeground", new ActivatableColorUIResource(0xffffff, 0xffffff),
             "Tree.sideBarCategory.font", new FontUIResource(baseSystemFontName, Font.BOLD, 11),
             "Tree.sideBarCategory.selectionFont", new FontUIResource(baseSystemFontName, Font.BOLD, 11),
-            "Tree.sideBar.foreground", new InactivatableColorUIResource(0x000000, 0x000000),
-            "Tree.sideBar.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
+            "Tree.sideBar.foreground", new ActivatableColorUIResource(0x000000, 0x000000),
+            "Tree.sideBar.selectionForeground", new ActivatableColorUIResource(0xffffff, 0xffffff),
             "Tree.sideBar.font", new FontUIResource(baseSystemFontName, Font.PLAIN, 13),
             "Tree.sideBar.selectionFont", new FontUIResource(baseSystemFontName, Font.BOLD, 13),
             "Tree.rendererMargins", new InsetsUIResource(0,0,0,0),

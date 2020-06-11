@@ -6,7 +6,7 @@
 package ch.randelshofer.quaqua.sierra;
 
 import static ch.randelshofer.quaqua.BasicQuaquaNativeLookAndFeel.makeNativeIcon;
-import static ch.randelshofer.quaqua.BasicQuaquaNativeLookAndFeel.makeNativeSidebarIcon;
+
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 
@@ -14,7 +14,7 @@ import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import ch.randelshofer.quaqua.color.GradientColor;
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.ActivatableColorUIResource;
 import ch.randelshofer.quaqua.mavericks.Quaqua16MavericksLookAndFeel;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
@@ -26,7 +26,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import javax.swing.JTabbedPane;
-import static javax.swing.LookAndFeel.makeIcon;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.DimensionUIResource;
@@ -52,7 +51,7 @@ public class Quaqua16SierraLookAndFeel extends Quaqua16MavericksLookAndFeel {
         if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
             return table.get("control");
         } else {
-            return new InactivatableColorUIResource(new ColorUIResource(211, 211, 211), new ColorUIResource(246, 246, 246));
+            return new ActivatableColorUIResource(new ColorUIResource(211, 211, 211), new ColorUIResource(246, 246, 246));
         }
     }
 
@@ -119,7 +118,6 @@ public class Quaqua16SierraLookAndFeel extends Quaqua16MavericksLookAndFeel {
             new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.leopard.QuaquaLeopardComboBoxPopupBorder"),
             "ComboBox.maximumRowCount",10,
             "ComboBox.button.insets", new InsetsUIResource(4, 0, -2, 0),
-            "ComboBox.button.insets.MINI", new InsetsUIResource(1, 0, -3, 0),
             //
             "FileChooser.autovalidate", Boolean.TRUE,
             "FileChooser.enforceQuaquaTreeUI", Boolean.TRUE,

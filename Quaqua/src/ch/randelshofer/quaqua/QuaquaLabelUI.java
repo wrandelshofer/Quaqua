@@ -4,9 +4,10 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.color.ActivatableUIResource;
+import ch.randelshofer.quaqua.color.FocusableUIResource;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
@@ -155,16 +156,19 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
         String style = (String) l.getClientProperty("Quaqua.Label.style");
         if (style != null) {
-            boolean selected = style.endsWith("Selected");
+            boolean focused = style.indexOf("Focused")!=-1;
+            boolean selected = style.indexOf("Selected")!=-1;
             boolean active = style.indexOf("Inactive") == -1;
 
             if (style.startsWith("category")) {
-
                 s = s.toUpperCase();
                 font = UIManager.getFont(selected ? "Tree.sideBarCategory.selectionFont" : "Tree.sideBarCategory.font");
                 foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
-                if (foreground instanceof InactivatableColorUIResource) {
-                    ((InactivatableColorUIResource) foreground).setActive(active);
+                if (foreground instanceof ActivatableUIResource) {
+                    ((ActivatableUIResource) foreground).setActive(active);
+                }
+                if (foreground instanceof FocusableUIResource) {
+                    ((FocusableUIResource) foreground).setFocused(focused);
                 }
                 style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") :UIManager.getString("Tree.sideBarCategory.style");
 
@@ -182,10 +186,12 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                     font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC | font.getStyle());
                 }
 
-
                 foreground = UIManager.getColor(selected ? "Tree.sideBar.selectionForeground" : "Tree.sideBar.foreground");
-                if (foreground instanceof InactivatableColorUIResource) {
-                    ((InactivatableColorUIResource) foreground).setActive(active);
+                if (foreground instanceof ActivatableUIResource) {
+                    ((ActivatableUIResource) foreground).setActive(active);
+                }
+                if (foreground instanceof FocusableUIResource) {
+                    ((FocusableUIResource) foreground).setFocused(focused);
                 }
                 style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") :UIManager.getString("Tree.sideBar.style");
             }

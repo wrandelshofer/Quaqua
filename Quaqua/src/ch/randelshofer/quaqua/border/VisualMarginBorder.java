@@ -30,18 +30,21 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
      * Defines the margin from the clip bounds of the
      * component to its visually perceived borderline.
      */
-    private Insets layoutMargin;
+    protected Insets layoutMargin;
 
     /**
      * The UIManager Property to be used for the default margin.
      */
-    private String uiManagerPropertyName = "Component.visualMargin";
+    protected String uiManagerPropertyName = "Component.visualMargin";
     /**
      * The Client Property to be used for the default margin.
      */
-    private String propertyName = "Quaqua.Component.visualMargin";
+    protected String propertyName = "Quaqua.Component.visualMargin";
 
-    private boolean isTopFixed, isLeftFixed, isBottomFixed, isRightFixed;
+    protected boolean isTopFixed;
+    protected boolean isLeftFixed;
+    protected boolean isBottomFixed;
+    protected boolean isRightFixed;
 
     /**
      * Creates a new VisualMarginBorder.

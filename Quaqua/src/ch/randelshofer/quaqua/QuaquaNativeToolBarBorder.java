@@ -6,7 +6,7 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.border.QuaquaNativeButtonStateBorder;
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.ActivatableUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
@@ -371,8 +371,8 @@ public class QuaquaNativeToolBarBorder
                     boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
                     Graphics2D g = (Graphics2D) gr;
                     Color color = UIManager.getColor("ToolBar.title.background");
-                    if (color instanceof InactivatableColorUIResource) {
-                    	((InactivatableColorUIResource)color).setActive(isActive);
+                    if (color instanceof ActivatableUIResource) {
+                    	((ActivatableUIResource)color).setActive(isActive);
                     }
 					g.setPaint(PaintableColor.getPaint(color, c));
                     g.fillRect(x, y, width, height);

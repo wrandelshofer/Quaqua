@@ -4,7 +4,7 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.ActivatableUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import java.awt.event.*;
@@ -198,37 +198,37 @@ public class QuaquaListUI extends BasicListUI {
         isComboPopup = value != null && value.equals("comboPopup");
         Color selectionBackground = UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground" : "List.selectionBackground");
         Color selectionForeground = UIManager.getColor(isComboPopup ? "ComboBox.selectionForeground" : "List.selectionForeground");
-        if (selectionBackground instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) selectionBackground).setActive(isFocused);
+        if (selectionBackground instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) selectionBackground).setActive(isFocused);
         }
-        if (selectionForeground instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) selectionForeground).setActive(isFocused);
+        if (selectionForeground instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) selectionForeground).setActive(isFocused);
         }
         // We need to mess with tree selection colors here, in case someone
         // is nesting a TreeCellRenderer into a ListCellRenderer.
         Color treeSelectionBackground = UIManager.getColor("Tree.selectionBackground");
         Color treeSelectionForeground = UIManager.getColor("Tree.selectionForeground");
-        if (treeSelectionBackground instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) treeSelectionBackground).setActive(isFocused);
+        if (treeSelectionBackground instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) treeSelectionBackground).setActive(isFocused);
         }
 
-        if (treeSelectionForeground instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) treeSelectionForeground).setActive(isFocused);
+        if (treeSelectionForeground instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) treeSelectionForeground).setActive(isFocused);
         }
 
         super.paint(g, c);
-        if (selectionBackground instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) selectionBackground).setActive(true);
+        if (selectionBackground instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) selectionBackground).setActive(true);
         }
-        if (selectionForeground instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) selectionForeground).setActive(true);
+        if (selectionForeground instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) selectionForeground).setActive(true);
         }
-        if (treeSelectionBackground instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) treeSelectionBackground).setActive(true);
+        if (treeSelectionBackground instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) treeSelectionBackground).setActive(true);
         }
 
-        if (treeSelectionForeground instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) treeSelectionForeground).setActive(true);
+        if (treeSelectionForeground instanceof ActivatableUIResource) {
+            ((ActivatableUIResource) treeSelectionForeground).setActive(true);
         }
     }
 

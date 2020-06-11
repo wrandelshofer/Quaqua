@@ -432,12 +432,10 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
 
         Graphics2D g = (Graphics2D) gr;
-
-
         int width = tabPane.getWidth();
         int height = tabPane.getHeight();
-        Insets insets = getInsets();
 
+        Insets insets = getInsets();
         int x = insets.left;
         int y = insets.top;
         int w = width - insets.right - insets.left;

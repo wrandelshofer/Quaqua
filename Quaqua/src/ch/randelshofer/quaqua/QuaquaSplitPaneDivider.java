@@ -83,7 +83,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         boolean isHorizontal = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
 
         // We support the following styles:
-        // "bar": The divider is a bar, that goes accross the split view.
+        // "bar": The divider is a bar, that goes across the split view.
         // "thumb" (this is the default): The divider is a thumb (dimple) on
         //        the regular background pattern.
         String style = (String) splitPane.getClientProperty("Quaqua.SplitPane.style");

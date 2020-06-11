@@ -42,6 +42,14 @@ public class InsetsUtil {
         i1.right + right
         );
     }
+    public static Insets add(int topLeftBottomRight, Insets i1) {
+        return new Insets(
+                i1.top + topLeftBottomRight,
+                i1.left + topLeftBottomRight,
+                i1.bottom + topLeftBottomRight,
+                i1.right + topLeftBottomRight
+        );
+    }
     public static void addTo(int top, int left, int bottom, int right, Insets i2) {
         i2.top += top;
         i2.left += left;
