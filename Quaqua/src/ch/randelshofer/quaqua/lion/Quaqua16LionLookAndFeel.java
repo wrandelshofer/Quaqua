@@ -186,11 +186,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
         return property.equals("true");
     }
 
-    protected boolean isUseScreenMenuBar() {
-        String property;
-        property = QuaquaManager.getProperty("apple.laf.useScreenMenuBar", "false");
-        return property.equals("true");
-    }
+
 
     // The following override appears to be pointless
 

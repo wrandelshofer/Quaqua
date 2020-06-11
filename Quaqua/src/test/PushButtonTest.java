@@ -201,7 +201,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator1, gridBagConstraints);
 
-        largeButton.setFont(new java.awt.Font("Dialog", 0, 24));
+        largeButton.setFont(new java.awt.Font("Dialog", 0, 32));
         largeButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

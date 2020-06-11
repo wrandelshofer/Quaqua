@@ -35,6 +35,7 @@ import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.beans.PropertyChangeListener;
 import java.security.AccessControlException;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -49,7 +50,7 @@ import java.util.StringTokenizer;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
+public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
@@ -113,23 +114,59 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
     @Override
     protected final void initComponentDefaults(UIDefaults table) {
+        PropertyChangeListener littleSnitch = evt -> {
+            if (evt.getOldValue() != null) {
+                System.err.println("Warning: " + getClass() + " overwrites property " + evt.getPropertyName() + " " + evt.getOldValue() + "->" + evt.getNewValue());
+            }
+        };
+        table.addPropertyChangeListener(littleSnitch);
+
         initResourceBundle(table);
         initColorDefaults(table);
         initInputMapDefaults(table);
         initFontDefaults(table);
         initGeneralDefaults(table);
         initDesignDefaults(table);
+        //  table.removePropertyChangeListener(littleSnitch);
     }
 
     protected void initResourceBundle(UIDefaults table) {
+        Locale locale = Locale.getDefault();
         ResourceBundle bundle = ResourceBundle.getBundle(
                 "ch.randelshofer.quaqua.Labels",
-                Locale.getDefault(),
+                locale,
                 getClass().getClassLoader());
-        for (Enumeration i = bundle.getKeys(); i.hasMoreElements(); ) {
-            String key = (String) i.nextElement();
-            table.put(key, bundle.getObject(key));
+
+        if (locale.equals(bundle.getLocale())) {
+            // We have our own labels for this locale, so lets overwrite
+            // those that are given by the JDK.
+            for (Enumeration<String> i = bundle.getKeys(); i.hasMoreElements(); ) {
+                String key = i.nextElement();
+                Object value = bundle.getObject(key);
+                table.put(key, value);
+            }
+        } else {
+            // We have no labels for this locale, so lets only put
+            // those that are not given by the JDK.
+            for (Enumeration<String> i = bundle.getKeys(); i.hasMoreElements(); ) {
+                String key = i.nextElement();
+                Object value = bundle.getObject(key);
+
+                // Note: We cannot use table.containsKey() or table.putIfAbsent()
+                // here, because the table object does not properly implement these
+                // methods!
+                //noinspection Java8MapApi
+                if (table.get(key)==null) {
+                    table.put(key, value);
+                }
+            }
         }
+    }
+
+    protected boolean isUseScreenMenuBar() {
+        String property;
+        property = QuaquaManager.getProperty("apple.laf.useScreenMenuBar", "false");
+        return property.equals("true");
     }
 
     /**
@@ -1378,7 +1415,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         return new FontUIResource("Lucida Grande", Font.PLAIN, 13);
     }
 
-    protected void initFontDefaults(UIDefaults table) {
+    protected final void initFontDefaults(UIDefaults table) {
         Font baseSystemFont = getBaseSystemFont();
 
         // *** Shared Fonts
@@ -1560,7 +1597,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
      *
      * @param table Table onto which defaults are to be appended.
      */
-    protected void initGeneralDefaults(UIDefaults table) {
+    protected final void initGeneralDefaults(UIDefaults table) {
         String systemFontName = getBaseSystemFont().getName();
 
         // Focus behavior
@@ -2208,8 +2245,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
      *
      * @param table Onto which defaults are appended.
      */
-    protected void initDesignDefaults(UIDefaults table) {
-    }
+    protected abstract void initDesignDefaults(UIDefaults table);
 
     /**
      * Returns true if the <code>LookAndFeel</code> returned
@@ -2371,8 +2407,16 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             // everyting is implicitly excluded
             return;
         } else if (included == null && excluded.isEmpty()) {
-            // everyting is implicitly included, nothing is explicitly excluded
-            table.putDefaults(keyValueList);
+            // everything is implicitly included, nothing is explicitly excluded
+
+            // We do not use table.putDefaults here, because we want to detect
+            // if a subclass overwrites values that a superclass has put into
+            // the defaults table.
+            //table.putDefaults(keyValueList);
+            for (int i = 0, max = keyValueList.length; i < max; i += 2) {
+                Object value = keyValueList[i + 1];
+                table.put(keyValueList[i], value);
+            }
         } else if (included != null && excluded.isEmpty()) {
             // something is explicitly included, nothing is explicitly excluded
             for (int i = 0; i < keyValueList.length; i += 2) {

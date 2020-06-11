@@ -131,9 +131,8 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                 }
                 painter.setSize(size);
             }
+
             // Create an ImageBevelBorder
-            // FIXME - We have a caching opportunity here!
-            // -------------------------------------------
             {
                 Insets vm = getVisualMargin(c);
 
@@ -201,18 +200,15 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                         slack, fixedYOffset + slack,//
                         painterImg.getWidth() - 2 * slack, painterImg.getHeight() - 2 * slack);
 
-
                 Graphics2D ibbg = ibbImg.createGraphics();
                 ibbg.setColor(new Color(0x0, true));
                 ibbg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
                 ibbg.fillRect(0, 0, painterImg.getWidth(), painterImg.getHeight());
                 ibbg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
                 ibbg.drawImage(painterImg, 0, 0, null);
-
                 if (QuaquaUtilities.isFocused(c) && isEditable) {
                     AbstractFocusedPainter.paintFocusRing(painterImg, focusImg, ibbg, 0, 0);
                 }
-
                 ibbg.dispose();
 
                 ibb.paintBorder(c, g,//

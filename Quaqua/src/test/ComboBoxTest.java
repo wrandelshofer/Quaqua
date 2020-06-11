@@ -317,7 +317,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel5, gridBagConstraints);
 
-        largeComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        largeComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 32));
         largeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"}));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

@@ -293,7 +293,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         add(jSeparator2, gridBagConstraints);
 
         largeBox.setEditable(true);
-        largeBox.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        largeBox.setFont(new java.awt.Font("Lucida Grande", 0, 32));
         largeBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"}));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

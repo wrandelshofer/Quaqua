@@ -5,6 +5,7 @@
 
 package ch.randelshofer.quaqua.catalina;
 
+import ch.randelshofer.quaqua.BasicQuaquaNativeLookAndFeel;
 import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.color.ActivatableColorUIResource;
@@ -30,8 +31,21 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-public class Quaqua16CatalinaLookAndFeel extends Quaqua16MavericksLookAndFeel {
+public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
+    /**
+     * Creates a new instance.
+     */
+    public Quaqua16CatalinaLookAndFeel() {
+        // Our target look and feel is Apple's AquaLookAndFeel.
+        super("apple.laf.AquaLookAndFeel");
+    }
 
+    /**
+     * Creates a new instance.
+     */
+    protected Quaqua16CatalinaLookAndFeel(String className) {
+        super(className);
+    }
     @Override
     public String getDescription() {
         return "The Quaqua Catalina Look and Feel "
@@ -43,7 +57,7 @@ public class Quaqua16CatalinaLookAndFeel extends Quaqua16MavericksLookAndFeel {
         return "Quaqua Catalina";
     }
 
-    @Override
+
     protected Object toolBarTitleBackground(UIDefaults table) {
         final String javaVersion = QuaquaManager.getProperty("java.version", "");
         if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
@@ -215,6 +229,7 @@ public class Quaqua16CatalinaLookAndFeel extends Quaqua16MavericksLookAndFeel {
                 new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.leopard.QuaquaLeopardComboBoxPopupBorder"),
                 "ComboBox.maximumRowCount", 10,
                 "ComboBox.button.insets", new InsetsUIResource(4, 0, -2, 0),
+                "ComboBox.editorBorder", textFieldBorder,
                 //
                 "FileChooser.autovalidate", Boolean.TRUE,
                 "FileChooser.enforceQuaquaTreeUI", Boolean.TRUE,

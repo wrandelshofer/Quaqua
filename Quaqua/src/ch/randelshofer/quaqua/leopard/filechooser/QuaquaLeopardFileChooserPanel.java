@@ -193,7 +193,7 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
 
         fileNamePanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 1, 0));
         fileNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        fileNameLabel.setText("Save As:");
+        fileNameLabel.setText(UIManager.getString("FileChooser.fileNameLabelText"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -318,7 +318,7 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
 
         formatPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 0, 0, 0));
         filesOfTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        filesOfTypeLabel.setText("Format:");
+        filesOfTypeLabel.setText(UIManager.getString("FileChooser.filesOfTypeLabelText"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
@@ -343,7 +343,7 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         buttonsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 20, 0, 20));
-        newFolderButton.setText("New Folder");
+        newFolderButton.setText(UIManager.getString("ileChooser.newFolderTitleText"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
@@ -351,10 +351,10 @@ public class QuaquaLeopardFileChooserPanel extends javax.swing.JPanel {
 
         cancelOpenPanel.setLayout(new java.awt.GridLayout(1, 0, 8, 0));
 
-        cancelButton.setText("Cancel");
+        cancelButton.setText(UIManager.getString("FileChooser.cancelButtonText"));
         cancelOpenPanel.add(cancelButton);
 
-        approveButton.setText("Open");
+        approveButton.setText(UIManager.getString("FileChooser.openButtonText"));
         cancelOpenPanel.add(approveButton);
 
         buttonsPanel.add(cancelOpenPanel, new java.awt.GridBagConstraints());
