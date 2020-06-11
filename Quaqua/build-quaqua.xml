@@ -19,7 +19,8 @@
         <property name="versionNumber" value="10.0.0.alpha"/>
         <property name="version" value="${versionNumber} 2020-06-07"/>
         <property name="lib" value="lib"/>
-        <property name="src" value="src"/>
+        <property name="src" value="src/main/java"/>
+        <property name="src.native" value="src/main/native"/>
         <property name="resources" value="resources"/>
         <property name="builddir" value="build/classes"/>
         <property name="distdir" value="dist"/>
@@ -227,12 +228,12 @@
             <arg value="-F/${osx.selected.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks"/>
 
             <!-- Input file -->
-            <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
-            <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
-            <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXAquaPainter.m"/>
-            <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
-            <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
-            <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXSheetSupport.m"/>
+            <arg value="${src.native}/ch_randelshofer_quaqua_osx_OSXFile.m"/>
+            <arg value="${src.native}/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
+            <arg value="${src.native}/ch_randelshofer_quaqua_osx_OSXAquaPainter.m"/>
+            <arg value="${src.native}/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
+            <arg value="${src.native}/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
+            <arg value="${src.native}/ch_randelshofer_quaqua_osx_OSXSheetSupport.m"/>
         </exec>
     </target>
 
@@ -393,27 +394,27 @@
     <target depends="init,compile" name="jni javah">
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXClipboardTransferable"
-                destdir="${src}/native"
+                destdir="${src.native}"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXFile"
-                destdir="${src}/native"
+                destdir="${src.native}"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXApplication"
-                destdir="${src}/native"
+                destdir="${src.native}"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXImageIO"
-                destdir="${src}/native"
+                destdir="${src.native}"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXSheetSupport"
-                destdir="${src}/native"
+                destdir="${src.native}"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXAquaPainter"
-                destdir="${src}/native"
+                destdir="${src.native}"
                 />
     </target>
     <target depends="init, jar, jnilib" name="jar-signed">
