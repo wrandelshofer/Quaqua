@@ -115,7 +115,8 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 "TreeUI", quaquaPrefix + "TreeUI",
                 "LabelUI", quaquaPrefix + "LabelUI",
                 "ListUI", quaquaPrefix + "ListUI",
-                "TabbedPaneUI", quaquaPantherPrefix + "ScrollTabbedPaneUI",
+                // FIXME We use the TabbedPaneUI in apple.laf.AquaLookAndFeel for now.
+                //"TabbedPaneUI", quaquaPantherPrefix + "ScrollTabbedPaneUI",
                 "ToolBarUI", quaquaPrefix + "ToolBarUI",
                 //"ToolTipUI", basicPrefix + "ToolTipUI",
                 "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
@@ -410,6 +411,8 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 "Separator.shadow", new AlphaColorUIResource(0x0),
                 "Separator.border", new VisualMarginBorder(),
                 //
+                // FIXME We use the TabbedPaneUI in apple.laf.AquaLookAndFeel for now.
+                /*
                 "TabbedPane.disabledForeground", disabledForeground,
                 "TabbedPane.selectedTabPadInsets", new InsetsUIResource(0, 0, 0, 0),
                 "TabbedPane.tabRunOverlay", 0,
@@ -439,6 +442,7 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 new Insets(8, 10, 15, 1), 10, true),
                 "TabbedPane.westTabFocusRing", makeImageBevelBorder(commonDir + "Toggle.west.focusRing.png",
                 new Insets(8, 10, 15, 4), true),
+                */
                 //
                 "Table.ascendingSortIcon", makeIcon(getClass(), snowLeopardDir + "Table.ascendingSortIcon.png"),
                 "Table.descendingSortIcon", makeIcon(getClass(), snowLeopardDir + "Table.descendingSortIcon.png"),
