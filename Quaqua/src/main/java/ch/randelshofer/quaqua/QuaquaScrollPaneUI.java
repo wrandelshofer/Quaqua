@@ -319,14 +319,14 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
                         } else {
                             /* The following line can't handle a small value of
                              * viewPosition.x like Integer.MIN_VALUE correctly
-                             * because (max - extent - viewPositoiin.x) causes
+                             * because (max - extent - viewPosition.x) causes
                              * an overflow. As a result, value becomes zero.
                              * (e.g. setViewPosition(Integer.MAX_VALUE, ...)
                              *       in a user program causes a overflow.
                              *       Its expected value is (max - extent).)
                              * However, this seems a trivial bug and adding a
                              * fix makes this often-called method slow, so I'll
-                             * leave it until someone claims.
+                             * leave it until someone complains.
                              */
                             value = Math.max(0, Math.min(max - extent, max - extent - viewPosition.x));
                         }

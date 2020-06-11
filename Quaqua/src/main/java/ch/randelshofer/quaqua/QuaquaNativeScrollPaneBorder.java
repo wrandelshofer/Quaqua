@@ -47,12 +47,15 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
     private Insets borderInsets;
 
     public QuaquaNativeScrollPaneBorder() {
+        this(new Insets(1,1,1,1));
+    }
+    public QuaquaNativeScrollPaneBorder(Insets borderInsets) {
         painter = new OSXAquaPainter();
         imageInsets = UIManager.getInsets("ScrollPane.border.imageInsets");
         if (imageInsets == null) {
             imageInsets = new Insets(0, 0, 0, 0);
         }
-        borderInsets = new Insets(1, 1, 1, 1);
+       this. borderInsets = borderInsets;
     }
 
     @Override
@@ -108,14 +111,10 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
                 size = Size.regular;
                 break;
             case SMALL:
+            case MINI: // paint mini with small artwork
                 size = Size.small;
                 args |= ARG_SMALL_SIZE;
                 break;
-            case MINI:
-                size = Size.small; // paint mini with small artwork
-                args |= ARG_SMALL_SIZE;
-                break;
-
             }
             painter.setSize(size);
         }

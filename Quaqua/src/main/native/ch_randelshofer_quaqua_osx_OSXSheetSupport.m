@@ -8,7 +8,7 @@
 NSWindow * GetWindowFromComponent(jobject parent, JNIEnv *env);
 jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
 
-@interface SheetSupport : NSObject
+@interface QuaquaSheetSupport : NSObject
 {
     NSWindow *sheetWindow;
     NSWindow *parentWindow;
@@ -58,7 +58,7 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeGet
  * Signature: (Lch/randelshofer/quaqua/JSheet;Ljava/awt/Window;)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowSheet (JNIEnv *env, jclass clazz, jobject sheet, jobject parent) {
-    SheetSupport *sheetSupport = [[SheetSupport alloc] initWithSheet:sheet onWindow:parent jniEnv:env];
+    QuaquaSheetSupport *sheetSupport = [[QuaquaSheetSupport alloc] initWithSheet:sheet onWindow:parent jniEnv:env];
     [sheetSupport performSelectorOnMainThread:@selector(showSheet) withObject:nil waitUntilDone:NO];
 }
 
@@ -73,7 +73,7 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
     [NSApp performSelectorOnMainThread:@selector(endSheet:) withObject:GetWindowFromComponent(sheet, env) waitUntilDone:NO];
 }
 
-@implementation SheetSupport
+@implementation QuaquaSheetSupport
 
 - (id)initWithSheet:(jobject)s onWindow:(jobject)p jniEnv:(JNIEnv *)env
 {
@@ -87,7 +87,7 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
 
 - (void)showSheet
 {
-    
+
     [parentWindow
         beginSheet:sheetWindow
         completionHandler:nil];

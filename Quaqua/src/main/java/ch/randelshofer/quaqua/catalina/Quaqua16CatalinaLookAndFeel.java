@@ -182,7 +182,8 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 new BorderUIResource.MatteBorderUIResource(0, 0, 1, 0, new ColorUIResource(0xffffff)),
                 new BorderUIResource.EmptyBorderUIResource(0, 4, 1, 0));
         Object scrollPaneBorder = new UIDefaults.ProxyLazyValue(
-                "ch.randelshofer.quaqua.QuaquaNativeScrollPaneBorder"
+                "ch.randelshofer.quaqua.QuaquaNativeScrollPaneBorder",
+                new Object[]{new Insets(1,1,1,1)}
         );
         Object textFieldBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaNativeTextFieldBorder$UIResource",
@@ -441,7 +442,7 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 //
                 "Table.ascendingSortIcon", makeIcon(getClass(), snowLeopardDir + "Table.ascendingSortIcon.png"),
                 "Table.descendingSortIcon", makeIcon(getClass(), snowLeopardDir + "Table.descendingSortIcon.png"),
-                "TablePaneBorder", scrollPaneBorder,
+                "Table.scrollPaneBorder", scrollPaneBorder,
                 "Table.alternateBackground.0", listAlternateBackground,
                 //
                 "TextField.border", textFieldBorder,
