@@ -915,7 +915,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         directoryComboBoxModel = createDirectoryComboBoxModel(fc);
         directoryComboBox.setModel(directoryComboBoxModel);
         directoryComboBox.setRenderer(createDirectoryComboBoxRenderer(fc));
-        sidebarTreeModel = new OSXLionSidebarTreeModel(fc, new TreePath(model.getRoot()), model);
+        sidebarTreeModel = createSidebarTreeModel(fc, model);
         sidebarTree.setModel(sidebarTreeModel);
         sidebarTree.setCellRenderer(createSidebarCellRenderer(fc));
         for (int i = sidebarTree.getRowCount() - 1; i >= 0; i--) {
@@ -1017,6 +1017,10 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         Dimension ps = fc.getPreferredSize();
         fc.setBounds(0, 0, ps.width, ps.height);
         fc.doLayout();
+    }
+
+    protected SidebarTreeModel createSidebarTreeModel(JFileChooser fc, FileSystemTreeModel model) {
+        return new OSXLionSidebarTreeModel(fc, new TreePath(model.getRoot()), model);
     }
 
     /**
@@ -1949,7 +1953,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
     private void doFileSystemViewChanged(PropertyChangeEvent e) {
         boolean isInstalled = model == fileSystemModel;
         fileSystemModel = new FileSystemTreeModel(fc);
-        sidebarTreeModel = new OSXLionSidebarTreeModel(fc, new TreePath(fileSystemModel.getRoot()), fileSystemModel);
+        sidebarTreeModel = createSidebarTreeModel(fc, fileSystemModel);
         sidebarTree.setModel(sidebarTreeModel);
 
         if (isInstalled) {
@@ -2592,17 +2596,14 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + file.getName());
 
             if (icon == null) {
-                if (OSXFile.isSavedSearch(file)) {
+                OSXFile.ExtendedFileType extendedFileType = info.getExtendedFileType();
+                if (extendedFileType ==OSXFile.ExtendedFileType.SAFED_SEARCH) {
                     icon = UIManager.getIcon("FileChooser.sideBarIcon.SmartFolder");
-                } else if (file.getParentFile() != null && file.getParentFile().getPath().equals("/Volumes")) {
-                    File bf = new File(file, "Backups.backupdb");
-                    if (bf.isDirectory()) {
+                } else if (extendedFileType == OSXFile.ExtendedFileType.TIME_MACHINE_VOLUME) {
                         icon = UIManager.getIcon("FileChooser.sideBarIcon.TimeMachineVolume");
-                    }
-                    if (icon == null) {
+                } else if (extendedFileType == OSXFile.ExtendedFileType.VOLUME) {
                         icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericVolume");
-                    }
-                } else if (file.getParentFile() != null && file.getParentFile().getPath().equals("/Users")) {
+                } else if (extendedFileType == OSXFile.ExtendedFileType.HOME_FOLDER) {
                     icon = UIManager.getIcon("FileChooser.sideBarIcon.Home");
                 } else {
                     icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder");

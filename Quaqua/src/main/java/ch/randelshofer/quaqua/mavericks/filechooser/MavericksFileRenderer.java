@@ -191,11 +191,8 @@ public class MavericksFileRenderer extends JLabel implements ListCellRenderer, C
                 arrowIcon = (info.isValidating()) ? expandingIcon : expandedIcon;
             }
 
-            /*
-              Special case: no arrow is displayed for a package even if the package is traversable (an option).
-            */
-
-            if (!info.isTraversable() || OSXFile.isVirtualFile(info.lazyGetResolvedFile())) {
+            // Special case: no arrow is displayed for a package even if the package is traversable (an option).
+            if (!info.isTraversable()) {
                 arrowIcon = (labelColor == null) ? null : emptyIcon;
             }
         } else {

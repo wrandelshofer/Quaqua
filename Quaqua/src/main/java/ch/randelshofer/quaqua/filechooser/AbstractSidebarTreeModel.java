@@ -25,8 +25,8 @@ import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implements  SidebarTreeModel{
-    private final PropertyChangeSupport propertyChangeSupport=new PropertyChangeSupport(this);
+public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implements SidebarTreeModel {
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The JFileChooser.
      */
@@ -50,7 +50,7 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
      */
     private InfoState infoState = InfoState.INVALID;
 
-    private final TreeModelListener treeModelListener =new TreeModelListener() {
+    private final TreeModelListener treeModelListener = new TreeModelListener() {
 
         public void treeNodesChanged(TreeModelEvent e) {
             if (e.getTreePath().equals(volumesPath)) {
@@ -76,11 +76,12 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
             }
         }
     };
-    public AbstractSidebarTreeModel(TreeNode root, boolean asksAllowsChildren,JFileChooser fileChooser, TreePath volumesPath, TreeModel model) {
+
+    public AbstractSidebarTreeModel(TreeNode root, boolean asksAllowsChildren, JFileChooser fileChooser, TreePath volumesPath, TreeModel model) {
         super(root, asksAllowsChildren);
-        this.fileChooser=fileChooser;
+        this.fileChooser = fileChooser;
         this.volumesPath = volumesPath;
-        this.model=model;
+        this.model = model;
         this.model.addTreeModelListener(treeModelListener);
     }
 
@@ -91,22 +92,22 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
 
     @Override
     public DefaultMutableTreeNode getRoot() {
-        return (DefaultMutableTreeNode)super.getRoot();
+        return (DefaultMutableTreeNode) super.getRoot();
     }
 
     @Override
     public final void invalidate() {
-        if (infoState==InfoState.VALID) {
+        if (infoState == InfoState.VALID) {
             setInfoState(InfoState.INVALID);
         }
     }
 
     @Override
     public final boolean isValid() {
-        return infoState==InfoState.VALID;
+        return infoState == InfoState.VALID;
     }
 
-    protected abstract Object[] read()throws IOException;
+    protected abstract Object[] read() throws IOException;
 
     @Override
     public final void removePropertyChangeListener(PropertyChangeListener listener) {
@@ -115,8 +116,8 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
 
     private void setInfoState(OSXLionSidebarTreeModel.InfoState newValue) {
         OSXLionSidebarTreeModel.InfoState oldValue = infoState;
-        infoState=newValue;
-        propertyChangeSupport.firePropertyChange(VALID_PROPERTY,oldValue== OSXLionSidebarTreeModel.InfoState.VALID,newValue== OSXLionSidebarTreeModel.InfoState.VALID);
+        infoState = newValue;
+        propertyChangeSupport.firePropertyChange(VALID_PROPERTY, oldValue == OSXLionSidebarTreeModel.InfoState.VALID, newValue == OSXLionSidebarTreeModel.InfoState.VALID);
     }
 
     protected abstract void update(Object[] value);
@@ -163,7 +164,7 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
     /**
      * This is used for keeping track of the validation state of this model.
      */
-    public enum InfoState {INVALID,VALIDATING,VALID}
+    public enum InfoState {INVALID, VALIDATING, VALID}
 
     protected static abstract class Node extends DefaultMutableTreeNode implements SidebarTreeFileNode {
 
@@ -184,7 +185,7 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
         }
 
         public void setName(String value) {
-            this.name=value;
+            this.name = value;
         }
 
         public int getSequenceNumber() {
@@ -192,7 +193,7 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
         }
 
         public void setSequenceNumber(int value) {
-            this.sequenceNumber=value;
+            this.sequenceNumber = value;
         }
 
         public boolean isVisible() {
@@ -200,7 +201,7 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
         }
 
         public void setVisible(boolean value) {
-            this.isVisible=value;
+            this.isVisible = value;
         }
     }
 
@@ -237,9 +238,18 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
         public String toString() {
             return target.toString();
         }
+
+        public boolean isTraversable() {
+            return target.isTraversable();
+        }
+
+        @Override
+        public OSXFile. ExtendedFileType getExtendedFileType() {
+            return target.getExtendedFileType();
+        }
     }
 
-    protected  class FileNode extends Node {
+    protected class FileNode extends Node {
 
         private final File file;
         private final boolean isTraversable;
@@ -251,6 +261,12 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
         protected int fileLabel = -1;
         private Icon icon;
         private String userName;
+
+        /**
+         * Holds the extended file type. The null value is used to indicate
+         * that we haven't retrieved it yet.
+         */
+        private OSXFile.ExtendedFileType extendedFileType;
 
         public FileNode(File file) {
             this.file = file;
@@ -294,18 +310,22 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
                         @Override
                         public void done(Icon value) {
                             icon = value;
-                            int[] changedIndices = {getParent().getIndex(FileNode.this)};
-                            Object[] changedChildren = {FileNode.this};
-                            TreeNode[] parentPath = ((DefaultMutableTreeNode) getParent()).getPath();
-                            AbstractSidebarTreeModel.this.fireTreeNodesChanged(
-                                   AbstractSidebarTreeModel.this,
-                                    parentPath,
-                                    changedIndices, changedChildren);
+                            fireTreeNodeChanged();
                         }
                     });
                 }
             }
             return icon;
+        }
+
+        private void fireTreeNodeChanged() {
+            int[] changedIndices = {getParent().getIndex(FileNode.this)};
+            Object[] changedChildren = {FileNode.this};
+            TreeNode[] parentPath = ((DefaultMutableTreeNode) getParent()).getPath();
+            AbstractSidebarTreeModel.this.fireTreeNodesChanged(
+                    AbstractSidebarTreeModel.this,
+                    parentPath,
+                    changedIndices, changedChildren);
         }
 
         public File getResolvedFile() {
@@ -336,6 +356,25 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
         }
 
         @Override
+        public OSXFile.ExtendedFileType getExtendedFileType() {
+            if (extendedFileType == null) {
+                extendedFileType = OSXFile.ExtendedFileType.REGULAR;
+                dispatcher.dispatch(new Worker<OSXFile.ExtendedFileType>() {
+                    public OSXFile.ExtendedFileType construct() {
+                        return OSXFile.getExtendedFileType(file);
+                    }
+
+                    @Override
+                    public void done(OSXFile.ExtendedFileType value) {
+                        extendedFileType = value;
+                        fireTreeNodeChanged();
+                    }
+                });
+            }
+            return extendedFileType;
+        }
+
+        @Override
         public String toString() {
             return getUserName();
         }
@@ -358,6 +397,7 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
         private File file;
         private Icon icon;
         private String userName;
+        private OSXFile.ExtendedFileType extendedFileType;
 
         public AliasNode(byte[] serializedAlias, String aliasName) {
             this.file = null;
@@ -383,24 +423,41 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
                         @Override
                         public void done(Icon value) {
                             icon = value;
-
-                            int[] changedIndices = new int[]{getParent().getIndex(AliasNode.this)};
-                            Object[] changedChildren = new Object[]{AliasNode.this};
-                           AbstractSidebarTreeModel.this.fireTreeNodesChanged(
-                                    AbstractSidebarTreeModel.this,
-                                    ((DefaultMutableTreeNode) getParent()).getPath(),
-                                    changedIndices, changedChildren);
+                            fireTreeNodeChanged();
                         }
+
                     });
                 }
             }
             return icon;
         }
 
+        private void fireTreeNodeChanged() {
+            int[] changedIndices = new int[]{getParent().getIndex(AliasNode.this)};
+            Object[] changedChildren = new Object[]{AliasNode.this};
+            AbstractSidebarTreeModel.this.fireTreeNodesChanged(
+                    AbstractSidebarTreeModel.this,
+                    ((DefaultMutableTreeNode) getParent()).getPath(),
+                    changedIndices, changedChildren);
+        }
+
         public File getResolvedFile() {
             if (file == null) {
                 icon = null; // clear cached icon!
-                file = OSXFile.resolveAlias(serializedAlias, false);
+                // Note: We clear this file, when we resolve the alias
+                file = new File("resolving alias...");
+                dispatcher.dispatch(new Worker<File>() {
+                    public File construct() {
+                        return OSXFile.resolveAlias(serializedAlias, false);
+                    }
+
+                    @Override
+                    public void done(File value) {
+                        file = value;
+                        fireTreeNodeChanged();
+                    }
+                });
+
             }
             return file;
         }
@@ -419,6 +476,31 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
         }
 
         @Override
+        public OSXFile.ExtendedFileType getExtendedFileType() {
+            if (extendedFileType==null) {
+                extendedFileType= OSXFile.ExtendedFileType.REGULAR;
+                dispatcher.dispatch(new Worker<OSXFile.ExtendedFileType>() {
+                    public OSXFile.ExtendedFileType construct() {
+                        return OSXFile.getExtendedFileType(getResolvedFile());
+                    }
+
+                    @Override
+                    protected void finished() {
+                        super.finished();
+                    }
+
+                    @Override
+                    public void done(OSXFile.ExtendedFileType value) {
+                        extendedFileType = value;
+                        fireTreeNodeChanged();
+                    }
+                });
+
+            }
+            return extendedFileType;
+        }
+
+        @Override
         public String toString() {
             return getUserName();
         }
@@ -427,5 +509,6 @@ public abstract class AbstractSidebarTreeModel extends DefaultTreeModel implemen
     protected TreePath getVolumesPath() {
         return volumesPath;
     }
+
     protected abstract void updateDevices();
 }

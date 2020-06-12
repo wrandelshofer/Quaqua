@@ -85,6 +85,7 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
         String quaquaLeopardPrefix = "ch.randelshofer.quaqua.leopard.QuaquaLeopard";
         String quaquaLionPrefix = "ch.randelshofer.quaqua.lion.QuaquaLion";
         String quaquaMavericksPrefix = "ch.randelshofer.quaqua.mavericks.QuaquaMavericks";
+        String quaquaCatalinaPrefix = "ch.randelshofer.quaqua.catalina.QuaquaCatalina";
 
         // NOTE: Change code below, to override different
         // UI classes of the target look and feel.
@@ -93,7 +94,7 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 "ButtonUI", quaquaPrefix + "ButtonUI",
                 "CheckBoxUI", quaquaPrefix + "CheckBoxUI",
                 "ColorChooserUI", quaquaPrefix + "ColorChooserUI",
-                "FileChooserUI", quaquaMavericksPrefix + "FileChooserUI",
+                "FileChooserUI", quaquaCatalinaPrefix + "FileChooserUI",
                 "FormattedTextFieldUI", quaquaPrefix + "FormattedTextFieldUI",
                 "RadioButtonUI", quaquaPrefix + "RadioButtonUI",
                 "ToggleButtonUI", quaquaPrefix + "ToggleButtonUI",

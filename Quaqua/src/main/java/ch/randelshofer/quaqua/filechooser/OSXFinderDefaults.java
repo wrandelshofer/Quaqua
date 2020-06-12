@@ -29,23 +29,50 @@ public class OSXFinderDefaults {
      */
     private final String favoriteItemsDictionaryName;
 
-    public OSXFinderDefaults(){
+    /**
+     * This file contains information about the system list and holds the aliases
+     * for the user list.
+     */
+    private final File sidebarFile;
+    private final File favoriteItemsFile;
+    private final File favoriteServersFile;
+    private final File favoriteVolumesFile;
+    private final File iCloudItemsFile;
+    private final File projectItemsFile;
+
+
+    public OSXFinderDefaults() {
         String favoriteItemsDictionaryName = "favorites";
         File[] defaultUserItems;
+        int os = QuaquaManager.getOS();
         if (QuaquaManager.isOSX()
-                || QuaquaManager.getOS() == QuaquaManager.DARWIN) {
+                || os == QuaquaManager.DARWIN) {
             defaultUserItems = new File[]{
                     new File(QuaquaManager.getProperty("user.home"), "Desktop"),
                     new File(QuaquaManager.getProperty("user.home"), "Documents"),
                     new File(Objects.requireNonNull(QuaquaManager.getProperty("user.home")))
             };
 
-            int osVersion = QuaquaManager.getOS();
-            if (QuaquaManager.MAVERICKS <= osVersion
-                    && osVersion < QuaquaManager.CATALINA) {
+            if (QuaquaManager.MAVERICKS <= os
+                    && os < QuaquaManager.CATALINA) {
                 favoriteItemsDictionaryName = "favoriteitems";
             }
-        } else if (QuaquaManager.getOS() == QuaquaManager.WINDOWS) {
+            if (os < QuaquaManager.CATALINA) {
+                sidebarFile = new File(QuaquaManager.getProperty("user.home"), "Library/Preferences/com.apple.sidebarlists.plist");
+                favoriteItemsFile =
+                        favoriteServersFile =
+                                favoriteVolumesFile =
+                                        iCloudItemsFile =
+                                                projectItemsFile = null;
+            } else {
+                sidebarFile = null;
+                favoriteItemsFile = new File(QuaquaManager.getProperty("user.home"), "/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl2");
+                favoriteServersFile = new File(QuaquaManager.getProperty("user.home"), "/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteServers.sfl2");
+                favoriteVolumesFile = new File(QuaquaManager.getProperty("user.home"), "/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteVolumes.sfl2");
+                iCloudItemsFile = new File(QuaquaManager.getProperty("user.home"), "/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.iCloudItems.sfl2");
+                projectItemsFile = new File(QuaquaManager.getProperty("user.home"), "/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.ProjectsItems.sfl2");
+            }
+        } else if (os == QuaquaManager.WINDOWS) {
             defaultUserItems = new File[]{
                     new File(QuaquaManager.getProperty("user.home"), "Desktop"),
                     // Japanese ideographs for Desktop:
@@ -53,20 +80,39 @@ public class OSXFinderDefaults {
                     new File(QuaquaManager.getProperty("user.home"), "My Documents"),
                     new File(Objects.requireNonNull(QuaquaManager.getProperty("user.home")))
             };
-        } else if (QuaquaManager.getOS() == QuaquaManager.LINUX) {
+            sidebarFile = null;
+            favoriteItemsFile =
+                    favoriteServersFile =
+                            favoriteVolumesFile =
+                                    iCloudItemsFile =
+                                            projectItemsFile = null;
+        } else if (os == QuaquaManager.LINUX) {
             defaultUserItems = new File[]{
                     new File(QuaquaManager.getProperty("user.home"), "Desktop"),
                     new File("/media"),
                     new File(QuaquaManager.getProperty("user.home"), "Documents"),
                     new File(Objects.requireNonNull(QuaquaManager.getProperty("user.home")))
             };
+            sidebarFile =
+                    favoriteItemsFile =
+                            favoriteServersFile =
+                                    favoriteVolumesFile =
+                                            iCloudItemsFile =
+                                                    projectItemsFile = null;
         } else {
             defaultUserItems = new File[]{
                     new File(Objects.requireNonNull(QuaquaManager.getProperty("user.home")))
             };
+
+            sidebarFile =
+                    favoriteItemsFile =
+                            favoriteServersFile =
+                                    favoriteVolumesFile =
+                                            iCloudItemsFile =
+                                                    projectItemsFile = null;
         }
         this.favoriteItemsDictionaryName = favoriteItemsDictionaryName;
-        this.defaultUserItems= Collections.unmodifiableList(Arrays.asList(defaultUserItems));
+        this.defaultUserItems = Collections.unmodifiableList(Arrays.asList(defaultUserItems));
     }
 
     public List<File> getDefaultUserItems() {
@@ -75,5 +121,9 @@ public class OSXFinderDefaults {
 
     public String getFavoriteItemsDictionaryName() {
         return favoriteItemsDictionaryName;
+    }
+
+    public File getSidebarFile() {
+        return sidebarFile;
     }
 }

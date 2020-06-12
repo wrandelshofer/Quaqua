@@ -808,7 +808,7 @@ public class FileSystemTreeModel implements TreeModel {
 
         File resolvedFile = info.getResolvedFile();
 
-        if (OSXFile.isVirtualFile(resolvedFile)) {
+        if (!info.isTraversable()) {
             return fileChooser.isFileSelectionEnabled();
         }
 
@@ -867,6 +867,12 @@ public class FileSystemTreeModel implements TreeModel {
          */
         protected String[] tagNames;
 
+        /**
+         * The extended file type. The value null is used if it has not yet
+         * been retrieved from the file system.
+         */
+        protected volatile OSXFile.ExtendedFileType extendedFileType;
+
         public Node(File f, boolean isHidden) {
             //this(f, fileChooser.getName(f));
             this(f, null, isHidden);
@@ -894,6 +900,7 @@ public class FileSystemTreeModel implements TreeModel {
             if (lazyGetResolvedFile() == null) {
                 return -1L;
             } else {
+                // FIXME this may take several seconds!
                 return (getResolvedFile().isDirectory()) ? -1l : file.length();
             }
         }
@@ -992,7 +999,8 @@ public class FileSystemTreeModel implements TreeModel {
         }
 
         /**
-         * Invoke the runnable when validation is complete, either now or later. This method does not block.
+         * Invoke the runnable when validation is complete, either now or later.
+         * This method does not block.
          */
         public void invokeWhenValid(final Runnable r) {
             invokeWhenValid(r, 100);
@@ -1033,6 +1041,7 @@ public class FileSystemTreeModel implements TreeModel {
                         if (!doItFast) {
                             Icon oldIcon = icon;
                             int oldFileLabel = fileLabel;
+                            OSXFile.ExtendedFileType oldExtendedFileType=extendedFileType;
                             // Note: We mustn't invoke this method asynchronously.
                             // Apple's FileView does not like to be used
                             // in a reentrant way.
@@ -1043,9 +1052,12 @@ public class FileSystemTreeModel implements TreeModel {
                                 tagNames = OSXFile.getTagNames(file);
                             }
 
-                            return (oldIcon != icon || oldFileLabel != fileLabel) ? Boolean.TRUE : Boolean.FALSE;
+                            extendedFileType=OSXFile.getExtendedFileType(file);
+
+                            return (oldIcon != icon || oldFileLabel != fileLabel
+                            || oldExtendedFileType!=extendedFileType);
                         }
-                        return Boolean.FALSE;
+                        return false;
                     }
 
                     @Override
@@ -1252,6 +1264,12 @@ public class FileSystemTreeModel implements TreeModel {
 
         public boolean isTraversable() {
             return !isLeaf();
+        }
+
+        @Override
+        public OSXFile.ExtendedFileType getExtendedFileType() {
+            validateInfo();
+            return extendedFileType;
         }
 
         public File getResolvedFile() {

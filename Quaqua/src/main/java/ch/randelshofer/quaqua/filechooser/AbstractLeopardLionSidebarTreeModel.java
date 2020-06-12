@@ -34,13 +34,6 @@ import java.util.HashMap;
  */
 public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSidebarTreeModel {
     /**
-     * This file contains information about the system list and holds the aliases
-     * for the user list.
-     */
-    // FIXME in Catalina the sidebar file is
-    //       ./Library/Application\ Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl2
-    private final File sidebarFile = new File(QuaquaManager.getProperty("user.home"), "Library/Preferences/com.apple.sidebarlists.plist");
-    /**
      * The file system tree model node that represents the Computer.
      */
     private final FileSystemTreeModel.Node computerNode;
@@ -107,6 +100,7 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
         HashMap<String, SystemItemInfo> sysItemsMap = new HashMap<>();
         ArrayList<Node> userItems = new ArrayList<>();
 
+        File sidebarFile = defaults.getSidebarFile();
         try (FileReader reader = new FileReader(sidebarFile)) {
             XMLElement xml = new XMLElement();
             try {

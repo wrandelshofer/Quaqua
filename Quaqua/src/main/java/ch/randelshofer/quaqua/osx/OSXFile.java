@@ -9,6 +9,7 @@ import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFDecodeParam;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFImageDecoder;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.MemoryCacheSeekableStream;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
 import ch.randelshofer.quaqua.util.Images;
 
 import javax.swing.Icon;
@@ -25,7 +26,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.AccessControlException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * {@code OSXFile} provides access to Mac OS X file meta data and can resolve
@@ -306,20 +310,16 @@ public class OSXFile {
      */
     public static File resolveAlias(File f, boolean noUI) {
         if (isNativeCodeAvailable()) {
-
-            String path = nativeResolveAlias(f.getAbsolutePath(), noUI);
-
+           String path = nativeResolveAlias(f.getAbsolutePath(), noUI);
             if (path == null) {
                 return null;
             }
-
             f = new File(path);
 
-            /*
-              Cocoa path resolution refuses to follow certain top level links. If the result is an alias, we may have
-              one of those top level links. The JDK support for canonical files works better!
-            */
-
+            //  Cocoa path resolution refuses to follow certain top level links.
+            //  If the result is an alias, we may have
+            //  one of those top level links. The JDK support for canonical
+            //  files works better!
             if (getFileType(f) != FILE_TYPE_ALIAS) {
                 return f;
             }
@@ -631,19 +631,6 @@ public class OSXFile {
         }
     }
 
-    /**
-     * Indicate whether the specified file is a directory that is normally viewed by the user as an ordinary file,
-     * i.e., something that can be opened in an application.
-     */
-    public static boolean isVirtualFile(File file) {
-        if (isNativeCodeAvailable() && file != null) {
-            int flags = nativeGetBasicItemInfoFlags(file.getAbsolutePath());
-            return (flags & kLSItemInfoIsPackage) != 0;
-        } else {
-            return false;
-        }
-    }
-
     public static boolean isInvisible(File file) {
         if (file != null) {
             if (isNativeCodeAvailable()) {
@@ -656,6 +643,13 @@ public class OSXFile {
         return false;
     }
 
+    /**
+     * Indicates whether the specified file is a directory that can be traversed
+     * into.
+     * <p>
+     * Directories which are not traversable should be treated like a file,
+     * i.e., something that can be opened in an application.
+     */
     public static boolean isTraversable(File file) {
         return isTraversable(file, false, false);
     }
@@ -689,11 +683,7 @@ public class OSXFile {
                 return basicIsTraversable(file);
 
             } else if (isVolumes(file.getParent())) {
-
-                    /*
-                      Special case: the program wants to see volumes as directories.
-                    */
-
+                //  Special case: the program wants to see volumes as directories.
                 return true;
 
             } else {
@@ -708,20 +698,13 @@ public class OSXFile {
         return s != null && s.equals("/Volumes");
     }
 
-    private static String[] nonTraversableDirectories = {".Spotlight-V100", ".DocumentRevisions", ".Trashes"};
+    private static Set<String> nonTraversableDirectories =new HashSet<>(Arrays.asList(
+        ".Spotlight-V100", ".DocumentRevisions", ".Trashes"));
 
     private static boolean basicIsTraversable(File f) {
         String name = f.getName();
-
         if (f.isDirectory()) {
-            for (String s : nonTraversableDirectories) {
-                if (s.equals(name)) {
-                    return false;
-                }
-            }
-
-            return true;
-
+            return !nonTraversableDirectories.contains(name);
         } else if (isSavedSearch(f)) {
             return true;
         }
@@ -999,4 +982,46 @@ public class OSXFile {
      * @return The version number of the native code.
      */
     private static native int nativeGetNativeCodeVersion();
+   public enum ExtendedFileType {
+        /** Its a safed search from the Finder. */
+        SAFED_SEARCH,
+        /** Its a regular volume. */
+        VOLUME,
+        /** Its a time machine volume. */
+        TIME_MACHINE_VOLUME,
+        /** Its the home folder of a user. */
+        HOME_FOLDER,
+
+        /** Its a regular file or folder. */
+        REGULAR
+    }
+
+    /**
+     * Gets the extende file type from the file system.
+     * This may take several seconds.
+     *
+     * @return the extended file type, non-null
+     */
+    public static ExtendedFileType getExtendedFileType(File file) {
+        if (OSXFile.isSavedSearch(file)) {
+            return ExtendedFileType.SAFED_SEARCH;
+        } else {
+            File parentFile = file.getParentFile();
+            boolean isTraversable = isTraversable(file);
+            if (parentFile != null) {
+                if (isTraversable && parentFile.getPath().equals("/Volumes")) {
+                    File bf = new File(file, "Backups.backupdb");
+                    // FIXME bf.isDirectory() may block the UI for several seconds!
+                    if (bf.isDirectory()) {
+                        return ExtendedFileType.TIME_MACHINE_VOLUME;
+                    }
+                    return ExtendedFileType.VOLUME;
+                } else if (isTraversable && parentFile.getPath().equals("/Users")) {
+                    return ExtendedFileType.HOME_FOLDER;
+                }
+
+            }
+        }
+        return ExtendedFileType.REGULAR;
+    }
 }
