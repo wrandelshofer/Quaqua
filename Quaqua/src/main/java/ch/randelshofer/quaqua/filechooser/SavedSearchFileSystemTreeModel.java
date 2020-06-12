@@ -2,6 +2,9 @@
  * @(#)SavedSearchFileSystemTreeModel.java
  * Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
  */
+/*
+ * Copyright © 2014 Alan Snyder.
+ */
 package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;

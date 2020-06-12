@@ -6,6 +6,7 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.Images;
 import ch.randelshofer.quaqua.util.SizeConstrainedPanel;
+import ch.randelshofer.quaqua.util.TreeColumnListModel;
 
 import javax.accessibility.Accessible;
 import javax.swing.AbstractListModel;
@@ -116,7 +117,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * @see #getUIClassID
-     * @see #writeObject
      */
     private static final String uiClassID = "BrowserUI";
     /**
@@ -270,8 +270,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Creates a {@code JBrowser} with a sample model.
      * The default model used by the browser defines a leaf node as any node
      * without children.
-     *
-     * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser() {
         this(getDefaultTreeModel());
@@ -284,7 +282,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * children.
      *
      * @param value an array of {@code Object}s
-     * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Object[] value) {
         this(createTreeModel(value));
@@ -298,7 +295,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * tree defines a leaf node as any node without children.
      *
      * @param value a {@code Vector}
-     * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Vector value) {
         this(createTreeModel(value));
@@ -313,7 +309,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * a leaf node as any node without children.
      *
      * @param value a {@code Hashtable}
-     * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Hashtable value) {
         this(createTreeModel(value));
@@ -326,7 +321,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * By default, the tree defines a leaf node as any node without children.
      *
      * @param root a {@code TreeNode} object
-     * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(TreeNode root) {
         this(root, false);
@@ -342,7 +336,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * @param asksAllowsChildren if false, any node without children is a
      *                           leaf node; if true, only nodes that do not allow
      *                           children are leaf nodes
-     * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(TreeNode root, boolean asksAllowsChildren) {
         this(new DefaultTreeModel(root, asksAllowsChildren));
@@ -578,23 +571,23 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      */
     public TreePath getClosestPathForLocation(int x, int y) {
         Component c = getComponentAt(x, y);
-        if (c != null && (c instanceof JScrollPane)) {
+        if ((c instanceof JScrollPane)) {
             x -= c.getX();
             y -= c.getY();
             c = c.getComponentAt(x, y);
-            if (c != null && (c instanceof JViewport)) {
+            if ((c instanceof JViewport)) {
                 x -= c.getX();
                 y -= c.getY();
                 c = c.getComponentAt(x, y);
-                if (c != null && (c instanceof JList)) {
+                if ((c instanceof JList)) {
                     x -= c.getX();
                     y -= c.getY();
 
-                    JList l = (JList) c;
+                    JList<?> l = (JList<?>) c;
                     JBrowser.ColumnListModel m = (ColumnListModel) l.getModel();
                     int index = l.locationToIndex(new Point(x, y));
                     if (index != -1) {
-                        return m.path.pathByAddingChild(m.getElementAt(index));
+                        return m.getPath().pathByAddingChild(m.getElementAt(index));
                     }
                 }
             }
@@ -1170,7 +1163,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
         if (previewColumn != null) {
             new DropTarget(previewColumn, getDropTarget().getDefaultActions(), getDropTarget());
-            new DropTarget((SizeConstrainedPanel) previewColumn.getViewport().getView(), getDropTarget().getDefaultActions(), getDropTarget());
+            new DropTarget(previewColumn.getViewport().getView(), getDropTarget().getDefaultActions(), getDropTarget());
         }
     }
 
@@ -1194,7 +1187,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      */
     private TreePath getColumnPath(int column) {
         JList list = getColumnList(column);
-        return ((ColumnListModel) list.getModel()).path;
+        return ((ColumnListModel) list.getModel()).getPath();
     }
 
     /**
@@ -1283,7 +1276,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             ColumnListModel m = getColumnListModel(getListColumnCount() - 1);
             int i = list.getSelectedIndex();
             Object pathComponent = (i == -1 || i >= m.getSize()) ? null : list.getSelectedValue();
-            return (pathComponent == null) ? m.path : m.path.pathByAddingChild(pathComponent);
+            return (pathComponent == null) ? m.getPath() : m.getPath().pathByAddingChild(pathComponent);
         }
     }
 
@@ -1318,7 +1311,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      */
     @Override
     public synchronized KeyListener[] getKeyListeners() {
-        return (KeyListener[]) (getListeners(KeyListener.class));
+        return getListeners(KeyListener.class);
     }
 
     public void updatePreviewColumn() {
@@ -2199,103 +2192,17 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * This is the list model used to map a tree node of the {@code treeModel}
      * to a JList displaying its children.
      */
-    private class ColumnListModel extends AbstractListModel implements TreeModelListener {
+    private  class ColumnListModel extends TreeColumnListModel {
 
-        private TreePath path;
-        private TreeModel model;
-        /**
-         * We need to copy the number of children of the underlying tree node
-         * into this instance variable, because we have to generate a proper
-         * interval added/interval removed even upon a change in the tree structure.
-         */
-        private int size;
-
-        @Override
-        public String toString() {
-            StringBuilder buf = new StringBuilder();
-            buf.append('{');
-            for (int i = 0, n = getSize(); i < n; i++) {
-                if (i != 0) {
-                    buf.append(',');
-                }
-                buf.append(getElementAt(i));
-            }
-            buf.append("} #");
-            buf.append(hashCode());
-            return buf.toString();
-        }
 
         public ColumnListModel(TreePath path, TreeModel model) {
-            this.path = path;
-            this.model = model;
-            model.addTreeModelListener(this);
-            updateSize();
-        }
-
-        public void setPath(TreePath newValue) {
-            if (newValue != path) {
-                int oldSize = getSize();
-                this.path = newValue;
-                updateSize();
-                int newSize = getSize();
-                if (Math.min(oldSize, newSize) > 0) {
-                    fireContentsChanged(this, Math.min(oldSize, newSize), Math.min(oldSize, newSize));
-                }
-                if (newSize < oldSize) {
-                    fireIntervalRemoved(this, newSize, oldSize - 1);
-                } else if (newSize > oldSize) {
-                    fireIntervalAdded(this, oldSize, newSize - 1);
-                }
-            }
-        }
-
-        public void dispose() {
-            model.removeTreeModelListener(this);
-        }
-
-        public int getSize() {
-            return size;
-            //return model.getChildCount(path.getLastPathComponent());
-        }
-
-        private void updateSize() {
-            this.size = model.getChildCount(path.getLastPathComponent());
-        }
-
-        public Object getElementAt(int row) {
-            return model.getChild(path.getLastPathComponent(), row);
-        }
-
-        public void treeNodesChanged(TreeModelEvent e) {
-            if (e.getTreePath().equals(path)) {
-                int[] indices = e.getChildIndices();
-                fireContentsChanged(this, indices[0], indices[indices.length - 1]);
-            }
+            super(path, model);
         }
 
         public void treeNodesInserted(TreeModelEvent e) {
-            if (e.getTreePath().equals(path)) {
-                updateSize();
-
-                // We analyze the indices for contiguous intervals
-                // and fire interval added events for all intervals we find.
-                int[] indices = e.getChildIndices();
-
-                int start = 0;
-                int startIndex;
-                int end;
-                do {
-                    startIndex = indices[start];
-                    for (end = start + 1; end < indices.length; end++) {
-                        if (indices[end] != startIndex + end - start) {
-                            break;
-                        }
-                    }
-                    fireIntervalAdded(this, startIndex, indices[end - 1]);
-                    start = end;
-                } while (start < indices.length);
-
-            } else if (path.getPathCount() == 1) {
+            super.treeNodesInserted(e);
+            if (e.getTreePath().equals(getPath())) {
+            } else if (getPath().getPathCount() == 1) {
                 if (expandedPath != null && expandedPathIsLeaf && e.getTreePath().equals(expandedPath)) {
                     // Due to the insertion, the last path component of the
                     // expanded path has been converted from a leaf into an
@@ -2308,28 +2215,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         public void treeNodesRemoved(TreeModelEvent e) {
-            if (e.getTreePath().equals(path)) {
-                updateSize();
-
-                // We analyze the indices for contiguous intervals
-                // and fire interval removed events for all intervals we find.
-                int[] indices = e.getChildIndices();
-                int start = 0;
-                int startIndex;
-                int end;
-                int offset = 0;
-                do {
-                    startIndex = indices[start];
-                    for (end = start + 1; end < indices.length; end++) {
-                        if (indices[end] != startIndex + end - start) {
-                            break;
-                        }
-                    }
-                    fireIntervalRemoved(this, startIndex - offset, indices[end - 1] - offset);
-                    offset += indices[end - 1] - startIndex + 1;
-                    start = end;
-                } while (start < indices.length);
-
+            super.treeNodesRemoved(e);
+            if (e.getTreePath().equals(getPath())) {
                 // RemovedChildren can't be selected.
                 if (selectionModel.getSelectionCount() > 0) {
                     TreePath[] selectionPaths = selectionModel.getSelectionPaths();
@@ -2350,28 +2237,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         public void treeStructureChanged(TreeModelEvent e) {
+            super.treeStructureChanged(e);
             TreePath changedPath = e.getTreePath();
-            if (changedPath.equals(path) || path.getPathCount() == 1 && changedPath.getPathCount() == 1) {
-                int oldSize = getSize();
-                path = changedPath;
-                updateSize();
-                int newSize = getSize();
-                path = changedPath;
-                int diff = newSize - oldSize;
-                if (diff < 0) {
-                    if (newSize > 0) {
-                        fireContentsChanged(this, 0, newSize - 1);
-                    }
-                    fireIntervalRemoved(this, newSize, oldSize - 1);
-                } else if (diff > 0) {
-                    if (oldSize > 0) {
-                        fireContentsChanged(this, 0, oldSize - 1);
-                    }
-                    fireIntervalAdded(this, oldSize, newSize - 1);
-                } else {
-                    fireContentsChanged(this, 0, oldSize - 1);
-                }
-
+            if (changedPath.equals(getPath()) || getPath().getPathCount() == 1 && changedPath.getPathCount() == 1) {
                 setSelectionPath(changedPath);
             }
         }
@@ -2381,7 +2249,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * as might happen when toggling file hiding.
          */
         private void ensureSelectionVisible() {
-            JList list = getColumnList(path.getPathCount() - 1);
+            JList list = getColumnList(getPath().getPathCount() - 1);
             ListSelectionModel sm = list.getSelectionModel();
             if (!sm.isSelectionEmpty()) {
                 int index1 = sm.getMinSelectionIndex();
@@ -2563,11 +2431,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         private void updateExpandedState(JList columnList) {
             ColumnListModel columnModel = (ColumnListModel) columnList.getModel();
-            TreePath columnPath = columnModel.path;
+            TreePath columnPath = columnModel.getPath();
             int[] selectedIndices = columnList.getSelectedIndices();
             TreePath leadPath;
             if (selectedIndices.length == 0) {
-                leadPath = columnModel.path;
+                leadPath = columnModel.getPath();
                 /*if (getListColumnCount() > 1) {
                 getColumnList(getListColumnCount() - 2).requestFocus();
                 }*/
@@ -2582,7 +2450,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     // be able to update our selectionModel with the correct elements.
                     TreePath[] paths = new TreePath[selectedIndices.length];
                     for (int i = 0; i < selectedIndices.length; i++) {
-                        paths[i] = columnModel.path.pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
+                        paths[i] = columnModel.getPath().pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
                     }
                     selectionModel.setSelectionPaths(paths);
                 } else {
@@ -2592,7 +2460,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     TreePath[] paths = new TreePath[selectedIndices.length];
                     int leadPathIndex = -1;
                     for (int i = 0; i < selectedIndices.length; i++) {
-                        paths[i] = columnModel.path.pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
+                        paths[i] = columnModel.getPath().pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
                         if (paths[i].equals(leadPath)) {
                             leadPathIndex = i;
                         }
@@ -2686,7 +2554,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         public void keyReleased(KeyEvent evt) {
             JList columnList = (JList) evt.getComponent();
             ColumnListModel columnModel = (ColumnListModel) columnList.getModel();
-            TreePath columnPath = columnModel.path;
+            TreePath columnPath = columnModel.getPath();
 
             if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
                 if (columnPath.getPathCount() > 1) {
@@ -2701,14 +2569,14 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 if (childColumnList.getSelectedIndex() == -1 && childColumnList.getModel().getSize() != 0) {
                     evt.consume();
                     childColumnList.setSelectedIndex(0);
-                    selectionModel.setSelectionPath(((ColumnListModel) childColumnList.getModel()).path.pathByAddingChild(childColumnList.getSelectedValue()));
+                    selectionModel.setSelectionPath(((ColumnListModel) childColumnList.getModel()).getPath().pathByAddingChild(childColumnList.getSelectedValue()));
                 }
                 childColumnList.requestFocus();
             } else {
                 int[] selectedIndices = columnList.getSelectedIndices();
                 TreePath leadPath;
                 if (selectedIndices.length == 0) {
-                    leadPath = columnModel.path;
+                    leadPath = columnModel.getPath();
                     selectionModel.setSelectionPath(leadPath);
                     if (getListColumnCount() > 1) {
                         getColumnList(getListColumnCount() - 2).requestFocus();
@@ -2721,7 +2589,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     TreePath[] paths = new TreePath[selectedIndices.length];
                     int leadPathIndex = -1;
                     for (int i = 0; i < selectedIndices.length; i++) {
-                        paths[i] = columnModel.path.pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
+                        paths[i] = columnModel.getPath().pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
                         if (paths[i].equals(leadPath)) {
                             leadPathIndex = i;
                         }
@@ -2879,7 +2747,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * @since 1.4
          */
         public ListSelectionListener[] getListSelectionListeners() {
-            return (ListSelectionListener[]) listenerList.getListeners(
+            return listenerList.getListeners(
                     ListSelectionListener.class);
         }
 

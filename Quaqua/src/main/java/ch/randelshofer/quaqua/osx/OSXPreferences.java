@@ -191,7 +191,7 @@ public class OSXPreferences {
         XMLElement xml = null;
         try {
             reader = new FileReader(plistFile);
-            xml = new XMLElement(new HashMap(), false, false);
+            xml = new XMLElement();
             try {
                 xml.parseFromReader(reader);
             } catch (XMLParseException e) {

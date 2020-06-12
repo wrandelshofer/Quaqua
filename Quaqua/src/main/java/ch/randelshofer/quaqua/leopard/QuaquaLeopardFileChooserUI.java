@@ -18,7 +18,7 @@ import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
 import ch.randelshofer.quaqua.filechooser.SubtreeFileChooserUI;
 import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
 import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
-import ch.randelshofer.quaqua.leopard.filechooser.SidebarTreeModel;
+import ch.randelshofer.quaqua.leopard.filechooser.OSXLeopardSidebarTreeModel;
 import ch.randelshofer.quaqua.panther.filechooser.FilePreview;
 
 import javax.swing.AbstractAction;
@@ -119,7 +119,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     protected String chooseButtonText = null;
     private String newFolderDialogPrompt, newFolderDefaultName, newFolderErrorText, newFolderExistsErrorText, newFolderTitleText;
     private final static File unixRoot = new File("/");
-    private SidebarTreeModel sidebarTreeModel;
+    private OSXLeopardSidebarTreeModel sidebarTreeModel;
     /**
      * This listener is used to determine whether the JFileChooser is showing.
      */
@@ -627,7 +627,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         directoryComboBoxModel = createDirectoryComboBoxModel(fc);
         directoryComboBox.setModel(directoryComboBoxModel);
         directoryComboBox.setRenderer(createDirectoryComboBoxRenderer(fc));
-        sidebarTree.setModel(sidebarTreeModel = new SidebarTreeModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
+        sidebarTree.setModel(sidebarTreeModel = new OSXLeopardSidebarTreeModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
         sidebarTree.setCellRenderer(createSidebarCellRenderer(fc));
         for (int i = sidebarTree.getRowCount() - 1; i >= 0; i--) {
             sidebarTree.expandRow(i);
@@ -1302,7 +1302,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         subtreeModel = new SubtreeTreeModel(model);
 
         browser.setModel(getTreeModel());
-        sidebarTree.setModel(sidebarTreeModel = new SidebarTreeModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
+        sidebarTree.setModel(sidebarTreeModel = new OSXLeopardSidebarTreeModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
     }
 
     private void doPreviewComponentChanged(PropertyChangeEvent e) {
@@ -2149,9 +2149,6 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             if (model != null) {
                 model.setAutoValidate(UIManager.getBoolean("FileChooser.autovalidate"));
                 model.validatePath(browser.getSelectionPath());
-                if (sidebarTreeModel != null) {
-                    sidebarTreeModel.lazyValidate();
-                }
             }
             // We update the approve button state here, because the approve
             // button can only be made the default button, if it has a root pane

@@ -16,10 +16,12 @@ import ch.randelshofer.quaqua.filechooser.FileTransferHandler;
 import ch.randelshofer.quaqua.filechooser.FilenameDocument;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
 import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeModel;
 import ch.randelshofer.quaqua.filechooser.SubtreeFileChooserUI;
 import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
 import ch.randelshofer.quaqua.panther.filechooser.FilePreview;
-import ch.randelshofer.quaqua.panther.filechooser.SidebarListModel;
+import ch.randelshofer.quaqua.panther.filechooser.OSXPantherSidebarTreeModel;
+import ch.randelshofer.quaqua.util.TreeColumnListModel;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
@@ -40,6 +42,7 @@ import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -85,6 +88,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static java.lang.Math.max;
+
+
 /**
  * A replacement for the AquaFileChooserUI. Provides a column view similar
  * to the one provided with the native Aqua user interface on Mac OS X 10.3
@@ -98,7 +104,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     // Implementation derived from MetalFileChooserUI
     /* Models. */
     private DirectoryComboBoxModel directoryComboBoxModel;
-    private Action directoryComboBoxAction = new DirectoryComboBoxAction();
+    private final Action directoryComboBoxAction = new DirectoryComboBoxAction();
     private FileView fileView;
     private FilterComboBoxModel filterComboBoxModel;
     private FileSystemTreeModel model = null;
@@ -117,7 +123,8 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     ///private String newFolderAccessibleName = null;
     protected String chooseButtonText = null;
     private String newFolderDialogPrompt, newFolderDefaultName, newFolderErrorText, newFolderExistsErrorText, newFolderTitleText;
-    private SidebarListModel sidebarListModel;
+    private SidebarTreeModel sidebarTreeModel;
+    private ListModel<Object> sidebarListModel;
     /**
      * This listener is used to determine whether the JFileChooser is showing.
      */
@@ -129,8 +136,8 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     /**
      * Actions.
      */
-    private Action newFolderAction = new NewFolderAction();
-    private Action approveSelectionAction = new QuaquaApproveSelectionAction();
+    private final Action newFolderAction = new NewFolderAction();
+    private final Action approveSelectionAction = new QuaquaApproveSelectionAction();
     /**
      * Values greater zero indicate that the UI is adjusting.
      * This is required to prevent the UI from changing the FileChooser's state
@@ -141,7 +148,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
      * XXX - These keystrokes should go into an InputMap created by the
      * BasicQuaquaLookAndFeel class.
      */
-    private KeyStroke[] KEYSTROKES = {
+    private final KeyStroke[] KEYSTROKES = {
             KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
             KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
             KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.META_MASK),
@@ -153,7 +160,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
             KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
             KeyStroke.getKeyStroke(KeyEvent.VK_BACK_QUOTE, 0),
             KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),};
-    private AbstractAction keyListenerAction = new AbstractAction() {
+    private final AbstractAction keyListenerAction = new AbstractAction() {
 
         public void actionPerformed(ActionEvent ae) {
             File file = null;
@@ -185,7 +192,6 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                 /* case '`':*/
             case '/':
                 //need to pop up window for user to type file. need tab completion!
-                file = null;
                 return;
             default:
                 //( "Unknown Key Command in: " + ae );
@@ -197,8 +203,9 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                 // select the sidebar, otherwise just
                 // select the file
                 for (int i = 0, n = sidebarListModel.getSize(); i < n; i++) {
-                    SidebarTreeFileNode sidebarFile = (SidebarTreeFileNode) sidebarListModel.getElementAt(i);
-                    if (sidebarFile != null && sidebarFile.getResolvedFile().equals(file)) {
+                    Object sidebarFile =  sidebarListModel.getElementAt(i);
+                    if ((sidebarFile instanceof SidebarTreeFileNode)
+                            &&((SidebarTreeFileNode) sidebarFile).getResolvedFile().equals(file)) {
                         sidebarList.setSelectedIndex(i);
                         return;
                     }
@@ -403,6 +410,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
         sidebarScrollPane.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         sidebarList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         sidebarScrollPane.setViewportView(sidebarList);
+        sidebarList.setRequestFocusEnabled(false);
 
         splitPane.setLeftComponent(sidebarScrollPane);
 
@@ -598,7 +606,9 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
         directoryComboBoxModel = createDirectoryComboBoxModel(fc);
         directoryComboBox.setModel(directoryComboBoxModel);
         directoryComboBox.setRenderer(createDirectoryComboBoxRenderer(fc));
-        sidebarList.setModel(sidebarListModel = new SidebarListModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
+        sidebarTreeModel = new OSXPantherSidebarTreeModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel());
+        sidebarListModel = new TreeColumnListModel(new TreePath(sidebarTreeModel.getRoot()), sidebarTreeModel);
+        sidebarList.setModel(sidebarListModel);
         sidebarList.setCellRenderer(createVolumesRenderer(fc));
         filterComboBoxModel = createFilterComboBoxModel();
         filterComboBox.setModel(filterComboBoxModel);
@@ -1240,7 +1250,9 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
         subtreeModel = new SubtreeTreeModel(model);
 
         browser.setModel(getTreeModel());
-        sidebarList.setModel(sidebarListModel = new SidebarListModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
+        sidebarTreeModel = new OSXPantherSidebarTreeModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel());
+        sidebarListModel = new TreeColumnListModel(new TreePath(sidebarTreeModel.getRoot()), sidebarTreeModel);
+        sidebarList.setModel(sidebarListModel);
     }
 
     private void doPreviewComponentChanged(PropertyChangeEvent e) {
@@ -1253,7 +1265,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                     return pv;
                 }
             });
-            browser.setPreviewColumnWidth(Math.max(browser.getFixedCellWidth(), pv.getPreferredSize().width));
+            browser.setPreviewColumnWidth(max(browser.getFixedCellWidth(), pv.getPreferredSize().width));
         } else {
             boolean isSave = isFileNameFieldVisible();
             browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
@@ -1515,6 +1527,10 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
 
         private Border border = new EmptyBorder(1, 3, 2, 0);
         private JComponent separator = new JComponent() {
+            {
+                setPreferredSize(new Dimension(9, 9));
+                setMinimumSize(new Dimension(9,9));
+            }
 
             @Override
             public void paintComponent(Graphics g) {
@@ -1528,7 +1544,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
         private int backgroundIndex;
 
         public SidebarRenderer() {
-            separator.setPreferredSize(new Dimension(9, 9));
+
         }
         /*
         public boolean isOpaque() {
@@ -1559,7 +1575,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                 g.setPaint(
                         new LinearGradientPaint(
                                 0f, 1f, new Color(62, 155, 228),
-                                0f, height - 2, new Color(0, 96, 255)));
+                                0f, max(2f,(float)height - 2f), new Color(0, 96, 255)));
                 g.fillRect(0, 1, width, height - 1);
                 setOpaque(false);
                 break;
@@ -1569,7 +1585,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                 g.setPaint(
                         new LinearGradientPaint(
                                 0f, 1f, new Color(151, 151, 151),
-                                0f, height - 2, new Color(102, 102, 102)));
+                                0f, max(2f,(float)height - 2f), new Color(102, 102, 102)));
                 g.fillRect(0, 1, width, height - 1);
                 setOpaque(false);
                 break;
@@ -1584,12 +1600,12 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
             if (value instanceof File) {
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
-            if (value == null) {
-                return separator;
-            } else {
                 SidebarTreeFileNode info = (value instanceof SidebarTreeFileNode)
                         ? (SidebarTreeFileNode) value
                         : null;
+            if (info==null) {
+                return separator;
+            } else {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 setText(info == null ? value.toString() : info.getUserName());
                 if (isSelected) {
@@ -2100,9 +2116,6 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
             if (model != null) {
                 model.setAutoValidate(UIManager.getBoolean("FileChooser.autovalidate"));
                 model.validatePath(browser.getSelectionPath());
-                if (sidebarListModel != null) {
-                    sidebarListModel.lazyValidate();
-                }
             }
             // We update the approve button state here, because the approve
             // button can only be made the default button, if it has a root pane

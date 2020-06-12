@@ -177,7 +177,7 @@ public class QuaquaManager {
     /**
      * Mac OS X 10.14 Mojave.
      */
-    public final static int MOJAVE = 12;
+    public final static int MOJAVE = 14;
     /**
      * Mac OS X 10.15 Catalina.
      */
@@ -305,55 +305,69 @@ public class QuaquaManager {
         String osDesign = getProperty("Quaqua.design", "auto").toLowerCase();
         switch (osDesign) {
         case "cheetah":
-            design = JAGUAR;
-            break;
+        case "10.0":
         case "puma":
-            design = JAGUAR;
-            break;
+        case "10.1":
         case "jaguar":
+        case "10.2":
             design = JAGUAR;
             break;
         case "panther":
+        case "10.3":
             design = PANTHER;
             break;
         case "tiger":
+        case "10.4":
             design = TIGER;
             break;
         case "leopard":
+        case "10.5":
             design = LEOPARD;
             break;
         case "snowleopard":
+        case "10.6":
             design = SNOW_LEOPARD;
             break;
         case "lion":
+        case "10.7":
             design = LION;
             break;
         case "mountainlion":
+        case "10.8":
             design = MOUNTAIN_LION;
             break;
         case "mavericks":
+        case "10.9":
             design = MAVERICKS;
             break;
         case "yosemite":
+        case "10.10":
             design = YOSEMITE;
             break;
         case "elcapitan":
+        case "10.11":
             design = EL_CAPITAN;
             break;
         case "sierra":
+        case "10.12":
+        case "highsierra":
+        case "10.13":
+        case "mojave":
+        case "10.14":
             design = SIERRA;
             break;
         case "catalina":
+        case "10.15":
             design = CATALINA;
+            break;
+        case "X":
+        case "10.X":
+            design = X;
             break;
         default:
             switch (OS) {
             case CHEETAH:
-                design = JAGUAR;
-                break;
             case PUMA:
-                design = JAGUAR;
-                break;
             case JAGUAR:
                 design = JAGUAR;
                 break;

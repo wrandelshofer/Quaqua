@@ -58,7 +58,7 @@ public class QuaquaGenericListMouseBehavior extends MouseInputAdapter {
         armedEvent = e;
         dragThreshold = QuaquaUtilities.getDragThreshold();
 
-        // Note: Some applications depend on selection changes only occuring
+        // Note: Some applications depend on selection changes only occurring
         // on focused components. Maybe we must not do any changes to the
         // selection changes at all, when the component is not focused?
 

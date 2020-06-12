@@ -116,7 +116,7 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
     protected final void initComponentDefaults(UIDefaults table) {
         PropertyChangeListener littleSnitch = evt -> {
             if (evt.getOldValue() != null) {
-                System.err.println("Warning: " + getClass() + " overwrites property " + evt.getPropertyName() + " " + evt.getOldValue() + "->" + evt.getNewValue());
+                System.err.println("Warning: " + getClass() + " overwrites property " + evt.getPropertyName() );
             }
         };
         table.addPropertyChangeListener(littleSnitch);

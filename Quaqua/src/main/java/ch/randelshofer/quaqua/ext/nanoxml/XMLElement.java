@@ -77,7 +77,7 @@ import java.util.Iterator;
  * <DL><DT><B>Retrieving Child Elements</B></DT>
  * <DD>
  * You can enumerate the children of an element using
- * {@link #iterateChildren() iterateChildren}.
+ * {@link #getChildren()}.
  * The number of child iterator can be retrieved using
  * {@link #countChildren() countChildren}.
  * </DD></DL>
@@ -253,7 +253,7 @@ public class XMLElement {
     /**
      * Creates and initializes a new XML element.
      * Calling the construction is equivalent to:
-     * <ul>{@code new XMLElement(new HashMap(), false, true)
+     * <ul>{@code new XMLElement(new HashMap(), false, false)
      * }</ul>
      *
      * <dl><dt><b>Postconditions:</b></dt><dd>
@@ -273,7 +273,7 @@ public class XMLElement {
      * XMLElement(HashMap, boolean)
      */
     public XMLElement() {
-        this(new HashMap<>(), false, true, true);
+        this(new HashMap<>(), false, false, true);
     }
 
 
@@ -480,7 +480,6 @@ public class XMLElement {
      *                  <li>getChildren() =&gt; old.iterateChildren() + child
      *              </ul></dd></dl>
      * @see XMLElement#countChildren()
-     * @see XMLElement#iterateChildren()
      * @see XMLElement#getChildren()
      * @see XMLElement#removeChild(XMLElement)
      * removeChild(XMLElement)
@@ -630,7 +629,6 @@ public class XMLElement {
      *
      * @see XMLElement#addChild(XMLElement)
      * addChild(XMLElement)
-     * @see XMLElement#iterateChildren()
      * @see XMLElement#getChildren()
      * @see XMLElement#removeChild(XMLElement)
      * removeChild(XMLElement)
@@ -697,26 +695,7 @@ public class XMLElement {
         return this.attributes.keySet().iterator();
     }
 
-    /**
-     * Enumerates the child iterator.
-     *
-     * <dl><dt><b>Postconditions:</b></dt><dd>
-     * <ul><li>{@code result != null}
-     * </ul></dd></dl>
-     *
-     * @see XMLElement#addChild(XMLElement)
-     * addChild(XMLElement)
-     * @see XMLElement#countChildren()
-     * @see XMLElement#getChildren()
-     * @see XMLElement#removeChild(XMLElement)
-     * removeChild(XMLElement)
-     */
-    public Iterator<XMLElement> iterateChildren() {
-        return this.children.iterator();
-    }
-
-
-    /**
+      /**
      * Returns the children list.
      *
      * <dl><dt><b>Postconditions:</b></dt><dd>
@@ -726,7 +705,6 @@ public class XMLElement {
      * @see XMLElement#addChild(XMLElement)
      * addChild(XMLElement)
      * @see XMLElement#countChildren()
-     * @see XMLElement#iterateChildren()
      * @see XMLElement#removeChild(XMLElement)
      * removeChild(XMLElement)
      */
@@ -1564,7 +1542,6 @@ public class XMLElement {
      * @see XMLElement#addChild(XMLElement)
      * addChild(XMLElement)
      * @see XMLElement#countChildren()
-     * @see XMLElement#iterateChildren()
      * @see XMLElement#getChildren()
      */
     public void removeChild(XMLElement child) {
@@ -1739,9 +1716,7 @@ public class XMLElement {
             writer.write('>');
         } else {
             writer.write('>');
-            Iterator<XMLElement> iter = this.iterateChildren();
-            while (iter.hasNext()) {
-                XMLElement child = iter.next();
+            for (XMLElement child : this.getChildren()) {
                 child.write(writer);
             }
             writer.write('<');

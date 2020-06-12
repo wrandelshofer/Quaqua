@@ -253,10 +253,10 @@ public class ListTest extends javax.swing.JPanel {
         add(jPanel1, gridBagConstraints);
 
         multipleSelectionOption.setSelected(true);
-        multipleSelectionOption.setLabel("Multiple Selection");
+        multipleSelectionOption.setText("Multiple Selection");
         add(multipleSelectionOption, new java.awt.GridBagConstraints());
 
-        enabledDragOption.setLabel("Enable drag");
+        enabledDragOption.setText("Enable drag");
         add(enabledDragOption, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 

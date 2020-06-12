@@ -19,7 +19,8 @@
         <property name="versionNumber" value="10.0.0.alpha"/>
         <property name="version" value="${versionNumber} 2020-06-07"/>
         <property name="lib" value="lib"/>
-        <property name="src" value="src/main/java"/>
+        <property name="src.main" value="src/main/java"/>
+        <property name="src.test" value="src/test/java"/>
         <property name="src.native" value="src/main/native"/>
         <property name="resources" value="resources"/>
         <property name="builddir" value="build/classes"/>
@@ -114,7 +115,15 @@
         <!-- Compile BasicQuaquaLookAndFeel against J2SE6 classpath -->
         <javac fork="true"
                source="1.8" target="1.8" encoding="UTF-8"
-               srcdir="${src}" destdir="${builddir}"
+               srcdir="${src.main}" destdir="${builddir}"
+               debug="${debug}" optimize="true"
+               deprecation="true"
+               includeantruntime="false"
+        >
+        </javac>
+        <javac fork="true"
+               source="1.8" target="1.8" encoding="UTF-8"
+               srcdir="${src.test}" destdir="${builddir}"
                debug="${debug}" optimize="true"
                deprecation="true"
                includeantruntime="false"
@@ -123,7 +132,14 @@
 
         <!-- copy resources to the builddir -->
         <copy todir="${builddir}">
-            <fileset dir="${src}">
+            <fileset dir="${src.main}">
+                <include name="**/*.properties"/>
+                <include name="**/*.png"/>
+                <include name="**/*.ttf"/>
+                <include name="**/*.txt"/>
+                <include name="**/*.icc"/>
+            </fileset>
+            <fileset dir="${src.test}">
                 <include name="**/*.properties"/>
                 <include name="**/*.png"/>
                 <include name="**/*.ttf"/>
@@ -247,7 +263,7 @@
         <javac
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true"
-                srcdir="${src}"
+                srcdir="${src.main}"
                 source="1.8" target="1.8" encoding="UTF-8"
                 includeantruntime="false"
         >
@@ -276,7 +292,7 @@
             <exclude name="**/*15*.java"/>
         </javac>
         <copy todir="${builddir}">
-            <fileset dir="${src}">
+            <fileset dir="${src.main}">
                 <include name="**/*.properties"/>
                 <include name="**/Browser*.png"/>
                 <include name="**/FileChooser.*.png"/>
@@ -523,7 +539,7 @@
    <target depends="init,jnilib,jar,jar-filechooser,javadoc"
         description="Build a release." name="release">
         <delete>
-            <fileset defaultexcludes="false" dir="${src}">
+            <fileset defaultexcludes="false" dir="${src.main}">
                 <include name="**/*.class"/>
                 <include name="**/*.java~"/>
             </fileset>
@@ -553,12 +569,12 @@
         windowtitle="Quaqua ${version}"
         maxmemory="256M">
             <sourcepath>
-                <pathelement location="${src}"/>
+                <pathelement location="${src.main}"/>
             </sourcepath>
             <excludepackage name="test"/>
             <excludepackage name="qtest"/>
             <excludepackage name="bugs"/>
-            <packageset dir="${src}">
+            <packageset dir="${src.main}">
                 <include name="ch/randelshofer/**"/>
             </packageset>
         </javadoc>
@@ -740,7 +756,7 @@
         <java classname="test.Main" classpath="${classpath}"
               jvm="${j2se8.jvm}"
               failonerror="true" fork="true">
-            <jvmarg value="-DQuaqua.design=jaguar"/>
+            <jvmarg value="-DQuaqua.design=panther"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
             <arg value="ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF"/>

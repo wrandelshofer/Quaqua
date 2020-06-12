@@ -24,17 +24,9 @@ public abstract class ViewModeControl extends JPanel {
     private ChangeEvent changeEvent = new ChangeEvent(this);
 
     public static ViewModeControl create(int design) {
-        switch (design) {
-        case QuaquaManager.LION:
-        case QuaquaManager.MOUNTAIN_LION:
-        case QuaquaManager.MAVERICKS:
-        case QuaquaManager.YOSEMITE:
-        case QuaquaManager.EL_CAPITAN:
-        case QuaquaManager.SIERRA:
-            return new ch.randelshofer.quaqua.lion.filechooser.ViewModeControl();
-        default:
-            return null;
-        }
+        return design < QuaquaManager.LION
+                ? null
+                : new ch.randelshofer.quaqua.lion.filechooser.ViewModeControl();
     }
 
     public abstract void setSelectedViewMode(int mode);

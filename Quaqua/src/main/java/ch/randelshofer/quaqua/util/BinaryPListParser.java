@@ -334,7 +334,7 @@ public class BinaryPListParser {
         }
 
         // Convert the object table to XML and return it
-        XMLElement root = new XMLElement(new HashMap(), false, false);
+        XMLElement root = new XMLElement();
         root.setName("plist");
         root.setAttribute("version", "1.0");
         convertObjectTableToXML(root, objectTable.get(0));

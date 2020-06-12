@@ -26,7 +26,8 @@ import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
 import ch.randelshofer.quaqua.filechooser.ViewModeControl;
 import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
 import ch.randelshofer.quaqua.lion.filechooser.LionColumnView;
-import ch.randelshofer.quaqua.lion.filechooser.SidebarTreeModel;
+import ch.randelshofer.quaqua.lion.filechooser.OSXLionSidebarTreeModel;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeModel;
 import ch.randelshofer.quaqua.osx.OSXConfiguration;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.util.GroupBox;
@@ -922,7 +923,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         directoryComboBoxModel = createDirectoryComboBoxModel(fc);
         directoryComboBox.setModel(directoryComboBoxModel);
         directoryComboBox.setRenderer(createDirectoryComboBoxRenderer(fc));
-        sidebarTreeModel = new SidebarTreeModel(fc, new TreePath(model.getRoot()), model);
+        sidebarTreeModel = new OSXLionSidebarTreeModel(fc, new TreePath(model.getRoot()), model);
         sidebarTree.setModel(sidebarTreeModel);
         sidebarTree.setCellRenderer(createSidebarCellRenderer(fc));
         for (int i = sidebarTree.getRowCount() - 1; i >= 0; i--) {
@@ -1973,7 +1974,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
     private void doFileSystemViewChanged(PropertyChangeEvent e) {
         boolean isInstalled = model == fileSystemModel;
         fileSystemModel = new FileSystemTreeModel(fc);
-        sidebarTreeModel = new SidebarTreeModel(fc, new TreePath(fileSystemModel.getRoot()), fileSystemModel);
+        sidebarTreeModel = new OSXLionSidebarTreeModel(fc, new TreePath(fileSystemModel.getRoot()), fileSystemModel);
         sidebarTree.setModel(sidebarTreeModel);
 
         if (isInstalled) {
@@ -2194,7 +2195,8 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             finishSelectDirectory(source, fullPath, r);
         } else if (!(model instanceof SavedSearchFileSystemTreeModel)) {
             final File theFile = f;
-            sidebarTreeModel.invokeWhenValid(new Runnable() {
+
+            Runnable runnable = new Runnable() {
                 public void run() {
                     final TreePath sidebarPath = selectViewRoot(theFile, viewMode == ViewModeControl.COLUMN_VIEW);
                     finishSelectDirectory(source, fullPath, r);
@@ -2208,7 +2210,21 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
                         }
                     });
                 }
-            });
+            };
+            if (sidebarTreeModel.isValid()) {
+                runnable.run();
+            } else {
+                PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+                        if (SidebarTreeModel.VALID_PROPERTY.equals(evt.getPropertyName()) && evt.getNewValue()==Boolean.TRUE) {
+                            runnable.run();
+                            sidebarTreeModel.removePropertyChangeListener(this);
+                        }
+                    }
+                };
+                sidebarTreeModel.addPropertyChangeListener(propertyChangeListener);
+            }
         }
     }
 
@@ -3412,9 +3428,6 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
                 TreePath subtreePath = first(activeView.getSelection());
                 TreePath fullPath = subtreeModel.toFullPath(subtreePath);
                 model.validatePath(fullPath);
-                if (sidebarTreeModel != null) {
-                    sidebarTreeModel.lazyValidate();
-                }
             }
             // We update the approve button state here, because the approve
             // button can only be made the default button, if it has a root pane
