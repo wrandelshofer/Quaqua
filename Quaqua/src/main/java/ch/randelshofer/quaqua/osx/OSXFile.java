@@ -3,7 +3,7 @@
  * Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.osx;
-
+import ch.randelshofer.quaqua.QuaquaIconFactory;
 import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFDecodeParam;
@@ -11,7 +11,7 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFImageDecode
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.MemoryCacheSeekableStream;
 import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
 import ch.randelshofer.quaqua.util.Images;
-
+import ch.randelshofer.quaqua.util.ScaledImageIcon;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 /**
  * {@code OSXFile} provides access to Mac OS X file meta data and can resolve
  * file aliases.
@@ -39,7 +38,6 @@ import java.util.Set;
  * @version $Id$
  */
 public class OSXFile {
-
     public final static int FILE_TYPE_ALIAS = 2;
     public final static int FILE_TYPE_DIRECTORY = 1;
     public final static int FILE_TYPE_FILE = 0;
@@ -57,12 +55,10 @@ public class OSXFile {
      * This variable is set to true, if native code is available.
      */
     private static volatile Boolean isNativeCodeAvailable;
-
     private static Icon computerIcon;
     private static String computerModel;
     private static boolean computerModelInitialized;
     private static Icon computerSidebarIcon;
-
     private static final int kLSItemInfoIsPlainFile = 0x00000001; /* Not a directory, volume, or symlink*/
     private static final int kLSItemInfoIsPackage = 0x00000002; /* Packaged directory*/
     private static final int kLSItemInfoIsApplication = 0x00000004; /* Single-file or packaged application*/
@@ -77,7 +73,6 @@ public class OSXFile {
     private static final int kLSItemInfoAppIsScriptable = 0x00000800; /* App can be scripted*/
     private static final int kLSItemInfoIsVolume = 0x00001000; /* Item is a volume*/
     private static final int kLSItemInfoExtensionIsHidden = 0x00100000; /* Item has a hidden extension*/
-
     /**
      * Returns true if native code is available.
      * This method also loads the native code.
@@ -123,7 +118,6 @@ public class OSXFile {
                                 }
                             }
                         }
-
                         if (success) {
                             try {
                                 int nativeCodeVersion = nativeGetNativeCodeVersion();
@@ -136,27 +130,19 @@ public class OSXFile {
                                 success = false;
                             }
                         }
-
                     } finally {
                         isNativeCodeAvailable = Boolean.valueOf(success);
                     }
                 }
-
             }
-
-
         }
         return isNativeCodeAvailable == Boolean.TRUE;
-
-
     }
-
     /**
      * Prevent instance creation.
      */
     private OSXFile() {
     }
-
     /**
      * Converts the path name denoted by the file to an absolute path.
      * Relative paths are always resolved against the home directory of the
@@ -172,98 +158,67 @@ public class OSXFile {
     public static File getAbsoluteFile(File f) {
         if (!f.isAbsolute()) {
             f = new File(QuaquaManager.getProperty("user.home") + File.separatorChar + f.getPath());
-
-
-        } // Windows does not support relative path segments, so we quit here
+        }
         if (File.separatorChar == '\\') {
+            // Windows does not support relative path segments, so we quit here
             return f;
-
-
-        } // The following code assumes that absolute paths start with a
+         }
+        // The following code assumes that absolute paths start with a
         // File.separatorChar.
         StringBuffer buf = new StringBuffer(f.getPath().length());
-
-
         int skip = 0;
-
-
         for (File i = f; i
                 != null; i = i.getParentFile()) {
             String name = i.getName();
-
-
             if (name.equals(".")) {
                 if (skip > 0) {
                     skip--;
-
-
                 }
             } else if (name.equals("..")) {
                 skip++;
-
-
             } else {
                 if (skip > 0) {
                     skip--;
-
-
                 } else {
                     buf.insert(0, name);
                     buf.insert(0, File.separatorChar);
-
-
                 }
             }
         }
-
         return f.getPath().equals(buf.toString()) ? f : new File(buf.toString());
-
-
     }
-
     /**
      * Returns true if this class can work with aliases.
      */
     public static boolean canWorkWithAliases() {
         return isNativeCodeAvailable();
-
-
     }
-
     /**
      * Returns the file type: 0=file, 1=directory, 2=alias, -1=unknown.
      */
     public static int getFileType(File f) {
         if (isNativeCodeAvailable()) {
             int flags = nativeGetBasicItemInfoFlags(f.getAbsolutePath());
-
             if ((flags & kLSItemInfoIsAliasFile) != 0) {
-
                 /*
                   Special case: the program wants to see volumes as directories.
                 */
-
                 if (f.getParent().equals("/Volumes")) {
                     return FILE_TYPE_DIRECTORY;
                 }
-
                 return FILE_TYPE_ALIAS;
             }
-
             if ((flags & kLSItemInfoIsContainer) != 0) {
                 return FILE_TYPE_DIRECTORY;
             }
-
             if ((flags & kLSItemInfoIsPlainFile) != 0) {
                 return FILE_TYPE_FILE;
             }
-
             return FILE_TYPE_UNKNOWN;
         } else {
             return (f.isDirectory()) ? FILE_TYPE_DIRECTORY : ((f.isFile()) ? FILE_TYPE_FILE : FILE_TYPE_UNKNOWN);
         }
     }
-
     /**
      * Resolve a path that may be absolute, relative, or start with ~user.
      */
@@ -271,7 +226,6 @@ public class OSXFile {
         if (path.startsWith("/")) {
             return new File(path);
         }
-
         if (path.startsWith("~")) {
             path = path.substring(1);
             if (path.startsWith("/")) {
@@ -284,23 +238,18 @@ public class OSXFile {
                 return new File("/Users/" + path);
             }
         }
-
         if (currentDirectory == null) {
             String home = System.getProperty("user.home");
             currentDirectory = new File(home);
         }
-
         return new File(currentDirectory, path);
     }
-
     /**
      * Resolve a file by converting all valid aliases in the path.
      */
-
     public static File resolve(File f) {
         return resolveAlias(f, true);
     }
-
     /**
      * Resolve a file by converting all valid aliases in the path.
      *
@@ -315,7 +264,6 @@ public class OSXFile {
                 return null;
             }
             f = new File(path);
-
             //  Cocoa path resolution refuses to follow certain top level links.
             //  If the result is an alias, we may have
             //  one of those top level links. The JDK support for canonical
@@ -324,14 +272,12 @@ public class OSXFile {
                 return f;
             }
         }
-
         try {
             return f.getCanonicalFile();
         } catch (IOException ex) {
             return f;
         }
     }
-
     /**
      * Resolves a serialized Alias to a File object.
      *
@@ -343,28 +289,17 @@ public class OSXFile {
     public static File resolveAlias(byte[] serializedAlias, boolean noUI) {
         if (isNativeCodeAvailable()) {
             String path = nativeResolveAlias(serializedAlias, noUI);
-
-
             return (path == null) ? null : new File(path);
-
-
         } else {
             return null;
-
-
         }
     }
-
-
     /**
      * Returns true if this class can work with labels.
      */
     public static boolean canWorkWithLabels() {
         return isNativeCodeAvailable();
-
-
     }
-
     /**
      * Returns the label of the specified file.
      * The label is a value in the interval from 0 through 7.
@@ -374,15 +309,10 @@ public class OSXFile {
     public static int getLabel(File f) {
         if (isNativeCodeAvailable() && f != null) {
             return nativeGetLabel(f.getAbsolutePath());
-
-
         } else {
             return -1;
-
-
         }
     }
-
     /**
      * Returns the tag names of the specified file.
      * R
@@ -394,7 +324,6 @@ public class OSXFile {
         }
         return result == null ? new String[0] : result;
     }
-
     /**
      * Returns the color of the specified label. Returns null, if the label
      * does not have a color.
@@ -439,12 +368,9 @@ public class OSXFile {
                     }
                 }
             }
-
         }
-
         return (label == -1) ? null : labelColors[label][type];
     }
-
     /**
      * Returns the color of the specified tag name. Returns null, if the tag
      * does not have a color.
@@ -472,8 +398,6 @@ public class OSXFile {
         }
         return getLabelColor(label, type);
     }
-
-
     /**
      * Returns the icon image for the specified file.
      * If the file does not exist, a generic image is returned.
@@ -484,19 +408,14 @@ public class OSXFile {
         if (isNativeCodeAvailable() && file != null) {
             try {
                 byte[] tiffData = nativeGetIconImage(file.getAbsolutePath(), size);
-
-
                 if (tiffData == null) {
                     return null;
                 }
-
                 TIFFImageDecoder decoder = new TIFFImageDecoder(
                         new MemoryCacheSeekableStream(new ByteArrayInputStream(tiffData)),
                         new TIFFDecodeParam());
-
                 RenderedImage rImg = decoder.decodeAsRenderedImage(0);
                 BufferedImage image;
-
                 if (rImg instanceof BufferedImage) {
                     image = (BufferedImage) rImg;
                 } else {
@@ -509,30 +428,19 @@ public class OSXFile {
                             wr,
                             rImg.getColorModel().isAlphaPremultiplied(),
                             null);
-
-
                 } // Scale the image
                 if (image.getWidth() != size) {
                     image = Images.toBufferedImage(image.getScaledInstance(size, size, BufferedImage.SCALE_SMOOTH));
-
-
                 }
                 return image;
-
-
             } catch (IOException ex) {
                 System.err.println("Image decoder failed: " + ex.getMessage());
                 return null;
-
-
             }
         } else {
             return null;
-
-
         }
     }
-
     /**
      * Returns the QuickLook thumbnail image for the specified file.
      * If it could not be created, native code fetches the file's icon instead.
@@ -545,25 +453,17 @@ public class OSXFile {
         if (isNativeCodeAvailable() && file != null) {
             try {
                 byte[] tiffData = nativeGetQuickLookThumbnailImage(file.getAbsolutePath(), size);
-
-
                 if (tiffData == null) {
                     return null;
-
-
                 }
-
+                // FIXME Java 9 supports TIFF images, so we do not need to decode
+                //       them by ourselves
                 TIFFImageDecoder decoder = new TIFFImageDecoder(new MemoryCacheSeekableStream(new ByteArrayInputStream(tiffData)),
                         new TIFFDecodeParam());
-
                 RenderedImage rImg = decoder.decodeAsRenderedImage(0);
                 BufferedImage image;
-
-
                 if (rImg instanceof BufferedImage) {
                     image = (BufferedImage) rImg;
-
-
                 } else {
                     Raster r = rImg.getData();
                     WritableRaster wr = WritableRaster.createWritableRaster(r.getSampleModel(), null);
@@ -572,47 +472,35 @@ public class OSXFile {
                             wr,
                             rImg.getColorModel().isAlphaPremultiplied(),
                             null);
-
-
                 }
                 return image;
-
-
-            } catch (IOException ex) {
+            } catch (RuntimeException|IOException ex) {
+                // Batik throws a RuntimeException if it does not support the
+                // TIFF image version.
                 return null;
-
-
             }
         } else {
             return null;
-
-
         }
     }
-
     /**
      * Returns the icon for the specified file.
      * If the file does not exist, a generic icon is returned.
      */
     public static Icon getIcon(File file, int size) {
-        Image img = getIconImage(file, size);
-
+        boolean hasRetina = QuaquaIconFactory.hasRetinaDisplay();
+        BufferedImage img = getIconImage(file, hasRetina?size*2:size);
         if (img == null) {
             System.err.println("Unable to get system icon for " + file);
         }
-
-        return (img == null) ? UIManager.getIcon("FileView.fileIcon") : new ImageIcon(img);
+        return (img == null) ? UIManager.getIcon("FileView.fileIcon") : new ScaledImageIcon(img,size,size);
     }
-
     /**
      * Returns a QuickLook thumbnail for the specified file.
      */
     public static Icon getQuickLookThumbnail(File file, int size) {
         return new ImageIcon(getQuickLookThumbnailImage(file, size));
-
-
     }
-
     /**
      * Returns the kind string of the specified file. The description is
      * localized in the current Locale of the Finder.
@@ -622,15 +510,10 @@ public class OSXFile {
     public static String getKindString(File file) {
         if (isNativeCodeAvailable() && file != null) {
             return nativeGetKindString(file.getAbsolutePath());
-
-
         } else {
             return null;
-
-
         }
     }
-
     public static boolean isInvisible(File file) {
         if (file != null) {
             if (isNativeCodeAvailable()) {
@@ -642,7 +525,6 @@ public class OSXFile {
         }
         return false;
     }
-
     /**
      * Indicates whether the specified file is a directory that can be traversed
      * into.
@@ -653,19 +535,15 @@ public class OSXFile {
     public static boolean isTraversable(File file) {
         return isTraversable(file, false, false);
     }
-
     public static boolean isTraversable(File file, boolean isPackageTraversable, boolean isApplicationTraversable) {
         if (file == null) {
             return false;
-
         } else if (isNativeCodeAvailable()) {
             int flags = nativeGetBasicItemInfoFlags(file.getAbsolutePath());
-
             if ((flags & kLSItemInfoIsAliasFile) != 0) {
                 file = resolve(file);
                 flags = nativeGetBasicItemInfoFlags(file.getAbsolutePath());
             }
-
             if ((flags & (kLSItemInfoIsPlainFile | kLSItemInfoIsContainer)) == kLSItemInfoIsContainer) {
                 // The file is a container (a volume or directory).
                 boolean isPackage = (flags & kLSItemInfoIsPackage) != 0;
@@ -678,14 +556,11 @@ public class OSXFile {
                     return isPackageTraversable;
                 }
                 return basicIsTraversable(file);
-
             } else if ((flags & kLSItemInfoIsPlainFile) != 0) {
                 return basicIsTraversable(file);
-
             } else if (isVolumes(file.getParent())) {
                 //  Special case: the program wants to see volumes as directories.
                 return true;
-
             } else {
                 return false;
             }
@@ -693,14 +568,11 @@ public class OSXFile {
             return basicIsTraversable(file);
         }
     }
-
     private static boolean isVolumes(String s) {
         return s != null && s.equals("/Volumes");
     }
-
     private static Set<String> nonTraversableDirectories =new HashSet<>(Arrays.asList(
         ".Spotlight-V100", ".DocumentRevisions", ".Trashes"));
-
     private static boolean basicIsTraversable(File f) {
         String name = f.getName();
         if (f.isDirectory()) {
@@ -708,14 +580,11 @@ public class OSXFile {
         } else if (isSavedSearch(f)) {
             return true;
         }
-
         return false;
     }
-
     public static boolean isSavedSearch(File f) {
         return f.getName().endsWith(".savedSearch");
     }
-
     public static Icon getComputerIcon() {
         if (computerIcon == null) {
             String model = getComputerModel();
@@ -734,18 +603,15 @@ public class OSXFile {
                     computerIcon = UIManager.getIcon("FileView.imacIcon");
                 }
             }
-
             if (computerIcon == null) {
                 computerIcon = UIManager.getIcon("FileView.imacIcon");
             }
-
             if (computerIcon == null) {
                 computerIcon = UIManager.getIcon("FileView.computerIcon");
             }
         }
         return computerIcon;
     }
-
     public static Icon getSidebarComputerIcon() {
         if (computerSidebarIcon == null) {
             String model = getComputerModel();
@@ -758,14 +624,12 @@ public class OSXFile {
                     computerSidebarIcon = UIManager.getIcon("FileChooser.sideBarIcon.MacMini");
                 }
             }
-
             if (computerSidebarIcon == null) {
                 computerSidebarIcon = UIManager.getIcon("FileChooser.sideBarIcon.Imac");
             }
         }
         return computerSidebarIcon;
     }
-
     private static String getComputerModel() {
         if (!computerModelInitialized) {
             computerModelInitialized = true;
@@ -779,12 +643,10 @@ public class OSXFile {
         }
         return computerModel;
     }
-
     /**
      * Returns the file type: 0=file, 1=directory, 2=alias, -1=unknown.
      */
     private static native int nativeGetFileType(String path);
-
     /**
      * Resolves an alias to a path String.
      * Returns the same path if the provided path is not an alias.
@@ -795,7 +657,6 @@ public class OSXFile {
      * @return Returns the resolved path. Returns null, if the resolution failed.
      */
     private static native String nativeResolveAlias(String aliasPath, boolean noUI);
-
     /**
      * Resolves a serialized Alias to a path String.
      * Returns null if the resolution failed.
@@ -806,7 +667,6 @@ public class OSXFile {
      * @return Returns the resolved path.
      */
     private static native String nativeResolveAlias(byte[] serializedAlias, boolean noUI);
-
     /**
      * Returns the label of the file specified by the given path.
      * The label is a value in the interval from 0 through 7.
@@ -816,14 +676,12 @@ public class OSXFile {
      * @param path the path to the file.
      */
     private static native int nativeGetLabel(String path);
-
     /**
      * Returns the tag names of the file specified by the given path.
      *
      * @param path the path to the file.
      */
     private static native String[] nativeGetTagNames(String path);
-
     /**
      * Returns the kind of the file specified by the given path.
      * The kind is localized in the current locale of the Finder.
@@ -831,7 +689,6 @@ public class OSXFile {
      * @param path the path to the file.
      */
     private static native String nativeGetKindString(String path);
-
     /**
      * Returns the icon image of a file as a byte array containing TIFF image
      * data. This method may return an image of a different size, if no
@@ -842,7 +699,6 @@ public class OSXFile {
      * @return Byte array with TIFF image data or null in case of failure.
      */
     private static native byte[] nativeGetIconImage(String path, int size);
-
     /**
      * Returns the QuickLook thumbnail image of a file as a byte array containing TIFF image
      * data.
@@ -852,7 +708,6 @@ public class OSXFile {
      * @return Byte array with TIFF image data or null in case of failure.
      */
     private static native byte[] nativeGetQuickLookThumbnailImage(String path, int size);
-
     /**
      * Returns the basic item-information flags of the file specified by the given path.
      * <p>
@@ -890,10 +745,8 @@ public class OSXFile {
      * @param path the path to the file.
      */
     private static native int nativeGetBasicItemInfoFlags(String path);
-
     private static String computerName;
     private static boolean haveFetchedComputerName;
-
     /**
      * Returns the display name of the computer.
      */
@@ -906,7 +759,6 @@ public class OSXFile {
         }
         return computerName;
     }
-
     /**
      * Returns the localized display name of the specified file.
      */
@@ -917,7 +769,6 @@ public class OSXFile {
             return f.getName();
         }
     }
-
     /**
      * Return the time of last use of a file, as recorded by Launch Services. Called the "Date Last Opened" by Finder.
      */
@@ -929,7 +780,6 @@ public class OSXFile {
             return null;
         }
     }
-
     /**
      * Perform a saved search.
      *
@@ -949,7 +799,6 @@ public class OSXFile {
         }
         return null;
     }
-
     /**
      * Returns the name of the file or directory at a given path in a localized
      * form appropriate for presentation to the user.
@@ -958,12 +807,10 @@ public class OSXFile {
      * @return
      */
     private static native String nativeGetDisplayName(String path);
-
     /**
      * Return the time of last use, as recorded by Launch Services. Called the "Date Last Opened" by Finder.
      */
     private static native long nativeGetLastUsedDate(String path);
-
     /**
      * Perform a saved search.
      *
@@ -972,8 +819,6 @@ public class OSXFile {
      * performed.
      */
     private static native String[] nativeExecuteSavedSearch(String path);
-
-
     /**
      * Returns the version of the native code library. If the version
      * does not match with the version that we expect, we can not use
@@ -991,11 +836,9 @@ public class OSXFile {
         TIME_MACHINE_VOLUME,
         /** Its the home folder of a user. */
         HOME_FOLDER,
-
         /** Its a regular file or folder. */
         REGULAR
     }
-
     /**
      * Gets the extende file type from the file system.
      * This may take several seconds.
@@ -1019,7 +862,6 @@ public class OSXFile {
                 } else if (isTraversable && parentFile.getPath().equals("/Users")) {
                     return ExtendedFileType.HOME_FOLDER;
                 }
-
             }
         }
         return ExtendedFileType.REGULAR;

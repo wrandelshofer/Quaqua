@@ -17,7 +17,9 @@ import ch.randelshofer.quaqua.osx.OSXApplication;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXImageIO;
 import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.ScaledImageIcon;
 import ch.randelshofer.quaqua.util.Worker;
+import sun.awt.CGraphicsDevice;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -29,10 +31,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.File;
@@ -272,6 +277,63 @@ public class QuaquaIconFactory {
             return null;
         }
     }
+    private static Boolean hasRetinaDisplay;
+    public static boolean hasRetinaDisplay() {
+        if (hasRetinaDisplay==null) {
+            // find the display device of interest
+            final GraphicsDevice defaultScreenDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+            // on OS X, it would be CGraphicsDevice
+            if (defaultScreenDevice instanceof CGraphicsDevice) {
+                final CGraphicsDevice device = (CGraphicsDevice) defaultScreenDevice;
+
+                // this is the missing correction factor, it's equal to 2 on HiDPI a.k.a. Retina displays
+                final int scaleFactor = device.getScaleFactor();
+                hasRetinaDisplay=scaleFactor == 2;
+
+            }else
+            hasRetinaDisplay= false;
+        }
+        return hasRetinaDisplay;
+    }
+
+    public static Icon createNativeSidebarIconCatalina(String path, int width, int height, Color color, Color selectedColor) {
+        try {
+            boolean isRetina = hasRetinaDisplay();
+            int scaledWidth = isRetina ? width * 2 : width;
+            int scaledHeight = isRetina ? height * 2 : height;
+
+            BufferedImage img;
+            img = Images.toBufferedImage((Image) OSXImageIO.read(new File(path), scaledWidth, scaledHeight));
+            if (img == null) {
+                return null;
+            }
+
+            RescaleOp rop = new RescaleOp(new float[]{1f, 1f, 1f, 1f}, new float[]{0f, 0f, 0f, 0f}, null);
+
+            BufferedImage iconImg = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+            Graphics2D g = iconImg.createGraphics();
+            g.setComposite(AlphaComposite.Src);
+            g.drawImage(img, rop, 0, 0);
+            g.setComposite(AlphaComposite.SrcIn);
+            g.setColor(color);
+            g.fillRect(0, 0, scaledWidth, scaledHeight);
+            g.dispose();
+
+            BufferedImage whiteImg = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+            g = whiteImg.createGraphics();
+            g.setComposite(AlphaComposite.Src);
+            g.drawImage(img, rop, 0, 0);
+            g.setComposite(AlphaComposite.SrcIn);
+            g.setColor(selectedColor);
+            g.fillRect(0, 0, scaledWidth, scaledHeight);
+            g.dispose();
+
+            return new ListStateIcon(new ScaledImageIcon(iconImg, width, height), new ScaledImageIcon(whiteImg, width, height));
+        } catch (IOException ex) {
+            return null;
+        }
+    }
 
     public static Icon createNativeSidebarIcon(String path, int width, int height, Color color, Color selectedColor) {
         try {
@@ -281,10 +343,11 @@ public class QuaquaIconFactory {
                 return null;
             }
 
+            RescaleOp rop = new RescaleOp(new float[]{1f, 1f, 1f, 1f}, new float[]{0f, 0f, 0f, 0f}, null);
+
             BufferedImage iconImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
             Graphics2D g = iconImg.createGraphics();
             g.setComposite(AlphaComposite.Src);
-            RescaleOp rop = new RescaleOp(new float[]{1f, 1f, 1f, 0.9f}, new float[]{0f, 0f, 0f, 0f}, null);
             g.drawImage(img, rop, 0, 0);
             g.setComposite(AlphaComposite.SrcIn);
             g.setColor(color);
@@ -294,13 +357,12 @@ public class QuaquaIconFactory {
             BufferedImage whiteImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
             g = whiteImg.createGraphics();
             g.setComposite(AlphaComposite.Src);
-            //rop=new RescaleOp(new float[]{1f,1f,1f,0.9f},new float[]{0f,0f,0f,0f},null);
-            //BandCombineOp bop=new BandCombineOp(new float[][]{{1f,0f,0f,0f,0f},{0f,1f,0f,0f,0f},{0f,0f,1f,0f,0f},{1f,0f,0f,0f,0f}},null);
             g.drawImage(img, rop, 0, 0);
             g.setComposite(AlphaComposite.SrcIn);
             g.setColor(selectedColor);
             g.fillRect(0, 0, width, height);
             g.dispose();
+
             BufferedImage selectedImg = new BufferedImage(width, height + 1, BufferedImage.TYPE_INT_ARGB_PRE);
             g = selectedImg.createGraphics();
             g.drawImage(iconImg, 0, 1, null);

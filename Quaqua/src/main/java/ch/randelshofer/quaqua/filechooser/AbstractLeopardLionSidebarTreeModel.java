@@ -4,7 +4,6 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.ext.base64.Base64;
 import ch.randelshofer.quaqua.ext.nanoxml.XMLElement;
 import ch.randelshofer.quaqua.ext.nanoxml.XMLParseException;
@@ -19,6 +18,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -101,6 +101,9 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
         ArrayList<Node> userItems = new ArrayList<>();
 
         File sidebarFile = defaults.getSidebarFile();
+        if (sidebarFile == null) {
+            throw new FileNotFoundException("You have no sidebar file specified.");
+        }
         try (FileReader reader = new FileReader(sidebarFile)) {
             XMLElement xml = new XMLElement();
             try {
@@ -291,8 +294,8 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
             }
         }
 
-        int from=initialFrom;
-        int to=initialTo;
+        int from = initialFrom;
+        int to = initialTo;
 
         // Remove nodes from the view which are not present in the file system model
         for (int i = to - 1; i >= from; i--) {
@@ -311,7 +314,7 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
         // in the view. Only add non-leaf nodes
 
         if (computerNode != null && !isInDeviceNode(computerNode, sidebarDevicesNode, from, to)) {
-            if (!isInDeviceNode(computerNode, sidebarDevicesNode, from ,to)) {
+            if (!isInDeviceNode(computerNode, sidebarDevicesNode, from, to)) {
                 addToDeviceNode(computerNode, sidebarDevicesNode, to++);
             }
         }
@@ -320,7 +323,7 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
             FileSystemTreeModel.Node modelNode = (FileSystemTreeModel.Node) modelDevicesNode.getChildAt(i);
             if (isDevice(modelNode)) {
                 if (!isInDeviceNode(modelNode, sidebarDevicesNode, from, to)) {
-                    addToDeviceNode(modelNode,sidebarDevicesNode, to++);
+                    addToDeviceNode(modelNode, sidebarDevicesNode, to++);
                 }
             }
         }
@@ -328,15 +331,15 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
         //  We need to sort the entire collection every time because we do not
         //  know when the preferences file will be read (and the preferences
         //  file determines the order).
-        int count = to- from;
+        int count = to - from;
         if (count > 0) {
             MutableTreeNode[] children = new MutableTreeNode[count];
             for (int i = 0; i < count; i++) {
-                TreeNode childNode = sidebarDevicesNode.getChildAt(i+from);
+                TreeNode childNode = sidebarDevicesNode.getChildAt(i + from);
                 children[i] = (MutableTreeNode) childNode;
             }
             Arrays.sort(children, new AbstractLeopardLionSidebarTreeModel.SideBarViewToModelNodeComparator());
-            for (int i=0;i<count;i++) {
+            for (int i = 0; i < count; i++) {
                 sidebarDevicesNode.remove(from);
             }
             for (int i = 0; i < count; i++) {
@@ -345,12 +348,12 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
         }
 
         // Update the view
-        if (to-from>0) {
-            int[] childIndices = new int[to-from];
-            Object[] childNodes = new Object[to-from];
+        if (to - from > 0) {
+            int[] childIndices = new int[to - from];
+            Object[] childNodes = new Object[to - from];
             for (int i = from; i < to; i++) {
-                childIndices[i-from] = i;
-                childNodes[i-from] = sidebarDevicesNode.getChildAt(i);
+                childIndices[i - from] = i;
+                childNodes[i - from] = sidebarDevicesNode.getChildAt(i);
             }
             fireTreeNodesChanged(this, sidebarDevicesNode.getPath(), childIndices, childNodes);
         }
@@ -358,18 +361,18 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
 
 
     protected void updateFavorites(ArrayList<DefaultMutableTreeNode> freshFavorites) {
-        updateFavoritesInNode(freshFavorites,favoritesNode,0,favoritesNode.getChildCount());
+        updateFavoritesInNode(freshFavorites, favoritesNode, 0, favoritesNode.getChildCount());
     }
 
-   protected void updateFavoritesInNode(ArrayList<DefaultMutableTreeNode> freshFavorites, DefaultMutableTreeNode favoritesNode, int from, int initialTo) {
-        int to=initialTo;
-        int oldCount = to-from;
+    protected void updateFavoritesInNode(ArrayList<DefaultMutableTreeNode> freshFavorites, DefaultMutableTreeNode favoritesNode, int from, int initialTo) {
+        int to = initialTo;
+        int oldCount = to - from;
         if (oldCount > 0) {
             int[] removedIndices = new int[oldCount];
             Object[] removedChildren = new Object[oldCount];
             for (int i = 0; i < oldCount; i++) {
-                removedIndices[i] = i+from;
-                removedChildren[i] = favoritesNode.getChildAt(i+from);
+                removedIndices[i] = i + from;
+                removedChildren[i] = favoritesNode.getChildAt(i + from);
                 favoritesNode.remove(to--);
             }
             fireTreeNodesRemoved(
@@ -382,12 +385,12 @@ public abstract class AbstractLeopardLionSidebarTreeModel extends AbstractSideba
             int[] insertedIndices = new int[freshFavorites.size()];
             Object[] insertedChildren = new Object[freshFavorites.size()];
             for (int i = 0; i < freshFavorites.size(); i++) {
-                insertedIndices[i] = i+from;
+                insertedIndices[i] = i + from;
                 insertedChildren[i] = freshFavorites.get(i);
                 if (freshFavorites.get(i) == null) {
-                    favoritesNode.insert(new DefaultMutableTreeNode("null?"),to++);
+                    favoritesNode.insert(new DefaultMutableTreeNode("null?"), to++);
                 } else {
-                    favoritesNode.insert(freshFavorites.get(i),to++);
+                    favoritesNode.insert(freshFavorites.get(i), to++);
                 }
             }
             fireTreeNodesInserted(

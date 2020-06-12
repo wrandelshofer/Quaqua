@@ -195,8 +195,8 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
 
 
         String sideBarIconsPrefix = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Sidebar";
-        ColorUIResource sideBarIconColor = new ColorUIResource(125, 134, 147);
-        ColorUIResource sideBarIconSelectionColor = new ColorUIResource(0xffffff);
+        ColorUIResource sideBarIconColor = new ColorUIResource(0x686B6B6B);
+        ColorUIResource sideBarIconSelectionColor = new ColorUIResource(0x73373737);
         Object scrollBarThumb = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.lion.QuaquaLionScrollBarThumbBorder");
         Object scrollBarTrack = new UIDefaults.ProxyLazyValue(
@@ -237,6 +237,7 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 "FileChooser.autovalidate", Boolean.TRUE,
                 "FileChooser.enforceQuaquaTreeUI", Boolean.TRUE,
                 //
+                "FileChooser.quickLookEnabled",true,
                 "FileChooser.previewLabelForeground", new ColorUIResource(0x6d6d6d),
                 "FileChooser.previewValueForeground", new ColorUIResource(0x000000),
                 "FileChooser.previewLabelInsets", new InsetsUIResource(1, 0, 0, 4),
@@ -571,6 +572,11 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
         }
         putDefaults(table, uiDefaults);
 
+    }
+    public static Object makeNativeSidebarIcon(String path, int size, Color color, Color selectionColor) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeSidebarIconCatalina",
+                new Object[]{path, size, size, color, selectionColor});
     }
 
 }

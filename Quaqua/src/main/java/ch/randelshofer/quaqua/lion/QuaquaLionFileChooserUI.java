@@ -2164,7 +2164,8 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
                 && OSXFile.isSavedSearch(f)) {
             installModel(getSavedSearchTreeModel(f));
         } else {
-            f = toTraversableFile(f);
+            // Do not call toTraversableFile her, We must not perform IO on the EDT thread!
+            //f = toTraversableFile(f);
             if (viewMode != ViewModeControl.COLUMN_VIEW
                     || source == SELECT_DIRECTORY_FROM_SIDEBAR || model.toPath(f, null) == null) {
                 ensureFileSystemModel();

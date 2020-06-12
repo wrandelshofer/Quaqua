@@ -78,11 +78,11 @@ public class QuaquaFileView extends FileView {
     }
 
     /**
-     * Whether the directory is traversable or not. This might be
+     * Whether the file is traversable or not. This might be
      * useful, for example, if you want a directory to represent
      * a compound document and don't want the user to descend into it.
      */
     public Boolean isTraversable(File f) {
-        return OSXFile.isTraversable(f, isPackageTraversable, isApplicationTraversable);
+        return fsv.isTraversable(f);
     }
 }

@@ -74,7 +74,7 @@ public class LionFilePreview extends JPanel implements BrowserPreviewRenderer {
 
         previewImageView = new ScaledImageView();
         previewImageView.setMinimumSize(new Dimension(128, 128));
-        previewImageView.setPreferredSize(new Dimension(128, 128));
+        previewImageView.setPreferredSize(new Dimension(1024, 1024));
         setBorder(BorderFactory.createEmptyBorder(3, 4, 4, 4));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -185,7 +185,6 @@ public class LionFilePreview extends JPanel implements BrowserPreviewRenderer {
     }
 
     public Component getPreviewRendererComponent(JBrowser browser, TreePath[] paths) {
-
         if (paths.length > 1) {
             return emptyPreview;
         }
@@ -344,9 +343,8 @@ public class LionFilePreview extends JPanel implements BrowserPreviewRenderer {
 
                     public BufferedImage construct() {
                         BufferedImage o = null;
-                        if (UIManager.getBoolean("FileChooser.quickLookEnabled") &&
-                                System.getProperty("os.version").compareTo("10.6") >= 0) {
-                            o = OSXFile.getQuickLookThumbnailImage(file, 800);
+                        if (UIManager.getBoolean("FileChooser.quickLookEnabled")) {
+                            o = OSXFile.getQuickLookThumbnailImage(file, 512);
                         }
                         if (o == null) {
                             return OSXFile.getIconImage(file, 512);
@@ -361,6 +359,7 @@ public class LionFilePreview extends JPanel implements BrowserPreviewRenderer {
                         isFileIconAvailable = fileIconImage != null;
                         if (isFileIconAvailable) {
                             previewImageView.setImage(fileIconImage);
+                            previewImageView.setVisible(true);
                         } else {
                             previewImageView.setVisible(false);
                         }

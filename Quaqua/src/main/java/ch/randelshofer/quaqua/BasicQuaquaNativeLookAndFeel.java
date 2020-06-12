@@ -1659,6 +1659,8 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         Boolean enforceVisualMargin = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.enforceVisualMargin", "false"));
 
         Object[] uiDefaults = {
+                "Quaqua.retina",QuaquaIconFactory.hasRetinaDisplay(),
+
                 "Browser.sizeHandleIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
                 new Object[]{commonDir + "Browser.sizeHandleIcon.png", 1, Boolean.TRUE, 1}),
                 //

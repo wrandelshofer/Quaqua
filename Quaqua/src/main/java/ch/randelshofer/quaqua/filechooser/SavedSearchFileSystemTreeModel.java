@@ -66,8 +66,7 @@ public class SavedSearchFileSystemTreeModel extends FileSystemTreeModel {
     public class SavedSearchNode extends DirectoryNode {
 
         public SavedSearchNode(File savedSearchFile, boolean isHidden) {
-            super(savedSearchFile, isHidden);
-            setTraversable(true);
+            super(savedSearchFile, isHidden,true);
         }
 
         @Override

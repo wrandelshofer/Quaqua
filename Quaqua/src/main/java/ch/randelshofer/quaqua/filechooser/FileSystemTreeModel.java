@@ -281,7 +281,7 @@ public class FileSystemTreeModel implements TreeModel {
      * alias to file, or alias to directory) and depending on the "resolveAliases"
      * property.
      */
-    protected Node createNode(File f) {
+    protected Node createNode(File f, Boolean isTraversable) {
         // Determine file type
         File resolvedFile = null;
         int fileType = OSXFile.getFileType(f);
@@ -300,25 +300,24 @@ public class FileSystemTreeModel implements TreeModel {
             resolvedFile = f;
             isDirectory = fileType == OSXFile.FILE_TYPE_DIRECTORY;
         }
+        /*
         boolean isTraversable;
         if (UIManager.getBoolean("FileChooser.speed")) {
             isTraversable = isDirectory;
         } else {
             isTraversable = fileChooser.isTraversable(resolvedFile);
-        }
+        }*/
         // Create node
         Node node;
         if (isAlias) {
             if (isDirectory) {
-                node = new AliasDirectoryNode(f, resolvedFile, isHidden);
-                node.setTraversable(isTraversable);
+                node = new AliasDirectoryNode(f, resolvedFile, isHidden,isTraversable);
             } else {
                 node = new AliasNode(f, resolvedFile, isHidden);
             }
         } else {
             if (isDirectory) {
-                node = new DirectoryNode(f, isHidden);
-                node.setTraversable(isTraversable);
+                node = new DirectoryNode(f, isHidden,isTraversable);
             } else {
                 node = new Node(f, isHidden);
             }
@@ -404,7 +403,7 @@ public class FileSystemTreeModel implements TreeModel {
             }
 
             if (index == -1) {
-                Node newChild = createNode(childFile);
+                Node newChild = createNode(childFile,index<list.size()-1?true:null);
                 insertNodeInto(newChild, node, getInsertionIndexForNode(node, newChild));
                 node = newChild;
             } else {
@@ -452,7 +451,7 @@ public class FileSystemTreeModel implements TreeModel {
             File childFile = (File) list.get(i);
             int index = getIndexOfChildForFile(node, childFile);
             if (index == -1) {
-                Node newChild = createNode(childFile);
+                Node newChild = createNode(childFile,i<list.size()-1?true:null);
                 insertNodeInto(newChild, node, getInsertionIndexForNode(node, newChild));
                 node = newChild;
             } else {
@@ -944,14 +943,6 @@ public class FileSystemTreeModel implements TreeModel {
         }
 
         /**
-         * Changes the traversability of a directory node.
-         * This method has no effect on non-directory nodes.
-         */
-        public void setTraversable(boolean newValue) {
-
-        }
-
-        /**
          * Returns true, if the file may be selected as a valid output selection of the file chooser. (Selection of a
          * traversable item is a separate concept.)
          */
@@ -1297,7 +1288,7 @@ public class FileSystemTreeModel implements TreeModel {
         /**
          * Whether the directory is traversable.
          */
-        private Boolean isTraversable;
+        private volatile Boolean isTraversable;
 
         private class DirectoryValidator implements Runnable {
 
@@ -1355,7 +1346,6 @@ public class FileSystemTreeModel implements TreeModel {
                     return;
                 }
 
-
                 // Step 1.2 For each fresh file:
                 //          - Determine its type
                 //          - If it is an alias, resolve it
@@ -1412,16 +1402,14 @@ public class FileSystemTreeModel implements TreeModel {
                         //       be done in the other method.
                         if (freshIsAlias) {
                             if (freshIsDirectory) {
-                                Node n = new AliasDirectoryNode(freshFile, resolvedFreshFile, freshIsHidden);
-                                n.setTraversable(freshIsTraversable);
+                                Node n = new AliasDirectoryNode(freshFile, resolvedFreshFile, freshIsHidden, freshIsTraversable);
                                 freshNodeList.add(n);
                             } else {
                                 freshNodeList.add(new AliasNode(freshFile, resolvedFreshFile, freshIsHidden));
                             }
                         } else {
                             if (freshIsDirectory) {
-                                Node n = new DirectoryNode(freshFile, freshIsHidden);
-                                n.setTraversable(freshIsTraversable);
+                                Node n = new DirectoryNode(freshFile, freshIsHidden, freshIsTraversable);
                                 freshNodeList.add(n);
                             } else {
                                 freshNodeList.add(new Node(freshFile, freshIsHidden));
@@ -1619,22 +1607,23 @@ public class FileSystemTreeModel implements TreeModel {
          */
         private long bestBeforeTimeMillis = 0;
 
-        public DirectoryNode(File file, boolean isHidden) {
+        public DirectoryNode(File file, boolean isHidden, Boolean isTraversable) {
             super(file, isHidden);
             // No need to check for exists() && isTraversable in the code below,
             // because we are only creating DirectoryNode's for files of which we
-            // know that they exist, and that they are traversable
+            // know that they exist, and whether they are traversable
             /*
             if (file != null
             && file.exists()
             && ! fileChooser.isTraversable(file)) {
             cacheInvalidationTime = Long.MAX_VALUE;
             }*/
+            setTraversable(isTraversable);
         }
 
         @Override
         public long getFileLength() {
-            return -1l;
+            return -1L;
         }
 
         @Override
@@ -1646,8 +1635,7 @@ public class FileSystemTreeModel implements TreeModel {
          * Changes the traversability of a directory node.
          * This method has no effect on non-directory nodes.
          */
-        @Override
-        public void setTraversable(boolean newValue) {
+        protected void setTraversable(Boolean newValue) {
             isTraversable = newValue;
         }
 
@@ -1902,7 +1890,7 @@ public class FileSystemTreeModel implements TreeModel {
     private class RootNode extends DirectoryNode {
 
         public RootNode(File rootFile) {
-            super(rootFile, false);
+            super(rootFile, false,true);
         }
 
         @Override
@@ -2026,8 +2014,8 @@ public class FileSystemTreeModel implements TreeModel {
          */
         private Worker<File> resolver;
 
-        public AliasDirectoryNode(File aliasFile, File resolvedFile, boolean isHidden) {
-            super(aliasFile, isHidden);
+        public AliasDirectoryNode(File aliasFile, File resolvedFile, boolean isHidden, Boolean isTraversable) {
+            super(aliasFile, isHidden,isTraversable);
             this.resolvedFile = resolvedFile;
         }
 

@@ -76,7 +76,9 @@ import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.EventListener;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -1325,7 +1327,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             case 1:
                 if (treeModel.isLeaf(paths[0].getLastPathComponent())) {
                     p.removeAll();
-                    p.add(previewRenderer.getPreviewRendererComponent(this, paths));
+                    Component previewRendererComponent = previewRenderer.getPreviewRendererComponent(this, paths);
+                    p.add(previewRendererComponent);
                     setPreviewColumnWidth(getPreviewColumnWidth());
                     add(previewColumn);
                 } else {
@@ -2082,7 +2085,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
     }
 
-    protected static class BrowserLayout implements LayoutManager {
+    protected  class BrowserLayout implements LayoutManager {
 
         private int preferredWidth = 0, preferredHeight = 0;
         private boolean sizeUnknown = true;
@@ -2182,6 +2185,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     previousWidth = cwidth;
                     previousHeight = cheight;
                 }
+            }
+            if (previewColumn!=null) {
+                SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
+                p.setPreferredHeight(b.getHeight());
             }
         }
     }
