@@ -315,9 +315,12 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
     }
 
     /**
-     * A key listener that implements keyboard shortcuts that use text characters. By handling the key typed event, we
-     * (hopefully) avoid a race condition observed in Java 1.6 when the shortcut was implemented using an input map. The
-     * input map processes key pressed events. On occasion, the subsequent key typed event would be processed by the
+     * A key listener that implements keyboard shortcuts that use text characters.
+     * By handling the key typed event, we
+     * (hopefully) avoid a race condition observed in Java 1.6 when the shortcut
+     * was implemented using an input map. The
+     * input map processes key pressed events. On occasion, the subsequent key
+     * typed event would be processed by the
      * sheet, resulting in a doubling of the shortcut character in the text field.
      */
     private class TextKeyListener extends KeyAdapter {
@@ -814,6 +817,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             sidebarTree.setUI(new SidebarTreeUI());
         }
         sidebarTree.putClientProperty("Quaqua.Tree.style", "sideBar");
+        sidebarTree.setRequestFocusEnabled(false);
 
         // sidebarTree must use largest font used by the TreeCellRenderer
         //   sidebarTree.setFont(UIManager.getFont("Tree.sideBar.selectionFont"));
@@ -2572,6 +2576,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
                 }
             }
             putClientProperty("Quaqua.selected", isSelected);
+            putClientProperty("Quaqua.focused", cellHasFocus);
             return this;
         }
 

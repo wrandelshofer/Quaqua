@@ -2338,9 +2338,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 break;
             }
             }
-
-            JBrowser.this.requestFocusInWindow();
-
             updatePreviewColumn();
 
             //validate();

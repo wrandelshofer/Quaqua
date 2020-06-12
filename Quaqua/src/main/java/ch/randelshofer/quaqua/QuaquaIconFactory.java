@@ -297,12 +297,62 @@ public class QuaquaIconFactory {
         return hasRetinaDisplay;
     }
 
-    public static Icon createNativeSidebarIconCatalina(String path, int width, int height, Color color, Color selectedColor) {
+    public static Icon createNativeYosemiteSidebarIcon(String path, int width, int height, Color color,
+                                                       Color selectedColor,Color selectedAndFocusedColor) {
         try {
             boolean isRetina = hasRetinaDisplay();
             int scaledWidth = isRetina ? width * 2 : width;
             int scaledHeight = isRetina ? height * 2 : height;
 
+            BufferedImage img;
+            img = Images.toBufferedImage((Image) OSXImageIO.read(new File(path), scaledWidth, scaledHeight));
+            if (img == null) {
+                return null;
+            }
+
+            RescaleOp rop = new RescaleOp(new float[]{1f, 1f, 1f, 1f}, new float[]{0f, 0f, 0f, 0f}, null);
+
+            BufferedImage iconImg = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+            Graphics2D g = iconImg.createGraphics();
+            g.setComposite(AlphaComposite.Src);
+            g.drawImage(img, rop, 0, 0);
+            g.setComposite(AlphaComposite.SrcIn);
+            g.setColor(color);
+            g.fillRect(0, 0, scaledWidth, scaledHeight);
+            g.dispose();
+
+            BufferedImage selectedImg = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+            g = selectedImg.createGraphics();
+            g.setComposite(AlphaComposite.Src);
+            g.drawImage(img, rop, 0, 0);
+            g.setComposite(AlphaComposite.SrcIn);
+            g.setColor(selectedColor);
+            g.fillRect(0, 0, scaledWidth, scaledHeight);
+            g.dispose();
+
+            BufferedImage selectedAndFocusedImg = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+            g = selectedAndFocusedImg.createGraphics();
+            g.setComposite(AlphaComposite.Src);
+            g.drawImage(img, rop, 0, 0);
+            g.setComposite(AlphaComposite.SrcIn);
+            g.setColor(selectedAndFocusedColor);
+            g.fillRect(0, 0, scaledWidth, scaledHeight);
+            g.dispose();
+
+            return new ListStateIcon(new ScaledImageIcon(iconImg, width, height),
+                    new ScaledImageIcon(selectedImg, width, height),
+                    new ScaledImageIcon(selectedAndFocusedImg, width, height));
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
+    public static Icon createNativeSidebarIcon(String path, int width, int height, Color color, Color selectedColor) {
+        boolean isRetina = hasRetinaDisplay();
+        int scaledWidth = isRetina ? width * 2 : width;
+        int scaledHeight = isRetina ? height * 2 : height;
+
+        try {
             BufferedImage img;
             img = Images.toBufferedImage((Image) OSXImageIO.read(new File(path), scaledWidth, scaledHeight));
             if (img == null) {
@@ -329,48 +379,14 @@ public class QuaquaIconFactory {
             g.fillRect(0, 0, scaledWidth, scaledHeight);
             g.dispose();
 
-            return new ListStateIcon(new ScaledImageIcon(iconImg, width, height), new ScaledImageIcon(whiteImg, width, height));
-        } catch (IOException ex) {
-            return null;
-        }
-    }
-
-    public static Icon createNativeSidebarIcon(String path, int width, int height, Color color, Color selectedColor) {
-        try {
-            BufferedImage img;
-            img = Images.toBufferedImage((Image) OSXImageIO.read(new File(path), width, height));
-            if (img == null) {
-                return null;
-            }
-
-            RescaleOp rop = new RescaleOp(new float[]{1f, 1f, 1f, 1f}, new float[]{0f, 0f, 0f, 0f}, null);
-
-            BufferedImage iconImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
-            Graphics2D g = iconImg.createGraphics();
-            g.setComposite(AlphaComposite.Src);
-            g.drawImage(img, rop, 0, 0);
-            g.setComposite(AlphaComposite.SrcIn);
-            g.setColor(color);
-            g.fillRect(0, 0, width, height);
-            g.dispose();
-
-            BufferedImage whiteImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
-            g = whiteImg.createGraphics();
-            g.setComposite(AlphaComposite.Src);
-            g.drawImage(img, rop, 0, 0);
-            g.setComposite(AlphaComposite.SrcIn);
-            g.setColor(selectedColor);
-            g.fillRect(0, 0, width, height);
-            g.dispose();
-
-            BufferedImage selectedImg = new BufferedImage(width, height + 1, BufferedImage.TYPE_INT_ARGB_PRE);
+            BufferedImage selectedImg = new BufferedImage(scaledWidth, scaledHeight + 1, BufferedImage.TYPE_INT_ARGB_PRE);
             g = selectedImg.createGraphics();
             g.drawImage(iconImg, 0, 1, null);
             g.drawImage(whiteImg, 0, 0, null);
             g.dispose();
             whiteImg.flush();
 
-            return new ListStateIcon(new ImageIcon(iconImg), new ImageIcon(selectedImg));
+            return new ListStateIcon(new ScaledImageIcon(iconImg,width,height), new ScaledImageIcon(selectedImg,width,height));
         } catch (IOException ex) {
             return null;
         }

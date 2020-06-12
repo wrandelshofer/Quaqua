@@ -81,8 +81,10 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
                 "ch.randelshofer.quaqua.QuaquaNativeScrollPaneBorder"
         );
         String sideBarIconsPrefix = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Sidebar";
-        ColorUIResource sideBarIconColor = new ColorUIResource(125, 134, 147);
-        ColorUIResource sideBarIconSelectionColor = new ColorUIResource(0xffffff);
+        ColorUIResource sideBarIconColor = new ColorUIResource(0x686B6B6B);
+        ColorUIResource sideBarIconSelectionColor = new ColorUIResource(0x73373737);
+        ColorUIResource sideBarIconSelectedAndFocusedColor = new ColorUIResource(0xB9D2FC);
+
         Object scrollBarThumb = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.lion.QuaquaLionScrollBarThumbBorder");
         Object scrollBarTrack = new UIDefaults.ProxyLazyValue(
@@ -139,31 +141,31 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
                 "FileChooser.browserCellTextArrowIconGap", 5,
                 "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
                 "FileChooser.sheetErrorFont", new FontUIResource(baseSystemFontName, Font.PLAIN, 10),
-                "FileChooser.sideBarIcon.Applications", makeNativeSidebarIcon(sideBarIconsPrefix + "ApplicationsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Desktop", makeNativeSidebarIcon(sideBarIconsPrefix + "DesktopFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Documents", makeNativeSidebarIcon(sideBarIconsPrefix + "DocumentsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Downloads", makeNativeSidebarIcon(sideBarIconsPrefix + "DownloadsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Dropbox", makeNativeSidebarIcon(sideBarIconsPrefix + "DropBoxFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Home", makeNativeSidebarIcon(sideBarIconsPrefix + "HomeFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Library", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Movies", makeNativeSidebarIcon(sideBarIconsPrefix + "MoviesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor), // Note: no "s" in "Movie"
-                "FileChooser.sideBarIcon.Music", makeNativeSidebarIcon(sideBarIconsPrefix + "MusicFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Network", makeNativeSidebarIcon(sideBarIconsPrefix + "Network.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Pictures", makeNativeSidebarIcon(sideBarIconsPrefix + "PicturesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Public", makeNativeSidebarIcon(sideBarIconsPrefix + "DropBoxFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Shared", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Sites", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Utilities", makeNativeSidebarIcon(sideBarIconsPrefix + "UtilitiesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.GenericFolder", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.GenericFile", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFile.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.GenericVolume", makeNativeSidebarIcon(sideBarIconsPrefix + "InternalDisk.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.SmartFolder", makeNativeSidebarIcon(sideBarIconsPrefix + "SmartFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.TimeMachineVolume", makeNativeSidebarIcon(sideBarIconsPrefix + "TimeMachine.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+                "FileChooser.sideBarIcon.Applications", makeNativeSidebarIcon(sideBarIconsPrefix + "ApplicationsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Desktop", makeNativeSidebarIcon(sideBarIconsPrefix + "DesktopFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Documents", makeNativeSidebarIcon(sideBarIconsPrefix + "DocumentsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Downloads", makeNativeSidebarIcon(sideBarIconsPrefix + "DownloadsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Dropbox", makeNativeSidebarIcon(sideBarIconsPrefix + "DropBoxFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Home", makeNativeSidebarIcon(sideBarIconsPrefix + "HomeFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Library", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Movies", makeNativeSidebarIcon(sideBarIconsPrefix + "MoviesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor), // Note: no "s" in "Movie"
+                "FileChooser.sideBarIcon.Music", makeNativeSidebarIcon(sideBarIconsPrefix + "MusicFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Network", makeNativeSidebarIcon(sideBarIconsPrefix + "Network.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Pictures", makeNativeSidebarIcon(sideBarIconsPrefix + "PicturesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Public", makeNativeSidebarIcon(sideBarIconsPrefix + "DropBoxFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Shared", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Sites", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Utilities", makeNativeSidebarIcon(sideBarIconsPrefix + "UtilitiesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.GenericFolder", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.GenericFile", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFile.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.GenericVolume", makeNativeSidebarIcon(sideBarIconsPrefix + "InternalDisk.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.SmartFolder", makeNativeSidebarIcon(sideBarIconsPrefix + "SmartFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.TimeMachineVolume", makeNativeSidebarIcon(sideBarIconsPrefix + "TimeMachine.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
                 //
-                "FileChooser.sideBarIcon.Imac", makeNativeSidebarIcon(sideBarIconsPrefix + "iMac.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.MacPro", makeNativeSidebarIcon(sideBarIconsPrefix + "MacPro.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.MacMini", makeNativeSidebarIcon(sideBarIconsPrefix + "MacMini.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
-                "FileChooser.sideBarIcon.Laptop", makeNativeSidebarIcon(sideBarIconsPrefix + "Laptop.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+                "FileChooser.sideBarIcon.Imac", makeNativeSidebarIcon(sideBarIconsPrefix + "iMac.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.MacPro", makeNativeSidebarIcon(sideBarIconsPrefix + "MacPro.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.MacMini", makeNativeSidebarIcon(sideBarIconsPrefix + "MacMini.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
+                "FileChooser.sideBarIcon.Laptop", makeNativeSidebarIcon(sideBarIconsPrefix + "Laptop.icns", 18, sideBarIconColor, sideBarIconSelectionColor, sideBarIconSelectedAndFocusedColor),
                 //
                 "FileChooser.sideBarRowHeight", 24,
                 //
@@ -374,7 +376,9 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
                 "Tree.openIcon", makeIcon(getClass(), leopardDir + "Tree.openIcon.png"),
                 "Tree.closedIcon", makeIcon(getClass(), leopardDir + "Tree.closedIcon.png"),
                 "Tree.sideBar.background", new ColorUIResource(0xf6f6f6),
-                "Tree.sideBar.selectionBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.yosemite.QuaquaYosemiteSideBarSelectionBorder"),
+                "Tree.sideBar.selectionBorder", new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.yosemite.QuaquaYosemiteSideBarSelectionBorder",
+                new Object[]{new ColorUIResource(0xcecece)}),
                 "Tree.leftChildIndent", 8, // 7
                 "Tree.rightChildIndent", 12, // 13
                 "Tree.icons", makeIcons(lionDir + "Tree.icons.png", 15, true),
@@ -452,6 +456,12 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
         }
         putDefaults(table, uiDefaults);
 
+    }
+    public  Object makeNativeSidebarIcon(String path, int size, Color color,
+                                         Color selectionColor,Color selectedAndFocusedColor) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeYosemiteSidebarIcon",
+                new Object[]{path, size, size, color, selectionColor, selectedAndFocusedColor});
     }
 
 }

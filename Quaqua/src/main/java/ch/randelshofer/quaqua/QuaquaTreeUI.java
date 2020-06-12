@@ -1415,7 +1415,6 @@ public class QuaquaTreeUI extends BasicTreeUI {
                     tree.requestFocusInWindow();
                 }
 
-
                 TreePath path = getMouseClickedClosestPathForLocation(tree, e.getX(), e.getY());
 
                 // Check for clicks in expand control

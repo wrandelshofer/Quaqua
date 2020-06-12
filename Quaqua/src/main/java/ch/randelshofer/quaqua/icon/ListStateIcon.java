@@ -19,21 +19,33 @@ import java.awt.Graphics;
  * @version 1.0 2011-08-04 Created.
  */
 public class ListStateIcon implements Icon, UIResource {
-    private Icon icon;
-    private Icon selectedIcon;
+    private final Icon icon;
+    private final Icon selectedIcon;
+    private final Icon selectedAndFocusedIcon;
 
     public ListStateIcon(Icon icon, Icon selectedIcon) {
+this(icon,selectedIcon,selectedIcon);
+    }
+
+    public ListStateIcon(Icon icon, Icon selectedIcon, Icon selectedAndFocusedIcon) {
         this.icon = icon;
         this.selectedIcon = selectedIcon;
+        this.selectedAndFocusedIcon = selectedAndFocusedIcon;
     }
 
     public void paintIcon(Component c, Graphics g, int x, int y) {
         boolean isSelected = false;
+        boolean isFocusOwner=false;
         if (c instanceof JComponent) {
             isSelected = (Boolean) ((JComponent) c).getClientProperty("Quaqua.selected");
+            isFocusOwner = (Boolean) ((JComponent) c).getClientProperty("Quaqua.focused");
         }
         if (isSelected) {
-            selectedIcon.paintIcon(c, g, x, y);
+            if (isFocusOwner) {
+                selectedAndFocusedIcon.paintIcon(c, g, x, y);
+            } else {
+                selectedIcon.paintIcon(c, g, x, y);
+            }
         } else {
             icon.paintIcon(c, g, x, y);
         }

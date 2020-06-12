@@ -2097,25 +2097,25 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                 new Object[]{location, states, horizontal});
     }
 
-    protected static Object makeIcons(String location, Rectangle subimage, int states, boolean horizontal) {
+    protected  Object makeIcons(String location, Rectangle subimage, int states, boolean horizontal) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
                 new Object[]{location, subimage, states, horizontal});
     }
 
-    public static Object makeNativeSidebarIcon(String path, int size, Color color, Color selectionColor) {
+    public  Object makeNativeSidebarIcon(String path, int size, Color color, Color selectionColor) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeSidebarIcon",
                 new Object[]{path, size, size, color, selectionColor});
     }
 
-    public static Object makeNativeIcon(String path, int size) {
+    public  Object makeNativeIcon(String path, int size) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
                 new Object[]{path, size});
     }
 
-    public static Object makeNativeIcon(String path, int width, int height) {
+    public  Object makeNativeIcon(String path, int width, int height) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
                 new Object[]{path, width, height});
@@ -2129,7 +2129,7 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
     }
 
-    protected static Object makeButtonStateIcon(String location, int states) {
+    protected  Object makeButtonStateIcon(String location, int states) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createButtonStateIcon",
                 new Object[]{location, states});
@@ -2512,4 +2512,6 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             //ex.printStackTrace();
         }
     }
+
+
 }

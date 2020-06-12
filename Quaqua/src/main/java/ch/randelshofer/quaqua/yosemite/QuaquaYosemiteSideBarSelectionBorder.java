@@ -25,13 +25,6 @@ import java.awt.Insets;
 public class QuaquaYosemiteSideBarSelectionBorder implements Border, UIResource {
     private final Color color;
 
-    /**
-     * Creates a new instance.
-     */
-    public QuaquaYosemiteSideBarSelectionBorder() {
-        this(new Color(0xcecece));
-    }
-
     public QuaquaYosemiteSideBarSelectionBorder(Color color) {
         this.color = color;
     }
