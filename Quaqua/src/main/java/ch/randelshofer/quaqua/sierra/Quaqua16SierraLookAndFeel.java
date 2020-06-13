@@ -118,7 +118,7 @@ public class Quaqua16SierraLookAndFeel extends Quaqua16MavericksLookAndFeel {
                 "ComboBox.popupBorder",//
                 new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.leopard.QuaquaLeopardComboBoxPopupBorder"),
                 "ComboBox.maximumRowCount", 10,
-                "ComboBox.button.insets", new InsetsUIResource(4, 0, -2, 0),
+                "ComboBox.buttonInsets", new Insets(-3, -3, -3, -3),
                 //
                 "FileChooser.autovalidate", Boolean.TRUE,
                 "FileChooser.enforceQuaquaTreeUI", Boolean.TRUE,

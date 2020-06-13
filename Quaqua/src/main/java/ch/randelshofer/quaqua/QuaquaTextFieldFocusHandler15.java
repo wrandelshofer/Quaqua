@@ -14,6 +14,8 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TEXT_COMPONENT_AUTO_SELECT_CLIENT_PROPERTY;
+
 /**
  * QuaquaTextFieldFocusHandler15. Selects all text of a JTextComponent, if
  * the user used a keyboard focus traversal key, to transfer the focus on the
@@ -55,8 +57,8 @@ public class QuaquaTextFieldFocusHandler15 implements FocusListener {
                 uiProperty = "TextField.autoSelect";
             }
 
-            if (tc.getClientProperty("Quaqua.TextComponent.autoSelect") == Boolean.TRUE ||
-                    tc.getClientProperty("Quaqua.TextComponent.autoSelect") == null &&
+            if (tc.getClientProperty(QUAQUA_TEXT_COMPONENT_AUTO_SELECT_CLIENT_PROPERTY) == Boolean.TRUE ||
+                    tc.getClientProperty(QUAQUA_TEXT_COMPONENT_AUTO_SELECT_CLIENT_PROPERTY) == null &&
                             UIManager.getBoolean(uiProperty)
             ) {
                 if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {

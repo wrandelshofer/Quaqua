@@ -17,6 +17,8 @@ import javax.swing.text.JTextComponent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TEXT_COMPONENT_SHOW_POPUP_CLIENT_PROPERTY;
+
 /**
  * TextComponentHandler displays a popup menu on a JTextComponent with the
  * cut/copy and paste actions.
@@ -63,7 +65,7 @@ public class QuaquaTextComponentPopupHandler extends MouseAdapter {
 
         boolean isFocusable = Methods.invokeGetter(src, "isFocusable", true);
 
-        if (src.getClientProperty("Quaqua.TextComponent.showPopup") != Boolean.FALSE &&
+        if (src.getClientProperty(QUAQUA_TEXT_COMPONENT_SHOW_POPUP_CLIENT_PROPERTY) != Boolean.FALSE &&
                 src.isEnabled() &&
                 isFocusable &&
                 Methods.invokeGetter(src, "getComponentPopupMenu", null) == null) {

@@ -51,6 +51,8 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Map;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+
 /**
  * QuaquaSpinnerUI.
  *
@@ -819,7 +821,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     }
 
     protected Insets getMargin() {
-        Insets margin = (Insets) spinner.getClientProperty("Quaqua.Component.visualMargin");
+        Insets margin = (Insets) spinner.getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }

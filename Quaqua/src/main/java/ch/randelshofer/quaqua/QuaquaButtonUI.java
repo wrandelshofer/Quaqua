@@ -38,6 +38,11 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JBUTTON_BUTTON_TYPE_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JBUTTON_SEGMENT_POSITION_TYPE_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaButtonUI.
  *
@@ -148,9 +153,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         }
         g.setFont(getFont(c));
 
-        String style = (String) c.getClientProperty("Quaqua.Button.style");
+        String style = (String) c.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
         if (style == null) {
-            style = (String) c.getClientProperty("JButton.buttonType");
+            style = (String) c.getClientProperty(JBUTTON_BUTTON_TYPE_PROPERTY);
         }
         if (style != null && style.equals("help")) {
             Insets insets = c.getInsets();
@@ -349,9 +354,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     @Override
     public Dimension getMinimumSize(JComponent c) {
         AbstractButton b = (AbstractButton) c;
-        String style = (String) c.getClientProperty("Quaqua.Button.style");
+        String style = (String) c.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
         if (style == null) {
-            style = (String) c.getClientProperty("JButton.buttonType");
+            style = (String) c.getClientProperty(JBUTTON_BUTTON_TYPE_PROPERTY);
         }
         if (style == null) {
             if (b.getBorder() instanceof UIResource
@@ -383,9 +388,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
     @Override
     public Dimension getMaximumSize(JComponent c) {
-        String style = (String) c.getClientProperty("Quaqua.Button.style");
+        String style = (String) c.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
         if (style == null) {
-            style = (String) c.getClientProperty("JButton.buttonType");
+            style = (String) c.getClientProperty(JBUTTON_BUTTON_TYPE_PROPERTY);
         }
         if (style != null && style.equals("help")) {
             return getPreferredSize(c);
@@ -408,14 +413,14 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         String s = null;
         JComponent jc = (c instanceof JComponent) ? (JComponent) c : null;
         if (jc != null) {
-            s = (String) jc.getClientProperty("Quaqua.Button.style");
+            s = (String) jc.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
             if (s == null) {
-                s = (String) jc.getClientProperty("JButton.buttonType");
+                s = (String) jc.getClientProperty(JBUTTON_BUTTON_TYPE_PROPERTY);
             }
         }
         if (s == null) {
             if (c.getParent() instanceof JToolBar) {
-                String tbs = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
+                String tbs = (String) ((JToolBar) c.getParent()).getClientProperty(QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY);
                 if (tbs != null && ("gradient".equals(tbs) || "placard".equals(tbs))) {
                     s = "gradient";
                 } else {
@@ -426,7 +431,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         if (s == null || "segmented".equals(s) || "toggle".equals(s)
                 || "segmentedRoundRect".equals(s) || "segmentedCapsule".equals(s)
                 || s.contains("segmentedTextured")) {
-            String segmentPosition = jc == null ? null : (String) jc.getClientProperty("JButton.segmentPosition");
+            String segmentPosition = jc == null ? null : (String) jc.getClientProperty(JBUTTON_SEGMENT_POSITION_TYPE_PROPERTY);
             if (segmentPosition != null) {
                 if ("first".equals(segmentPosition)) {
                     s = "toggleWest";

@@ -47,6 +47,8 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABLE_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaTableUI.
  *
@@ -125,7 +127,7 @@ public class QuaquaTableUI extends BasicTableUI
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        Object property = table.getClientProperty("Quaqua.Table.style");
+        Object property = table.getClientProperty(QUAQUA_TABLE_STYLE_CLIENT_PROPERTY);
         isStriped = property != null && property.equals("striped");
         updateStriped();
         table.setShowHorizontalLines(false);

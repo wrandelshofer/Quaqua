@@ -19,7 +19,6 @@ import ch.randelshofer.quaqua.osx.OSXImageIO;
 import ch.randelshofer.quaqua.util.Images;
 import ch.randelshofer.quaqua.util.ScaledImageIcon;
 import ch.randelshofer.quaqua.util.Worker;
-import sun.awt.CGraphicsDevice;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -31,20 +30,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+
+import static ch.randelshofer.quaqua.util.RetinaDisplays.getDeviceScaleFactor;
 
 /**
  * QuaquaIconFactory.
@@ -277,32 +277,14 @@ public class QuaquaIconFactory {
             return null;
         }
     }
-    private static Boolean hasRetinaDisplay;
-    public static boolean hasRetinaDisplay() {
-        if (hasRetinaDisplay==null) {
-            // find the display device of interest
-            final GraphicsDevice defaultScreenDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
-            // on OS X, it would be CGraphicsDevice
-            if (defaultScreenDevice instanceof CGraphicsDevice) {
-                final CGraphicsDevice device = (CGraphicsDevice) defaultScreenDevice;
-
-                // this is the missing correction factor, it's equal to 2 on HiDPI a.k.a. Retina displays
-                final int scaleFactor = device.getScaleFactor();
-                hasRetinaDisplay=scaleFactor == 2;
-
-            }else
-            hasRetinaDisplay= false;
-        }
-        return hasRetinaDisplay;
-    }
 
     public static Icon createNativeYosemiteSidebarIcon(String path, int width, int height, Color color,
-                                                       Color selectedColor,Color selectedAndFocusedColor) {
+                                                       Color selectedColor, Color selectedAndFocusedColor) {
         try {
-            boolean isRetina = hasRetinaDisplay();
-            int scaledWidth = isRetina ? width * 2 : width;
-            int scaledHeight = isRetina ? height * 2 : height;
+            int retinaScaleFactor = getDeviceScaleFactor();
+            int scaledWidth = width *retinaScaleFactor;
+            int scaledHeight =  height * retinaScaleFactor;
 
             BufferedImage img;
             img = Images.toBufferedImage((Image) OSXImageIO.read(new File(path), scaledWidth, scaledHeight));
@@ -348,9 +330,9 @@ public class QuaquaIconFactory {
     }
 
     public static Icon createNativeSidebarIcon(String path, int width, int height, Color color, Color selectedColor) {
-        boolean isRetina = hasRetinaDisplay();
-        int scaledWidth = isRetina ? width * 2 : width;
-        int scaledHeight = isRetina ? height * 2 : height;
+        int scaleFactor = getDeviceScaleFactor();
+        int scaledWidth =  width * scaleFactor;
+        int scaledHeight =  height * scaleFactor;
 
         try {
             BufferedImage img;
@@ -386,15 +368,21 @@ public class QuaquaIconFactory {
             g.dispose();
             whiteImg.flush();
 
-            return new ListStateIcon(new ScaledImageIcon(iconImg,width,height), new ScaledImageIcon(selectedImg,width,height));
+            return new ListStateIcon(new ScaledImageIcon(iconImg, width, height), new ScaledImageIcon(selectedImg, width, height));
         } catch (IOException ex) {
             return null;
         }
     }
 
-    public static Icon createNativeButtonStateIcon(OSXAquaPainter.Widget widget, int xoffset, int yoffset, int width, int height, boolean drawFocusRing) {
+    public static Icon createNativeButtonStateIcon(OSXAquaPainter.Widget widget, int xoffset, int yoffset, int width, int height,
+                                                   boolean drawFocusRing) {
+        return createNativeButtonStateIconX(widget,xoffset,yoffset,width,height,drawFocusRing, Collections.emptyMap());
+    }
+    public static Icon createNativeButtonStateIconX(OSXAquaPainter.Widget widget, int xoffset, int yoffset, int width, int height,
+                                                   boolean drawFocusRing,
+                                                   Map<OSXAquaPainter.Key,Double> properties) {
         Icon icon =
-                new QuaquaNativeButtonStateIcon(widget, xoffset, yoffset, width, height);
+                new QuaquaNativeButtonStateIcon(widget, xoffset, yoffset, width, height,properties);
         if (drawFocusRing) {
             icon = new FocusedIcon(icon);
         }

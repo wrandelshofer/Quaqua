@@ -10,6 +10,7 @@ import ch.randelshofer.quaqua.border.ImageBevelBorder;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.InsetsUtil;
+import ch.randelshofer.quaqua.util.RetinaDisplays;
 
 import javax.swing.JComponent;
 import javax.swing.UIManager;
@@ -23,6 +24,8 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JTEXT_FIELD_VARIANT;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TEXT_FIELD_STYLE_CLIENT_PROPERTY;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.State;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
@@ -124,13 +127,14 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                     size = Size.regular;
                     break;
                 case SMALL:
-                case MINI:// paint mini with small artwork
+                case MINI:// paint mini with small artwork (why?)
                     size = Size.small;
                     args |= ARG_SMALL_SIZE;
                     break;
                 }
                 painter.setSize(size);
             }
+            int scaleFactor= RetinaDisplays.getDeviceScaleFactor(g);
 
             // Create an ImageBevelBorder
             {
@@ -151,15 +155,15 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                     fixedYOffset = 3;
 
                     if (smallPainterImage == null) {
-                        smallPainterImage = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                        smallPainterImage = new BufferedImage(fixedWidth*scaleFactor, fixedHeight*scaleFactor, BufferedImage.TYPE_INT_ARGB_PRE);
                     }
                     painterImg = smallPainterImage;
                     if (smallFocusImage == null) {
-                        smallFocusImage = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                        smallFocusImage = new BufferedImage(fixedWidth*scaleFactor, fixedHeight*scaleFactor, BufferedImage.TYPE_INT_ARGB_PRE);
                     }
                     focusImg = smallFocusImage;
                     if (smallIbb == null) {
-                        ibbImg = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                        ibbImg = new BufferedImage(fixedWidth*scaleFactor, fixedHeight*scaleFactor, BufferedImage.TYPE_INT_ARGB_PRE);
                         ibb = smallIbb = new ImageBevelBorder(ibbImg,
                                 InsetsUtil.add(slack, imageBevelInsets),
                                 new Insets(4 + slack, 4 + slack, 4 + slack, 4 + slack));
@@ -172,15 +176,15 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                     fixedYOffset = 3;
 
                     if (regularPainterImage == null) {
-                        regularPainterImage = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                        regularPainterImage = new BufferedImage(fixedWidth*scaleFactor, fixedHeight*scaleFactor, BufferedImage.TYPE_INT_ARGB_PRE);
                     }
                     painterImg = regularPainterImage;
                     if (regularFocusImage == null) {
-                        regularFocusImage = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                        regularFocusImage = new BufferedImage(fixedWidth*scaleFactor, fixedHeight*scaleFactor, BufferedImage.TYPE_INT_ARGB_PRE);
                     }
                     focusImg = regularFocusImage;
                     if (regularIbb == null) {
-                        ibbImg = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                        ibbImg = new BufferedImage(fixedWidth*scaleFactor, fixedHeight*scaleFactor, BufferedImage.TYPE_INT_ARGB_PRE);
                         ibb = regularIbb = new ImageBevelBorder(ibbImg,
                                 InsetsUtil.add(slack, imageBevelInsets),
                                 new Insets(8 + slack, 8 + slack, 8 + slack, 8 + slack));
@@ -198,7 +202,7 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                 pg.dispose();
                 painter.paint(painterImg,//
                         slack, fixedYOffset + slack,//
-                        painterImg.getWidth() - 2 * slack, painterImg.getHeight() - 2 * slack);
+                        fixedWidth - 2 * slack, fixedHeight - 2 * slack, 1.1);
 
                 Graphics2D ibbg = ibbImg.createGraphics();
                 ibbg.setColor(new Color(0x0, true));
@@ -242,10 +246,10 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
 
     private boolean isSearchField(JComponent b) {
         Object variant =
-                b.getClientProperty("Quaqua.TextField.style");
+                b.getClientProperty(QUAQUA_TEXT_FIELD_STYLE_CLIENT_PROPERTY);
 
         if (variant == null) {
-            variant = b.getClientProperty("JTextField.variant");
+            variant = b.getClientProperty(JTEXT_FIELD_VARIANT);
         }
         return variant != null && variant.equals("search");
     }

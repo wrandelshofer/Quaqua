@@ -19,6 +19,8 @@ import java.awt.Graphics;
  * @version 1.0 2011-08-04 Created.
  */
 public class ListStateIcon implements Icon, UIResource {
+    protected static final String QUAQUA_SELECTED_CLIENT_PROPERTY = "Quaqua.selected";
+    protected static final String QUAQUA_FOCUSED_CLIENT_PROPERTY = "Quaqua.focused";
     private final Icon icon;
     private final Icon selectedIcon;
     private final Icon selectedAndFocusedIcon;
@@ -37,8 +39,8 @@ this(icon,selectedIcon,selectedIcon);
         boolean isSelected = false;
         boolean isFocusOwner=false;
         if (c instanceof JComponent) {
-            isSelected = (Boolean) ((JComponent) c).getClientProperty("Quaqua.selected");
-            isFocusOwner = (Boolean) ((JComponent) c).getClientProperty("Quaqua.focused");
+            isSelected = (Boolean) ((JComponent) c).getClientProperty(QUAQUA_SELECTED_CLIENT_PROPERTY);
+            isFocusOwner = (Boolean) ((JComponent) c).getClientProperty(QUAQUA_FOCUSED_CLIENT_PROPERTY);
         }
         if (isSelected) {
             if (isFocusOwner) {

@@ -32,6 +32,8 @@ import java.awt.Rectangle;
 import java.util.Enumeration;
 import java.util.List;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABLE_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaTableHeaderUI.
  *
@@ -232,7 +234,7 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
 
         private void updateViewport() {
             JTable table = header.getTable();
-            Object property = (table == null) ? null : table.getClientProperty("Quaqua.Table.style");
+            Object property = (table == null) ? null : table.getClientProperty(QUAQUA_TABLE_STYLE_CLIENT_PROPERTY);
             if (property != null && property.equals("striped")
                     && table.getParent() instanceof JViewport) {
                 JViewport viewport = (JViewport) table.getParent();

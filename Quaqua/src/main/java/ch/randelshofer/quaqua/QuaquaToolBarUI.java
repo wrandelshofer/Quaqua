@@ -51,6 +51,9 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Hashtable;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TOOL_BAR_IS_ROLLOVER_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaToolBarUI.
  *
@@ -60,9 +63,6 @@ import java.util.Hashtable;
 public class QuaquaToolBarUI extends BasicToolBarUI {
     // Rollover button implementation.
 
-    private final static String IS_ROLLOVER = "JToolBar.isRollover";
-    /*private*/ final static String TOOLBAR_DRAW_DIVIDER_PROPERTY = "Quaqua.ToolBar.isDividerDrawn";
-    public final static String TOOLBAR_STYLE_PROPERTY = "Quaqua.ToolBar.style";
     private static Border rolloverBorder;
     private static Border nonRolloverBorder;
     private static Border nonRolloverToggleBorder;
@@ -665,7 +665,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      * is dragged over the toolbar.
      */
     private boolean isDragMovesWindow() {
-        Object toolBarStyle = toolBar.getClientProperty(TOOLBAR_STYLE_PROPERTY);
+        Object toolBarStyle = toolBar.getClientProperty(QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY);
         if (toolBarStyle == null) {
             JRootPane rootPane = SwingUtilities.getRootPane(toolBar);
             int xOffset = 0, yOffset = 0;
@@ -814,7 +814,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
                         }
                     }
                 }
-            } else if (propertyName != null && propertyName.equals(IS_ROLLOVER)) {
+            } else if (propertyName != null && propertyName.equals(QUAQUA_TOOL_BAR_IS_ROLLOVER_CLIENT_PROPERTY)) {
                 installNormalBorders(toolBar);
                 setRolloverBorders(((Boolean) evt.getNewValue()).booleanValue());
             }

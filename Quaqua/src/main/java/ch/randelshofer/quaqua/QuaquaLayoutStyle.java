@@ -23,6 +23,10 @@ import java.awt.Rectangle;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JBUTTON_BUTTON_TYPE_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JCOMPONENT_SIZE_VARIANT_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY;
+
 /**
  * A QuaquaLayoutStyle can be queried for the preferred gaps between two
  * JComponents, or between a JComponent and a parent Container.
@@ -509,9 +513,9 @@ public class QuaquaLayoutStyle extends LayoutStyle {
         String uid = component.getUIClassID();
         String style = null;
         if (uid.equals("ButtonUI") || uid.equals("ToggleButtonUI")) {
-            style = (String) component.getClientProperty("Quaqua.Button.style");
+            style = (String) component.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
             if (style == null) {
-                style = (String) component.getClientProperty("JButton.buttonType");
+                style = (String) component.getClientProperty(JBUTTON_BUTTON_TYPE_PROPERTY);
             }
         } else if (uid.equals("ProgressBarUI")) {
             style = (((JProgressBar) component).getOrientation() == JProgressBar.HORIZONTAL)
@@ -712,7 +716,7 @@ public class QuaquaLayoutStyle extends LayoutStyle {
     private int getSizeVariant(Component c) {
         // Look for size variant client property
         if (c instanceof JComponent) {
-            String variant = (String) ((JComponent) c).getClientProperty("JComponent.sizeVariant");
+            String variant = (String) ((JComponent) c).getClientProperty(JCOMPONENT_SIZE_VARIANT_CLIENT_PROPERTY);
             if (variant != null) {
                 if (variant.equals("regular")) {
                     return REGULAR;

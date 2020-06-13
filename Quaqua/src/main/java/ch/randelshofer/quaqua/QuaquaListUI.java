@@ -32,6 +32,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_LIST_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaListUI for Java 1.4.
  *
@@ -83,7 +85,7 @@ public class QuaquaListUI extends BasicListUI {
     }
 
     private void updateStriped() {
-        Object value = list.getClientProperty("Quaqua.List.style");
+        Object value = list.getClientProperty(QUAQUA_LIST_STYLE_CLIENT_PROPERTY);
         isStriped = value != null && value.equals("striped") && getLayoutOrientation() == VERTICAL;
     }
 
@@ -215,7 +217,7 @@ public class QuaquaListUI extends BasicListUI {
         paintStripes(g, c);
 
         boolean isFocused = isComboPopup || QuaquaUtilities.isFocused(c);
-        Object value = c.getClientProperty("Quaqua.List.style");
+        Object value = c.getClientProperty(QUAQUA_LIST_STYLE_CLIENT_PROPERTY);
         isComboPopup = value != null && value.equals("comboPopup");
         Color selectionBackground = UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground" : "List.selectionBackground");
         Color selectionForeground = UIManager.getColor(isComboPopup ? "ComboBox.selectionForeground" : "List.selectionForeground");

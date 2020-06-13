@@ -20,6 +20,8 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.MouseEvent;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_SPLIT_PANE_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaSplitPaneDivider.
  *
@@ -97,7 +99,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         // "bar": The divider is a bar, that goes across the split view.
         // "thumb" (this is the default): The divider is a thumb (dimple) on
         //        the regular background pattern.
-        String style = (String) splitPane.getClientProperty("Quaqua.SplitPane.style");
+        String style = (String) splitPane.getClientProperty(QUAQUA_SPLIT_PANE_STYLE_CLIENT_PROPERTY);
         if (style == null) {
             style = "thumb";
         }

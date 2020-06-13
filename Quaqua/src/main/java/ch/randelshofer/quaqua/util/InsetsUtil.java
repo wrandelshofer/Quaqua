@@ -126,4 +126,7 @@ public class InsetsUtil {
         i2.right -= i1.right;
     }
 
+    public static Insets multiply(Insets i, int scaleFactor) {
+        return new Insets(i.top*scaleFactor,i.left*scaleFactor,i.right*scaleFactor,i.bottom*scaleFactor);
+    }
 }

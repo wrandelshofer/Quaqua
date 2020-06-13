@@ -64,6 +64,13 @@ import java.beans.PropertyChangeListener;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABBED_PANE_CHILD_CONTENT_BACKGROUND_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABBED_PANE_CHILD_CONTENT_INSETS_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABBED_PANE_CONTENT_BORDER_PAINTED_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABBED_PANE_SHORTEN_TABS_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABBED_PANE_TAB_ALIGNMENT_CLIENT_PROPERTY;
+
 /**
  * A replacement for Apple's AquaTabbedPaneUI for Mac OS X 10.3 Panther.
  * All tabs are placed in one run. Tabs on the left and on the right
@@ -343,7 +350,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     protected Insets getVisualMargin() {
-        Insets visualMargin = (Insets) tabPane.getClientProperty("Quaqua.Component.visualMargin");
+        Insets visualMargin = (Insets) tabPane.getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (visualMargin == null) {
             visualMargin = UIManager.getInsets("Component.visualMargin");
             if (visualMargin == null) {
@@ -398,7 +405,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
         Component selectedComponent = tabPane.getSelectedComponent();
         if (selectedComponent instanceof JComponent) {
-            insets = (Insets) ((JComponent) selectedComponent).getClientProperty("Quaqua.TabbedPaneChild.contentInsets");
+            insets = (Insets) ((JComponent) selectedComponent).getClientProperty(QUAQUA_TABBED_PANE_CHILD_CONTENT_INSETS_CLIENT_PROPERTY);
         }
         if (insets == null) {
             insets = contentBorderInsets;
@@ -468,7 +475,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     @Override
     protected void paintContentBorder(Graphics gr, int tabPlacement, int selectedIndex) {
-        Boolean isContentBorderPainted = (Boolean) tabPane.getClientProperty("Quaqua.TabbedPane.contentBorderPainted");
+        Boolean isContentBorderPainted = (Boolean) tabPane.getClientProperty(QUAQUA_TABBED_PANE_CONTENT_BORDER_PAINTED_CLIENT_PROPERTY);
         if (isContentBorderPainted != null && !isContentBorderPainted.booleanValue()) {
             return;
         }
@@ -512,7 +519,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         Border b;
         Component selectedComponent = tabPane.getSelectedComponent();
         if (selectedComponent instanceof JComponent) {
-            contentBackground = (Color) ((JComponent) selectedComponent).getClientProperty("Quaqua.TabbedPaneChild.contentBackground");
+            contentBackground = (Color) ((JComponent) selectedComponent).getClientProperty(QUAQUA_TABBED_PANE_CHILD_CONTENT_BACKGROUND_CLIENT_PROPERTY);
         }
         if (contentBackground != null) {
             g.setPaint(TextureColor.getPaint(contentBackground, tabPane));
@@ -1806,7 +1813,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                             Dimension preferredSize = child.getPreferredSize();
                             preferredSize.width = Math.min(tw - tabAreaInsets.left - tabAreaInsets.right, preferredSize.width);
 
-                            Integer propertyValue = (Integer) tabPane.getClientProperty("Quaqua.TabbedPane.tabAlignment");
+                            Integer propertyValue = (Integer) tabPane.getClientProperty(QUAQUA_TABBED_PANE_TAB_ALIGNMENT_CLIENT_PROPERTY);
                             int tabAlignment = (propertyValue != null && propertyValue.intValue() == SwingConstants.LEADING) ? SwingConstants.LEADING : SwingConstants.CENTER;
                             if (tabAlignment == SwingConstants.CENTER) {
                                 child.setBounds(
@@ -1940,7 +1947,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             }
             if (verticalTabRuns
                     || totalTabSize <= availableTabSize
-                    || redistributableSize > 0 && tabPane.getClientProperty("Quaqua.TabbedPane.shortenTabs") != Boolean.FALSE) {
+                    || redistributableSize > 0 && tabPane.getClientProperty(QUAQUA_TABBED_PANE_SHORTEN_TABS_CLIENT_PROPERTY) != Boolean.FALSE) {
                 // Tabs are on the LEFT or RIGHT or
                 // enough space is available or
                 // redistributable size is available and we are allowed to
@@ -2069,7 +2076,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             // Center tabs vertically or horizontally
             // If centered horizontally ensure that all tab runs have
             // the same width.
-            Integer propertyValue = (Integer) tabPane.getClientProperty("Quaqua.TabbedPane.tabAlignment");
+            Integer propertyValue = (Integer) tabPane.getClientProperty(QUAQUA_TABBED_PANE_TAB_ALIGNMENT_CLIENT_PROPERTY);
             int tabAlignment = (propertyValue != null && propertyValue.intValue() == SwingConstants.LEADING) ? SwingConstants.LEADING : SwingConstants.CENTER;
             if (tabAlignment == SwingConstants.CENTER) {
                 switch (tabPlacement) {

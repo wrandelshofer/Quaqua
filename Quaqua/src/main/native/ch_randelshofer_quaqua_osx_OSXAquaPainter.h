@@ -151,7 +151,7 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativeSetA
  * Signature: ([IIIJDDDD)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativePaint
-  (JNIEnv *, jclass, jintArray, jint, jint, jlong, jdouble, jdouble, jdouble, jdouble);
+  (JNIEnv *, jclass, jintArray, jint, jint, jlong, jdouble, jdouble, jdouble, jdouble, jdouble);
 
 #ifdef __cplusplus
 }

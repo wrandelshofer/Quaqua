@@ -59,14 +59,18 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativeRele
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativePaint
   (JNIEnv *env, jclass javaClass, jintArray jimageData, jint jimgWidth, jint jimgHeight,
-    jlong jhandle, jdouble jx, jdouble jy, jdouble jwidth, jdouble jheight) {
+    jlong jhandle, jdouble jx, jdouble jy, jdouble jwidth, jdouble jheight, jdouble jscaleFactor) {
 
     jboolean isCopy = JNI_FALSE;
     void *imageData = (*env)->GetPrimitiveArrayCritical(env, jimageData, &isCopy);
     if (!imageData) return;
 
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef cgRef = CGBitmapContextCreate(imageData, jimgWidth, jimgHeight, 8, jimgWidth * 4, colorspace, kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host);
+    CGContextRef cgRef = CGBitmapContextCreate(imageData, jimgWidth, jimgHeight, 8, jimgWidth * 4, colorspace,
+                                               kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host);
+
+    CGContextScaleCTM(cgRef, jscaleFactor, jscaleFactor);
+
     CGColorSpaceRelease(colorspace);
 
     JRSUIControlRef control = (JRSUIControlRef)jlong_to_ptr(jhandle);

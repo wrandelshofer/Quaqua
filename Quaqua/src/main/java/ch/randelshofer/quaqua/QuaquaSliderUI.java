@@ -33,6 +33,8 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+
 /**
  * QuaquaSliderUI.
  *
@@ -524,7 +526,7 @@ public class QuaquaSliderUI extends BasicSliderUI
     }
 
     public Insets getVisualMargin(JSlider tc) {
-        Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
+        Insets margin = (Insets) tc.getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }

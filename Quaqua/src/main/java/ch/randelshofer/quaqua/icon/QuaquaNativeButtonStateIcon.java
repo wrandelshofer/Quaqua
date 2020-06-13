@@ -7,6 +7,7 @@ package ch.randelshofer.quaqua.icon;
 import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
+import ch.randelshofer.quaqua.util.RetinaDisplays;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -19,6 +20,8 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
+import java.util.Map;
 
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
@@ -34,11 +37,11 @@ import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
  * @version $Id$
  */
 public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
-    private OSXAquaPainter painter;
-    private int width;
-    private int height;
-    private int xoffset;
-    private int yoffset;
+    private final OSXAquaPainter painter;
+    private final int width;
+    private final int height;
+    private final int xoffset;
+    private final int yoffset;
     private final static int ARG_ACTIVE = 0;
     private final static int ARG_PRESSED = 1;
     private final static int ARG_DISABLED = 2;
@@ -51,14 +54,18 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
     private final static int ARG_TRAILING_SEPARATOR = 18;
 
     public QuaquaNativeButtonStateIcon(Widget widget, int width, int height) {
-        this(widget, 0, 0, width, height);
+        this(widget, 0, 0, width, height, Collections.emptyMap());
 
     }
 
-    public QuaquaNativeButtonStateIcon(Widget widget, int xoffset, int yoffset, int width, int height) {
+    public QuaquaNativeButtonStateIcon(Widget widget, int xoffset, int yoffset, int width, int height, Map<Key,Double> properties) {
         super(12);
         painter = new OSXAquaPainter();
         painter.setWidget(widget);
+        for (Map.Entry<Key, Double> entry : properties.entrySet()) {
+            painter.setValueByKey(entry.getKey(),entry.getValue());
+        }
+
         this.xoffset = xoffset;
         this.yoffset = yoffset;
         this.width = width;
@@ -130,9 +137,7 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
     @Override
     protected Image createImage(Component c, int w, int h,
                                 GraphicsConfiguration config) {
-
         return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
-
     }
 
     @Override
@@ -142,18 +147,19 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
         ig.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
         ig.fillRect(0, 0, img.getWidth(null), img.getHeight(null));
         ig.dispose();
+        int scaleFactor = RetinaDisplays.getDeviceScaleFactor();
         painter.paint((BufferedImage) img,//
                 xoffset, yoffset,//
-                width, //
-                height);
+                w, //
+                h, scaleFactor);
     }
 
     @Override
     protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
-        // round up image size to reduce memory thrashing
-        BufferedImage img = (BufferedImage) createImage(c, (w / 32 + 1) * 32, (h / 32 + 1) * 32, null);
-        paintToImage(c, img, w, h, args);
-        g.drawImage(img, 0, 0, null);
+        int scaleFactor = RetinaDisplays.getDeviceScaleFactor();
+        BufferedImage img = (BufferedImage) createImage(c, width * scaleFactor, height * scaleFactor, null);
+        paintToImage(c, img, width, height, args);
+        g.drawImage(img, 0, 0, width, height, null);
         img.flush();
     }
 
@@ -172,8 +178,8 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
 
     public static class UIResource extends QuaquaNativeButtonStateIcon implements javax.swing.plaf.UIResource {
 
-        public UIResource(Widget widget, int offsetx, int offsety, int width, int height) {
-            super(widget, offsetx, offsety, width, height);
+        public UIResource(Widget widget, int offsetx, int offsety, int width, int height,Map<OSXAquaPainter.Key,Double> p) {
+            super(widget, offsetx, offsety, width, height,p);
         }
 
         public UIResource(Widget widget, int width, int height) {

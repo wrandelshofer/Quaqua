@@ -8,6 +8,8 @@ import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.VisualMargin;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+import ch.randelshofer.quaqua.util.RetinaDisplays;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -23,6 +25,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
 
 /**
@@ -114,6 +117,9 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         OSXAquaPainter.Size size;
 
         switch (QuaquaUtilities.getSizeVariant(c)) {
+        case LARGE:
+            size = OSXAquaPainter.Size.large;
+            break;
         case REGULAR:
         default:
             size = OSXAquaPainter.Size.regular;
@@ -147,10 +153,11 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         ig.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
         ig.fillRect(0, 0, img.getWidth(null), img.getHeight(null));
         ig.dispose();
+        int scaleFactor=RetinaDisplays.getDeviceScaleFactor();
         painter.paint((BufferedImage) img,//
                 imageInsets.left, imageInsets.top,//
                 w - imageInsets.left - imageInsets.right, //
-                h - imageInsets.top - imageInsets.bottom);
+                h - imageInsets.top - imageInsets.bottom,scaleFactor);
     }
 
     @Override
@@ -173,7 +180,7 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
     public Insets getVisualMargin(Component c) {
         Insets vm = null;
         if (c instanceof JComponent) {
-            vm = (Insets) ((JComponent) c).getClientProperty("Quaqua.Component.visualMargin");
+            vm = (Insets) ((JComponent) c).getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         }
         return vm == null ? new Insets(0, 0, 0, 0) : (Insets) vm.clone();
     }

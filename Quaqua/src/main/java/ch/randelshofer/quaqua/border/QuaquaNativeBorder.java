@@ -21,6 +21,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.State;
@@ -138,10 +139,11 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
         ig.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
         ig.fillRect(0, 0, img.getWidth(null), img.getHeight(null));
         ig.dispose();
+         double scaleFactor=1.0;
         painter.paint((BufferedImage) img,//
                 imageInsets.left, imageInsets.top,//
                 w - imageInsets.left - imageInsets.right, //
-                h - imageInsets.top - imageInsets.bottom);
+                h - imageInsets.top - imageInsets.bottom, scaleFactor);
     }
 
     @Override
@@ -164,7 +166,7 @@ public class QuaquaNativeBorder extends CachedPainter implements Border, VisualM
     public Insets getVisualMargin(Component c) {
         Insets vm = null;
         if (c instanceof JComponent) {
-            vm = (Insets) ((JComponent) c).getClientProperty("Quaqua.Component.visualMargin");
+            vm = (Insets) ((JComponent) c).getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         }
         return vm == null ? new Insets(0, 0, 0, 0) : (Insets) vm.clone();
     }

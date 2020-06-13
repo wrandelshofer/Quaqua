@@ -24,6 +24,9 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TOOL_BAR_IS_DIVIDER_DRAWN_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaToolBarBorder.
  *
@@ -166,7 +169,7 @@ public class QuaquaToolBarBorder
     }
 
     private boolean isDividerDrawn(JToolBar c) {
-        Object value = c.getClientProperty(QuaquaToolBarUI.TOOLBAR_DRAW_DIVIDER_PROPERTY);
+        Object value = c.getClientProperty(QUAQUA_TOOL_BAR_IS_DIVIDER_DRAWN_CLIENT_PROPERTY);
 
         return value == null || value.equals(Boolean.TRUE);
     }
@@ -287,7 +290,7 @@ public class QuaquaToolBarBorder
         Object style = null;
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;
-            style = jc.getClientProperty(QuaquaToolBarUI.TOOLBAR_STYLE_PROPERTY);
+            style = jc.getClientProperty(QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY);
         }
         if (style == null || !(style instanceof String)) {
             /*

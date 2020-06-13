@@ -46,6 +46,10 @@ import java.awt.geom.AffineTransform;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.APPLE_AWT_BRUSH_METAL_LOOK_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_ROOT_PANE_IS_PALETTE_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_ROOT_PANE_IS_VERTICAL_CLIENT_PROPERTY;
+
 /**
  * QuaquaTitlePane.
  *
@@ -478,7 +482,7 @@ public class QuaquaTitlePane extends JComponent {
         if (this.state == state && !updateRegardless) {
             return;
         }
-        Object value = rootPane.getClientProperty("Quaqua.RootPane.isPalette");
+        Object value = rootPane.getClientProperty(QUAQUA_ROOT_PANE_IS_PALETTE_CLIENT_PROPERTY);
         boolean isPalette = value != null && Boolean.TRUE.equals(value);
         Frame frame = getFrame();
 
@@ -628,11 +632,11 @@ public class QuaquaTitlePane extends JComponent {
             setState(getFrame().getExtendedState());
         }
         boolean isVertical = isVertical();
-        boolean isTextured = rootPane.getClientProperty("apple.awt.brushMetalLook") == Boolean.TRUE;
+        boolean isTextured = rootPane.getClientProperty(APPLE_AWT_BRUSH_METAL_LOOK_CLIENT_PROPERTY) == Boolean.TRUE;
 
         boolean leftToRight = (window == null) ? rootPane.getComponentOrientation().isLeftToRight() : window.getComponentOrientation().isLeftToRight();
 
-        Object value = rootPane.getClientProperty("Quaqua.RootPane.isPalette");
+        Object value = rootPane.getClientProperty(QUAQUA_ROOT_PANE_IS_PALETTE_CLIENT_PROPERTY);
         boolean isPalette = value != null && Boolean.TRUE.equals(value);
         boolean isSelected = (window == null) ? false : window.isActive();
         isSelected |= isPalette;
@@ -790,7 +794,7 @@ public class QuaquaTitlePane extends JComponent {
     }
 
     private boolean isVertical() {
-        return rootPane.getClientProperty("Quaqua.RootPane.isVertical") == Boolean.TRUE;
+        return rootPane.getClientProperty(QUAQUA_ROOT_PANE_IS_VERTICAL_CLIENT_PROPERTY) == Boolean.TRUE;
     }
 
     /**

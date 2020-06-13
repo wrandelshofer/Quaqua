@@ -58,6 +58,13 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.APPLE_AWT_BRUSH_METAL_LOOK_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JBUTTON_BUTTON_TYPE_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JCOMPONENT_SIZE_VARIANT_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_CELL_RENDERER_FOR_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TREE_STYLE_CLIENT_PROPERTY;
+
 /**
  * Utility class for the Quaqua LAF.
  *
@@ -334,8 +341,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         // When a component is used as a cell renderer, the focus can
         // not be determined from the component itself.
         if (component instanceof JComponent) {
-            if (((JComponent) component).getClientProperty("Quaqua.Component.cellRendererFor") != null) {
-                component = (Component) ((JComponent) component).getClientProperty("Quaqua.Component.cellRendererFor");
+            if (((JComponent) component).getClientProperty(QUAQUA_COMPONENT_CELL_RENDERER_FOR_CLIENT_PROPERTY) != null) {
+                component = (Component) ((JComponent) component).getClientProperty(QUAQUA_COMPONENT_CELL_RENDERER_FOR_CLIENT_PROPERTY);
             }
         }
 
@@ -883,7 +890,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         SizeVariant sv = null;
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;
-            String p = (String) jc.getClientProperty("JComponent.sizeVariant");
+            String p = (String) jc.getClientProperty(JCOMPONENT_SIZE_VARIANT_CLIENT_PROPERTY);
             if (p != null) {
                 if (p.equals("large")) {
                     sv = SizeVariant.LARGE;
@@ -939,13 +946,13 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
                 break;
             }
 
-            String pstyle = (String) c.getClientProperty("Quaqua.Tree.style");
+            String pstyle = (String) c.getClientProperty(QUAQUA_TREE_STYLE_CLIENT_PROPERTY);
             if (pstyle != null && (pstyle.equals("sideBar") || pstyle.equals("sourceList"))) {
                 font = UIManager.getFont("Tree.sideBar.selectionFont");
             }
-            String bstyle = (String) c.getClientProperty("Quaqua.Button.style");
+            String bstyle = (String) c.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
             if (bstyle == null) {
-                bstyle = (String) c.getClientProperty("JButton.buttonType");
+                bstyle = (String) c.getClientProperty(JBUTTON_BUTTON_TYPE_PROPERTY);
             }
             if (bstyle != null && bstyle.equals("tableHeader")) {
                 font = UIManager.getFont("TableHeader.font");
@@ -1048,7 +1055,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         boolean isTextured;
         JRootPane rootPane = SwingUtilities.getRootPane(c);
         if (rootPane != null) {
-            isTextured = rootPane.getClientProperty("apple.awt.brushMetalLook") == Boolean.TRUE;
+            isTextured = rootPane.getClientProperty(APPLE_AWT_BRUSH_METAL_LOOK_CLIENT_PROPERTY) == Boolean.TRUE;
         } else {
             isTextured = false;
         }

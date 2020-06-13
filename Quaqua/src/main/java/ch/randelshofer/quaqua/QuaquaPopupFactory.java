@@ -35,6 +35,8 @@ import java.awt.Window;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_POPUP_MENU_WINDOW_ALPHA_CLIENT_PROPERTY;
+
 /**
  * QuaquaPopupFactory to work around a bug with heavy weight popups
  * on Java 1.4 in full screen mode.
@@ -72,7 +74,7 @@ public class QuaquaPopupFactory extends PopupFactory {
     int getPopupType(Component owner) {
         if (owner instanceof JComponent) {
             JComponent c = (JComponent) owner;
-            Float alpha = (Float) c.getClientProperty("Quaqua.PopupMenu.alpha");
+            Float alpha = (Float) c.getClientProperty(QUAQUA_POPUP_MENU_WINDOW_ALPHA_CLIENT_PROPERTY);
             if (alpha == null) {
                 alpha = new Float(0.75f);
             }

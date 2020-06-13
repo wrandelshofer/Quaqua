@@ -37,6 +37,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+
 /**
  * QuaquaTextFieldUI.
  *
@@ -142,7 +144,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
     }
 
     public Insets getVisualMargin(JTextComponent tc) {
-        Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
+        Insets margin = (Insets) tc.getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (margin == null) {
             Border border = tc.getBorder();
             if (border instanceof VisualMargin) {

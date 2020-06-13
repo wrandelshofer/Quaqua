@@ -18,6 +18,8 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.io.Serializable;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TEXT_FIELD_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaTextFieldBorder.
  *
@@ -125,8 +127,8 @@ public class QuaquaTextFieldBorder extends VisualMarginBorder implements Backgro
     private static boolean isSearchField(Component c) {
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;
-            return jc.getClientProperty("Quaqua.TextField.style") != null
-                    && jc.getClientProperty("Quaqua.TextField.style").equals("search");
+            return jc.getClientProperty(QUAQUA_TEXT_FIELD_STYLE_CLIENT_PROPERTY) != null
+                    && jc.getClientProperty(QUAQUA_TEXT_FIELD_STYLE_CLIENT_PROPERTY).equals("search");
         }
         return false;
     }

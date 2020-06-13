@@ -38,6 +38,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+
 /**
  * QuaquaPasswordFieldUI.
  *
@@ -128,7 +130,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
     }
 
     public Insets getVisualMargin(JTextComponent tc) {
-        Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
+        Insets margin = (Insets) tc.getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }

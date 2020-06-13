@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY;
+
 /**
  * The file chooser column view for Lion (and other releases by subclassing).
  */
@@ -149,7 +151,7 @@ public class LionColumnView extends ColumnView {
     }
 
     private void installPreviewComponent() {
-        final Component pv = (Component) fc.getClientProperty("Quaqua.FileChooser.preview");
+        final Component pv = (Component) fc.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY);
         if (pv != null) {
             browser.setPreviewRenderer(new BrowserPreviewRenderer() {
                 public Component getPreviewRendererComponent(JBrowser browser, TreePath[] paths) {

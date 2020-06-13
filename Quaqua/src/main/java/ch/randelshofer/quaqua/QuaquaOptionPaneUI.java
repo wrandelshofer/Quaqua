@@ -53,6 +53,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Locale;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_OPTION_PANE_DESTRUCTIVE_OPTION_CLIENT_PROPERTY;
+
 /**
  * QuaquaOptionPaneUI.
  *
@@ -63,6 +65,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
 
     private final static int MIN_BUTTON_WIDTH = 68 + 6;
     private final static int HORIZONTAL_BUTTON_PADDING = 8;
+    protected static final String PRIVATE_QUAQUA_OPTION_PANE_INPUT_FIELD_DOCUMENT_CLIENT_PROPERTY = "PrivateQuaqua.OptionPane.InputFieldDocument";
     private QuaquaButtonAreaLayout buttonAreaLayout;
     private static String newline;
 
@@ -621,8 +624,8 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                     tf.setKeyStrokes(new KeyStroke[]{
                             KeyStroke.getKeyStroke("ENTER")});
 
-                    if (optionPane.getClientProperty("PrivateQuaqua.OptionPane.InputFieldDocument") instanceof Document) {
-                        tf.setDocument((Document) optionPane.getClientProperty("PrivateQuaqua.OptionPane.InputFieldDocument"));
+                    if (optionPane.getClientProperty(PRIVATE_QUAQUA_OPTION_PANE_INPUT_FIELD_DOCUMENT_CLIENT_PROPERTY) instanceof Document) {
+                        tf.setDocument((Document) optionPane.getClientProperty(PRIVATE_QUAQUA_OPTION_PANE_INPUT_FIELD_DOCUMENT_CLIENT_PROPERTY));
                     }
 
                     if (inputValue != null) {
@@ -693,7 +696,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
 
         Object[] buttons = getButtons();
         buttonAreaLayout = new QuaquaButtonAreaLayout(false, 12 - 6); // -6 is the visual margin
-        Integer destructiveOption = (Integer) optionPane.getClientProperty("Quaqua.OptionPane.destructiveOption");
+        Integer destructiveOption = (Integer) optionPane.getClientProperty(QUAQUA_OPTION_PANE_DESTRUCTIVE_OPTION_CLIENT_PROPERTY);
         if (destructiveOption != null) {
             buttonAreaLayout.setDestructiveOption(destructiveOption.intValue());
         }

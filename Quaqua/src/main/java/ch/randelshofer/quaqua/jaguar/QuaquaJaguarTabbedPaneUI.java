@@ -49,6 +49,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Hashtable;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABBED_PANE_CHILD_CONTENT_BACKGROUND_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABBED_PANE_CHILD_CONTENT_INSETS_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TABBED_PANE_TAB_ALIGNMENT_CLIENT_PROPERTY;
+
 /**
  * A replacement for the AquaTabbedPaneUI for Mac OS X 10.2 Jaguar.
  * Tabs of tabbed panes are stacked instead of moved into a popup menu,
@@ -553,7 +558,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     protected Insets getVisualMargin() {
-        Insets margin = (Insets) tabPane.getClientProperty("Quaqua.Component.visualMargin");
+        Insets margin = (Insets) tabPane.getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }
@@ -868,7 +873,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
 
         Component selectedComponent = tabPane.getSelectedComponent();
         if (selectedComponent instanceof JComponent) {
-            insets = (Insets) ((JComponent) selectedComponent).getClientProperty("Quaqua.TabbedPaneChild.contentInsets");
+            insets = (Insets) ((JComponent) selectedComponent).getClientProperty(QUAQUA_TABBED_PANE_CHILD_CONTENT_INSETS_CLIENT_PROPERTY);
         }
         if (insets == null) {
             insets = contentBorderInsets;
@@ -952,7 +957,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         Color contentBackground = null;
         Component selectedComponent = tabPane.getSelectedComponent();
         if (selectedComponent instanceof JComponent) {
-            contentBackground = (Color) ((JComponent) selectedComponent).getClientProperty("Quaqua.TabbedPaneChild.contentBackground");
+            contentBackground = (Color) ((JComponent) selectedComponent).getClientProperty(QUAQUA_TABBED_PANE_CHILD_CONTENT_BACKGROUND_CLIENT_PROPERTY);
         }
         if (contentBackground == null) {
             contentBackground = tabPane.getBackground();
@@ -1377,7 +1382,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
             // Center tabs vertically or horizontally
             // If centered horizontally ensure that all tab runs have
             // the same width.
-            Integer propertyValue = (Integer) tabPane.getClientProperty("Quaqua.TabbedPane.tabAlignment");
+            Integer propertyValue = (Integer) tabPane.getClientProperty(QUAQUA_TABBED_PANE_TAB_ALIGNMENT_CLIENT_PROPERTY);
             int tabAlignment = (propertyValue != null && propertyValue.intValue() == SwingConstants.LEADING) ? SwingConstants.LEADING : SwingConstants.CENTER;
             if (tabAlignment == SwingConstants.CENTER) {
                 switch (tabPlacement) {

@@ -22,6 +22,8 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Rectangle;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+
 /**
  * A replacement for the AquaSeparatorUI.
  * <p>
@@ -121,7 +123,7 @@ public class QuaquaPantherSeparatorUI extends BasicSeparatorUI implements Visual
     }
 
     public Insets getVisualMargin(JSeparator tc) {
-        Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
+        Insets margin = (Insets) tc.getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }

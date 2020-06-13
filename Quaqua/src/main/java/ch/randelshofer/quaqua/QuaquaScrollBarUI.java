@@ -33,6 +33,8 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_SCROLL_BAR_PLACE_BUTTONS_TOGETHER_CLIENT_PROPERTY;
+
 /**
  * QuaquaScrollBarUI.
  *
@@ -64,7 +66,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
     }
 
     private void updatePlaceButtonsTogether() {
-        Object value = scrollbar.getClientProperty("Quaqua.ScrollBar.placeButtonsTogether");
+        Object value = scrollbar.getClientProperty(QUAQUA_SCROLL_BAR_PLACE_BUTTONS_TOGETHER_CLIENT_PROPERTY);
         if (value == null) {
             isPlaceButtonsTogether = UIManager.getBoolean("ScrollBar.placeButtonsTogether");
         } else {

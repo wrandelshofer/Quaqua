@@ -31,6 +31,7 @@ import java.util.Enumeration;
  */
 public class QuaquaButtonListener extends BasicButtonListener {
 
+    protected static final String INITIAL_DEFAULT_BUTTON_CLIENT_PROPERTY = "initialDefaultButton";
     transient long lastPressedTimestamp = -1;
     transient boolean shouldDiscardRelease = false;
 
@@ -194,7 +195,7 @@ public class QuaquaButtonListener extends BasicButtonListener {
         JRootPane root = b.getRootPane();
 
         if (root != null) {
-            JButton initialDefault = (JButton) root.getClientProperty("initialDefaultButton");
+            JButton initialDefault = (JButton) root.getClientProperty(INITIAL_DEFAULT_BUTTON_CLIENT_PROPERTY);
 
             if (b != initialDefault) {
                 QuaquaButtonUI ui = (QuaquaButtonUI) QuaquaUtilities.getUIOfType(

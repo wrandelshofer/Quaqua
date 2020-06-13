@@ -598,9 +598,9 @@ public class OSXAquaPainter {
      * The image data must be of type {@code BufferedImage.TYPE_INT_ARGB_PRE}.
      */
     public void paint(int[] imageData, int imgWidth, int imgHeight,//
-                      double x, double y, double width, double height) {
+                      double x, double y, double width, double height, double scaleFactor) {
         if (createControl()) {
-            nativePaint(imageData, imgWidth, imgHeight, handle, x, imgHeight - y - height, width, height);
+            nativePaint(imageData, imgWidth, imgHeight, handle, x, imgHeight - y - height, width, height, scaleFactor);
         }
     }
 
@@ -611,7 +611,7 @@ public class OSXAquaPainter {
      * @throws IllegalArgumentException if the image type is not {@code BufferedImage.TYPE_INT_ARGB_PRE}.
      */
     public void paint(BufferedImage image,//
-                      double x, double y, double width, double height) {
+                      double x, double y, double width, double height, double scaleFactor) {
         if (image.getType() != BufferedImage.TYPE_INT_ARGB_PRE) {
             throw new IllegalArgumentException("Unsupported image type=" + image.getType());
         }
@@ -627,7 +627,9 @@ public class OSXAquaPainter {
                 imgHeight = raster.getHeight();
             }
 
-            nativePaint(imgData, imgWidth, imgHeight, handle, x, imgHeight - y - height, width, height);
+            nativePaint(imgData, imgWidth, imgHeight, handle,
+                    x, imgHeight - (y+ height)*scaleFactor,
+                    width, height, scaleFactor);
         }
     }
 
@@ -726,5 +728,5 @@ public class OSXAquaPainter {
      * at the lower left corner. (Java has the origin at the top left corner.
      */
     private static native void nativePaint(int[] imgData, int imgWidth, int imgHeight,//
-                                           long ctrlHandle, double x, double y, double width, double height);
+                                           long ctrlHandle, double x, double y, double width, double height, double scaleFactor);
 }

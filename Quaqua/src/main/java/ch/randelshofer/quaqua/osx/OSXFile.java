@@ -3,20 +3,18 @@
  * Quaqua Look and Feel. Copyright © 2020 Werner Randelshofer, Switzerland. MIT License.
  */
 package ch.randelshofer.quaqua.osx;
-import ch.randelshofer.quaqua.QuaquaIconFactory;
 import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFDecodeParam;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFImageDecoder;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.MemoryCacheSeekableStream;
-import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
 import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.RetinaDisplays;
 import ch.randelshofer.quaqua.util.ScaledImageIcon;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
@@ -488,8 +486,8 @@ public class OSXFile {
      * If the file does not exist, a generic icon is returned.
      */
     public static Icon getIcon(File file, int size) {
-        boolean hasRetina = QuaquaIconFactory.hasRetinaDisplay();
-        BufferedImage img = getIconImage(file, hasRetina?size*2:size);
+        int scaleFactor = RetinaDisplays.getDeviceScaleFactor();
+        BufferedImage img = getIconImage(file,size*scaleFactor);
         if (img == null) {
             System.err.println("Unable to get system icon for " + file);
         }

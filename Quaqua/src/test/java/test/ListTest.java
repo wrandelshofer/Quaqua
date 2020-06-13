@@ -16,6 +16,8 @@ import javax.swing.UIManager;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_LIST_STYLE_CLIENT_PROPERTY;
+
 /**
  * ListTest.
  *
@@ -24,18 +26,20 @@ import java.awt.event.ItemListener;
  */
 public class ListTest extends javax.swing.JPanel {
 
+    protected static final String LAYOUT_ORIENTATION_CLIENT_PROPERTY = "layoutOrientation";
+
     /**
      * Creates new form.
      */
     public ListTest() {
         initComponents();
-        stripedList.putClientProperty("Quaqua.List.style", "striped");
+        stripedList.putClientProperty(QUAQUA_LIST_STYLE_CLIENT_PROPERTY, "striped");
 
         disabledList.setEnabled(false);
         disabledList.setSelectedIndex(1);
-        verticalRadio.putClientProperty("layoutOrientation", JList.VERTICAL);
-        hwrapRadio.putClientProperty("layoutOrientation", JList.HORIZONTAL_WRAP);
-        vwrapRadio.putClientProperty("layoutOrientation", JList.VERTICAL_WRAP);
+        verticalRadio.putClientProperty(LAYOUT_ORIENTATION_CLIENT_PROPERTY, JList.VERTICAL);
+        hwrapRadio.putClientProperty(LAYOUT_ORIENTATION_CLIENT_PROPERTY, JList.HORIZONTAL_WRAP);
+        vwrapRadio.putClientProperty(LAYOUT_ORIENTATION_CLIENT_PROPERTY, JList.VERTICAL_WRAP);
 
         list.setVisibleRowCount(0);
         stripedList.setVisibleRowCount(0);
@@ -261,7 +265,7 @@ public class ListTest extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void layoutOrientationRadioPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutOrientationRadioPerformed
-        int lo = (Integer) ((JComponent) evt.getSource()).getClientProperty("layoutOrientation");
+        int lo = (Integer) ((JComponent) evt.getSource()).getClientProperty(LAYOUT_ORIENTATION_CLIENT_PROPERTY);
         stripedList.setLayoutOrientation(lo);
         disabledList.setLayoutOrientation(lo);
         list.setLayoutOrientation(lo);

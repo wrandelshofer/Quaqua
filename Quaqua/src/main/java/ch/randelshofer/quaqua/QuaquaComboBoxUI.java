@@ -46,6 +46,9 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JCOMPONENT_SIZE_VARIANT_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+
 /**
  * Quaqua UI for JComboBox.
  *
@@ -53,6 +56,7 @@ import java.beans.PropertyChangeListener;
  * @version $Id$
  */
 public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayoutable {
+    protected static final String JCOMBO_BOX_LIGHTWEIGHT_KEYBOARD_NAVIGATION_CLIENT_PROPERTY = "JComboBox.lightweightKeyboardNavigation";
     //private HierarchyListener hierarchyListener;
     //MetalComboBoxUI
     // Control the selection behavior of the JComboBox when it is used
@@ -102,7 +106,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         // Is this combo box a cell editor?
         Boolean value = (Boolean) c.getClientProperty(IS_TABLE_CELL_EDITOR);
         if (value == null) {
-            value = (Boolean) c.getClientProperty("JComboBox.lightweightKeyboardNavigation");
+            value = (Boolean) c.getClientProperty(JCOMBO_BOX_LIGHTWEIGHT_KEYBOARD_NAVIGATION_CLIENT_PROPERTY);
         }
         setTableCellEditor(value != null && value.equals(Boolean.TRUE));
 
@@ -119,7 +123,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         //
         QuaquaUtilities.applySizeVariant(comboBox);
         if (arrowButton != null) {
-            arrowButton.putClientProperty("JComponent.sizeVariant", comboBox.getClientProperty("JComponent.sizeVariant"));
+            arrowButton.putClientProperty(JCOMPONENT_SIZE_VARIANT_CLIENT_PROPERTY, comboBox.getClientProperty("JComponent.sizeVariant"));
         }
 
     }
@@ -644,27 +648,18 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
 
             Rectangle cvb;
             if (arrowButton != null) {
+                int arrowWidth = getArrowWidth();
                 if (QuaquaUtilities.isLeftToRight(cb)) {
-                    // FIXME - This should be 6 minus 2, whereas two needs to be
-                    // derived from the TextFieldUI
-                    //int plusHeight = (isSmallSizeVariant()) ? 4 : 4;
-
-                    Insets buttonInsets = UIManager.getInsets("ComboBox.button.insets." + QuaquaUtilities.getSizeVariant(comboBox));
-                    if (buttonInsets == null) {
-                        buttonInsets = UIManager.getInsets("ComboBox.button.insets");
-                        if (buttonInsets == null) {
-                            buttonInsets = new Insets(0, 0, 2, 0);
-                        }
-                    }
-
+                    Insets buttonInsets = UIManager.getInsets("ComboBox.buttonInsets");
+                    if (buttonInsets==null)buttonInsets=new Insets(0,0,0,0);
                     arrowButton.setBounds(
-                            width - getArrowWidth() - insets.right,
+                            width - arrowWidth - insets.right,
                             insets.top + buttonInsets.top /*+ margin.top - 3*/,
-                            getArrowWidth(),
+                            arrowWidth,
                             buttonSize /*- margin.top - margin.bottom*/ - (buttonInsets.top + buttonInsets.bottom));
                 } else {
                     arrowButton.setBounds(insets.left, insets.top,
-                            getArrowWidth(), buttonSize);
+                            arrowWidth, buttonSize);
                 }
             }
             if (editor != null) {
@@ -701,7 +696,9 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 Insets buttonInsets = UIManager.getInsets("ComboBox.buttonInsets");
                 if (buttonInsets != null) {
                     insets = new Insets(insets.top + buttonInsets.top,
-                            insets.left + buttonInsets.left, insets.bottom + buttonInsets.bottom, insets.right + buttonInsets.right);
+                            insets.left + buttonInsets.left,
+                            insets.bottom + buttonInsets.bottom,
+                            insets.right + buttonInsets.right);
                 }
                 int width = comboBox.getWidth();
                 int height = comboBox.getHeight();
@@ -746,7 +743,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
 
     protected int getArrowWidth() {
         if (isTableCellEditor()) {
-            return 7;
+            return UIManager.getInt("ComboBox.cellEditorDropDownWidth");
         } else {
             if (comboBox.isEditable()) {
                 switch (QuaquaUtilities.getSizeVariant(comboBox)) {
@@ -850,7 +847,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     }
 
     protected Insets getMargin() {
-        Insets margin = (Insets) comboBox.getClientProperty("Quaqua.Component.visualMargin");
+        Insets margin = (Insets) comboBox.getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }

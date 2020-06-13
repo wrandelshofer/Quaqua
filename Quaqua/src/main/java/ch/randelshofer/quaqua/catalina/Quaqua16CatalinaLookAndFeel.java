@@ -232,7 +232,7 @@ public class Quaqua16CatalinaLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 "ComboBox.popupBorder",//
                 new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.leopard.QuaquaLeopardComboBoxPopupBorder"),
                 "ComboBox.maximumRowCount", 10,
-                "ComboBox.button.insets", new InsetsUIResource(0, 0, -2, 0),
+                "ComboBox.buttonInsets", new Insets(-3, -3, -3, -3),
                 "ComboBox.editorBorder", textFieldBorder,
                 //
                 "FileChooser.autovalidate", Boolean.TRUE,

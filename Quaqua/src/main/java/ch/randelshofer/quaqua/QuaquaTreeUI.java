@@ -67,6 +67,9 @@ import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.TooManyListenersException;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TREE_IS_CELL_FILLED_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TREE_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaTreeUI.
  * <p>
@@ -657,7 +660,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         }
 
         Graphics2D g = (Graphics2D) gr;
-        Object property = tree.getClientProperty("Quaqua.Tree.style");
+        Object property = tree.getClientProperty(QUAQUA_TREE_STYLE_CLIENT_PROPERTY);
         boolean isStriped = property != null && property.equals("striped");
         boolean isSideBar = isSideBar();
         Color[] stripes = {UIManager.getColor("Tree.alternateBackground.0"), UIManager.getColor("Tree.alternateBackground.1")};
@@ -680,7 +683,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
             return;
         }
 
-        isCellFilled = Boolean.TRUE.equals(tree.getClientProperty("Quaqua.Tree.isCellFilled"));
+        isCellFilled = Boolean.TRUE.equals(tree.getClientProperty(QUAQUA_TREE_IS_CELL_FILLED_CLIENT_PROPERTY));
 
         boolean leftToRight = QuaquaUtilities.isLeftToRight(tree);
         // Update the lastWidth if necessary.
@@ -1144,7 +1147,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     }
 
     private boolean isSideBar() {
-        Object property = tree.getClientProperty("Quaqua.Tree.style");
+        Object property = tree.getClientProperty(QUAQUA_TREE_STYLE_CLIENT_PROPERTY);
         return property != null && (property.equals("sideBar")
                 || property.equals("sourceList"));
     }
@@ -1314,8 +1317,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 // Update the lead row in the JTree
             } else if (event.getSource() == tree) {
                 if (name != null && name.equals("Frame.active")) {
-                    if (tree.getClientProperty("Quaqua.Tree.style") != null //
-                            && (tree.getClientProperty("Quaqua.Tree.style").equals("sideBar") || tree.getClientProperty("Quaqua.Tree.style").equals("sourceList"))) {
+                    if (tree.getClientProperty(QUAQUA_TREE_STYLE_CLIENT_PROPERTY) != null //
+                            && (tree.getClientProperty(QUAQUA_TREE_STYLE_CLIENT_PROPERTY).equals("sideBar") || tree.getClientProperty(QUAQUA_TREE_STYLE_CLIENT_PROPERTY).equals("sourceList"))) {
                         tree.repaint();
                     }
                 } else if (name != null && name.equals(JTree.LEAD_SELECTION_PATH_PROPERTY)) {
@@ -1379,7 +1382,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                     }
                 } else if (name != null && name.equals("JComponent.sizeVariant")) {
                     QuaquaUtilities.applySizeVariant(tree);
-                } else if (name != null && name.equals("Quaqua.Tree.style")) {
+                } else if (name != null && name.equals(QUAQUA_TREE_STYLE_CLIENT_PROPERTY)) {
                     QuaquaUtilities.applySizeVariant(tree);
                 }
             }

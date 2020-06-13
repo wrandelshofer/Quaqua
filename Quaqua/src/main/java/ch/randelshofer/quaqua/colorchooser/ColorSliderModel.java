@@ -26,6 +26,7 @@ import java.util.LinkedList;
  * @version $Id$
  */
 public abstract class ColorSliderModel implements Serializable {
+    protected static final String COLOR_SLIDER_MODEL_CLIENT_PROPERTY = "ColorSliderModel";
     /**
      * JSlider's associated to this ColorSliderModel.
      */
@@ -73,15 +74,15 @@ public abstract class ColorSliderModel implements Serializable {
      * it is unconfigured first.
      */
     public void configureColorSlider(int component, JSlider slider) {
-        if (slider.getClientProperty("ColorSliderModel") != null) {
-            ((ColorSliderModel) slider.getClientProperty("ColorSliderModel"))
+        if (slider.getClientProperty(COLOR_SLIDER_MODEL_CLIENT_PROPERTY) != null) {
+            ((ColorSliderModel) slider.getClientProperty(COLOR_SLIDER_MODEL_CLIENT_PROPERTY))
                     .unconfigureColorSlider(slider);
         }
         if (!(slider.getUI() instanceof ColorSliderUI)) {
             slider.setUI(new ColorSliderUI(slider));
         }
         slider.setModel(getBoundedRangeModel(component));
-        slider.putClientProperty("ColorSliderModel", this);
+        slider.putClientProperty(COLOR_SLIDER_MODEL_CLIENT_PROPERTY, this);
         slider.putClientProperty("ColorComponentIndex", component);
         addColorSlider(slider);
     }
@@ -90,11 +91,11 @@ public abstract class ColorSliderModel implements Serializable {
      * Unconfigures a JSlider from this ColorSliderModel.
      */
     public void unconfigureColorSlider(JSlider slider) {
-        if (slider.getClientProperty("ColorSliderModel") == this) {
+        if (slider.getClientProperty(COLOR_SLIDER_MODEL_CLIENT_PROPERTY) == this) {
             // XXX - This creates a NullPointerException ??
             //slider.setUI((SliderUI) UIManager.getUI(slider));
             slider.setModel(new DefaultBoundedRangeModel());
-            slider.putClientProperty("ColorSliderModel", null);
+            slider.putClientProperty(COLOR_SLIDER_MODEL_CLIENT_PROPERTY, null);
             slider.putClientProperty("ColorComponentIndex", null);
             removeColorSlider(slider);
         }

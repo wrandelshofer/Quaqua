@@ -30,6 +30,8 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_LABEL_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaCheckBoxUI.
  *
@@ -237,7 +239,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
         ButtonModel model = b.getModel();
         FontMetrics fm = g.getFontMetrics();
         int mnemonicIndex = Methods.invokeGetter(b, "getDisplayedMnemonicIndex", -1);
-        String style = (String) b.getClientProperty("Quaqua.Label.style");
+        String style = (String) b.getClientProperty(QUAQUA_LABEL_STYLE_CLIENT_PROPERTY);
 
         /* Draw the Text */
         if (style != null && style.equals("shadow") && model.isEnabled()) {

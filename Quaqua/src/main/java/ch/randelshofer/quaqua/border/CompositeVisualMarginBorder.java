@@ -14,6 +14,8 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+
 /**
  * {@code CompositeVisualMarginBorder}.
  *
@@ -28,10 +30,6 @@ public class CompositeVisualMarginBorder implements Border, VisualMargin {
      * The UIManager Property to be used for the default margin.
      */
     private String uiManagerPropertyName = "Component.visualMargin";
-    /**
-     * The Client Property to be used for the default margin.
-     */
-    private String propertyName = "Quaqua.Component.visualMargin";
 
     /**
      * Creates a new instance which draws {@code actualBorder} which has
@@ -126,8 +124,8 @@ public class CompositeVisualMarginBorder implements Border, VisualMargin {
         */
         InsetsUtil.clear(insets);
         if (c instanceof JComponent) {
-            Insets componentMargin = (Insets) ((JComponent) c).getClientProperty(propertyName);
-            if (componentMargin == null && propertyName != null) {
+            Insets componentMargin = (Insets) ((JComponent) c).getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
+            if (componentMargin == null) {
                 componentMargin = UIManager.getInsets(uiManagerPropertyName);
             }
             if (componentMargin != null) {

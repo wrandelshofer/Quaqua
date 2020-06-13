@@ -112,7 +112,7 @@ public class OSXPainterTest extends javax.swing.JPanel {
 
             int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
             //painter.paint(data, image.getWidth(), image.getHeight(), 0, 0, 40, 40);
-            painter.paint(image, 6, 6, 32, 20);
+            painter.paint(image, 6, 6, 32, 20,1.0);
             gr.drawImage(image, 0, 0, this);
             gr.drawImage(image, 40, 0, this);
             gr.drawImage(image, 80, 0, this);

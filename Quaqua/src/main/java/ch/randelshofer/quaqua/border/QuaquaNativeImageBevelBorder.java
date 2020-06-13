@@ -7,6 +7,8 @@ package ch.randelshofer.quaqua.border;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 import ch.randelshofer.quaqua.util.InsetsUtil;
+import ch.randelshofer.quaqua.util.RetinaDisplays;
+import sun.security.jgss.GSSCaller;
 
 import javax.swing.plaf.UIResource;
 import java.awt.Component;
@@ -75,10 +77,11 @@ public class QuaquaNativeImageBevelBorder extends VisualMarginBorder implements 
         pg.fillRect(0, 0, painterImg.getWidth(), painterImg.getHeight());
         pg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
         pg.dispose();*/
+        int scaleFactor = RetinaDisplays.getDeviceScaleFactor();
         painter.paint(image,//
                 painterInsets.left, painterInsets.top,//
                 image.getWidth() - painterInsets.left - painterInsets.right,
-                image.getHeight() - painterInsets.top - painterInsets.bottom);
+                image.getHeight() - painterInsets.top - painterInsets.bottom, scaleFactor);
 
         ibb = new ImageBevelBorder(image, imageBevelInsets, borderInsets, fill);
 

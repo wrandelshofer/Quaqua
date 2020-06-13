@@ -29,6 +29,12 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JBUTTON_SEGMENT_POSITION_TYPE_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_BORDER_INSETS_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaButtonBorder.
  * This border uses client properties and font sizes of a JComponent to
@@ -109,7 +115,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         String style = getStyle(c);
 
         JComponent jc = c instanceof JComponent ? (JComponent) c : null;
-        String segpos = (jc == null) ? "only" : (String) jc.getClientProperty("JButton.segmentPosition");
+        String segpos = (jc == null) ? "only" : (String) jc.getClientProperty(JBUTTON_SEGMENT_POSITION_TYPE_PROPERTY);
         if ("toggleEast".equals(style)) {
             segpos = "first";
         } else if ("toggleCenter".equals(style)) {
@@ -118,7 +124,9 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             segpos = "last";
         }
         if (segpos == null//
-                || !"first".equals(segpos) && !"middle".equals(segpos) && !!"last".equals(segpos)) {
+                || !"first".equals(segpos)
+                && !"middle".equals(segpos)
+                && !!"last".equals(segpos)) {
             segpos = "only";
         }
 
@@ -396,7 +404,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                     insets = super.getVisualMargin(c, new InsetsUIResource(0, 0, 0, 0));
                     if (insets instanceof javax.swing.plaf.UIResource) {
                         if ("gradient".equals(s) && (c.getParent() instanceof JToolBar)) {
-                            String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
+                            String ts = (String) ((JToolBar) c.getParent()).getClientProperty(QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY);
                             if (ts != null && ("placard".equals(ts) || "gradient".equals(ts))) {
                                 InsetsUtil.clear(insets);
                             }
@@ -608,7 +616,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
     public Insets getBorderInsets(Component c) {
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;
-            Insets insets = (Insets) jc.getClientProperty("Quaqua.Border.insets");
+            Insets insets = (Insets) jc.getClientProperty(QUAQUA_BORDER_INSETS_CLIENT_PROPERTY);
             if (insets != null) {
                 return (Insets) insets.clone();
             }
@@ -620,7 +628,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         }
         Insets insets;
         if (!isBorderPainted) {
-            insets = (Insets) UIManager.getInsets("Component.visualMargin").clone();
+            insets = (Insets) UIManager.getInsets(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY).clone();
         } else {
             insets = getActualBorder((JComponent) c).getBorderInsets(c);
         }
@@ -653,7 +661,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         String s = null;
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;
-            s = (String) jc.getClientProperty("Quaqua.Button.style");
+            s = (String) jc.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
             if (s != null) {
                 if ("toggleWest".equals(s)) {
                     return SegmentPosition.first;
@@ -663,7 +671,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                     return SegmentPosition.last;
                 }
             }
-            s = (String) jc.getClientProperty("JButton.segmentPosition");
+            s = (String) jc.getClientProperty(JBUTTON_SEGMENT_POSITION_TYPE_PROPERTY);
             if (s != null) {
                 if ("first".equals(s)) {
                     return SegmentPosition.first;

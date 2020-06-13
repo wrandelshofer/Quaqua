@@ -34,6 +34,7 @@ import java.beans.PropertyChangeListener;
 public class ColorSliderUI extends BasicSliderUI {
     private final static Color foreground = new Color(0x949494);
     private final static Color trackBackground = new Color(0xffffff);
+    protected static final String COLOR_COMPONENT_INDEX_CLIENT_PROPERTY = "ColorComponentIndex";
     private ColorTrackImageProducer colorTrackImageProducer;
     private Image colorTrackImage;
 
@@ -278,11 +279,11 @@ public class ColorSliderUI extends BasicSliderUI {
                 colorTrackImage.flush();
             }
             colorTrackImageProducer = new ColorTrackImageProducer(width, height, buffer + 2, slider.getOrientation() == JSlider.HORIZONTAL);
-            if (slider.getClientProperty("ColorSliderModel") != null) {
-                colorTrackImageProducer.setColorSliderModel((ColorSliderModel) slider.getClientProperty("ColorSliderModel"));
+            if (slider.getClientProperty(ColorSliderModel.COLOR_SLIDER_MODEL_CLIENT_PROPERTY) != null) {
+                colorTrackImageProducer.setColorSliderModel((ColorSliderModel) slider.getClientProperty(ColorSliderModel.COLOR_SLIDER_MODEL_CLIENT_PROPERTY));
             }
-            if (slider.getClientProperty("ColorComponentIndex") != null) {
-                colorTrackImageProducer.setColorComponentIndex(((Integer) slider.getClientProperty("ColorComponentIndex")).intValue());
+            if (slider.getClientProperty(COLOR_COMPONENT_INDEX_CLIENT_PROPERTY) != null) {
+                colorTrackImageProducer.setColorComponentIndex(((Integer) slider.getClientProperty(COLOR_COMPONENT_INDEX_CLIENT_PROPERTY)).intValue());
             }
             colorTrackImageProducer.generateColorTrack();
             colorTrackImage = slider.createImage(colorTrackImageProducer);
@@ -380,33 +381,39 @@ public class ColorSliderUI extends BasicSliderUI {
     }
 
     public class CSUIPropertyChangeHandler extends BasicSliderUI.PropertyChangeHandler {
+        protected static final String FRAME_ACTIVE_CLIENT_PROPERTY = "Frame.active";
+        protected static final String SNAP_TO_TICKS_PROPERTY = "snapToTicks";
+        protected static final String COLOR_COMPONENT_CHANGE_CLIENT_PROPERTY = "ColorComponentChange";
+        protected static final String COLOR_COMPONENT_VALUE_CLIENT_PROPERTY = "ColorComponentValue";
+        protected static final String ORIENTATION_PROPERTY = "Orientation";
+
         @Override
         public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
 
-            if (propertyName.equals("Frame.active")) {
+            if (propertyName.equals(FRAME_ACTIVE_CLIENT_PROPERTY)) {
                 //calculateGeometry();
                 slider.repaint();
-            } else if (propertyName.equals("ColorSliderModel")) {
+            } else if (propertyName.equals(ColorSliderModel.COLOR_SLIDER_MODEL_CLIENT_PROPERTY)) {
                 if (colorTrackImageProducer != null) {
                     colorTrackImageProducer.setColorSliderModel(((ColorSliderModel) e.getNewValue()));
                     if (colorTrackImageProducer.needsGeneration()) {
                         slider.repaint();
                     }
                 }
-            } else if (propertyName.equals("snapToTicks")) {
+            } else if (propertyName.equals(SNAP_TO_TICKS_PROPERTY)) {
                 if (colorTrackImageProducer != null) {
                     colorTrackImageProducer.markAsDirty();
                     slider.repaint();
                 }
-            } else if (propertyName.equals("ColorComponentIndex")) {
+            } else if (propertyName.equals(COLOR_COMPONENT_INDEX_CLIENT_PROPERTY)) {
                 if (colorTrackImageProducer != null && e.getNewValue() != null) {
                     colorTrackImageProducer.setColorComponentIndex(((Integer) e.getNewValue()).intValue());
                     if (colorTrackImageProducer.needsGeneration()) {
                         slider.repaint();
                     }
                 }
-            } else if (propertyName.equals("ColorComponentChange")) {
+            } else if (propertyName.equals(COLOR_COMPONENT_CHANGE_CLIENT_PROPERTY)) {
                 Integer value = (Integer) e.getNewValue();
                 if (value != null && colorTrackImageProducer != null) {
                     colorTrackImageProducer.componentChanged(value.intValue());
@@ -414,15 +421,15 @@ public class ColorSliderUI extends BasicSliderUI {
                         slider.repaint();
                     }
                 }
-            } else if (propertyName.equals("ColorComponentValue")) {
-                Integer value = (Integer) slider.getClientProperty("ColorComponentChange");
+            } else if (propertyName.equals(COLOR_COMPONENT_VALUE_CLIENT_PROPERTY)) {
+                Integer value = (Integer) slider.getClientProperty(COLOR_COMPONENT_CHANGE_CLIENT_PROPERTY);
                 if (value != null && colorTrackImageProducer != null) {
                     colorTrackImageProducer.componentChanged(value.intValue());
                     if (colorTrackImageProducer.needsGeneration()) {
                         slider.repaint();
                     }
                 }
-            } else if (propertyName.equals("Orientation")) {
+            } else if (propertyName.equals(ORIENTATION_PROPERTY)) {
                 if (slider.getOrientation() == JSlider.HORIZONTAL) {
                     slider.setBorder(new VisualMarginBorder(0, 1, -1, 1));
                 } else {

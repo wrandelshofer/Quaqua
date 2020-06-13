@@ -88,6 +88,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY;
 import static java.lang.Math.max;
 
 
@@ -1257,7 +1258,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
 
     private void doPreviewComponentChanged(PropertyChangeEvent e) {
         JFileChooser fc = getFileChooser();
-        final Component pv = (Component) fc.getClientProperty("Quaqua.FileChooser.preview");
+        final Component pv = (Component) fc.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY);
         if (pv != null) {
             browser.setPreviewRenderer(new BrowserPreviewRenderer() {
 

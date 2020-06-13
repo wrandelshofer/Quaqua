@@ -395,6 +395,7 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
                 "ComboBox.buttonInsets", new Insets(-3, -3, -3, -3),
                 //"ComboBox.border", new VisualMarginBorder(2, 0, 2, 0),
                 "ComboBox.dropDownIcon", null,
+                "ComboBox.cellEditorDropDownWidth", 24,
                 "ComboBox.dropDownWidth", 18,
                 "ComboBox.selectionBackground", new GradientColor(new ColorUIResource(0x3875d7), new ColorUIResource(0x5170f6), new ColorUIResource(0x1a43f3)),
                 "ComboBox.selectionForeground", menuSelectionForeground,

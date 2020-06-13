@@ -35,6 +35,8 @@ import java.awt.event.MouseWheelListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY;
+
 /**
  * QuaquaScrollPaneUI.
  *
@@ -224,7 +226,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
     }
 
     public Insets getVisualMargin(Component c) {
-        Insets margin = (Insets) ((JComponent) c).getClientProperty("Quaqua.Component.visualMargin");
+        Insets margin = (Insets) ((JComponent) c).getClientProperty(QUAQUA_COMPONENT_VISUAL_MARGIN_CLIENT_PROPERTY);
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }

@@ -17,6 +17,8 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_DRAW_FOCUS_BORDER_CLIENT_PROPERTY;
+
 /**
  * QuaquaScrollPaneBorder.
  *
@@ -116,7 +118,7 @@ public class QuaquaScrollPaneBorder extends VisualMarginBorder {
         if (viewportView.isEnabled() &&
                 (QuaquaUtilities.isFocused(viewportView) ||
                         (viewportView instanceof JComponent) &&
-                                ((JComponent) viewportView).getClientProperty("Quaqua.drawFocusBorder") == Boolean.TRUE)) {
+                                ((JComponent) viewportView).getClientProperty(QUAQUA_DRAW_FOCUS_BORDER_CLIENT_PROPERTY) == Boolean.TRUE)) {
             return borders[2];
         } else if (c.isEnabled() && viewportView.isEnabled() && isEditable) {
             return borders[0];

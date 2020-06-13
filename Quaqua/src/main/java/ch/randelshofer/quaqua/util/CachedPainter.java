@@ -6,6 +6,7 @@ package ch.randelshofer.quaqua.util;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -14,6 +15,7 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A base class used for icons or images that are expensive to paint.
@@ -69,7 +71,6 @@ public abstract class CachedPainter {
         if (w <= 0 || h <= 0) {
             return;
         }
-
         Object key = getClass();
 
         // If the area is larger than 20'000 pixels, render to the passed
@@ -82,8 +83,8 @@ public abstract class CachedPainter {
             return;
         }
 
-
         GraphicsConfiguration config = c.getGraphicsConfiguration();
+        int scaleFactor = RetinaDisplays.getDeviceScaleFactor((Graphics2D)g);
         Cache cache = getCache(key);
         Image image = cache.getImage(key, config, w, h, args);
         int attempts = 0;
@@ -103,7 +104,7 @@ public abstract class CachedPainter {
             }
             if (image == null) {
                 // Recreate the image
-                image = createImage(c, w, h, config);
+                image = createImage(c, w*scaleFactor, h*scaleFactor, config);
                 cache.setImage(key, config, w, h, args, image);
                 draw = true;
             }
@@ -165,7 +166,7 @@ public abstract class CachedPainter {
     protected void paintImage(Component c, Graphics g,
                               int x, int y, int w, int h, Image image,
                               Object args) {
-        g.drawImage(image, x, y, null);
+        g.drawImage(image, x, y, w,h,null);
     }
 
     /**
@@ -195,11 +196,11 @@ public abstract class CachedPainter {
 
         private int maxCount;
         // The entries.
-        private java.util.List entries;
+        private final java.util.List<SoftReference<Entry>> entries;
 
         Cache(int maxCount) {
             this.maxCount = maxCount;
-            entries = new ArrayList(maxCount);
+            entries = new ArrayList<>(maxCount);
         }
 
         synchronized void setMaxCount(int maxCount) {
@@ -210,13 +211,12 @@ public abstract class CachedPainter {
             return maxCount;
         }
 
-
         private Entry getEntry(Object key, GraphicsConfiguration config,
                                int w, int h, Object args) {
             synchronized (this) {
                 Entry entry;
                 for (int counter = entries.size() - 1; counter >= 0; counter--) {
-                    entry = (Entry) ((SoftReference) entries.get(counter)).get();
+                    entry = entries.get(counter).get();
                     if (entry == null) {
                         // SoftReference was invalidated, remove the entry
                         entries.remove(counter);
@@ -230,7 +230,7 @@ public abstract class CachedPainter {
                 if (entries.size() == maxCount) {
                     entries.remove(0);
                 }
-                entries.add(new SoftReference(entry));
+                entries.add(new SoftReference<>(entry));
                 return entry;
             }
         }
@@ -257,12 +257,11 @@ public abstract class CachedPainter {
          * Caches set of arguments and Image.
          */
         private static class Entry {
-
-            private GraphicsConfiguration config;
-            private Object args;
+            private final GraphicsConfiguration config;
+            private final Object args;
             private Image image;
-            private int w;
-            private int h;
+            private final int w;
+            private final int h;
 
             Entry(GraphicsConfiguration config, int w, int h, Object args) {
                 this.config = config;
@@ -286,8 +285,7 @@ public abstract class CachedPainter {
                         + ", image=" + image
                         + ", w=" + w + ", h=" + h);
                 if (args != null) {
-                    value.append(", ");
-                    value.append(args);
+                    value.append(", ").append(args);
                 }
                 value.append("]");
                 return value.toString();
@@ -295,23 +293,10 @@ public abstract class CachedPainter {
 
             public boolean equals(GraphicsConfiguration config, int w, int h,
                                   Object args) {
-                if (this.w == w && this.h == h
-                        && ((this.config != null && this.config.equals(config))
-                        || (this.config == null && config == null))) {
-                    if (this.args == null && args == null) {
-                        return true;
-                    }
-                    if (this.args != null && args != null) {
-
-                        if (!this.args.equals(args)) {
-                            return false;
-                        }
-
-
-                        return true;
-                    }
-                }
-                return false;
+                return this.w == w
+                        && this.h == h
+                        && Objects.equals(this.config, config )
+                    && Objects.equals(this.args, args == null);
             }
         }
     }

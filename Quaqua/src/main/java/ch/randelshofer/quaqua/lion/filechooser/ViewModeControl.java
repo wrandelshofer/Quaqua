@@ -110,7 +110,7 @@ public class ViewModeControl extends ch.randelshofer.quaqua.filechooser.ViewMode
             s = new Insets(7, 7, 7, 12);
         }
 
-        b.putClientProperty("Quaqua.Border.insets", s);
+        b.putClientProperty("Quaqua.borderInsets", s);
 
         b.addActionListener(new ActionListener() {
             @Override

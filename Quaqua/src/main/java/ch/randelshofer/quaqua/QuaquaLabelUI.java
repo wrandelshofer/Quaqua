@@ -29,6 +29,8 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_LABEL_STYLE_CLIENT_PROPERTY;
+
 /**
  * QuaquaLabelUI.
  *
@@ -113,7 +115,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         Color foreground = UIManager.getColor("Label.disabledForeground");
         int accChar = -1; //l.getDisplayedMnemonicIndex();
 
-        String style = (String) l.getClientProperty("Quaqua.Label.style");
+        String style = (String) l.getClientProperty(QUAQUA_LABEL_STYLE_CLIENT_PROPERTY);
         if (style != null) {
             boolean selected = style.endsWith("Selected");
 
@@ -165,7 +167,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         Font font = l.getFont();
         Color foreground = l.getForeground();
 
-        String style = (String) l.getClientProperty("Quaqua.Label.style");
+        String style = (String) l.getClientProperty(QUAQUA_LABEL_STYLE_CLIENT_PROPERTY);
         if (style != null) {
             boolean focused = style.indexOf("Focused") != -1;
             boolean selected = style.indexOf("Selected") != -1;

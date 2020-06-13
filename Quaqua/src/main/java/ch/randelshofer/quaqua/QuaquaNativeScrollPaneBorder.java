@@ -180,9 +180,10 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
             pg.fillRect(0, 0, painterImg.getWidth(), painterImg.getHeight());
             pg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             pg.dispose();
+            double scaleFactor=1.0;
             painter.paint(painterImg,//
                     slack, fixedYOffset + slack,//
-                    painterImg.getWidth() - 2 * slack, painterImg.getHeight() - 2 * slack);
+                    painterImg.getWidth() - 2 * slack, painterImg.getHeight() - 2 * slack, scaleFactor);
 
 
             Graphics2D ibbg = ibbImg.createGraphics();

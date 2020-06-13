@@ -58,6 +58,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.WeakHashMap;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_ROOT_PANE_IS_VERTICAL_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.WINDOW_ALPHA_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.WINDOW_DOCUMENT_MODIFIED_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.WINDOW_MODIFIED_CLIENT_PROPERTY;
+
 /**
  * QuaquaRootPaneUI.
  *
@@ -81,6 +86,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
      * FIXME - This value depends on font size.
      */
     private static final int BORDER_DRAG_THICKNESS = 15;
+    protected static final String QUAQUA_INTERNAL_USING_WINDOW_MODIFIED_CLIENT_PROPERTY = "QuaquaInternal.usingWindowModified";
     /**
      * Window the <code>JRootPane</code> is in.
      */
@@ -186,8 +192,8 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
     public void paint(Graphics g, JComponent c) {
         Graphics2D gr = (Graphics2D) g;
         // Erase background. This is needed for semi-transparent windows.
-        if (root.getClientProperty("Window.alpha") instanceof Float) {
-            float alpha = ((Float) root.getClientProperty("Window.alpha")).floatValue();
+        if (root.getClientProperty(WINDOW_ALPHA_CLIENT_PROPERTY) instanceof Float) {
+            float alpha = ((Float) root.getClientProperty(WINDOW_ALPHA_CLIENT_PROPERTY)).floatValue();
             if (alpha < 1f) {
                 if (System.getProperty("java.version").startsWith("1.6")) {
                     Color background = c.getBackground();
@@ -394,9 +400,9 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                         }
                         if (setWindowModifiedMethod != null) {
                             try {
-                                Object value = rootpane.getClientProperty("Window.documentModified");
+                                Object value = rootpane.getClientProperty(WINDOW_DOCUMENT_MODIFIED_CLIENT_PROPERTY);
                                 if (value == null) {
-                                    value = rootpane.getClientProperty("windowModified");
+                                    value = rootpane.getClientProperty(WINDOW_MODIFIED_CLIENT_PROPERTY);
                                 }
 
                                 if (value == null) {
@@ -428,18 +434,18 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         }
 
         if (isDocumentModifiedSupported) {
-            Object value = rootpane.getClientProperty("Window.documentModified");
+            Object value = rootpane.getClientProperty(WINDOW_DOCUMENT_MODIFIED_CLIENT_PROPERTY);
             boolean shouldTransfer = false;
-            if (Boolean.TRUE.equals(rootpane.getClientProperty("QuaquaInternal.usingWindowModified"))) {
+            if (Boolean.TRUE.equals(rootpane.getClientProperty(QUAQUA_INTERNAL_USING_WINDOW_MODIFIED_CLIENT_PROPERTY))) {
                 shouldTransfer = true;
-            } else if (value == null && rootpane.getClientProperty("windowModified") != null) {
-                rootpane.putClientProperty("QuaquaInternal.usingWindowModified", true);
+            } else if (value == null && rootpane.getClientProperty(WINDOW_MODIFIED_CLIENT_PROPERTY) != null) {
+                rootpane.putClientProperty(QUAQUA_INTERNAL_USING_WINDOW_MODIFIED_CLIENT_PROPERTY, true);
                 shouldTransfer = true;
             }
 
             if (shouldTransfer) {
-                Object newValue = rootpane.getClientProperty("windowModified");
-                rootpane.putClientProperty("Window.documentModified", newValue);
+                Object newValue = rootpane.getClientProperty(WINDOW_MODIFIED_CLIENT_PROPERTY);
+                rootpane.putClientProperty(WINDOW_DOCUMENT_MODIFIED_CLIENT_PROPERTY, newValue);
             }
         }
     }
@@ -565,7 +571,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
     }
 
     private boolean isVertical(JRootPane root) {
-        return root.getClientProperty("Quaqua.RootPane.isVertical") == Boolean.TRUE;
+        return root.getClientProperty(QUAQUA_ROOT_PANE_IS_VERTICAL_CLIENT_PROPERTY) == Boolean.TRUE;
     }
 
     /**
@@ -763,7 +769,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
 
         private boolean isVertical(Container parent) {
             if (parent instanceof JComponent) {
-                return ((JComponent) parent).getClientProperty("Quaqua.RootPane.isVertical") == Boolean.TRUE;
+                return ((JComponent) parent).getClientProperty(QUAQUA_ROOT_PANE_IS_VERTICAL_CLIENT_PROPERTY) == Boolean.TRUE;
             }
             return false;
         }

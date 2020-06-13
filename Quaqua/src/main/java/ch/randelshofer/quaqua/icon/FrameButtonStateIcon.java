@@ -34,6 +34,7 @@ public class FrameButtonStateIcon extends MultiIcon {
     private final static int DIS = 9;
     private final static int R = 10;
     private final static int RS = 11;
+    protected static final String PAINT_ROLLOVER_CLIENT_PROPERTY = "paintRollover";
 
     /**
      * Creates a new instance.
@@ -75,7 +76,7 @@ public class FrameButtonStateIcon extends MultiIcon {
 
     private boolean isRollover(Component c) {
         if (c instanceof JComponent) {
-            return ((JComponent) c).getClientProperty("paintRollover") == Boolean.TRUE;
+            return ((JComponent) c).getClientProperty(PAINT_ROLLOVER_CLIENT_PROPERTY) == Boolean.TRUE;
         }
         return false;
     }

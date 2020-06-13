@@ -5,8 +5,6 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import ch.randelshofer.quaqua.QuaquaToolBarUI;
-
 import javax.swing.AbstractButton;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -20,6 +18,8 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY;
 
 /**
  * The main panel of the color chooser UI.
@@ -42,7 +42,7 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
     public ColorChooserMainPanel() {
         initComponents();
         toolBar.putClientProperty("Quaqua.ToolBar.isDividerDrawn", Boolean.TRUE);
-        toolBar.putClientProperty(QuaquaToolBarUI.TOOLBAR_STYLE_PROPERTY, "title");
+        toolBar.putClientProperty(QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY, "title");
         setOpaque(false);
     }
 

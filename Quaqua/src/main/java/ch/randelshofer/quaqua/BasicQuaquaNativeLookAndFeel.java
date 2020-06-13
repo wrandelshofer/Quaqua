@@ -10,6 +10,7 @@ import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXConfiguration;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
+import ch.randelshofer.quaqua.util.RetinaDisplays;
 import sun.awt.AppContext;
 
 import javax.swing.JDialog;
@@ -37,8 +38,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 import java.security.AccessControlException;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -1659,7 +1663,7 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         Boolean enforceVisualMargin = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.enforceVisualMargin", "false"));
 
         Object[] uiDefaults = {
-                "Quaqua.retina",QuaquaIconFactory.hasRetinaDisplay(),
+                "Quaqua.retina", RetinaDisplays.getDeviceScaleFactor(),
 
                 "Browser.sizeHandleIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
                 new Object[]{commonDir + "Browser.sizeHandleIcon.png", 1, Boolean.TRUE, 1}),
@@ -1746,7 +1750,7 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                 "ComboBox.cellBorder", null,
                 "ComboBox.editorBorder", textFieldBorder,
                 "ComboBox.smallCellBorder", null,
-                "ComboBox.cellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 1, 0, 0), new Insets(3, 3, 3, 3), true),
+                "ComboBox.cellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 0, 0, 0), new Insets(3, 3, 3, 3), true),
                 "ComboBox.smallCellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 0, 0, 0), new Insets(3, 3, 3, 3), true),
                 "ComboBox.miniCellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 2, 0, 1), new Insets(3, 3, 3, 3), true),
                 "ComboBox.buttonInsets", new Insets(-3, -3, -3, -3),
@@ -1756,10 +1760,11 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                 "ComboBox.popupIcon", null,
                 "ComboBox.smallPopupIcon", null,
                 "ComboBox.miniPopupIcon", null,
-                "ComboBox.cellEditorPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
+                "ComboBox.cellEditorPopupIcon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonPopUp,0,-1,16,16,false,OSXAquaPainter.Key.arrowsOnly,1.0),
                 "ComboBox.smallDropDownIcon", null,
                 "ComboBox.miniDropDownIcon", null,
-                "ComboBox.dropDownWidth", 18,
+                "ComboBox.cellEditorDropDownWidth", 24,
+                "ComboBox.dropDownWidth", 17,
                 "ComboBox.smallDropDownWidth", 16,
                 "ComboBox.miniDropDownWidth", 14,
                 "ComboBox.popupWidth", 19,
@@ -2126,7 +2131,19 @@ public abstract class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeButtonStateIcon",
                 new Object[]{widget, xoffset, yoffset, width, height, withFocusRing});
-
+    }
+    protected Object makeNativeButtonStateIcon(OSXAquaPainter.Widget widget,
+                                               int xoffset, int yoffset, int width, int height, boolean withFocusRing,
+                                               OSXAquaPainter.Key key, double value) {
+        Map<OSXAquaPainter.Key, Double> properties = new HashMap<>();
+        properties.put(key,value);
+        /*
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeButtonStateIconX",
+                new Object[]{widget, xoffset, yoffset, width, height, withFocusRing,properties});
+         */
+        return ch.randelshofer.quaqua.QuaquaIconFactory.createNativeButtonStateIconX(
+                widget, xoffset, yoffset, width, height, withFocusRing,properties);
     }
 
     protected  Object makeButtonStateIcon(String location, int states) {

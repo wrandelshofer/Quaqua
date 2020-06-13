@@ -1743,6 +1743,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 "ComboBox.smallDropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.small.dropDownIcons.png", 6),
                 "ComboBox.miniDropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.small.dropDownIcons.png", 6),
                 "ComboBox.popupBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaMenuBorder"),
+                "ComboBox.cellEditorDropDownWidth", 24,
                 "ComboBox.dropDownWidth", 19,
                 "ComboBox.smallDropDownWidth", 17,
                 "ComboBox.miniDropDownWidth", 17,

@@ -28,6 +28,7 @@ import java.beans.PropertyChangeListener;
  */
 public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
         implements NavigatableTabbedPaneUI {
+    protected static final String QUAQUA_TABBED_PANE_TAB_LAYOUT_POLICY_CLIENT_PROPERTY = "Quaqua.TabbedPane.tabLayoutPolicy";
     private JTabbedPane tabPane;
     private TabbedPaneUI currentUI;
     private PropertyChangeListener propertyChangeListener;
@@ -49,8 +50,8 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
         // Tag the tabbed pane with a client property in order to prevent
         // that we are getting in an endless loop, when the layout policy
         // of the tabbed pane is changed.
-        if (tabPane.getClientProperty("Quaqua.TabbedPane.tabLayoutPolicy") == null) {
-            tabPane.putClientProperty("Quaqua.TabbedPane.tabLayoutPolicy", UIManager.get("TabbedPane.tabLayoutPolicy"));
+        if (tabPane.getClientProperty(QUAQUA_TABBED_PANE_TAB_LAYOUT_POLICY_CLIENT_PROPERTY) == null) {
+            tabPane.putClientProperty(QUAQUA_TABBED_PANE_TAB_LAYOUT_POLICY_CLIENT_PROPERTY, UIManager.get("TabbedPane.tabLayoutPolicy"));
             tabPane.setTabLayoutPolicy(UIManager.getInt("TabbedPane.tabLayoutPolicy"));
         }
 

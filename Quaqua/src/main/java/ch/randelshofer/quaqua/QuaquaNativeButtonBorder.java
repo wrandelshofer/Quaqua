@@ -14,6 +14,7 @@ import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
 import ch.randelshofer.quaqua.util.Images;
 import ch.randelshofer.quaqua.util.InsetsUtil;
+import ch.randelshofer.quaqua.util.RetinaDisplays;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -32,6 +33,11 @@ import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JBUTTON_BUTTON_TYPE_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.JBUTTON_SEGMENT_POSITION_TYPE_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_BORDER_INSETS_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY;
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Key;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.SegmentPosition;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.Size;
@@ -513,12 +519,12 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
             Insets vm = getVisualMargin(c);
 
-
+            double scaleFactor = RetinaDisplays.getDeviceScaleFactor();
             painter.paint((BufferedImage) img,//
                     imageInsets.left - 3 + vm.left, //
                     imageInsets.top - 3 + vm.top,//
                     w - imageInsets.left - imageInsets.right + 6 - vm.left - vm.right, //
-                    h - imageInsets.top - imageInsets.bottom + 6 - vm.top - vm.bottom);
+                    h - imageInsets.top - imageInsets.bottom + 6 - vm.top - vm.bottom, scaleFactor);
 
             // Workaround for trailing separators: for some reason they are not
             // drawn, so we draw them by ourselves.
@@ -555,8 +561,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         }
 
         public Insets getVisualMargin(Component c) {
-            Insets i = QuaquaNativeButtonBorder.this.getVisualMargin(c);
-            return i;
+            return QuaquaNativeButtonBorder.this.getVisualMargin(c);
         }
 
         public boolean hasPressedCue(JComponent c) {
@@ -590,15 +595,15 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         String s = null;
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;
-            s = (String) jc.getClientProperty("Quaqua.Button.style");
+            s = (String) jc.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
             if (s == null) {
-                s = (String) jc.getClientProperty("JButton.buttonType");
+                s = (String) jc.getClientProperty(JBUTTON_BUTTON_TYPE_PROPERTY);
             }
         }
 
         if (s == null) {
             if (c.getParent() instanceof JToolBar) {
-                String tbs = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
+                String tbs = (String) ((JToolBar) c.getParent()).getClientProperty(QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY);
                 if ("gradient".equals(tbs) || "placard".equals(tbs)) {
                     s = "gradient";
                 } else {
@@ -618,41 +623,36 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         }
 
         // coerce synonyms
-        if ("placard".equals(s) || "segmentedGradient".equals("")) {
+        if ("placard".equals(s) || "segmentedGradient".equals(s)) {
             s = "gradient";
         }
-
-
         return (s == null) ? "push" : s;
     }
-    /*
-    private Widget getWidget(Component c) {
-    String s = getStyle(c);
-    WidgetProperty wp = wps.get(s);
-    return (wp == null) ? null : wp.widget;
-    }*/
+
 
     private SegmentPosition getSegmentPosition(Component c) {
         String s = null;
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;
-            s = (String) jc.getClientProperty("Quaqua.Button.style");
+            s = (String) jc.getClientProperty(QUAQUA_BUTTON_STYLE_CLIENT_PROPERTY);
             if (s != null) {
-                if ("toggleWest".equals(s)) {
+                switch (s) {
+                case "toggleWest":
                     return SegmentPosition.first;
-                } else if ("toggleCenter".equals(s)) {
+                case "toggleCenter":
                     return SegmentPosition.middle;
-                } else if ("toggleEast".equals(s)) {
+                case "toggleEast":
                     return SegmentPosition.last;
                 }
             }
-            s = (String) jc.getClientProperty("JButton.segmentPosition");
+            s = (String) jc.getClientProperty(JBUTTON_SEGMENT_POSITION_TYPE_PROPERTY);
             if (s != null) {
-                if ("first".equals(s)) {
+                switch (s) {
+                case "first":
                     return SegmentPosition.first;
-                } else if ("middle".equals(s)) {
+                case "middle":
                     return SegmentPosition.middle;
-                } else if ("last".equals(s)) {
+                case "last":
                     return SegmentPosition.last;
                 }
             }
@@ -667,14 +667,13 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         insets = super.getVisualMargin(c, insets);
         if (insets instanceof javax.swing.plaf.UIResource) {
             if ("gradient".equals(s) && (c.getParent() instanceof JToolBar)) {
-                String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
+                String ts = (String) ((JToolBar) c.getParent()).getClientProperty(QUAQUA_TOOL_BAR_STYLE_CLIENT_PROPERTY);
                 if ("placard".equals(ts) || "gradient".equals(ts)) {
                     InsetsUtil.clear(insets);
                 }
             }
         }
 
-        WidgetConfig wc = wcs.get(s);
         if (insets instanceof javax.swing.plaf.UIResource) {
             switch (getSegmentPosition(c)) {
             case first:
@@ -694,13 +693,12 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
         if (c instanceof JComponent) {
-            Insets i = (Insets) ((JComponent) c).getClientProperty("Quaqua.Border.insets");
+            Insets i = (Insets) ((JComponent) c).getClientProperty(QUAQUA_BORDER_INSETS_CLIENT_PROPERTY);
             if (i != null) {
                 InsetsUtil.setTo(i, insets);
                 return insets;
             }
         }
-
 
         String s = getStyle(c);
         QuaquaUtilities.SizeVariant size = QuaquaUtilities.getSizeVariant(c);

@@ -39,6 +39,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import static ch.randelshofer.quaqua.QuaquaClientProperties.QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY;
+
 /**
  * FileChooser.
  *
@@ -179,14 +181,14 @@ public class FileChooserTest extends javax.swing.JPanel {
             }
         }
         if (previewCheckBox.isSelected()) {
-            if (!(fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview)) {
+            if (!(fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY) instanceof Preview)) {
                 Preview pa = new Preview(fileChooser);
-                fileChooser.putClientProperty("Quaqua.FileChooser.preview", pa);
+                fileChooser.putClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY, pa);
             }
         } else {
-            if (fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview) {
-                Preview pa = (Preview) fileChooser.getClientProperty("Quaqua.FileChooser.preview");
-                fileChooser.putClientProperty("Quaqua.FileChooser.preview", null);
+            if (fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY) instanceof Preview) {
+                Preview pa = (Preview) fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY);
+                fileChooser.putClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY, null);
                 pa.dispose();
             }
         }
@@ -832,21 +834,21 @@ public class FileChooserTest extends javax.swing.JPanel {
 
                 public void actionPerformed(ActionEvent e) {
                     if (togglePreviewCheckBox.isSelected()) {
-                        if (fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview) {
-                            Preview p = (Preview) fileChooser.getClientProperty("Quaqua.FileChooser.preview");
+                        if (fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY) instanceof Preview) {
+                            Preview p = (Preview) fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY);
                             p.dispose();
                         }
-                        fileChooser.putClientProperty("Quaqua.FileChooser.preview", new Preview(fileChooser));
+                        fileChooser.putClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY, new Preview(fileChooser));
                     } else {
-                        if (fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview) {
-                            Preview p = (Preview) fileChooser.getClientProperty("Quaqua.FileChooser.preview");
+                        if (fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY) instanceof Preview) {
+                            Preview p = (Preview) fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY);
                             p.dispose();
                         }
-                        fileChooser.putClientProperty("Quaqua.FileChooser.preview", null);
+                        fileChooser.putClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY, null);
                     }
                 }
             });
-            togglePreviewCheckBox.setSelected(fileChooser.getClientProperty("Quaqua.FileChooser.preview") != null);
+            togglePreviewCheckBox.setSelected(fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY) != null);
 
             JButton testButton = new JButton("Test");   // run a custom test
             testButton.addActionListener(new ActionListener() {
@@ -938,8 +940,8 @@ public class FileChooserTest extends javax.swing.JPanel {
         }
 
         public void propertyChange(PropertyChangeEvent evt) {
-            if (evt.getPropertyName().equals("Quaqua.FileChooser.preview")) {
-                togglePreviewCheckBox.setSelected(fileChooser.getClientProperty("Quaqua.FileChooser.preview") != null);
+            if (evt.getPropertyName().equals(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY)) {
+                togglePreviewCheckBox.setSelected(fileChooser.getClientProperty(QUAQUA_FILE_CHOOSER_PREVIEW_CLIENT_PROPERTY) != null);
             }
         }
     }
